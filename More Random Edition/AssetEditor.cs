@@ -191,7 +191,7 @@ namespace Randomizer
 			{
 				if (!ItemList.Items.ContainsKey((int)index))
 				{
-					Globals.ConsoleWrite($"Missing item: {(int)index}: {index.ToString()}");
+					Globals.ConsoleWarn($"Missing item: {(int)index}: {index.ToString()}");
 				}
 			}
 		}

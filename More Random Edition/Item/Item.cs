@@ -168,7 +168,7 @@ namespace Randomizer
 					basePrice = 5000;
 					break;
 				default:
-					Globals.ConsoleWrite($"ERROR: Tried to get a base price for an item with an unrecognized ObtainingDifficulty: {Name}");
+					Globals.ConsoleError($"Tried to get a base price for an item with an unrecognized ObtainingDifficulty: {Name}");
 					return 100;
 			}
 
@@ -191,7 +191,7 @@ namespace Randomizer
 				return $"{Name}/150/1/Crafting/{Name}/It smells delicious. This is sure to give you a boost./drink/0 0 0 0 0 0 0 0 0 1 0/120";
 			}
 
-			Globals.ConsoleWrite($"ERROR: called the ToString of unexpected item {Id}: {Name}");
+			Globals.ConsoleError($"Called the ToString of unexpected item {Id}: {Name}");
 			return "";
 		}
 	}

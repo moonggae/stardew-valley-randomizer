@@ -118,7 +118,7 @@ namespace Randomizer
 
 			if (seedId == 0)
 			{
-				Globals.ConsoleWrite($"ERROR: No seed can grow {crop.Name}!");
+				Globals.ConsoleError($"No seed can grow {crop.Name}!");
 				return null;
 			}
 
@@ -269,7 +269,7 @@ namespace Randomizer
 				return ((CraftableItem)item).GetCraftingString();
 			}
 
-			Globals.ConsoleWrite($"ERROR: Attempted to create a crafting recipe for a non-craftable item - {item.Name}");
+			Globals.ConsoleError($"Attempted to create a crafting recipe for a non-craftable item - {item.Name}");
 			return string.Empty;
 		}
 

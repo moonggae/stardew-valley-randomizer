@@ -308,7 +308,7 @@ namespace Randomizer
 					description = "Does crushing damage.";
 					break;
 				default:
-					Globals.ConsoleWrite($"ERROR: Assigning description to an invalid weapon type: {weapon.ToString()}");
+					Globals.ConsoleError($"Assigning description to an invalid weapon type: {weapon.ToString()}");
 					break;
 			}
 

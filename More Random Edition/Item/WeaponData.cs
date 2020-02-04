@@ -89,7 +89,7 @@ namespace Randomizer
 			string[] fields = input.Split('/');
 			if (fields.Length != 14)
 			{
-				Globals.ConsoleWrite($"ERRPR: Incorrect number of fields when parsing weapons with input: {input}");
+				Globals.ConsoleError($"Incorrect number of fields when parsing weapons with input: {input}");
 				return;
 			}
 
@@ -100,13 +100,13 @@ namespace Randomizer
 			// Damage
 			if (!int.TryParse(fields[(int)WeaponFields.MinDamage], out int minDamage))
 			{
-				Globals.ConsoleWrite($"ERROR: Could not parse the min damage when parsing weapon with input: {input}");
+				Globals.ConsoleError($"Could not parse the min damage when parsing weapon with input: {input}");
 				return;
 			}
 
 			if (!int.TryParse(fields[(int)WeaponFields.MaxDamage], out int maxDamage))
 			{
-				Globals.ConsoleWrite($"ERROR: Could not parse the max damage when parsing weapon with input: {input}");
+				Globals.ConsoleError($"Could not parse the max damage when parsing weapon with input: {input}");
 				return;
 			}
 
@@ -115,7 +115,7 @@ namespace Randomizer
 			// Knockback
 			if (!double.TryParse(fields[(int)WeaponFields.Knockback], out double knockback))
 			{
-				Globals.ConsoleWrite($"ERROR: Could not parse knockback when parsing weapon with input: {input}");
+				Globals.ConsoleError($"Could not parse knockback when parsing weapon with input: {input}");
 				return;
 			}
 			weapon.Knockback = knockback;
@@ -123,7 +123,7 @@ namespace Randomizer
 			// Speed
 			if (!int.TryParse(fields[(int)WeaponFields.Speed], out int speed))
 			{
-				Globals.ConsoleWrite($"ERROR: Could not parse speed when parsing weapon with input: {input}");
+				Globals.ConsoleError($"Could not parse speed when parsing weapon with input: {input}");
 				return;
 			}
 			weapon.Speed = speed;
@@ -131,7 +131,7 @@ namespace Randomizer
 			// Added Precision
 			if (!int.TryParse(fields[(int)WeaponFields.AddedPrecision], out int addedPrecision))
 			{
-				Globals.ConsoleWrite($"ERROR: Could not parse the added precision when parsing weapon with input: {input}");
+				Globals.ConsoleError($"Could not parse the added precision when parsing weapon with input: {input}");
 				return;
 			}
 			weapon.AddedPrecision = addedPrecision;
@@ -139,7 +139,7 @@ namespace Randomizer
 			// Added Defense
 			if (!int.TryParse(fields[(int)WeaponFields.AddedDefense], out int addedDefense))
 			{
-				Globals.ConsoleWrite($"ERROR: Could not parse the added defense when parsing weapon with input: {input}");
+				Globals.ConsoleError($"Could not parse the added defense when parsing weapon with input: {input}");
 				return;
 			}
 			weapon.AddedPrecision = addedPrecision;
@@ -147,7 +147,7 @@ namespace Randomizer
 			// Type
 			if (!int.TryParse(fields[(int)WeaponFields.Type], out int type))
 			{
-				Globals.ConsoleWrite($"ERROR: Could not parse the weapon type when parsing weapon with input: {input}");
+				Globals.ConsoleError($"Could not parse the weapon type when parsing weapon with input: {input}");
 				return;
 			}
 			weapon.Type = (WeaponType)type;
@@ -155,7 +155,7 @@ namespace Randomizer
 			// Base Mine Level Drop
 			if (!int.TryParse(fields[(int)WeaponFields.BaseMineLevelDrop], out int baseMineLevelDrop))
 			{
-				Globals.ConsoleWrite($"ERROR: Could not parse the base mine level drop when parsing weapon with input: {input}");
+				Globals.ConsoleError($"Could not parse the base mine level drop when parsing weapon with input: {input}");
 				return;
 			}
 			weapon.BaseMineLevelDrop = baseMineLevelDrop;
@@ -163,7 +163,7 @@ namespace Randomizer
 			// Minimum Mine Level Drop
 			if (!int.TryParse(fields[(int)WeaponFields.MinMineLevelDrop], out int minMineLevelDrop))
 			{
-				Globals.ConsoleWrite($"ERROR: Could not parse the minimum mine level drop when parsing weapon with input: {input}");
+				Globals.ConsoleError($"Could not parse the minimum mine level drop when parsing weapon with input: {input}");
 				return;
 			}
 			weapon.MinMineLevelDrop = minMineLevelDrop;
@@ -171,7 +171,7 @@ namespace Randomizer
 			// Added AOE 
 			if (!int.TryParse(fields[(int)WeaponFields.AddedAOE], out int addedAOE))
 			{
-				Globals.ConsoleWrite($"ERROR: Could not parse the added AOE value when parsing weapon with input: {input}");
+				Globals.ConsoleError($"Could not parse the added AOE value when parsing weapon with input: {input}");
 				return;
 			}
 			weapon.AddedAOE = addedAOE;
@@ -179,7 +179,7 @@ namespace Randomizer
 			// Crit Chance
 			if (!double.TryParse(fields[(int)WeaponFields.CritChance], out double critChance))
 			{
-				Globals.ConsoleWrite($"ERROR: Could not parse crit chance when parsing weapon with input: {input}");
+				Globals.ConsoleError($"Could not parse crit chance when parsing weapon with input: {input}");
 				return;
 			}
 			weapon.CritChance = critChance;
@@ -187,7 +187,7 @@ namespace Randomizer
 			// Crit Multiplier
 			if (!double.TryParse(fields[(int)WeaponFields.CritMultiplier], out double critMultiplier))
 			{
-				Globals.ConsoleWrite($"ERROR: Could not parse the crit multiplier when parsing weapon with input: {input}");
+				Globals.ConsoleError($"Could not parse the crit multiplier when parsing weapon with input: {input}");
 				return;
 			}
 			weapon.CritMultiplier = critMultiplier;

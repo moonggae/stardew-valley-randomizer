@@ -109,7 +109,7 @@ namespace Randomizer
 
 			if (dataToWrite == null)
 			{
-				Globals.ConsoleWrite($"ERROR: Could not find the foragable list for {season.ToString()}");
+				Globals.ConsoleError($"Could not find the foragable list for {season.ToString()}");
 				return;
 			}
 
@@ -153,7 +153,7 @@ namespace Randomizer
 		{
 			if (foragableList.Count < numberToAdd)
 			{
-				Globals.ModRef.Monitor.Log($"Not enough foragables to initialize everything - trying to add {numberToAdd} from a list of {foragableList.Count}.");
+				Globals.ConsoleError($"Not enough foragables to initialize everything - trying to add {numberToAdd} from a list of {foragableList.Count}.");
 				return;
 			}
 
@@ -189,7 +189,7 @@ namespace Randomizer
 						keepLooping = AddToList(foragableList, WinterForagables);
 						break;
 					default:
-						Globals.ModRef.Monitor.Log("ERROR: Should not have generated a value above 3 for a season check!");
+						Globals.ConsoleError("Should not have generated a value above 3 for a season check!");
 						keepLooping = false;
 						break;
 				}
@@ -289,7 +289,7 @@ namespace Randomizer
 
 			if (foragableDataList == null || foragableItemList == null)
 			{
-				Globals.ModRef.Monitor.Log($"ERROR: Could not get foragable list for season: {season}");
+				Globals.ConsoleError($"Could not get foragable list for season: {season}");
 			}
 
 			if (foragableLocationData.Location == Locations.Desert)
@@ -340,7 +340,7 @@ namespace Randomizer
 		{
 			if (listToPopulate.Count >= _allForagables.Count)
 			{
-				Globals.ModRef.Monitor.Log("WARNING: Tried to add a unique foragable when the given list was full!");
+				Globals.ConsoleWarn("Tried to add a unique foragable when the given list was full!");
 				return;
 			}
 
@@ -382,7 +382,7 @@ namespace Randomizer
 					probability = (double)Range.GetRandomValue(1, 5) / 100;
 					break;
 				default:
-					Globals.ConsoleWrite($"ERROR: Attempting to get a diggable item with invalid difficulty: {difficulty}");
+					Globals.ConsoleError($"Attempting to get a diggable item with invalid difficulty: {difficulty}");
 					difficulty = ObtainingDifficulties.NoRequirements;
 					probability = (double)Range.GetRandomValue(30, 60) / 100;
 					break;

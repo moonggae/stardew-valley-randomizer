@@ -279,7 +279,7 @@ namespace Randomizer
 					return allFish.Where(x => x.IsWinterFish).Cast<Item>().ToList();
 			}
 
-			Globals.ConsoleWrite($"ERROR: Tried to get fish belonging to the non-existent season: {season.ToString()}");
+			Globals.ConsoleError($"Tried to get fish belonging to the non-existent season: {season.ToString()}");
 			return new List<Item>();
 		}
 
@@ -302,7 +302,7 @@ namespace Randomizer
 					return allFish.Where(x => x.IsRainFish).Cast<Item>().ToList();
 			}
 
-			Globals.ConsoleWrite($"ERROR: Tried to get fish belonging to the non-existent weather: {weather.ToString()}");
+			Globals.ConsoleError($"Tried to get fish belonging to the non-existent weather: {weather.ToString()}");
 			return new List<Item>();
 		}
 

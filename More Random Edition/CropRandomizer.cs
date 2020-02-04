@@ -154,7 +154,7 @@ namespace Randomizer
 		{
 			if (numberOfStages <= 0)
 			{
-				Globals.ConsoleWrite("ERROR: Tried to pass an invalid number of growth stages when randomizing crops.");
+				Globals.ConsoleError("Tried to pass an invalid number of growth stages when randomizing crops.");
 				return new List<int>();
 			}
 
@@ -423,7 +423,7 @@ namespace Randomizer
 				case 3: amountPerHarvestMultiplier = 0.45; break;
 				case 4: amountPerHarvestMultiplier = 0.3; break;
 				default:
-					Globals.ConsoleWrite($"ERROR: Unexpected seed with more than 4 minimum extra crops: {seed.Id}");
+					Globals.ConsoleError($"Unexpected seed with more than 4 minimum extra crops: {seed.Id}");
 					break;
 			}
 			if (growthInfo.ExtraCropInfo.CanGetExtraCrops && amountPerHarvestMultiplier == 1)

@@ -74,7 +74,7 @@ namespace Randomizer
 		{
 			if (room.StartingIndex > room.EndingIndex)
 			{
-				Globals.ConsoleWrite("ERROR: Community center room information does not have correct indexes defined.");
+				Globals.ConsoleError("Community center room information does not have correct indexes defined.");
 				return;
 			}
 

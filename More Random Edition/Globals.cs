@@ -16,12 +16,30 @@ namespace Randomizer
 		public static SpoilerLogger SpoilerLog { get; set; }
 
 		/// <summary>
-		/// A shortcut to write to the console
+		/// A shortcut to write tracees to the console
 		/// </summary>
 		/// <param name="input">The input string</param>
-		public static void ConsoleWrite(string input)
+		public static void ConsoleTrace(string input)
 		{
 			ModRef.Monitor.Log(input);
+		}
+
+		/// <summary>
+		/// A shortcut to write warnings to the console
+		/// </summary>
+		/// <param name="input"></param>
+		public static void ConsoleWarn(string input)
+		{
+			ModRef.Monitor.Log(input, LogLevel.Warn);
+		}
+
+		/// <summary>
+		/// A shortcut to write errors to the console
+		/// </summary>
+		/// <param name="input"></param>
+		public static void ConsoleError(string input)
+		{
+			ModRef.Monitor.Log(input, LogLevel.Error);
 		}
 
 		/// <summary>
@@ -49,7 +67,7 @@ namespace Randomizer
 		/// <returns />
 		public static bool RNGGetNextBoolean(int percentage)
 		{
-			if (percentage < 0 || percentage > 100) Globals.ConsoleWrite("WARNING: Percentage is invalid (less than 0 or greater than 100)");
+			if (percentage < 0 || percentage > 100) ConsoleWarn("Percentage is invalid (less than 0 or greater than 100)");
 			return RNG.Next(0, 100) < percentage;
 		}
 
@@ -76,7 +94,7 @@ namespace Randomizer
 		{
 			if (list == null || list.Count == 0)
 			{
-				ConsoleWrite("ERROR: Attempted to get a random value out of an empty list!");
+				ConsoleError("Attempted to get a random value out of an empty list!");
 				return default(T);
 			}
 
@@ -93,7 +111,7 @@ namespace Randomizer
 		{
 			if (list == null || list.Count == 0)
 			{
-				ConsoleWrite("ERROR: Attempted to get a random value out of an empty list!");
+				ConsoleError("Attempted to get a random value out of an empty list!");
 				return default(T);
 			}
 			int selectedIndex = RNG.Next(list.Count);
@@ -117,7 +135,7 @@ namespace Randomizer
 			List<T> randomValues = new List<T>();
 			if (listToChooseFrom == null || listToChooseFrom.Count == 0)
 			{
-				ConsoleWrite("ERROR: Attempted to get random values out of an empty list!");
+				ConsoleError("Attempted to get random values out of an empty list!");
 				return randomValues;
 			}
 

@@ -30,13 +30,13 @@ namespace Randomizer
 			{
 				if (!int.TryParse(itemTokens[i], out int itemId))
 				{
-					Globals.ConsoleWrite($"ERROR: Invalid token when parsing monster item drop in string: {itemDropString}");
+					Globals.ConsoleError($"Invalid token when parsing monster item drop in string: {itemDropString}");
 					itemId = (int)ObjectIndexes.Slime;
 				}
 
 				if (!double.TryParse(itemTokens[i + 1], out double probability))
 				{
-					Globals.ConsoleWrite($"ERROR: Invalid token when parsing monster item probability in string: {itemDropString}");
+					Globals.ConsoleError($"Invalid token when parsing monster item probability in string: {itemDropString}");
 					probability = 0.75;
 				}
 

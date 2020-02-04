@@ -80,7 +80,7 @@ namespace Randomizer
 			string[] fields = data.Split('/');
 			if (fields.Length != 15)
 			{
-				Globals.ConsoleWrite($"ERROR: Incorrect number of fields when parsing monster with input: {data}");
+				Globals.ConsoleError($"Incorrect number of fields when parsing monster with input: {data}");
 				return null;
 			}
 
@@ -130,7 +130,7 @@ namespace Randomizer
 		{
 			if (!int.TryParse(intString, out int result))
 			{
-				Globals.ConsoleWrite($"ERROR: Failed to parse monster field {fieldName} with input: {data}");
+				Globals.ConsoleError($"Failed to parse monster field {fieldName} with input: {data}");
 				return 0;
 			}
 
@@ -148,7 +148,7 @@ namespace Randomizer
 		{
 			if (!double.TryParse(doubleString, out double result))
 			{
-				Globals.ConsoleWrite($"ERROR: Failed to parse monster field {fieldName} with input: {data}");
+				Globals.ConsoleError($"Failed to parse monster field {fieldName} with input: {data}");
 				return 0;
 			}
 
@@ -174,7 +174,7 @@ namespace Randomizer
 				return false;
 			}
 
-			Globals.ConsoleWrite($"ERROR: Failed to parse monster field {fieldName} with input: {data}");
+			Globals.ConsoleError($"Failed to parse monster field {fieldName} with input: {data}");
 			return false;
 		}
 
