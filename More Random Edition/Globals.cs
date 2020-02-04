@@ -16,7 +16,7 @@ namespace Randomizer
 		public static SpoilerLogger SpoilerLog { get; set; }
 
 		/// <summary>
-		/// A shortcut to write tracees to the console
+		/// A shortcut to write traces to the console
 		/// </summary>
 		/// <param name="input">The input string</param>
 		public static void ConsoleTrace(string input)
