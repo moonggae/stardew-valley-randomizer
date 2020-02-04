@@ -751,7 +751,7 @@ namespace Randomizer
 				}
 				else
 				{
-					Globals.ConsoleWrite("Error generating new crop description: not enough descriptions or string replacements in lists");
+					Globals.ConsoleError("Error generating new crop description: not enough descriptions or string replacements in lists");
 				}
 			}
 
@@ -775,7 +775,7 @@ namespace Randomizer
 				}
 				else
 				{
-					Globals.ConsoleWrite("Error generating new name: not enough prefixes/suffixes in lists");
+					Globals.ConsoleError("Error generating new name: not enough prefixes/suffixes in lists");
 				}
 			}
 

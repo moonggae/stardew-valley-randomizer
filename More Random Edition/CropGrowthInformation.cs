@@ -95,7 +95,7 @@ namespace Randomizer
 			string[] fields = input.Split('/');
 			if (fields.Length != 9)
 			{
-				Globals.ConsoleWrite($"ERROR: Invalid string passed when parsing crop info: {input}");
+				Globals.ConsoleError($"Invalid string passed when parsing crop info: {input}");
 				return null;
 			}
 
@@ -109,7 +109,7 @@ namespace Randomizer
 				}
 				else
 				{
-					Globals.ConsoleWrite($"ERROR: Tried to parse {growthStage} into a growth stage when parsing: {input}");
+					Globals.ConsoleError($"Tried to parse {growthStage} into a growth stage when parsing: {input}");
 					return null;
 				}
 			}
@@ -133,7 +133,7 @@ namespace Randomizer
 						cropGrowthInfo.GrowingSeasons.Add(Seasons.Winter);
 						break;
 					default:
-						Globals.ConsoleWrite($"ERROR: Tries to parse {seasonString} into a season when parsing: {input}");
+						Globals.ConsoleError($"Tries to parse {seasonString} into a season when parsing: {input}");
 						return null;
 				}
 			}
@@ -146,7 +146,7 @@ namespace Randomizer
 			}
 			else
 			{
-				Globals.ConsoleWrite($"ERROR: Tried to parse {result} into a graphic id when parsing: {input}");
+				Globals.ConsoleError($"Tried to parse {result} into a graphic id when parsing: {input}");
 				return null;
 			}
 
@@ -158,7 +158,7 @@ namespace Randomizer
 			}
 			else
 			{
-				Globals.ConsoleWrite($"ERROR: Tried to parse {result} into a crop id when parsing: {input}");
+				Globals.ConsoleError($"Tried to parse {result} into a crop id when parsing: {input}");
 				return null;
 			}
 
@@ -170,7 +170,7 @@ namespace Randomizer
 			}
 			else
 			{
-				Globals.ConsoleWrite($"ERROR: Tried to parse {result} into the amount per harvest when parsing: {input}");
+				Globals.ConsoleError($"Tried to parse {result} into the amount per harvest when parsing: {input}");
 				return null;
 			}
 
@@ -182,7 +182,7 @@ namespace Randomizer
 			}
 			else
 			{
-				Globals.ConsoleWrite($"ERROR: Tried to parse {result} into the CanScythe flag id when parsing: {input}");
+				Globals.ConsoleError($"Tried to parse {result} into the CanScythe flag id when parsing: {input}");
 				return null;
 			}
 
@@ -202,7 +202,7 @@ namespace Randomizer
 			}
 			else
 			{
-				Globals.ConsoleWrite($"ERROR: Tried to parse {isTrellisCropString} into the isTrellisCrop boolean when parsing: {input}");
+				Globals.ConsoleError($"Tried to parse {isTrellisCropString} into the isTrellisCrop boolean when parsing: {input}");
 				return null;
 			}
 
@@ -272,7 +272,7 @@ namespace Randomizer
 			}
 			else
 			{
-				Globals.ConsoleWrite($"ERROR: Tried to parse {extraCropParts[0]} into a boolean for extra crop info while parsing: {input}");
+				Globals.ConsoleError($"Tried to parse {extraCropParts[0]} into a boolean for extra crop info while parsing: {input}");
 				return null;
 			}
 
@@ -285,7 +285,7 @@ namespace Randomizer
 				}
 				else
 				{
-					Globals.ConsoleWrite($"ERROR: Tried to parse {extraCropParts[1]} into the minimum extra crops while parsing: {input}");
+					Globals.ConsoleError($"Tried to parse {extraCropParts[1]} into the minimum extra crops while parsing: {input}");
 					return null;
 				}
 
@@ -295,7 +295,7 @@ namespace Randomizer
 				}
 				else
 				{
-					Globals.ConsoleWrite($"ERROR: Tried to parse {extraCropParts[2]} into the maximum extra crops while parsing: {input}");
+					Globals.ConsoleError($"Tried to parse {extraCropParts[2]} into the maximum extra crops while parsing: {input}");
 					return null;
 				}
 
@@ -305,7 +305,7 @@ namespace Randomizer
 				}
 				else
 				{
-					Globals.ConsoleWrite($"ERROR: Tried to parse {extraCropParts[3]} into the additional extra per farming level while parsing: {input}");
+					Globals.ConsoleError($"Tried to parse {extraCropParts[3]} into the additional extra per farming level while parsing: {input}");
 					return null;
 				}
 
@@ -315,7 +315,7 @@ namespace Randomizer
 				}
 				else
 				{
-					Globals.ConsoleWrite($"ERROR: Tried to parse {extraCropParts[4]} into the chance of extra crops while parsing: {input}");
+					Globals.ConsoleError($"Tried to parse {extraCropParts[4]} into the chance of extra crops while parsing: {input}");
 					return null;
 				}
 			}
@@ -351,7 +351,7 @@ namespace Randomizer
 			}
 			else
 			{
-				Globals.ConsoleWrite($"ERROR: Tried to parse {tintColorParts[0]} into a boolean for tint color info while parsing: {input}");
+				Globals.ConsoleError($"Tried to parse {tintColorParts[0]} into a boolean for tint color info while parsing: {input}");
 				return null;
 			}
 
@@ -360,7 +360,7 @@ namespace Randomizer
 				string[] rgbColors = tintColorParts.Skip(1).ToArray();
 				if (rgbColors.Length % 3 != 0)
 				{
-					Globals.ConsoleWrite($"ERROR: Invalid number of RGB colors - should be divisible by 3: {input}");
+					Globals.ConsoleError($"Invalid number of RGB colors - should be divisible by 3: {input}");
 					return null;
 				}
 
@@ -368,19 +368,19 @@ namespace Randomizer
 				{
 					if (!int.TryParse(rgbColors[i], out int redValue))
 					{
-						Globals.ConsoleWrite($"ERROR: Tried to parse {rgbColors[i]} into a red value while parsing: {input}");
+						Globals.ConsoleError($"Tried to parse {rgbColors[i]} into a red value while parsing: {input}");
 						return null;
 					}
 
 					if (!int.TryParse(rgbColors[i + 1], out int greenValue))
 					{
-						Globals.ConsoleWrite($"ERROR: Tried to parse {rgbColors[i + 1]} into a red value while parsing: {input}");
+						Globals.ConsoleError($"Tried to parse {rgbColors[i + 1]} into a red value while parsing: {input}");
 						return null;
 					}
 
 					if (!int.TryParse(rgbColors[i + 2], out int blueValue))
 					{
-						Globals.ConsoleWrite($"ERROR: Tried to parse {rgbColors[i + 2]} into a blue value while parsing: {input}");
+						Globals.ConsoleError($"Tried to parse {rgbColors[i + 2]} into a blue value while parsing: {input}");
 						return null;
 					}
 

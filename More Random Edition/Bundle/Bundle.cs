@@ -103,7 +103,7 @@ namespace Randomizer
 					createdBundle = new JojaBundle();
 					break;
 				default:
-					Globals.ConsoleWrite($"ERROR: Cannot create bundle for room: {room.ToString()}");
+					Globals.ConsoleError($"Cannot create bundle for room: {room.ToString()}");
 					return null;
 			}
 
@@ -168,7 +168,7 @@ namespace Randomizer
 		{
 			if (Reward?.Item == null)
 			{
-				Globals.ConsoleWrite($"ERROR: No reward item defined for bundle: {Name}");
+				Globals.ConsoleError($"No reward item defined for bundle: {Name}");
 				return "O 388 1";
 			}
 
@@ -193,7 +193,7 @@ namespace Randomizer
 		{
 			if (RequiredItems.Count == 0)
 			{
-				Globals.ConsoleWrite($"ERROR: No items defined for bundle {Name}");
+				Globals.ConsoleError($"No items defined for bundle {Name}");
 				return "";
 			}
 
@@ -245,7 +245,7 @@ namespace Randomizer
 		/// </summary>
 		protected void GenerateRandomBundleFailsafe()
 		{
-			Globals.ConsoleWrite($"WARNING: Had to generate random bundle for {Room} as a fallback for this bundle: {BundleType.ToString()}");
+			Globals.ConsoleWarn($"Had to generate random bundle for {Room} as a fallback for this bundle: {BundleType.ToString()}");
 			PopulateRandomBundle();
 			GenerateRandomReward();
 		}

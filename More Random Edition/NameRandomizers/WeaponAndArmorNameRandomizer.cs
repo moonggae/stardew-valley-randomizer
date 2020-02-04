@@ -524,7 +524,7 @@ namespace Randomizer
 				case WeaponType.Slingshot:
 					return GenerateRandomSlingshotName(slingshotId);
 				default:
-					Globals.ConsoleWrite($"ERROR: Trying to generate weapon name for invalid type: {type}");
+					Globals.ConsoleError($"Trying to generate weapon name for invalid type: {type}");
 					return "ERROR";
 			}
 
@@ -551,7 +551,7 @@ namespace Randomizer
 					typeString = Globals.RNGGetAndRemoveRandomValueFromList(Tier3Slingshots);
 					break;
 				default:
-					Globals.ConsoleWrite($"ERROR: Trying to generate slingshot name for invalid id: {slingshotId}");
+					Globals.ConsoleError($"Trying to generate slingshot name for invalid id: {slingshotId}");
 					return "ERROR";
 			}
 

@@ -139,7 +139,7 @@ namespace Randomizer
 			string[] fields = input.Split('/');
 			if (fields.Length != 13)
 			{
-				Globals.ConsoleWrite($"ERROR: Incorrect number of fields when parsing fish with input: {input}");
+				Globals.ConsoleError($"Incorrect number of fields when parsing fish with input: {input}");
 				return;
 			}
 
@@ -149,7 +149,7 @@ namespace Randomizer
 			// Dart Chance
 			if (!int.TryParse(fields[(int)FishFields.DartChance], out int dartChance))
 			{
-				Globals.ConsoleWrite($"ERROR: Could not parse the dart chance when parsing fish with input: {input}");
+				Globals.ConsoleError($"Could not parse the dart chance when parsing fish with input: {input}");
 				return;
 			}
 			fish.DartChance = dartChance;
@@ -174,14 +174,14 @@ namespace Randomizer
 					fish.BehaviorType = FishBehaviorType.Sinker;
 					break;
 				default:
-					Globals.ConsoleWrite($"ERROR: Fish behavior type {behaviorTypeString} not found when parsing fish with input: {input}");
+					Globals.ConsoleError($"Fish behavior type {behaviorTypeString} not found when parsing fish with input: {input}");
 					return;
 			}
 
 			// Min Size
 			if (!int.TryParse(fields[(int)FishFields.MinSize], out int minSize))
 			{
-				Globals.ConsoleWrite($"ERROR: Could not parse the min size when parsing fish with input: {input}");
+				Globals.ConsoleError($"Could not parse the min size when parsing fish with input: {input}");
 				return;
 			}
 			fish.MinSize = minSize;
@@ -189,7 +189,7 @@ namespace Randomizer
 			// Max Size
 			if (!int.TryParse(fields[(int)FishFields.MaxSize], out int maxSize))
 			{
-				Globals.ConsoleWrite($"ERROR: Could not parse the max size when parsing fish with input: {input}");
+				Globals.ConsoleError($"Could not parse the max size when parsing fish with input: {input}");
 				return;
 			}
 			fish.MaxSize = maxSize;
@@ -209,7 +209,7 @@ namespace Randomizer
 				}
 				else
 				{
-					Globals.ConsoleWrite($"ERROR: Times are not in chronological order when parsing fish with input: {input}");
+					Globals.ConsoleError($"Times are not in chronological order when parsing fish with input: {input}");
 				}
 			}
 
@@ -232,7 +232,7 @@ namespace Randomizer
 						fish.AvailableSeasons.Add(Seasons.Winter);
 						break;
 					default:
-						Globals.ConsoleWrite($"ERROR: Tries to parse {seasonString} into a season when parsing fish with input: {input}");
+						Globals.ConsoleError($"Tries to parse {seasonString} into a season when parsing fish with input: {input}");
 						return;
 				}
 			}
@@ -252,7 +252,7 @@ namespace Randomizer
 					fish.Weathers.Add(Weather.Rainy);
 					break;
 				default:
-					Globals.ConsoleWrite($"ERROR: Unexpected weather string when parsing fish with input: {input}");
+					Globals.ConsoleError($"Unexpected weather string when parsing fish with input: {input}");
 					break;
 			}
 
@@ -262,7 +262,7 @@ namespace Randomizer
 			// Min Water Depth,
 			if (!int.TryParse(fields[(int)FishFields.MinWaterDepth], out int minWaterDepth))
 			{
-				Globals.ConsoleWrite($"ERROR: Could not parse the min water depth when parsing fish with input: {input}");
+				Globals.ConsoleError($"Could not parse the min water depth when parsing fish with input: {input}");
 				return;
 			}
 			fish.MinWaterDepth = minWaterDepth;
@@ -270,7 +270,7 @@ namespace Randomizer
 			// Spawn Multiplier,
 			if (!double.TryParse(fields[(int)FishFields.SpawnMultiplier], out double spawnMultiplier))
 			{
-				Globals.ConsoleWrite($"ERROR: Could not parse the spawn multiplier when parsing fish with input: {input}");
+				Globals.ConsoleError($"Could not parse the spawn multiplier when parsing fish with input: {input}");
 				return;
 			}
 			fish.SpawnMultiplier = spawnMultiplier;
@@ -278,7 +278,7 @@ namespace Randomizer
 			// Depth Multiplier,
 			if (!double.TryParse(fields[(int)FishFields.DepthMultiplier], out double depthMultiplier))
 			{
-				Globals.ConsoleWrite($"ERROR: Could not parse the depth multiplier when parsing fish with input: {input}");
+				Globals.ConsoleError($"Could not parse the depth multiplier when parsing fish with input: {input}");
 				return;
 			}
 			fish.DepthMultiplier = depthMultiplier;
@@ -286,7 +286,7 @@ namespace Randomizer
 			// Min Fishing Level
 			if (!int.TryParse(fields[(int)FishFields.MinFishingLevel], out int minFishingLevel))
 			{
-				Globals.ConsoleWrite($"ERROR: Could not parse the min fishing level when parsing fish with input: {input}");
+				Globals.ConsoleError($"Could not parse the min fishing level when parsing fish with input: {input}");
 				return;
 			}
 			fish.MinFishingLevel = minFishingLevel;
@@ -306,7 +306,7 @@ namespace Randomizer
 			{
 				if (!int.TryParse(time, out int intTime))
 				{
-					Globals.ConsoleWrite($"ERROR: Could not convert time to integer in {timeString}");
+					Globals.ConsoleError($"Could not convert time to integer in {timeString}");
 					return null;
 				}
 				times.Add(intTime);

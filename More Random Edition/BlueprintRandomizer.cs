@@ -282,7 +282,7 @@ namespace Randomizer
 						);
 						break;
 					default:
-						Globals.ConsoleWrite($"ERROR: Unhandled building: {buildingType.ToString()}");
+						Globals.ConsoleError($"Unhandled building: {buildingType.ToString()}");
 						continue;
 				}
 				buildingsToAdd.Add(currentBuilding);

@@ -119,7 +119,7 @@ namespace Randomizer
 					craftingString = GetStringForEndgame();
 					break;
 				default:
-					Globals.ConsoleWrite($"ERROR: invalid category when generating recipe for {Name}!");
+					Globals.ConsoleError($"Invalid category when generating recipe for {Name}!");
 					craftingString = "18 9"; // just a random value for now
 					break;
 			}

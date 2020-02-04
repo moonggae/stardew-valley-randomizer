@@ -148,7 +148,7 @@ namespace Randomizer
 					locationString = $"{GetFishLocationData()}/107 .01";
 					break;
 				default:
-					Globals.ModRef.Monitor.Log($"ERROR: No location data found for {LocationName}!");
+					Globals.ConsoleError($"No location data found for {LocationName}!");
 					return "-1/-1/-1/-1/-1";
 			}
 
@@ -230,7 +230,7 @@ namespace Randomizer
 					fishString += $"{string.Join(" -1 ", undergroundFish)} -1";
 					return $"{fishString}/{fishString}/{fishString}/{fishString}";
 				default:
-					Globals.ModRef.Monitor.Log($"ERROR: No location data found for {LocationName}!");
+					Globals.ConsoleError($"No location data found for {LocationName}!");
 					return "-1/-1/-1/-1/-1";
 			}
 		}
@@ -264,7 +264,7 @@ namespace Randomizer
 			}
 			if (fishIdIndex != fishIds.Count)
 			{
-				Globals.ConsoleWrite($"ERROR: Didn't assign all the fish to {Location.ToString()} in the {season.ToString()}! Assigned {fishIdIndex} out of {fishIds.Count}.");
+				Globals.ConsoleError($"Didn't assign all the fish to {Location.ToString()} in the {season.ToString()}! Assigned {fishIdIndex} out of {fishIds.Count}.");
 			}
 
 			return string.Join(" ", stringParts);
