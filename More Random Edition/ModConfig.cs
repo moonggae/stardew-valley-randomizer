@@ -33,7 +33,5 @@
 
 		public bool RandomizeRain { get; set; } = true;
 		public bool RandomizeMusic { get; set; } = true;
-
-		public bool RandomizeMineLayouts_May_Cause_Crashes { get; set; } = false;
 	}
 }

@@ -81,7 +81,7 @@ namespace Randomizer
 
 			if (Globals.Config.RandomizeCrops)
 			{
-				AddReplacement("Maps/springobjects", "Assets/Maps/springobjects");
+				AddReplacement("Maps/springobjects", "Assets/Maps/springobjects.png");
 			}
 
 			if (Globals.Config.RandomizeAnimalSkins)
@@ -122,55 +122,6 @@ namespace Randomizer
 					int animalRng = Globals.RNG.Next(0, Animal.Length - 1);
 					this.AddReplacement($"Animals/{Animal[animalRng]}", "Assets/Characters/Bear");
 					this.AddReplacement($"Animals/Baby{Animal[animalRng]}", "Assets/Characters/BabyBear");
-				}
-			}
-
-			//Randomize Mines
-			if (Globals.Config.RandomizeMineLayouts_May_Cause_Crashes)
-			{
-				int mineSwapsRemaining = Globals.RNG.Next(20, 61);
-				int mineLevel = Globals.RNG.Next(1, 41);
-				int mineLevel1_29;
-				int mineLevel31_39;
-
-				while (mineSwapsRemaining > 0)
-				{
-					mineLevel1_29 = Globals.RNG.Next(1, 30);
-					mineLevel31_39 = Globals.RNG.Next(31, 40);
-
-					if (mineLevel < 30 && (mineLevel != 5 && mineLevel != 10 && mineLevel != 15 && mineLevel != 20 && mineLevel != 25))
-					{
-						if (mineLevel1_29 != 5 && mineLevel1_29 != 10 && mineLevel1_29 != 15 && mineLevel1_29 != 20 && mineLevel1_29 != 25)
-						{
-							this.AddReplacement($"Maps/Mines/{mineLevel}", $"Assets/Maps/Mines/{mineLevel1_29}New");
-							mineLevel = Globals.RNG.Next(1, 41); //rng.Next(1, 40);
-							mineSwapsRemaining--;
-						}
-						mineLevel = Globals.RNG.Next(1, 41); //rng.Next(1, 40);
-						mineSwapsRemaining--;
-
-					}
-
-					else if (mineLevel > 30 && mineLevel < 40 && mineLevel != 35)
-					{
-						if (mineLevel31_39 != 35)
-						{
-							this.AddReplacement($"Maps/Mines/{mineLevel}", $"Assets/Maps/Mines/{mineLevel31_39}New");
-							mineLevel = Globals.RNG.Next(1, 41); //rng.Next(1, 40);
-							mineSwapsRemaining--;
-						}
-						mineLevel = Globals.RNG.Next(1, 41); //rng.Next(1, 40);
-						mineSwapsRemaining--;
-
-					}
-					else
-					{
-						this.AddReplacement($"Maps/Mines/{mineLevel}", $"Assets/Maps/Mines/{mineLevel}New");
-
-						mineLevel = Globals.RNG.Next(1, 41);
-						mineSwapsRemaining--;
-					}
-
 				}
 			}
 
