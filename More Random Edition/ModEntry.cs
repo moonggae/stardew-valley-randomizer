@@ -5,6 +5,7 @@ using StardewValley;
 using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -61,6 +62,8 @@ namespace Randomizer
 		/// <param name="helper">Provides simplified APIs for writing mods</param>
 		public override void Entry(IModHelper helper)
 		{
+			File.Delete($"Mods/Randomizer/Assets/CustomImages/Weapons/randomizedImage.png"); //TODO: put this somewhere else
+
 			_helper = helper;
 			Globals.ModRef = this;
 			Globals.Config = Helper.ReadConfig<ModConfig>();

@@ -38,6 +38,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,6 +50,8 @@
     <Compile Include="AssetEditor.cs" />
     <Compile Include="AssetLoader.cs" />
     <Compile Include="CraftingRecipeAdjustments.cs" />
+    <Compile Include="ImageRandomizers\ImageBuilder.cs" />
+    <Compile Include="ImageRandomizers\WeaponImageBuilder.cs" />
     <Compile Include="NPCs\BirthdayRandomizer.cs" />
     <Compile Include="BlueprintRandomizer.cs" />
     <Compile Include="BootRandomizer.cs" />
@@ -528,10 +531,11 @@
     <None Include="i18n\zh.json" />
     <None Include="manifest.json" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="ImageRandomizers\" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="Assets\CustomImages\A.png" />
+    <Content Include="Assets\CustomImages\B.png" />
+    <Content Include="Assets\CustomImages\C.png" />
     <Content Include="Assets\Maps\springobjects.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
