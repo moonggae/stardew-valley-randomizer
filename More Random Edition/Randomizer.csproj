@@ -533,9 +533,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="Assets\CustomImages\A.png" />
-    <Content Include="Assets\CustomImages\B.png" />
-    <Content Include="Assets\CustomImages\C.png" />
     <Content Include="Assets\Maps\springobjects.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
