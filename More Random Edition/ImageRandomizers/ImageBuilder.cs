@@ -102,7 +102,7 @@ namespace Randomizer
 					Bitmap bitmap = new Bitmap(randomFileName);
 					int xOffset = position.X * SizeInPx;
 					int yOffset = position.Y * SizeInPx;
-					graphics.DrawImage(bitmap, new Rectangle(yOffset, xOffset, SizeInPx, SizeInPx));
+					graphics.DrawImage(bitmap, new Rectangle(xOffset, yOffset, SizeInPx, SizeInPx));
 				}
 
 				finalImage.Save(OutputFileFullPath);
