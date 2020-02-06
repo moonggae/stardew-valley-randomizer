@@ -137,5 +137,14 @@ namespace Randomizer
 		{
 			return Globals.RNGGetAndRemoveRandomValueFromList(_filesToPullFrom);
 		}
+
+		/// <summary>
+		/// Cleans up all replacement files
+		/// Should be called when the game is first loaded, and when you return to the title screen
+		/// </summary>
+		public static void CleanUpReplacementFiles()
+		{
+			File.Delete($"Mods/Randomizer/Assets/CustomImages/Weapons/randomizedImage.png");
+		}
 	}
 }

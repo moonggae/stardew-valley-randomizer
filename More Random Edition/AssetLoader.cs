@@ -2,7 +2,9 @@
 using StardewModdingAPI.Events;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace Randomizer
 {
@@ -45,7 +47,7 @@ namespace Randomizer
 		}
 
 
-		public void AddReplacement(string originalAsset, string replacementAsset)
+		private void AddReplacement(string originalAsset, string replacementAsset)
 		{
 			// Normalize the asset name so the keys are consistent
 			string normalizedAssetName = this._mod.Helper.Content.NormalizeAssetName(originalAsset);
@@ -168,6 +170,25 @@ namespace Randomizer
 			}
 
 			ReplaceRain();
+		}
+
+		/// <summary>
+		/// Randomizes the images - depending on what settings are on
+		/// It's still important to build the images to make sure seeds are consistent
+		/// </summary>
+		public void RandomizeImages()
+		{
+			WeaponImageBuilder weaponImageBuilder = new WeaponImageBuilder();
+			weaponImageBuilder.BuildImage();
+
+			if (Globals.Config.RandomizeWeapons)
+			{
+				while (!File.Exists(weaponImageBuilder.OutputFileFullPath))
+				{
+					Thread.Sleep(100);
+				}
+				AddReplacement("TileSheets/weapons", weaponImageBuilder.SMAPIOutputFilePath);
+			}
 		}
 
 		/// <summary>

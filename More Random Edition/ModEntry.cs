@@ -5,7 +5,6 @@ using StardewValley;
 using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -53,7 +52,7 @@ namespace Randomizer
 			new PossibleSwap("Shane", "Pam")
 		};
 
-		public AssetLoader ModAssetLoader { get; set; }
+		private AssetLoader _modAssetLoader;
 		private AssetEditor _modAssetEditor;
 
 		private IModHelper _helper;
@@ -62,24 +61,24 @@ namespace Randomizer
 		/// <param name="helper">Provides simplified APIs for writing mods</param>
 		public override void Entry(IModHelper helper)
 		{
-			//TODO: put this somewhere else AND do it after a game is closed (in addition to when it is started)
-			File.Delete($"Mods/Randomizer/Assets/CustomImages/Weapons/randomizedImage.png");
+			ImageBuilder.CleanUpReplacementFiles();
 
 			_helper = helper;
 			Globals.ModRef = this;
 			Globals.Config = Helper.ReadConfig<ModConfig>();
 
-			this.ModAssetLoader = new AssetLoader(this);
+			this._modAssetLoader = new AssetLoader(this);
 			this._modAssetEditor = new AssetEditor(this);
-			helper.Content.AssetLoaders.Add(this.ModAssetLoader);
+			helper.Content.AssetLoaders.Add(this._modAssetLoader);
 			helper.Content.AssetEditors.Add(this._modAssetEditor);
 
 			this.PreLoadReplacments();
 			helper.Events.GameLoop.SaveLoaded += (sender, args) => this.CalculateAllReplacements();
 			helper.Events.Multiplayer.PeerContextReceived += (sender, args) => FixParsnipSeedBox();
+			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => ImageBuilder.CleanUpReplacementFiles();
 
 			if (Globals.Config.RandomizeMusic) { helper.Events.GameLoop.UpdateTicked += (sender, args) => this.TryReplaceSong(); }
-			if (Globals.Config.RandomizeRain) { helper.Events.GameLoop.DayEnding += ModAssetLoader.ReplaceRain; }
+			if (Globals.Config.RandomizeRain) { helper.Events.GameLoop.DayEnding += _modAssetLoader.ReplaceRain; }
 			if (Globals.Config.RandomizeCrops || Globals.Config.RandomizeFish)
 			{
 				helper.Events.Display.RenderingActiveMenu += (sender, args) => CraftingRecipeAdjustments.HandleCraftingMenus();
@@ -143,8 +142,8 @@ namespace Randomizer
 		/// </summary>
 		public void PreLoadReplacments()
 		{
-			this.ModAssetLoader.CalculateReplacementsBeforeLoad();
-			this._modAssetEditor.CalculateEditsBeforeLoad();
+			_modAssetLoader.CalculateReplacementsBeforeLoad();
+			_modAssetEditor.CalculateEditsBeforeLoad();
 		}
 
 		/// <summary>
@@ -162,13 +161,14 @@ namespace Randomizer
 			Globals.SpoilerLog = new SpoilerLogger(Game1.player.farmName.Value);
 
 			// Make replacements and edits
-			this.ModAssetLoader.CalculateReplacements();
-			this._modAssetEditor.CalculateEdits();
+			_modAssetLoader.CalculateReplacements();
+			_modAssetEditor.CalculateEdits();
+			_modAssetLoader.RandomizeImages();
 			Globals.SpoilerLog.WriteFile();
 
 			// Invalidate all replaced and edited assets so they are reloaded
-			this.ModAssetLoader.InvalidateCache();
-			this._modAssetEditor.InvalidateCache();
+			_modAssetLoader.InvalidateCache();
+			_modAssetEditor.InvalidateCache();
 
 			ChangeDayOneForagables();
 			FixParsnipSeedBox();
