@@ -45,7 +45,7 @@ namespace Randomizer
 		}
 
 
-		private void AddReplacement(string originalAsset, string replacementAsset)
+		public void AddReplacement(string originalAsset, string replacementAsset)
 		{
 			// Normalize the asset name so the keys are consistent
 			string normalizedAssetName = this._mod.Helper.Content.NormalizeAssetName(originalAsset);

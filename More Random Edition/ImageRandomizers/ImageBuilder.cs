@@ -13,6 +13,12 @@ namespace Randomizer
 		/// </summary>
 		protected const int SizeInPx = 16;
 
+
+		/// <summary>
+		/// The name of the output file
+		/// </summary>
+		private const string OutputFileName = "randomizedImage.png";
+
 		/// <summary>
 		/// The path to the custom images
 		/// </summary>
@@ -36,6 +42,28 @@ namespace Randomizer
 		}
 
 		/// <summary>
+		/// The path to the custom images
+		/// </summary>
+		public string OutputFileFullPath
+		{
+			get
+			{
+				return $"{ImageDirectory}/{OutputFileName}";
+			}
+		}
+
+		/// <summary>
+		/// The output path as needed by SMAPI
+		/// </summary>
+		public string SMAPIOutputFilePath
+		{
+			get
+			{
+				return $"Assets/CustomImages/{SubDirectory}/{OutputFileName}";
+			}
+		}
+
+		/// <summary>
 		/// The name of the base file
 		/// </summary>
 		protected string BaseFileName { get; set; }
@@ -50,6 +78,14 @@ namespace Randomizer
 		/// </summary>
 		protected List<Point> PositionsToOverlay { get; set; }
 
+		/// <summary>
+		/// The files to pull from - gets all images in the directory that don't include the base file
+		/// </summary>
+		private List<string> _filesToPullFrom { get; set; }
+
+		/// <summary>
+		/// Builds the image and saves the result into randomizedImage.png
+		/// </summary>
 		public void BuildImage()
 		{
 			Bitmap finalImage = null;
@@ -59,17 +95,17 @@ namespace Randomizer
 				finalImage = new Bitmap(BaseFileFullPath);
 				Graphics graphics = Graphics.FromImage(finalImage);
 
-				List<string> filesToPullFrom = GetAllCustomImages();
+				_filesToPullFrom = GetAllCustomImages();
 				foreach (Point position in PositionsToOverlay)
 				{
-					string randomFileName = Globals.RNGGetAndRemoveRandomValueFromList(filesToPullFrom);
+					string randomFileName = GetRandomFileName(position);
 					Bitmap bitmap = new Bitmap(randomFileName);
 					int xOffset = position.X * SizeInPx;
 					int yOffset = position.Y * SizeInPx;
 					graphics.DrawImage(bitmap, new Rectangle(yOffset, xOffset, SizeInPx, SizeInPx));
 				}
 
-				finalImage.Save($"{ImageDirectory}/randomizedImage.png");
+				finalImage.Save(OutputFileFullPath);
 			}
 
 			catch (Exception ex)
@@ -82,10 +118,24 @@ namespace Randomizer
 			}
 		}
 
+		/// <summary>
+		/// Gets all the custom images from the directory excluding the base file name
+		/// </summary>
+		/// <returns></returns>
 		private List<string> GetAllCustomImages()
 		{
 			List<string> files = Directory.GetFiles(ImageDirectory).ToList();
-			return files.Where(x => !x.Contains(BaseFileName)).ToList();
+			return files.Where(x => x.EndsWith(".png") && !x.Contains(BaseFileName)).ToList();
+		}
+
+		/// <summary>
+		/// Gets a random file name from the files to pull from and removes the found entry from the list
+		/// </summary>
+		/// <param name="position">The position of the instrument - unused in this version of the function</param>
+		/// <returns></returns>
+		protected virtual string GetRandomFileName(Point position)
+		{
+			return Globals.RNGGetAndRemoveRandomValueFromList(_filesToPullFrom);
 		}
 	}
 }

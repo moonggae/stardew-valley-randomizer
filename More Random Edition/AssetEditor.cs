@@ -1,7 +1,9 @@
 ﻿using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace Randomizer
 {
@@ -180,6 +182,17 @@ namespace Randomizer
 			_weaponReplacements = WeaponRandomizer.Randomize();
 			_bootReplacements = BootRandomizer.Randomize();
 			_birthdayReplacements = BirthdayRandomizer.Randomize();
+
+
+			//TODO: move to own function
+			WeaponImageBuilder weaponImageBuilder = new WeaponImageBuilder();
+			weaponImageBuilder.BuildImage();
+
+			while (!File.Exists(weaponImageBuilder.OutputFileFullPath))
+			{
+				Thread.Sleep(100);
+			}
+			Globals.ModRef.ModAssetLoader.AddReplacement("TileSheets/weapons", weaponImageBuilder.SMAPIOutputFilePath);
 		}
 
 		/// <summary>
