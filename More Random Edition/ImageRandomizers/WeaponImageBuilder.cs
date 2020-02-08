@@ -103,26 +103,34 @@ namespace Randomizer
 		/// <returns>The selected file name</returns>
 		protected override string GetRandomFileName(Point position)
 		{
+			string fileName = "";
 			switch (GetWeaponTypeFromPosition(position))
 			{
 				case WeaponType.SlashingSword:
 				case WeaponType.StabbingSword:
-					return Globals.RNGGetAndRemoveRandomValueFromList(SwordImages);
+					fileName = Globals.RNGGetAndRemoveRandomValueFromList(SwordImages);
+					break;
 				case WeaponType.Dagger:
-					return Globals.RNGGetAndRemoveRandomValueFromList(DaggerImages);
+					fileName = Globals.RNGGetAndRemoveRandomValueFromList(DaggerImages);
+					break;
 				case WeaponType.ClubOrHammer:
 					//return Globals.RNGGetAndRemoveRandomValueFromList(HammerAndClubImages);
 					break;
 				case WeaponType.Slingshot:
 					//return Globals.RNGGetAndRemoveRandomValueFromList(SlingshotImages);
 					break;
+				default:
+					Globals.ConsoleError($"No weapon type defined at image position: {position.X}, {position.Y}");
+					break;
 
 			}
 
-			return $"{ImageDirectory}/default.png";
-
-			//Globals.ConsoleError($"No weapon type defined at image position: {position.X}, {position.Y}");
-			//return Globals.RNGGetAndRemoveRandomValueFromList(SwordImages);
+			if (string.IsNullOrEmpty(fileName))
+			{
+				Globals.ConsoleWarn($"Using default image for weapon at image position - you may not have enough weapon images: {position.X}, {position.Y}");
+				return $"{ImageDirectory}/default.png";
+			}
+			return fileName;
 		}
 
 		/// <summary>
