@@ -109,8 +109,7 @@ namespace Randomizer
 				case WeaponType.StabbingSword:
 					return Globals.RNGGetAndRemoveRandomValueFromList(SwordImages);
 				case WeaponType.Dagger:
-					//return Globals.RNGGetAndRemoveRandomValueFromList(DaggerImages);
-					break;
+					return Globals.RNGGetAndRemoveRandomValueFromList(DaggerImages);
 				case WeaponType.ClubOrHammer:
 					//return Globals.RNGGetAndRemoveRandomValueFromList(HammerAndClubImages);
 					break;
