@@ -61,6 +61,8 @@ namespace Randomizer
 		/// <param name="helper">Provides simplified APIs for writing mods</param>
 		public override void Entry(IModHelper helper)
 		{
+			ImageBuilder.CleanUpReplacementFiles();
+
 			_helper = helper;
 			Globals.ModRef = this;
 			Globals.Config = Helper.ReadConfig<ModConfig>();
@@ -73,6 +75,7 @@ namespace Randomizer
 			this.PreLoadReplacments();
 			helper.Events.GameLoop.SaveLoaded += (sender, args) => this.CalculateAllReplacements();
 			helper.Events.Multiplayer.PeerContextReceived += (sender, args) => FixParsnipSeedBox();
+			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => ImageBuilder.CleanUpReplacementFiles();
 
 			if (Globals.Config.RandomizeMusic) { helper.Events.GameLoop.UpdateTicked += (sender, args) => this.TryReplaceSong(); }
 			if (Globals.Config.RandomizeRain) { helper.Events.GameLoop.DayEnding += _modAssetLoader.ReplaceRain; }
@@ -139,8 +142,8 @@ namespace Randomizer
 		/// </summary>
 		public void PreLoadReplacments()
 		{
-			this._modAssetLoader.CalculateReplacementsBeforeLoad();
-			this._modAssetEditor.CalculateEditsBeforeLoad();
+			_modAssetLoader.CalculateReplacementsBeforeLoad();
+			_modAssetEditor.CalculateEditsBeforeLoad();
 		}
 
 		/// <summary>
@@ -158,13 +161,14 @@ namespace Randomizer
 			Globals.SpoilerLog = new SpoilerLogger(Game1.player.farmName.Value);
 
 			// Make replacements and edits
-			this._modAssetLoader.CalculateReplacements();
-			this._modAssetEditor.CalculateEdits();
+			_modAssetLoader.CalculateReplacements();
+			_modAssetEditor.CalculateEdits();
+			_modAssetLoader.RandomizeImages();
 			Globals.SpoilerLog.WriteFile();
 
 			// Invalidate all replaced and edited assets so they are reloaded
-			this._modAssetLoader.InvalidateCache();
-			this._modAssetEditor.InvalidateCache();
+			_modAssetLoader.InvalidateCache();
+			_modAssetEditor.InvalidateCache();
 
 			ChangeDayOneForagables();
 			FixParsnipSeedBox();

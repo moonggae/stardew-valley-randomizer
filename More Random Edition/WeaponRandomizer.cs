@@ -24,9 +24,12 @@ namespace Randomizer
 			foreach (WeaponItem weapon in weaponDictionary.Values)
 			{
 				RandomizeWeapon(weapon, nameRandomizer);
-				stringReplacements.Add(weapon.Id, weapon.ToString());
 
-				Weapons.Add(weapon.Id, weapon);
+				if (weapon.Id != 53) //TODO: remove in 0.3.0 - here to prevent seed from changing
+				{
+					stringReplacements.Add(weapon.Id, weapon.ToString());
+					Weapons.Add(weapon.Id, weapon);
+				}
 			}
 
 			WriteToSpoilerLog(weaponDictionary);
@@ -42,7 +45,9 @@ namespace Randomizer
 		{
 			if (weapon.Type == WeaponType.Slingshot)
 			{
-				weapon.OverrideName = nameRandomizer.GenerateRandomWeaponName(weapon.Type, (WeaponIndexes)weapon.Id);
+				//TODO: assign the name here after we deal with the slingshot name hardcoding issue
+				// Doing this to advance the RNG - don't actually assign the name
+				nameRandomizer.GenerateRandomWeaponName(weapon.Type, (WeaponIndexes)weapon.Id);
 				return;
 			}
 
@@ -72,6 +77,10 @@ namespace Randomizer
 		private static void RandomizeWeaponType(WeaponItem weapon)
 		{
 			weapon.Type = (WeaponType)Range.GetRandomValue(0, 3);
+			if (weapon.Type == WeaponType.StabbingSword)
+			{
+				weapon.Type = WeaponType.SlashingSword;
+			}
 		}
 
 		/// <summary>

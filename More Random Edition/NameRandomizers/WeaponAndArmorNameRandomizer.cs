@@ -167,7 +167,7 @@ namespace Randomizer
 			"Spire",
 			"Cutlass",
 			"Falchion",
-			"Scythe",
+			"Sickle",
 			"Rapier",
 			"Edge",
 			"Kukri",

@@ -10,7 +10,7 @@ namespace Randomizer
 	/// </summary>
 	public class Globals
 	{
-		public static Mod ModRef { get; set; }
+		public static ModEntry ModRef { get; set; }
 		public static ModConfig Config { get; set; }
 		public static Random RNG { get; set; }
 		public static SpoilerLogger SpoilerLog { get; set; }
