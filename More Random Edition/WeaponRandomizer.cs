@@ -45,7 +45,9 @@ namespace Randomizer
 		{
 			if (weapon.Type == WeaponType.Slingshot)
 			{
-				weapon.OverrideName = nameRandomizer.GenerateRandomWeaponName(weapon.Type, (WeaponIndexes)weapon.Id);
+				//TODO: assign the name here after we deal with the slingshot name hardcoding issue
+				// Doing this to advance the RNG - don't actually assign the name
+				nameRandomizer.GenerateRandomWeaponName(weapon.Type, (WeaponIndexes)weapon.Id);
 				return;
 			}
 

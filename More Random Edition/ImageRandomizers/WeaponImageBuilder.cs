@@ -58,9 +58,9 @@ namespace Randomizer
 			{ new Point(6, 3), 30 },
 			{ new Point(7, 3), 31 },
 
-			{ new Point(0, 4), 32 },
-			{ new Point(1, 4), 33 },
-			{ new Point(2, 4), 34 },
+			// (0, 4) - 32 is Slingshot
+			// (1, 4) - 33 is Master Slingshot
+			// (2, 4) - 34 is Galaxy Slingshot
 			{ new Point(3, 4), 35 },
 			{ new Point(4, 4), 36 },
 			{ new Point(5, 4), 37 },
@@ -114,10 +114,9 @@ namespace Randomizer
 					fileName = Globals.RNGGetAndRemoveRandomValueFromList(DaggerImages);
 					break;
 				case WeaponType.ClubOrHammer:
-					//return Globals.RNGGetAndRemoveRandomValueFromList(HammerAndClubImages);
-					break;
+					return Globals.RNGGetAndRemoveRandomValueFromList(HammerAndClubImages);
 				case WeaponType.Slingshot:
-					//return Globals.RNGGetAndRemoveRandomValueFromList(SlingshotImages);
+					// TODO:Use slingshot images when we actually randomize them
 					break;
 				default:
 					Globals.ConsoleError($"No weapon type defined at image position: {position.X}, {position.Y}");
