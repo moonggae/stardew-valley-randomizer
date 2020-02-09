@@ -105,7 +105,10 @@ namespace Randomizer
 					graphics.DrawImage(bitmap, new Rectangle(xOffset, yOffset, SizeInPx, SizeInPx));
 				}
 
-				finalImage.Save(OutputFileFullPath);
+				if (Globals.Config.RandomizeWeapons && Globals.Config.UseCustomWeaponImages_Needs_Above_Setting_On)
+				{
+					finalImage.Save(OutputFileFullPath);
+				}
 			}
 
 			catch (Exception ex)

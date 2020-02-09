@@ -181,7 +181,7 @@ namespace Randomizer
 			WeaponImageBuilder weaponImageBuilder = new WeaponImageBuilder();
 			weaponImageBuilder.BuildImage();
 
-			if (Globals.Config.RandomizeWeapons)
+			if (Globals.Config.RandomizeWeapons && Globals.Config.UseCustomWeaponImages_Needs_Above_Setting_On)
 			{
 				while (!File.Exists(weaponImageBuilder.OutputFileFullPath))
 				{
