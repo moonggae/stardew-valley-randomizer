@@ -1,10 +1,13 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley;
+using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using static StardewValley.LocalizedContentManager;
 
 namespace Randomizer
 {
@@ -67,21 +70,36 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Currently this just replaces the title screen
+		/// Nothing to do here at the moment
 		/// </summary>
 		public void CalculateReplacementsBeforeLoad()
 		{
-			ReplaceTitleScreen();
 		}
 
 		/// <summary>
-		/// Replaces the title scrren graphics - done when the game is first loaded and after returning
-		/// back to the title screen
+		/// The current locale
+		/// </summary>
+		private string _currentLocale = "default";
+
+		/// <summary>
+		/// Replaces the title scrren graphics - done whenever the locale is changed or the game is first loaded
 		/// </summary>
 		public void ReplaceTitleScreen()
 		{
-			this.AddReplacement("Minigames/TitleButtons", "Assets/Minigames/TitleButtons.png");
-			_mod.Helper.Content.InvalidateCache("Minigames/TitleButtons");
+			IClickableMenu genericMenu = Game1.activeClickableMenu;
+			if (genericMenu is null || !(genericMenu is TitleMenu)) { return; }
+
+			string currentLocale = _mod.Helper.Translation.Locale;
+			if (_currentLocale != currentLocale)
+			{
+				_currentLocale = currentLocale;
+				AddReplacement("Minigames/TitleButtons", $"Assets/Minigames/{_mod.Helper.Translation.Get("title-graphic")}");
+				_mod.Helper.Content.InvalidateCache("Minigames/TitleButtons");
+
+				TitleMenu menu = (TitleMenu)genericMenu;
+				LanguageCode code = _mod.Helper.Translation.LocaleEnum;
+				_mod.Helper.Reflection.GetMethod(genericMenu, "OnLanguageChange", true).Invoke(code);
+			}
 		}
 
 		/// <summary>
