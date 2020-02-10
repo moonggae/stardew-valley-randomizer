@@ -114,7 +114,8 @@ namespace Randomizer
 					fileName = Globals.RNGGetAndRemoveRandomValueFromList(DaggerImages);
 					break;
 				case WeaponType.ClubOrHammer:
-					return Globals.RNGGetAndRemoveRandomValueFromList(HammerAndClubImages);
+					fileName = Globals.RNGGetAndRemoveRandomValueFromList(HammerAndClubImages);
+					break;
 				case WeaponType.Slingshot:
 					// TODO:Use slingshot images when we actually randomize them
 					break;
