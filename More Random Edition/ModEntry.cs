@@ -76,7 +76,8 @@ namespace Randomizer
 			helper.Events.GameLoop.SaveLoaded += (sender, args) => this.CalculateAllReplacements();
 			helper.Events.Multiplayer.PeerContextReceived += (sender, args) => FixParsnipSeedBox();
 
-			helper.Events.Display.RenderingActiveMenu += (sender, args) => _modAssetLoader.ReplaceTitleScreen();
+			helper.Events.Display.RenderingActiveMenu += (sender, args) => _modAssetLoader.TryReplaceTitleScreen();
+			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetLoader.ReplaceTitleScreenAfterReturning();
 			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => ImageBuilder.CleanUpReplacementFiles();
 
 			if (Globals.Config.RandomizeMusic) { helper.Events.GameLoop.UpdateTicked += (sender, args) => this.TryReplaceSong(); }

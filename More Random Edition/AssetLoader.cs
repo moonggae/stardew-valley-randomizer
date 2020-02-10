@@ -83,22 +83,41 @@ namespace Randomizer
 
 		/// <summary>
 		/// Replaces the title scrren graphics - done whenever the locale is changed or the game is first loaded
+		/// Won't actually replace it if it already did
 		/// </summary>
-		public void ReplaceTitleScreen()
+		public void TryReplaceTitleScreen()
 		{
 			IClickableMenu genericMenu = Game1.activeClickableMenu;
 			if (genericMenu is null || !(genericMenu is TitleMenu)) { return; }
 
-			string currentLocale = _mod.Helper.Translation.Locale;
-			if (_currentLocale != currentLocale)
+			if (_currentLocale != _mod.Helper.Translation.Locale)
 			{
-				_currentLocale = currentLocale;
-				AddReplacement("Minigames/TitleButtons", $"Assets/Minigames/{Globals.GetTranslation("title-graphic")}");
-				_mod.Helper.Content.InvalidateCache("Minigames/TitleButtons");
+				ReplaceTitleScreen((TitleMenu)genericMenu);
+			}
+		}
 
-				TitleMenu menu = (TitleMenu)genericMenu;
+		/// <summary>
+		/// Replaces the title screen after returning from a game - called by the appropriate event handler
+		/// </summary>
+		public void ReplaceTitleScreenAfterReturning()
+		{
+			ReplaceTitleScreen();
+		}
+
+		/// <summary>
+		/// Replaces the title screen graphics
+		/// </summary>
+		/// <param name="titleMenu">The title menu - passed if we're already on the title screen</param>
+		private void ReplaceTitleScreen(TitleMenu titleMenu = null)
+		{
+			_currentLocale = _mod.Helper.Translation.Locale;
+			AddReplacement("Minigames/TitleButtons", $"Assets/Minigames/{Globals.GetTranslation("title-graphic")}");
+			_mod.Helper.Content.InvalidateCache("Minigames/TitleButtons");
+
+			if (titleMenu != null)
+			{
 				LanguageCode code = _mod.Helper.Translation.LocaleEnum;
-				_mod.Helper.Reflection.GetMethod(genericMenu, "OnLanguageChange", true).Invoke(code);
+				_mod.Helper.Reflection.GetMethod(titleMenu, "OnLanguageChange", true).Invoke(code);
 			}
 		}
 
