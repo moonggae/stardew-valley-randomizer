@@ -26,7 +26,6 @@ namespace Randomizer
 				BootItem newBootItem = new BootItem(
 					originalBoot.Id,
 					nameRandomizer.GenerateRandomBootName(),
-					originalBoot.Description,
 					originalBoot.NotActuallyPrice,
 					defense,
 					immunity,
