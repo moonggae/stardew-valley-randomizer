@@ -66,10 +66,22 @@ namespace Randomizer
 			}
 		}
 
+		/// <summary>
+		/// Currently this just replaces the title screen
+		/// </summary>
 		public void CalculateReplacementsBeforeLoad()
 		{
-			// Replace title screen
-			this.AddReplacement("Minigames/TitleButtons", "Assets/Minigames/TitleButtons");
+			ReplaceTitleScreen();
+		}
+
+		/// <summary>
+		/// Replaces the title scrren graphics - done when the game is first loaded and after returning
+		/// back to the title screen
+		/// </summary>
+		public void ReplaceTitleScreen()
+		{
+			this.AddReplacement("Minigames/TitleButtons", "Assets/Minigames/TitleButtons.png");
+			_mod.Helper.Content.InvalidateCache("Minigames/TitleButtons");
 		}
 
 		/// <summary>

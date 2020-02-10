@@ -360,9 +360,6 @@
     <None Include="Assets\Characters\Wizard.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Assets\Minigames\TitleButtons.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Assets\Portraits\Abigail.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -534,6 +531,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="Assets\Maps\springobjects.png" />
+    <Content Include="Assets\Minigames\TitleButtons.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

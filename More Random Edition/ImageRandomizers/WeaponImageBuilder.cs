@@ -89,10 +89,10 @@ namespace Randomizer
 			SubDirectory = "Weapons";
 			PositionsToOverlay = WeaponPositionToIDMap.Keys.ToList();
 
-			SwordImages = Directory.GetFiles($"{ImageDirectory}/{SwordSubDirectory}").Where(x => x.EndsWith(".png")).ToList();
-			DaggerImages = Directory.GetFiles($"{ImageDirectory}/{DaggerSubDirectory}").Where(x => x.EndsWith(".png")).ToList();
-			HammerAndClubImages = Directory.GetFiles($"{ImageDirectory}/{HammerAndClubSubDirectory}").Where(x => x.EndsWith(".png")).ToList();
-			SlingshotImages = Directory.GetFiles($"{ImageDirectory}/{SlingshotSubDirectory}").Where(x => x.EndsWith(".png")).ToList();
+			SwordImages = Directory.GetFiles($"{ImageDirectory}/{SwordSubDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
+			DaggerImages = Directory.GetFiles($"{ImageDirectory}/{DaggerSubDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
+			HammerAndClubImages = Directory.GetFiles($"{ImageDirectory}/{HammerAndClubSubDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
+			SlingshotImages = Directory.GetFiles($"{ImageDirectory}/{SlingshotSubDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
 		}
 
 		/// <summary>
@@ -114,7 +114,8 @@ namespace Randomizer
 					fileName = Globals.RNGGetAndRemoveRandomValueFromList(DaggerImages);
 					break;
 				case WeaponType.ClubOrHammer:
-					return Globals.RNGGetAndRemoveRandomValueFromList(HammerAndClubImages);
+					fileName = Globals.RNGGetAndRemoveRandomValueFromList(HammerAndClubImages);
+					break;
 				case WeaponType.Slingshot:
 					// TODO:Use slingshot images when we actually randomize them
 					break;
