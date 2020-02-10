@@ -21,11 +21,6 @@ namespace Randomizer
 		/// <param name="editedObjectInfo">The edited object information</param>
 		private static void RandomizeFruitTrees(EditedObjectInformation editedObjectInfo)
 		{
-			List<Item> allPotentialTreesItems = ItemList.Items.Values.Where(x =>
-				x.Name.EndsWith("Sapling") || x.DifficultyToObtain < ObtainingDifficulties.Impossible
-			).ToList();
-
-			List<Item> treeItems = Globals.RNGGetRandomValuesFromList(allPotentialTreesItems, 6);
 			int[] fruitTreesIds = new int[]
 			{
 				(int)ObjectIndexes.CherrySapling,
@@ -35,17 +30,16 @@ namespace Randomizer
 				(int)ObjectIndexes.PomegranateSapling,
 				(int)ObjectIndexes.AppleSapling
 			};
+			List<Item> allPotentialTreesItems = ItemList.Items.Values.Where(x =>
+				fruitTreesIds.Contains(x.Id) || x.DifficultyToObtain < ObtainingDifficulties.Impossible
+			).ToList();
+
+			List<Item> treeItems = Globals.RNGGetRandomValuesFromList(allPotentialTreesItems, 6);
+
 			string[] seasons = { "spring", "spring", "summer", "summer", "fall", "fall" };
 			seasons[Globals.RNG.Next(0, 6)] = "winter";
 
 			int[] prices = treeItems.Select(x => x.GetPriceForObtainingDifficulty(0.2)).ToArray();
-			ItemList.Items[(int)ObjectIndexes.CherrySapling].OverrideName = "Cherry Sapling";
-			ItemList.Items[(int)ObjectIndexes.ApricotSapling].OverrideName = "Apricot Sapling";
-			ItemList.Items[(int)ObjectIndexes.OrangeSapling].OverrideName = "Orange Sapling";
-			ItemList.Items[(int)ObjectIndexes.PeachSapling].OverrideName = "Peach Sapling";
-			ItemList.Items[(int)ObjectIndexes.PomegranateSapling].OverrideName = "Pomegranate Sapling";
-			ItemList.Items[(int)ObjectIndexes.AppleSapling].OverrideName = "Apple Sapling";
-
 			if (!Globals.Config.RandomizeFruitTrees) { return; }
 
 			// Fruit tree asset replacements
@@ -56,15 +50,18 @@ namespace Randomizer
 			{
 				int price = prices[i];
 				string season = seasons[i];
+				string seasonDisplay = Globals.GetTranslation($"seasons-{season}");
 				Item treeItem = treeItems[i];
-				string fruitTreeName = treeItem.Id == fruitTreesIds[i] ? "Recursion Sapling" : $"{treeItem.Name} Sapling";
+				string fruitTreeName = treeItem.Id == fruitTreesIds[i] ?
+					"Recursion Sapling" : //TODO: i18n this
+					$"{Globals.GetTranslation("sapling-text", new { itemName = treeItem.Name })}";
 				int fruitTreeId = fruitTreesIds[i];
 
 				string fruitTreeValue = $"{i}/{season}/{treeItem.Id}/{price}";
 				editedObjectInfo.FruitTreeReplacements[fruitTreeId] = fruitTreeValue;
 
 				ItemList.Items[fruitTreeId].OverrideName = fruitTreeName;
-				string fruitTreeObjectValue = $"{fruitTreeName}/{price / 2}/-300/Basic -74/{fruitTreeName}/Takes 28 days to produce a mature {treeItem.Name} tree. Bears item in the {season}. Only grows if the 8 surrounding \"tiles\" are empty.";
+				string fruitTreeObjectValue = $"{fruitTreeName}/{price / 2}/-300/Basic -74/{fruitTreeName}/{Globals.GetTranslation("sapling-description", new { itemName = treeItem.Name, season = seasonDisplay })}";
 				editedObjectInfo.ObjectInformationReplacements[fruitTreeId] = fruitTreeObjectValue;
 			}
 		}
@@ -76,7 +73,6 @@ namespace Randomizer
 		/// crop format: name/price/-300/Seeds -74/name/tooltip
 		private static void RandomizeCrops(EditedObjectInformation editedObjectInfo)
 		{
-
 			List<int> regrowableSeedIdsToRandomize = ItemList.GetSeeds().Cast<SeedItem>()
 				.Where(x => x.Randomize && x.CropGrowthInfo.RegrowsAfterHarvest)
 				.Select(x => x.Id)
@@ -181,7 +177,6 @@ namespace Randomizer
 			List<string> randomNames,
 			List<string> randomDescriptions)
 		{
-
 			for (int i = 0; i < crops.Count; i++)
 			{
 				CropItem crop = crops[i];
@@ -191,7 +186,9 @@ namespace Randomizer
 				crop.Description = description;
 
 				SeedItem seed = ItemList.GetSeedFromCrop(crop);
-				seed.OverrideName = $"{name} {(seed.CropGrowthInfo.IsTrellisCrop ? "Starter" : "Seeds")}";
+				seed.OverrideName = seed.CropGrowthInfo.IsTrellisCrop ?
+					Globals.GetTranslation("trellis-text", new { itemName = name }) :
+					Globals.GetTranslation("seed-text", new { itemName = name });
 
 				seed.Price = GetRandomSeedPrice();
 				crop.Price = CalculateCropPrice(seed);
@@ -213,11 +210,11 @@ namespace Randomizer
 			if (!Globals.Config.RandomizeCrops) { return; }
 
 			Item coffeeBean = ItemList.Items[(int)ObjectIndexes.CoffeeBean];
-			coffeeBean.OverrideName = $"{coffeeName} Bean";
+			coffeeBean.OverrideName = Globals.GetTranslation("coffee-bean-name", new { itemName = coffeeName });
 			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.CoffeeBean] = coffeeBean.ToString();
 
 			Item coffee = ItemList.Items[(int)ObjectIndexes.Coffee];
-			coffee.OverrideName = $"Hot {coffeeName}";
+			coffee.OverrideName = $"Hot {coffeeName}"; // TODO: i18n this
 			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.Coffee] = coffee.ToString();
 		}
 
@@ -228,14 +225,14 @@ namespace Randomizer
 		public static void SetUpRice(EditedObjectInformation editedObjectInfo)
 		{
 			CropItem unmilledRice = (CropItem)ItemList.Items[(int)ObjectIndexes.UnmilledRice];
-			string riceName = unmilledRice.OverrideName; //ItemList.GetSeedFromCrop(unmilledRice).OverrideName;
-			unmilledRice.OverrideName = $"Unmilled {riceName}";
+			string riceName = unmilledRice.OverrideName;
+			unmilledRice.OverrideName = Globals.GetTranslation("unmilled-rice-name", new { itemName = riceName });
 			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.UnmilledRice] = unmilledRice.ToString();
 
 			Item rice = ItemList.Items[(int)ObjectIndexes.Rice];
 			rice.OverrideName = riceName;
 			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.Rice] =
-				$"{riceName}/100/5/Basic/{riceName}/A basic grain often served under vegetables.";
+				$"{riceName}/100/5/Basic/{riceName}/{Globals.GetTranslation("item-rice-description")}";
 		}
 
 		/// <summary>

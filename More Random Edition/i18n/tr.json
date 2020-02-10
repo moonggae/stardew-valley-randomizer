@@ -69,6 +69,21 @@
 	"Sandy-relationships": "Emily ''",
 	"Krobus-name": "Krobus",
 	"Krobus-relationships": "",
+		
+	"seasons-spring": "Bahar",
+	"seasons-summer": "Yaz",
+	"seasons-fall": "Güz",
+	"seasons-winter": "Kış",
+	
+	"sapling-description": "{{itemName}} ağacının olgunlaşması 28 gün sürer. {{season}} meyve verir.. Yalnızca bitişiğindeki 8 \"kare\" boşken yetişir.",
+	
+	"sapling-text": "{{itemName}} Fidanı",
+	"seed-text": "{{itemName}} Tohumu",
+	"trellis-text": "{{itemName}} Yetiştirici",
+	"coffee-bean-name": "{{itemName}} Çekirdeği",
+	"unmilled-rice-name": "Öğütülmemiş {{itemName}}",
+	
+	"item-rice-description": "Genellikle sebzelerin altına konulan tahıl türü.",
 	
 	"Silo-name-and-description": "Silo/Yemlik çimen biçmeni ve depolamanı sağlar.",
 	"Mill-name-and-description": "Değirmen/Buğdaydan un, pancardan şeker yapmanı sağlar.",

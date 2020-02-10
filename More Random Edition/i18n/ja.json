@@ -70,6 +70,21 @@
 	"Krobus-name": "クロバス",
 	"Krobus-relationships": "",
 	
+	"seasons-spring": "春",
+	"seasons-summer": "夏",
+	"seasons-fall": "秋",
+	"seasons-winter": "冬",
+	
+	"sapling-description": "28日かけて成木にそだち、{{season}}になるとくだものを実らせる。となりあった周囲の「8マス」が空いていないとそだたない。",
+	
+	"sapling-text": "{{itemName}}の苗",
+	"seed-text": "{{itemName}}のタネ",
+	"trellis-text": "{{itemName}}栽培キット",
+	"coffee-bean-name": "{{itemName}}豆",
+	"unmilled-rice-name": "未粉砕{{itemName}}",
+	
+	"item-rice-description": "水田で栽培される穀物。ときどき野菜にそえられて出てくる。",
+	
 	"Silo-name-and-description": "サイロ/刈った草を動物のエサとしてたくわえられる。",
 	"Mill-name-and-description": "製粉機/コムギからコムギ粉を、ビーツから砂糖をつくれる。",
 	"Earth-Obelisk-name-and-description": "地球のオベリスク/山にワープできる。",

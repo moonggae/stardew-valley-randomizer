@@ -70,6 +70,21 @@
 	"Krobus-name": "Krobus",
 	"Krobus-relationships": "",
 	
+	"seasons-spring": "tavaszi",
+	"seasons-summer": "nyári",
+	"seasons-fall": "ősz",
+	"seasons-winter": "téli",
+	
+	"sapling-description": "28 nap múlva érik meg, és {{itemName}}fa lesz belőle. A {{season}} gyümölcsöt viseli. Csak akkor nő meg, ha a 8 környező \"négyzet\" üres.",
+	
+	"sapling-text": "{{itemName}} csemete",
+	"seed-text": "{{itemName}} magvak",
+	"trellis-text": "{{itemName}}magvak",
+	"coffee-bean-name": "{{itemName}}bab",
+	"unmilled-rice-name": "Darálatlan {{itemName}}",
+	
+	"item-rice-description": "Egy alap gabona, amit gyakran tálalnak zöldségek alatt.",
+	
 	"Silo-name-and-description": "Siló/Segítségével levághatod és etetéshez raktározhatod el a füvet.",
 	"Mill-name-and-description": "Malom/Segítségével búzából lisztet, céklából cukrot készíthetsz.",
 	"Earth-Obelisk-name-and-description": "Föld obeliszk/Elteleportál a hegyekbe.",

@@ -70,6 +70,21 @@
 	"Krobus-name": "Krobus",
 	"Krobus-relationships": "",
 	
+	"seasons-spring": "Frühling",
+	"seasons-summer": "Sommer",
+	"seasons-fall": "Herbst",
+	"seasons-winter": "Winter",
+	
+	"sapling-text": "{{itemName}}-Setzling",
+	"sapling-description": "Wächst in 28 Tagen zu einem reifen {{itemName}} heran. Trägt im {{season}} Früchte. Wächst nur, wenn die 8 umliegenden \"Felder\" leer sind.",
+	
+	"seed-text": "{{itemName}}-Saat",
+	"trellis-text": "{{itemName}}-Setzling",
+	"coffee-bean-name": "{{itemName}}bohne",
+	"unmilled-rice-name": "Ungemahlener {{itemName}}",
+	
+	"item-rice-description": "Standardgetreide, das oft mit Gemüse serviert wird.",
+	
 	"Silo-name-and-description": "Silo/Ermöglicht es, Gras zu schneiden und als Futter aufzubewahren.",
 	"Mill-name-and-description": "Mühle/Ermöglicht es, Mehl aus Weizen und Zucker aus Rüben herzustellen.",
 	"Earth-Obelisk-name-and-description": "Erdobelisk/Teleportiert dich in die Berge.",

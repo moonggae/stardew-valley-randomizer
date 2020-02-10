@@ -96,6 +96,21 @@
 	"Mine-Elevator-name-and-description": "Mine Elevator/Quickly travel between any mine elevators you construct. You can only build one per mine level.",
 	"Fish-Pond-name-and-description": "Fish Pond/Raise fish and harvest their produce. Fish multiply over time.",
 	
+	"seasons-spring": "spring",
+	"seasons-summer": "summer",
+	"seasons-fall": "fall",
+	"seasons-winter": "winter",
+	
+	"sapling-description": "Takes 28 days to produce a mature {{itemName}} tree. Bears fruit in the {{season}}. Only grows if the 8 surrounding \"tiles\" are empty.",
+	
+	"sapling-text": "{{itemName}} Sapling",
+	"seed-text": "{{itemName}} Seeds",
+	"trellis-text": "{{itemName}} Starter",
+	"coffee-bean-name": "{{itemName}} Bean",
+	"unmilled-rice-name": "Unmilled {{itemName}}",
+	
+	"item-rice-description": "A basic grain often served under vegetables.",
+	
 	"boots-504-description": "A little flimsy... but fashionable!",
 	"boots-505-description": "Protection from the elements.",
 	"boots-506-description": "The leather is very supple.",

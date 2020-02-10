@@ -69,6 +69,21 @@
 	"Sandy-relationships": "Emily ''",
 	"Krobus-name": "科罗布斯",
 	"Krobus-relationships": "",
+		
+	"seasons-spring": "春",
+	"seasons-summer": "夏",
+	"seasons-fall": "秋",
+	"seasons-winter": "冬",
+	
+	"sapling-description": "28天成熟为成年{{itemName}}树。{{season}}天结果。只有在附近8块“地块”都空置的情况下才会成长。",
+	
+	"sapling-text": "{{itemName}}树苗",
+	"seed-text": "{{itemName}}种子",
+	"trellis-text": "{{itemName}}种子",
+	"coffee-bean-name": "{{itemName}}豆",
+	"unmilled-rice-name": "未碾{{itemName}}",
+	
+	"item-rice-description": "基本的粮食，可以配菜食用。",
 	
 	"Silo-name-and-description": "筒仓/让你把割下来的草料储存起来。",
 	"Mill-name-and-description": "磨坊/让你将小麦制成面粉，将甜菜根制成糖。",

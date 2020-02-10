@@ -69,6 +69,21 @@
 	"Sandy-relationships": "Emily ''",
 	"Krobus-name": "Krobus",
 	"Krobus-relationships": "",
+		
+	"seasons-spring": "printemps",
+	"seasons-summer": "été",
+	"seasons-fall": "automne",
+	"seasons-winter": "hiver",
+	
+	"sapling-description": "Il faut 28 jours pour produire un arbre à {{itemName}} mature. Porte des fruits en {{season}}. Ne se développe que si les 8 \"carreaux\" environnants sont vides.",
+	
+	"sapling-text": "Gaules de {{itemName}}",
+	"seed-text": "Graines de {{itemName}}",
+	"trellis-text": "Graine de {{itemName}}",
+	"coffee-bean-name": "Grain de {{itemName}}",
+	"unmilled-rice-name": "{{itemName}} non moulu",
+	
+	"item-rice-description": "Céréale de base souvent servie avec des légumes.",
 	
 	"Silo-name-and-description": "Silo/Permet de couper et de stocker de l’herbe pour l’alimentation des animaux.",
 	"Mill-name-and-description": "Moulin/Permet de faire de la farine à partir de blé et de sucre de betterave.",

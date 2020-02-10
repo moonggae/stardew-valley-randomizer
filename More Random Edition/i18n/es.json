@@ -70,6 +70,21 @@
 	"Krobus-name": "Krobus",
 	"Krobus-relationships": "",
 	
+	"seasons-spring": "primavera",
+	"seasons-summer": "verano",
+	"seasons-fall": "otoño",
+	"seasons-winter": "invierno",
+	
+	"sapling-description": "Tarda 28 días en producir un {{itemName}} adulto. Da fruta en {{season}}. Solo crece si las 8 casillas que lo rodean están vacías.",
+	
+	"sapling-text": "Brote de {{itemName}}",
+	"seed-text": "Semillas de {{itemName}}",
+	"trellis-text": "Kit de {{itemName}}",
+	"coffee-bean-name": "Grano de {{itemName}}",
+	"unmilled-rice-name": "{{itemName}} sin moler",
+	
+	"item-rice-description": "Un cereal básico que se suele servir con verduras.",
+	
 	"Silo-name-and-description": "Silo/Te permite segar y acumular hierba para alimentar a tus animales.",
 	"Mill-name-and-description": "Molino/Te permite crear harina a partir de trigo y azúcar a partir de remolachas.",
 	"Earth-Obelisk-name-and-description": "Obelisco terrestre/Te teletransporta a la montaña.",

@@ -70,6 +70,21 @@
 	"Krobus-name": "Кробус",
 	"Krobus-relationships": "",
 	
+	"seasons-spring": "весной",
+	"seasons-summer": "летом",
+	"seasons-fall": "осенью",
+	"seasons-winter": "зимой",
+	
+	"sapling-description": "Становится взрослым {{itemName}} деревом через 28 дней. Плодоносит {{season}}. Растeт только если 8 «клеток» вокруг него не заняты.",
+	
+	"sapling-text": "Саженец {{itemName}}",
+	"seed-text": "Семена {{itemName}}",
+	"trellis-text": "Рассада {{itemName}}",
+	"coffee-bean-name": "{{itemName}} зерно",
+	"unmilled-rice-name": "Не измельченный {{itemName}}",
+	
+	"item-rice-description": "Обычный злак, который часто подают с овощами.",
+	
 	"Silo-name-and-description": "Силосная башня/Здесь можно хранить скошенную траву на корм животным.",
 	"Mill-name-and-description": "Мельница/Здесь можно превратить пшеницу в муку, а свeклу - в сахар.",
 	"Earth-Obelisk-name-and-description": "Обелиск земли/Телепортирует вас в горы.",

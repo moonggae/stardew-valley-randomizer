@@ -69,6 +69,21 @@
 	"Sandy-relationships": "Emily ''",
 	"Krobus-name": "Krobus",
 	"Krobus-relationships": "",
+		
+	"seasons-spring": "primavera",
+	"seasons-summer": "estate",
+	"seasons-fall": "autunno",
+	"seasons-winter": "inverno",
+	
+	"sapling-description": "In 28 giorni produce un {{itemName}} di albicocca adulto. Dà frutti in {{season}}. Cresce soltanto se gli 8 \"tasselli\" intorno ad esso sono vuoti.",
+	
+	"sapling-text": "Giovane {{itemName}}",
+	"seed-text": "Semi di {{itemName}}",
+	"trellis-text": "Avvia-{{itemName}}",
+	"coffee-bean-name": "Chicco di {{itemName}}",
+	"unmilled-rice-name": "{{itemName}} non macinato",
+	
+	"item-rice-description": "Un cereale basilare servito spesso con verdure.",
 	
 	"Silo-name-and-description": "Silo/Permette di tagliare e immagazzinare l'erba per il foraggio.",
 	"Mill-name-and-description": "Mulino/Permette di produrre farina dal grano e zucchero dalle barbabietole.",

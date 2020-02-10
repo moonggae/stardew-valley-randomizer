@@ -70,6 +70,21 @@
 	"Krobus-name": "Krobus",
 	"Krobus-relationships": "",
 	
+	"seasons-spring": "primavera",
+	"seasons-summer": "verão",
+	"seasons-fall": "outono",
+	"seasons-winter": "inverno",
+	
+	"sapling-description": "Demora até 28 dias para produzir uma Árvore de {{itemName}} madura. Dá frutas na {{season}}. Só cresce se 8 espaços adjacentes estiverem vazios.",
+	
+	"sapling-text": "Árvore de {{itemName}} jovem",
+	"seed-text": "Sementes de {{itemName}}",
+	"trellis-text": "Mudas de {{itemName}}",
+	"coffee-bean-name": "Grão de {{itemName}}",
+	"unmilled-rice-name": "{{itemName}} não moído",
+	
+	"item-rice-description": "Um grão básico geralmente servido com legumes.",
+	
 	"Silo-name-and-description": "Silo/Permite corte e armazenamento de grama como ração.",
 	"Mill-name-and-description": "Moinho/Permite criar farinha a partir de trigo e açúcar de beterrabas.",
 	"Earth-Obelisk-name-and-description": "Obelisco da Terra/Teleporta você às montanhas.",
