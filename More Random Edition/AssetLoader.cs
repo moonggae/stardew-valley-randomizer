@@ -93,7 +93,7 @@ namespace Randomizer
 			if (_currentLocale != currentLocale)
 			{
 				_currentLocale = currentLocale;
-				AddReplacement("Minigames/TitleButtons", $"Assets/Minigames/{_mod.Helper.Translation.Get("title-graphic")}");
+				AddReplacement("Minigames/TitleButtons", $"Assets/Minigames/{Globals.GetTranslation("title-graphic")}");
 				_mod.Helper.Content.InvalidateCache("Minigames/TitleButtons");
 
 				TitleMenu menu = (TitleMenu)genericMenu;

@@ -51,7 +51,7 @@ namespace Randomizer
 								new ItemAndMultiplier(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.MediumTimeRequirements))
 							},
 							100,
-							"3/3/-1/-1/-2/-1/null/Silo/Allows you to cut and store grass for feed./Buildings/none/48/128/-1/null/Farm"
+							$"3/3/-1/-1/-2/-1/null/{Globals.GetTranslation("Silo-name-and-description")}/Buildings/none/48/128/-1/null/Farm"
 						);
 						break;
 					case Buildings.Mill:
@@ -64,7 +64,7 @@ namespace Randomizer
 								new ItemAndMultiplier(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.MediumTimeRequirements))
 							},
 							2500,
-							"4/2/-1/-1/-2/-1/null/Mill/Allows you to create flour from wheat and sugar from beets./Buildings/none/64/128/-1/null/Farm"
+							$"4/2/-1/-1/-2/-1/null/{Globals.GetTranslation("Mill-name-and-description")}/Buildings/none/64/128/-1/null/Farm"
 						);
 						break;
 					case Buildings.ShippingBin:
@@ -81,7 +81,7 @@ namespace Randomizer
 								itemChoice
 							},
 							250,
-							"2/1/-1/-1/-1/-1/null/Shipping Bin/Throw items inside to sell them overnight./Buildings/none/48/80/-1/null/Farm",
+							$"2/1/-1/-1/-1/-1/null/{Globals.GetTranslation("Shipping-Bin-name-and-description")}/Buildings/none/48/80/-1/null/Farm",
 							"false/0"
 						);
 						break;
@@ -100,7 +100,7 @@ namespace Randomizer
 								new ItemAndMultiplier(resource2, Range.GetRandomValue(2, 3))
 							},
 							4000,
-							"6/3/1/2/2/2/Coop/Coop/Houses 4 coop-dwelling animals./Buildings/none/64/96/4/null/Farm"
+							$"6/3/1/2/2/2/Coop/{Globals.GetTranslation("Coop-name-and-description")}/Buildings/none/64/96/4/null/Farm"
 						);
 						break;
 					case Buildings.BigCoop:
@@ -118,7 +118,7 @@ namespace Randomizer
 								new ItemAndMultiplier(resource2, 7)
 							},
 							10000,
-							"6/3/1/2/2/2/Coop2/Big Coop/Houses 8 coop-dwelling animals. Comes with an incubator. Unlocks ducks./Upgrades/Coop/64/96/8/null/Farm"
+							$"6/3/1/2/2/2/Coop2/{Globals.GetTranslation("Big-Coop-name-and-description")}/Upgrades/Coop/64/96/8/null/Farm"
 						);
 						break;
 					case Buildings.DeluxeCoop:
@@ -136,7 +136,7 @@ namespace Randomizer
 								new ItemAndMultiplier(resource2, 4)
 							},
 							20000,
-							"6/3/1/2/2/2/Coop3/Deluxe Coop/Houses 12 coop-dwelling animals. Comes with an auto-feed system. Unlocks rabbits./Upgrades/Big Coop/64/96/12/null/Farm"
+							$"6/3/1/2/2/2/Coop3/{Globals.GetTranslation("Deluxe-Coop-name-and-description")}/Upgrades/Big Coop/64/96/12/null/Farm"
 						);
 						break;
 					case Buildings.Barn:
@@ -154,7 +154,7 @@ namespace Randomizer
 								new ItemAndMultiplier(resource2, Range.GetRandomValue(2, 3))
 							},
 							6000,
-							"7/4/1/3/3/3/Barn/Barn/Houses 4 barn-dwelling animals./Buildings/none/96/96/4/null/Farm"
+							$"7/4/1/3/3/3/Barn/{Globals.GetTranslation("Barn-name-and-description")}/Buildings/none/96/96/4/null/Farm"
 						);
 						break;
 					case Buildings.BigBarn:
@@ -172,7 +172,7 @@ namespace Randomizer
 								new ItemAndMultiplier(resource2, 7)
 							},
 							12000,
-							"7/4/1/3/4/3/Barn2/Big Barn/Houses 8 barn-dwelling animals. Allows animals to give birth. Unlocks goats./Upgrades/Barn/96/96/8/null/Farm"
+							$"7/4/1/3/4/3/Barn2/{Globals.GetTranslation("Big-Barn-name-and-description")}/Upgrades/Barn/96/96/8/null/Farm"
 						);
 						break;
 					case Buildings.DeluxeBarn:
@@ -190,7 +190,7 @@ namespace Randomizer
 								new ItemAndMultiplier(resource2, 4)
 							},
 							25000,
-							"7/4/1/3/4/3/Barn3/Deluxe Barn/Houses 12 barn-dwelling animals. Comes with an auto-feed system. Unlocks sheep and pigs./Upgrades/Big Barn/96/96/12/null/Farm"
+							$"7/4/1/3/4/3/Barn3/{Globals.GetTranslation("Deluxe-Barn-name-and-description")}/Upgrades/Big Barn/96/96/12/null/Farm"
 						);
 						break;
 					case Buildings.SlimeHutch:
@@ -203,7 +203,7 @@ namespace Randomizer
 								new ItemAndMultiplier(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.LargeTimeRequirements))
 							},
 							10000,
-							"11/6/5/5/-1/-1/SlimeHutch/Slime Hutch/Raise up to 20 slimes. Fill water troughs and slimes will create slime balls./Buildings/none/96/96/20/null/Farm"
+							$"11/6/5/5/-1/-1/SlimeHutch/{Globals.GetTranslation("Slime-Hutch-name-and-description")}/Buildings/none/96/96/20/null/Farm"
 						);
 						break;
 					case Buildings.Shed:
@@ -220,7 +220,7 @@ namespace Randomizer
 							"Shed",
 							listChoice,
 							15000,
-							"7/3/3/2/-1/-1/Shed/Shed/An empty building. Fill it with whatever you like! The interior can be decorated./Buildings/none/96/96/20/null/Farm"
+							$"7/3/3/2/-1/-1/Shed/{Globals.GetTranslation("Shed-name-and-description")}/Buildings/none/96/96/20/null/Farm"
 						);
 						break;
 					case Buildings.StoneCabin:
@@ -228,7 +228,7 @@ namespace Randomizer
 							"Stone Cabin",
 							GetRequiredItemsForCabin(),
 							100,
-							"5/3/2/2/-1/-1/Cabin/Cabin/A home for a friend! Subsidized by the town agricultural fund./Buildings/none/96/96/20/null/Farm",
+							$"5/3/2/2/-1/-1/Cabin/{Globals.GetTranslation("Stone-Cabin-name-and-description")}/Buildings/none/96/96/20/null/Farm",
 							"false/0"
 						);
 						break;
@@ -237,7 +237,7 @@ namespace Randomizer
 							"Plank Cabin",
 							GetRequiredItemsForCabin(),
 							100,
-							"5/3/2/2/-1/-1/Cabin/Cabin/A home for a friend! Subsidized by the town agricultural fund./Buildings/none/96/96/20/null/Farm",
+							$"5/3/2/2/-1/-1/Cabin/{Globals.GetTranslation("Plank-Cabin-name-and-description")}/Buildings/none/96/96/20/null/Farm",
 							"false/0"
 						);
 						break;
@@ -246,7 +246,7 @@ namespace Randomizer
 							"Log Cabin",
 							GetRequiredItemsForCabin(),
 							100,
-							"5/3/2/2/-1/-1/Cabin/Cabin/A home for a friend! Subsidized by the town agricultural fund./Buildings/none/96/96/20/null/Farm",
+							$"5/3/2/2/-1/-1/Cabin/{Globals.GetTranslation("Log-Cabin-name-and-description")}/Buildings/none/96/96/20/null/Farm",
 							"false/0"
 						);
 						break;
@@ -264,7 +264,7 @@ namespace Randomizer
 								itemChoice
 							},
 							1000,
-							"3/3/-1/-1/-1/-1/null/Well/Provides a place for you to refill your watering can./Buildings/none/32/32/-1/null/Farm"
+							$"3/3/-1/-1/-1/-1/null/{Globals.GetTranslation("Well-name-and-description")}/Buildings/none/32/32/-1/null/Farm"
 						);
 						break;
 					case Buildings.FishPond:
@@ -277,7 +277,7 @@ namespace Randomizer
 								new ItemAndMultiplier(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.SmallTimeRequirements), 2)
 							},
 							5000,
-							"5/5/-1/-1/-2/-1/null/Fish Pond/Raise fish and harvest their produce. Fish multiply over time./Buildings/none/76/78/10/null/Farm",
+							$"5/5/-1/-1/-2/-1/null/{Globals.GetTranslation("Fish-Pond-name-and-description")}/Buildings/none/76/78/10/null/Farm",
 							"false/2"
 						);
 						break;

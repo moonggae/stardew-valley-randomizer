@@ -52,6 +52,21 @@ namespace Randomizer
 		}
 
 		/// <summary>
+		/// A shortcut to the translation API
+		/// </summary>
+		/// <param name="key">The translation key</param>
+		/// <param name="tokens">Tokens to replace in the translation</param>
+		/// <returns>The retrieved translation</returns>
+		public static string GetTranslation(string key, object tokens = null)
+		{
+			if (tokens == null)
+			{
+				return ModRef.Helper.Translation.Get(key);
+			}
+			return ModRef.Helper.Translation.Get(key, tokens);
+		}
+
+		/// <summary>
 		/// Gets a random boolean value
 		/// </summary>
 		/// <returns />
