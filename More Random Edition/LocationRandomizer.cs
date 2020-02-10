@@ -8,7 +8,7 @@ namespace Randomizer
 	/// </summary>
 	public class LocationRandomizer
 	{
-		private static List<Item> _allForagables { get; } = ItemList.Items.Values.Where(x => x.ShouldBeForagable).ToList();
+		private static List<Item> _allForagables { get; set; }
 
 		public static List<Item> SpringForagables { get; } = new List<Item>();
 		public static List<Item> SummerForagables { get; } = new List<Item>();
@@ -25,6 +25,8 @@ namespace Randomizer
 		/// <returns>A dictionary of locations to replace</returns>
 		public static Dictionary<string, string> Randomize()
 		{
+			_allForagables = ItemList.Items.Values.Where(x => x.ShouldBeForagable).ToList();
+
 			SpringForagables.Clear();
 			SummerForagables.Clear();
 			FallForagables.Clear();

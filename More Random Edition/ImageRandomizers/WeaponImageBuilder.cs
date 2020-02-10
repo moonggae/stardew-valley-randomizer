@@ -89,10 +89,10 @@ namespace Randomizer
 			SubDirectory = "Weapons";
 			PositionsToOverlay = WeaponPositionToIDMap.Keys.ToList();
 
-			SwordImages = Directory.GetFiles($"{ImageDirectory}/{SwordSubDirectory}").Where(x => x.EndsWith(".png")).ToList();
-			DaggerImages = Directory.GetFiles($"{ImageDirectory}/{DaggerSubDirectory}").Where(x => x.EndsWith(".png")).ToList();
-			HammerAndClubImages = Directory.GetFiles($"{ImageDirectory}/{HammerAndClubSubDirectory}").Where(x => x.EndsWith(".png")).ToList();
-			SlingshotImages = Directory.GetFiles($"{ImageDirectory}/{SlingshotSubDirectory}").Where(x => x.EndsWith(".png")).ToList();
+			SwordImages = Directory.GetFiles($"{ImageDirectory}/{SwordSubDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
+			DaggerImages = Directory.GetFiles($"{ImageDirectory}/{DaggerSubDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
+			HammerAndClubImages = Directory.GetFiles($"{ImageDirectory}/{HammerAndClubSubDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
+			SlingshotImages = Directory.GetFiles($"{ImageDirectory}/{SlingshotSubDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
 		}
 
 		/// <summary>
