@@ -46,6 +46,8 @@ namespace Randomizer
 		public Range ItemsRequiredForRecipe { get; set; } = new Range(1, 1);
 		public double RequiredItemMultiplier = 1;
 
+		public string CoffeeIngredient { get; set; }
+
 		/// <summary>
 		/// The difficulty that this item is to obtain
 		/// Will return values appropriate to foragable items - they are never impossible
@@ -188,7 +190,7 @@ namespace Randomizer
 		{
 			if (Id == (int)ObjectIndexes.Coffee)
 			{
-				return $"{Name}/150/1/Crafting/{Name}/{Globals.GetTranslation("item-coffee-description")}/drink/0 0 0 0 0 0 0 0 0 1 0/120";
+				return $"{Name}/150/1/Crafting/{Globals.GetTranslation("item-coffee-name", new { itemName = CoffeeIngredient })}/{Globals.GetTranslation("item-coffee-description")}/drink/0 0 0 0 0 0 0 0 0 1 0/120";
 			}
 
 			Globals.ConsoleError($"Called the ToString of unexpected item {Id}: {Name}");

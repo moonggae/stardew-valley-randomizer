@@ -14,7 +14,9 @@ namespace Randomizer
 			{
 				if (Id == (int)ObjectIndexes.CoffeeBean)
 				{
-					return "Plant in spring or summer. Place five beans in a keg to make a hot drink.";
+					Item coffee = ItemList.Items[(int)ObjectIndexes.Coffee];
+					string coffeeName = Globals.GetTranslation("item-coffee-name", new { itemName = coffee.CoffeeIngredient });
+					return Globals.GetTranslation("item-coffee-bean-description", new { itemName = coffee.CoffeeIngredient, coffeeName });
 				}
 
 				CropItem growsCrop = (CropItem)ItemList.Items[CropGrowthInfo.CropId];

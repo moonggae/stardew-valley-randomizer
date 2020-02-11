@@ -52,18 +52,43 @@ namespace Randomizer
 				string season = seasons[i];
 				string seasonDisplay = Globals.GetTranslation($"seasons-{season}");
 				Item treeItem = treeItems[i];
+				string treeItemName = GetFruitTreeItemName(treeItem);
 				string fruitTreeName = treeItem.Id == fruitTreesIds[i] ?
-					"Recursion Sapling" : //TODO: i18n this
-					$"{Globals.GetTranslation("sapling-text", new { itemName = treeItem.Name })}";
+					Globals.GetTranslation("item-recursion-sapling-name") :
+					Globals.GetTranslation("sapling-text", new { itemName = treeItemName });
 				int fruitTreeId = fruitTreesIds[i];
 
 				string fruitTreeValue = $"{i}/{season}/{treeItem.Id}/{price}";
 				editedObjectInfo.FruitTreeReplacements[fruitTreeId] = fruitTreeValue;
 
 				ItemList.Items[fruitTreeId].OverrideName = fruitTreeName;
-				string fruitTreeObjectValue = $"{fruitTreeName}/{price / 2}/-300/Basic -74/{fruitTreeName}/{Globals.GetTranslation("sapling-description", new { itemName = treeItem.Name, season = seasonDisplay })}";
+				string fruitTreeObjectValue = $"{fruitTreeName}/{price / 2}/-300/Basic -74/{fruitTreeName}/{Globals.GetTranslation("sapling-description", new { itemName = treeItemName, season = seasonDisplay })}";
 				editedObjectInfo.ObjectInformationReplacements[fruitTreeId] = fruitTreeObjectValue;
 			}
+		}
+
+		/// <summary>
+		/// Gets the fruit tree name from the item
+		/// If the name was randomized, use that name - otherwise, use the translated version
+		/// </summary>
+		/// <param name="treeItem">The item</param>
+		/// <returns>The internationalized item name</returns>
+		private static string GetFruitTreeItemName(Item treeItem)
+		{
+			if (!string.IsNullOrEmpty(treeItem.OverrideName))
+			{
+				bool isRandomizedCookedItem = Globals.Config.RandomizeCrops && treeItem.IsCooked;
+				bool isRandomizedCropOrSeedItem = Globals.Config.RandomizeCrops && (treeItem.IsCrop || treeItem.IsSeed);
+				bool isRandomizedFishItem = Globals.Config.RandomizeFish && treeItem.IsFish;
+				bool useOriginalName = isRandomizedCookedItem || isRandomizedCropOrSeedItem || isRandomizedFishItem;
+
+				if (useOriginalName)
+				{
+					return treeItem.Name;
+				}
+			}
+
+			return Globals.GetTranslation($"item-{treeItem.Id}-display-name");
 		}
 
 		/// <summary>
@@ -209,13 +234,14 @@ namespace Randomizer
 		{
 			if (!Globals.Config.RandomizeCrops) { return; }
 
+			Item coffee = ItemList.Items[(int)ObjectIndexes.Coffee];
+			coffee.OverrideName = $"Hot {coffeeName}";
+			coffee.CoffeeIngredient = coffeeName;
+			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.Coffee] = coffee.ToString();
+
 			Item coffeeBean = ItemList.Items[(int)ObjectIndexes.CoffeeBean];
 			coffeeBean.OverrideName = Globals.GetTranslation("coffee-bean-name", new { itemName = coffeeName });
 			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.CoffeeBean] = coffeeBean.ToString();
-
-			Item coffee = ItemList.Items[(int)ObjectIndexes.Coffee];
-			coffee.OverrideName = $"Hot {coffeeName}"; // TODO: i18n this
-			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.Coffee] = coffee.ToString();
 		}
 
 		/// <summary>
