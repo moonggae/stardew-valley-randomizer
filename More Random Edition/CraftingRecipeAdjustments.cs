@@ -161,9 +161,9 @@ namespace Randomizer
 		{
 			if (!Globals.Config.RandomizeFish) { return; }
 
-			if (FishDishesMap.ContainsKey(recipe.DisplayName))
+			if (FishDishesMap.ContainsKey(recipe.name))
 			{
-				recipe.DisplayName = ItemList.GetItemName(FishDishesMap[recipe.DisplayName]);
+				recipe.DisplayName = GetDishName(FishDishesMap[recipe.name]);
 			}
 		}
 
@@ -175,10 +175,21 @@ namespace Randomizer
 		{
 			if (!Globals.Config.RandomizeCrops) { return; }
 
-			if (CropDishesMap.ContainsKey(recipe.DisplayName))
+			if (CropDishesMap.ContainsKey(recipe.name))
 			{
-				recipe.DisplayName = ItemList.GetItemName(CropDishesMap[recipe.DisplayName]);
+				recipe.DisplayName = GetDishName(CropDishesMap[recipe.name]);
 			}
+		}
+
+		/// <summary>
+		/// Gets the dish name based on the id
+		/// </summary>
+		/// <param name="id"></param>
+		private static string GetDishName(int id)
+		{
+			CookedItem item = (CookedItem)ItemList.Items[id];
+			string nameAndDescription = Globals.GetTranslation($"item-{id}-name-and-description", new { itemName = item.IngredientName });
+			return nameAndDescription.Split('/')[0];
 		}
 
 		/// <summary>

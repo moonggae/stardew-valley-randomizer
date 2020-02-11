@@ -188,7 +188,7 @@ namespace Randomizer
 		{
 			if (Id == (int)ObjectIndexes.Coffee)
 			{
-				return $"{Name}/150/1/Crafting/{Name}/It smells delicious. This is sure to give you a boost./drink/0 0 0 0 0 0 0 0 0 1 0/120";
+				return $"{Name}/150/1/Crafting/{Name}/{Globals.GetTranslation("item-coffee-description")}/drink/0 0 0 0 0 0 0 0 0 1 0/120";
 			}
 
 			Globals.ConsoleError($"Called the ToString of unexpected item {Id}: {Name}");
