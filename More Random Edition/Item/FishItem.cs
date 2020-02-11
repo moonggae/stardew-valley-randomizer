@@ -43,24 +43,11 @@ namespace Randomizer
 		{
 			get
 			{
-				string timesString = "Available ";
-				if (Times.MinValue == 600 && Times.MaxValue == 2600)
-				{
-					timesString += "all day";
-				}
-
-				else
-				{
-					timesString += $"from {GetStringForTime(Times.MinValue)} to {GetStringForTime(Times.MaxValue)}";
-				}
-				if (ExcludedTimes.MinValue > 0 && ExcludedTimes.MaxValue > 0)
-				{
-					timesString += $", but not from {GetStringForTime(ExcludedTimes.MinValue)} to {GetStringForTime(ExcludedTimes.MaxValue)}";
-				}
+				string timesString = GetTimesString();
 				string seasonsString = GetStringForSeasons();
 				string locationString = GetStringForLocations();
-				string weatherString = Weathers.Count != 1 ? "" : $"It can only be found when it is {Weathers[0].ToString().ToLower()}.";
-				return $"{timesString}{seasonsString} {locationString} {weatherString}";
+				string weatherString = GetStringForWeather();
+				return $"{timesString} {seasonsString} {locationString} {weatherString}";
 			}
 		}
 
@@ -98,6 +85,32 @@ namespace Randomizer
 		}
 
 		/// <summary>
+		/// Gets the string to be used for the time part of the description
+		/// </summary>
+		/// <returns />
+		private string GetTimesString()
+		{
+			string timesString = "";
+			if (ExcludedTimes.MinValue > 0 && ExcludedTimes.MaxValue > 0)
+			{
+				string fromTime = GetStringForTime(ExcludedTimes.MinValue);
+				string toTime = GetStringForTime(ExcludedTimes.MaxValue);
+				timesString = Globals.GetTranslation("fish-tooltip-excluded-times", new { fromTime, toTime });
+			}
+			else if (Times.MinValue == 600 && Times.MaxValue == 2600)
+			{
+				timesString = Globals.GetTranslation("fish-tooltip-all-day");
+			}
+			else
+			{
+				string fromTime = GetStringForTime(Times.MinValue);
+				string toTime = GetStringForTime(Times.MaxValue);
+				timesString = Globals.GetTranslation("fish-tooltip-time-range", new { fromTime, toTime });
+			}
+			return timesString;
+		}
+
+		/// <summary>
 		/// Converts the given time to a 12-hour time,
 		/// e.g. 1400 - 2:00pm
 		/// </summary>
@@ -111,7 +124,8 @@ namespace Randomizer
 			}
 			string timeString = time.ToString("D4");
 			DateTime dateTime = DateTime.ParseExact(timeString, "HHmm", CultureInfo.InvariantCulture);
-			return dateTime.ToString("h:mmtt").ToLower();
+			CultureInfo culture = CultureInfo.CreateSpecificCulture(Globals.ModRef.Helper.Translation.Locale);
+			return dateTime.ToString(Globals.GetTranslation("time-format"), culture).ToLower();
 		}
 
 		/// <summary>
@@ -122,19 +136,8 @@ namespace Randomizer
 		{
 			if (AvailableLocations.Count == 0) { return ""; }
 			List<string> locationStrings = GetLocationStrings();
-			string output = string.Join(", ", locationStrings.ToArray(), 0, locationStrings.Count - 1) + ", and " + locationStrings.LastOrDefault();
-
-			if (AvailableLocations.Count == 1)
-			{
-				output = output.Replace(", and ", "");
-			}
-			else if (AvailableLocations.Count == 2)
-			{
-				output = output.Replace(",", "");
-			}
-
-			string inOrAt = AvailableLocations.Contains(Locations.NightMarket) ? "at" : "in";
-			return $"Lives {inOrAt} the {output}.";
+			string locations = string.Join(", ", locationStrings);
+			return Globals.GetTranslation("fish-tooltip-locations", new { locations });
 		}
 
 		/// <summary>
@@ -144,21 +147,18 @@ namespace Randomizer
 		private string GetStringForSeasons()
 		{
 			if (AvailableSeasons.Count == 0) { return ""; }
-			if (AvailableSeasons.Count == 4) { return ", all year."; }
-
-			string[] seasonStrings = AvailableSeasons.Select(x => x.ToString().ToLower()).ToArray();
-			string output = string.Join(", ", seasonStrings, 0, seasonStrings.Length - 1) + ", and " + seasonStrings.LastOrDefault();
-
-			if (AvailableSeasons.Count == 1)
+			if (AvailableSeasons.Count == 4)
 			{
-				output = output.Replace(", and ", "");
-			}
-			else if (AvailableSeasons.Count == 2)
-			{
-				output = output.Replace(",", "");
+				return Globals.GetTranslation("fish-tooltip-seasons-all");
 			}
 
-			return $" during {output}.";
+			string[] seasonStrings = AvailableSeasons
+				.Select(x => x.ToString().ToLower())
+				.Select(x => Globals.GetTranslation($"seasons-{x}"))
+				.ToArray();
+			string seasons = string.Join(", ", seasonStrings);
+
+			return Globals.GetTranslation("fish-tooltip-seasons", new { seasons });
 		}
 
 		/// <summary>
@@ -170,32 +170,21 @@ namespace Randomizer
 			List<string> output = new List<string>();
 			foreach (Locations location in AvailableLocations)
 			{
-				switch (location)
-				{
-					case Locations.Mountain:
-						output.Add("mountains");
-						break;
-					case Locations.Beach:
-						output.Add("ocean");
-						break;
-					case Locations.UndergroundMine:
-						output.Add("mines");
-						break;
-					case Locations.NightMarket:
-						output.Add("bottom of the ocean");
-						break;
-					case Locations.BugLand:
-						output.Add("bug land");
-						break;
-					case Locations.WitchSwamp:
-						output.Add("witch swamp");
-						break;
-					default:
-						output.Add($"{location.ToString().ToLower()}");
-						break;
-				}
+				output.Add(Globals.GetTranslation($"fish-{location.ToString().ToLower()}-location"));
 			}
 			return output;
+		}
+
+		/// <summary>
+		/// Gets the string used for the weather part of the tooltip
+		/// </summary>
+		/// <returns />
+		public string GetStringForWeather()
+		{
+			if (Weathers.Count != 1) { return ""; }
+
+			string weather = Globals.GetTranslation($"fish-weather-{Weathers[0].ToString().ToLower()}");
+			return Globals.GetTranslation("fish-tooltip-weather", new { weather });
 		}
 
 		/// <summary>

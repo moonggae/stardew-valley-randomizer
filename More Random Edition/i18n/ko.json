@@ -1,6 +1,31 @@
 {
 	"title-graphic": "TitleButtons.ko-KR.png",
 	
+	"time-format": "h:mmtt",
+	"fish-tooltip-all-day": "하루 종일 사용할 수 있습니다.",
+	"fish-tooltip-time-range": "{{fromTime}} 에서 {{toTime}} 까지 사용 가능합니다.",
+	"fish-tooltip-excluded-times": "{{fromTime}} 에서 {{toTime}} 을 (를) 제외한 하루 종일 사용할 수 있습니다.",
+	"fish-tooltip-seasons-all": "일년 내내 발견.",
+	"fish-tooltip-seasons": "계절: {{seasons}}.",
+	"fish-tooltip-locations": "서식지: {{locations}}.",
+	"fish-tooltip-weather": "{{날씨}} 일 때만 발견됩니다.",
+
+	"fish-desert-location": "사막",
+	"fish-forest-location": "숲",
+	"fish-town-location": "도시",
+	"fish-woods-location": "비밀 우즈",
+	"fish-backwoods-location": "삼림지",
+	"fish-sewer-location": "하수",
+	"fish-mountain-location": "산",
+	"fish-beach-location": "대양",
+	"fish-undergroundmine-location": "광산",
+	"fish-nightmarket-location": "심해 바다",
+	"fish-bugland-location": "버그 랜드",
+	"fish-witchswamp-location": "마녀 늪",
+
+	"fish-weather-sunny": "맑은",
+	"fish-weather-rainy": "비오는",
+	
 	"Abigail-name": "애비게일",
 	"Abigail-relationships": "Caroline '엄마' Pierre '아빠'",
 	"Caroline-name": "캐롤라인",

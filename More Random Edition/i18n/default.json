@@ -1,5 +1,30 @@
 {
 	"title-graphic": "TitleButtons.png",
+	
+	"time-format": "h:mmtt",
+	"fish-tooltip-all-day": "Available all day.",
+	"fish-tooltip-time-range": "Available from {{fromTime}} to {{toTime}}.",
+	"fish-tooltip-excluded-times": "Available all day except from {{fromTime}} to {{toTime}}.",
+	"fish-tooltip-seasons-all": "Found all year.",
+	"fish-tooltip-seasons": "Found during: {{seasons}}.",
+	"fish-tooltip-locations": "Habitat: {{locations}}.",
+	"fish-tooltip-weather": "Found only when it is {{weather}}.",
+	
+	"fish-desert-location": "Desert",
+	"fish-forest-location": "Forest",
+	"fish-town-location": "Town",
+	"fish-woods-location": "Woods",
+	"fish-backwoods-location": "Backwoods",
+	"fish-sewer-location": "Sewer",
+	"fish-mountain-location": "Mountains",
+	"fish-beach-location": "Ocean",
+	"fish-undergroundmine-location": "Mines",
+	"fish-nightmarket-location": "Ocean Floor",
+	"fish-bugland-location": "Bug Lands",
+	"fish-witchswamp-location": "Witch Swamp",
+	
+	"fish-weather-sunny": "sunny",
+	"fish-weather-rainy": "rainy",
 
 	"Abigail-name": "Abigail",
 	"Abigail-relationships": "Caroline 'mom' Pierre 'dad'",

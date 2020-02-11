@@ -1,6 +1,31 @@
 {
 	"title-graphic": "TitleButtons.zh-CN.png",
 	
+	"time-format": "tth:mm",
+	"fish-tooltip-all-day": "全天钓的到。",
+	"fish-tooltip-time-range": "从{{fromTime}}到{{toTime}}可钓。",
+	"fish-tooltip-excluded-times": "全天钓的到，除了{{fromTime}}到{{toTime}}。",
+	"fish-tooltip-seasons-all": "全年出现。",
+	"fish-tooltip-seasons": "季节: {{seasons}}。",
+	"fish-tooltip-locations": "栖息地: {{locations}}。",
+	"fish-tooltip-weather": "在{{weather}}找的到。",
+
+	"fish-desert-location": "沙漠",
+	"fish-forest-location": "森林",
+	"fish-town-location": "镇",
+	"fish-woods-location": "秘密森林",
+	"fish-backwoods-location": "偏远地区",
+	"fish-sewer-location": "下水道",
+	"fish-mountain-location": "山脉",
+	"fish-beach-location": "海洋",
+	"fish-undergroundmine-location": "地雷",
+	"fish-nightmarket-location": "海底",
+	"fish-bugland-location": "虫之地",
+	"fish-witchswamp-location": "女巫沼泽",
+
+	"fish-weather-sunny": "太阳天",
+	"fish-weather-rainy": "下雨天",
+	
 	"Abigail-name": "阿比盖尔",
 	"Abigail-relationships": "Caroline '妈妈' Pierre '爸爸'",
 	"Caroline-name": "卡洛琳",

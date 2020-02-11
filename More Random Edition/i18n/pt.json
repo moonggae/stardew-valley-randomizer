@@ -1,6 +1,31 @@
 {
 	"title-graphic": "TitleButtons.pt-BR.png",
 	
+	"time-format": "HH:mm",
+	"fish-tooltip-all-day": "Disponível o dia todo.",
+	"fish-tooltip-time-range": "Disponível de {{fromTime}} a {{toTime}}.",
+	"fish-tooltip-excluded-times": "Disponível o dia todo, exceto de {{fromTime}} a {{toTime}}.",
+	"fish-tooltip-seasons-all": "Encontrado o ano todo.",
+	"fish-tooltip-seasons": "Encontrado durante: {{seasons}}.",
+	"fish-tooltip-locations": "Habitat: {{locations}}.",
+	"fish-tooltip-weather": "Encontrado apenas quando está {{weather}}.",
+
+	"fish-desert-location": "Deserto",
+	"fish-forest-location": "Floresta",
+	"fish-town-location": "Cidade",
+	"fish-woods-location": "Madeiras Secretas",
+	"fish-backwoods-location": "Sertão",
+	"fish-sewer-location": "Esgoto",
+	"fish-mountain-location": "Montanhas",
+	"fish-beach-location": "oceano",
+	"fish-undergroundmine-location": "Minas",
+	"fish-nightmarket-location": "Fundo do mar",
+	"fish-bugland-location": "Bug Lands",
+	"fish-witchswamp-location": "Pântano de bruxa",
+
+	"fish-weather-sunny": "ensolarado",
+	"fish-weather-rainy": "chuvoso",
+	
 	"Abigail-name": "Abigail",
 	"Abigail-relationships": "Caroline 'mamãe' Pierre 'papai'",
 	"Caroline-name": "Caroline",

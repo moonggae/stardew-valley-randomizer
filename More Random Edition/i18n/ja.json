@@ -1,6 +1,31 @@
 {
 	"title-graphic": "TitleButtons.ja-JP.png",
 	
+	"time-format": "tth:mm",
+	"fish-tooltip-all-day": "終日利用可能。",
+	"fish-tooltip-time-range": "{{fromTime}}から{{toTime}}まで利用できます。",
+	"fish-tooltip-excluded-times": "{{fromTime}}から{{toTime}}を除く終日利用可能。",
+	"fish-tooltip-seasons-all": "一年中見つかりました。",
+	"fish-tooltip-seasons": "季節: {{seasons}}。",
+	"fish-tooltip-locations": "生息地: {{locations}}。",
+	"fish-tooltip-weather": "{{weather}}の場合にのみ見つかります。",
+
+	"fish-desert-location": "砂漠",
+	"fish-forest-location": "森林",
+	"fish-town-location": "町",
+	"fish-woods-location": "秘密の森",
+	"fish-backwoods-location": "バックウッズ",
+	"fish-sewer-location": "下水道",
+	"fish-mountain-location": "山",
+	"fish-beach-location": "海洋",
+	"fish-undergroundmine-location": "鉱山",
+	"fish-nightmarket-location": "海底",
+	"fish-bugland-location": "バグランド",
+	"fish-witchswamp-location": "魔女の沼",
+
+	"fish-weather-sunny": "晴れ",
+	"fish-weather-rainy": "雨の",
+	
 	"Abigail-name": "アビゲイル",
 	"Abigail-relationships": "Caroline '母さん' Pierre '父さん'",
 	"Caroline-name": "キャロライン",

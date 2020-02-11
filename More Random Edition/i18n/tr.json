@@ -1,6 +1,31 @@
 {
 	"title-graphic": "TitleButtons.tr-TR.png",
 	
+	"time-format": "HH:mm",
+	"fish-tooltip-all-day": "Bütün gün kullanılabilir.",
+	"fish-tooltip-time-range": "{{FromTime}} ile {{toTime}} arasında kullanılabilir.",
+	"fish-tooltip-excluded-times": "{{FromTime}} - {{toTime}} hariç tüm gün kullanılabilir.",
+	"fish-tooltip-seasons-all": "Bütün yıl bulundu.",
+	"fish-tooltip-seasons": "Sırasında bulundu: {{seasons}}.",
+	"fish-tooltip-locations": "Yetişme ortamı: {{locations}}.",
+	"fish-tooltip-weather": "Yalnızca {{weather}} olduğunda bulundu.",
+
+	"fish-desert-location": "Çöl",
+	"fish-forest-location": "Orman",
+	"fish-town-location": "Kasaba",
+	"fish-woods-location": "Gizli Ormanlar",
+	"fish-backwoods-location": "Taşra",
+	"fish-sewer-location": "Lağım",
+	"fish-mountain-location": "Dağlar",
+	"fish-beach-location": "Okyanus",
+	"fish-undergroundmine-location": "Maden",
+	"fish-nightmarket-location": "Okyanus tabanı",
+	"fish-bugland-location": "Böcek Toprakları",
+	"fish-witchswamp-location": "Cadı Bataklığı",
+
+	"fish-weather-sunny": "güneşli",
+	"fish-weather-rainy": "yağışlı",
+	
 	"Abigail-name": "Abigail",
 	"Abigail-relationships": "Caroline 'anne' Pierre 'baba'",
 	"Caroline-name": "Caroline",

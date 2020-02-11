@@ -1,6 +1,31 @@
 {
 	"title-graphic": "TitleButtons.ru-RU.png",
 	
+	"time-format": "HH:mm",
+	"fish-tooltip-all-day": "Доступно весь день.",
+	"fish-tooltip-time-range": "Доступно от {{fromTime}} до {{toTime}}.",
+	"fish-tooltip-excluded-times": "Доступно весь день, кроме {{fromTime}} до {{toTime}}.",
+	"fish-tooltip-seasons-all": "Нашел весь год.",
+	"fish-tooltip-seasons": "Найден во время: {{seasons}}.",
+	"fish-tooltip-locations": "Место обитания: {{locations}}.",
+	"fish-tooltip-weather": "Найден только когда {{weather}}.",
+
+	"fish-desert-location": "пустынный",
+	"fish-forest-location": "лес",
+	"fish-town-location": "Городок",
+	"fish-woods-location": "Секрет Вудс",
+	"fish-backwoods-location": "глушь",
+	"fish-sewer-location": "сточная труба",
+	"fish-mountain-location": "Горы",
+	"fish-beach-location": "Океан",
+	"fish-undergroundmine-location": "копи",
+	"fish-nightmarket-location": "Дно океана",
+	"fish-bugland-location": "Bug Lands",
+	"fish-witchswamp-location": "Болото Ведьмы",
+
+	"fish-weather-sunny": "Солнечный",
+	"fish-weather-rainy": "дождливый",
+
 	"Abigail-name": "Абигейл",
 	"Abigail-relationships": "Caroline 'мама' Pierre 'отец'",
 	"Caroline-name": "Кэролайн",

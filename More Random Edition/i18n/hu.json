@@ -1,6 +1,31 @@
 {
 	"title-graphic": "TitleButtons.hu-HU.png",
 	
+	"time-format": "HH:mm",
+	"fish-tooltip-all-day": "Egész nap elérhető.",
+	"fish-tooltip-time-range": "Elérhető {{fromTime}} -tól {{toTime}} -ig.",
+	"fish-tooltip-excluded-times": "Egész nap elérhető {{fromTime}} -től {{toTime}} -ig.",
+	"fish-tooltip-seasons-all": "Egész évben megtalálható.",
+	"fish-tooltip-seasons": "Talált: {{seasons}}",
+	"fish-tooltip-locations": "Élőhely: {{locations}}.",
+	"fish-tooltip-weather": "Csak akkor találja meg, ha {{weather}}.",
+
+	"fish-desert-location": "Sivatag",
+	"fish-forest-location": "Erdő",
+	"fish-town-location": "Város",
+	"fish-woods-location": "Titkos erdők",
+	"fish-backwoods-location": "Őserdő",
+	"fish-sewer-location": "Szennyvízcsatorna",
+	"fish-mountain-location": "Hegység",
+	"fish-beach-location": "Óceán",
+	"fish-undergroundmine-location": "Mines",
+	"fish-nightmarket-location": "Tengerfenék",
+	"fish-bugland-location": "Bug Lands",
+	"fish-witchswamp-location": "Boszorkány-mocsár",
+
+	"fish-weather-sunny": "napos",
+	"fish-weather-rainy": "esős",
+
 	"Abigail-name": "Abigail",
 	"Abigail-relationships": "Caroline 'anyám' Pierre 'apám'",
 	"Caroline-name": "Caroline",
