@@ -56,12 +56,16 @@ namespace Randomizer
 				string fruitTreeName = treeItem.Id == fruitTreesIds[i] ?
 					Globals.GetTranslation("item-recursion-sapling-name") :
 					Globals.GetTranslation("sapling-text", new { itemName = treeItemName });
+				string fruitTreeEnglishName = treeItem.Id == fruitTreesIds[i] ?
+					"Recursion Sapling" :
+					$"{treeItem.Name} Sapling";
+
 				int fruitTreeId = fruitTreesIds[i];
 
 				string fruitTreeValue = $"{i}/{season}/{treeItem.Id}/{price}";
 				editedObjectInfo.FruitTreeReplacements[fruitTreeId] = fruitTreeValue;
 
-				ItemList.Items[fruitTreeId].OverrideName = fruitTreeName;
+				ItemList.Items[fruitTreeId].OverrideName = fruitTreeEnglishName;
 				string fruitTreeObjectValue = $"{fruitTreeName}/{price / 2}/-300/Basic -74/{fruitTreeName}/{Globals.GetTranslation("sapling-description", new { itemName = treeItemName, season = seasonDisplay })}";
 				editedObjectInfo.ObjectInformationReplacements[fruitTreeId] = fruitTreeObjectValue;
 			}
@@ -211,9 +215,12 @@ namespace Randomizer
 				crop.Description = description;
 
 				SeedItem seed = ItemList.GetSeedFromCrop(crop);
-				seed.OverrideName = seed.CropGrowthInfo.IsTrellisCrop ?
+				seed.OverrideDisplayName = seed.CropGrowthInfo.IsTrellisCrop ?
 					Globals.GetTranslation("trellis-text", new { itemName = name }) :
 					Globals.GetTranslation("seed-text", new { itemName = name });
+				seed.OverrideName = seed.CropGrowthInfo.IsTrellisCrop ?
+					$"{name} Starter" :
+					$"{name} Seeds";
 
 				seed.Price = GetRandomSeedPrice();
 				crop.Price = CalculateCropPrice(seed);

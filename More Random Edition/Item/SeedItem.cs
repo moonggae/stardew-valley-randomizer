@@ -7,6 +7,7 @@ namespace Randomizer
 	/// </summary>
 	public class SeedItem : Item
 	{
+		public string OverrideDisplayName { get; set; } // Used in the xnb string if it is populated
 		public int Price { get; set; }
 		public string Description
 		{
@@ -51,7 +52,8 @@ namespace Randomizer
 		/// <returns />
 		public override string ToString()
 		{
-			return $"{Name}/{Price}/-300/Seeds -74/{Name}/{Description}";
+			string displayName = string.IsNullOrEmpty(OverrideDisplayName) ? Name : OverrideDisplayName;
+			return $"{Name}/{Price}/-300/Seeds -74/{displayName}/{Description}";
 		}
 	}
 }
