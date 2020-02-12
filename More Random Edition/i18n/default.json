@@ -25,6 +25,18 @@
 	
 	"fish-weather-sunny": "sunny",
 	"fish-weather-rainy": "rainy",
+	
+	"weapon-description-stabbing": "Does stabbing damage.",
+	"weapon-description-slashing": "Does slashing damage.",
+	"weapon-description-crushing": "Does crushing damage.",
+	"weapon-description-crit-high-damage": "Crits for lethal damage very infrequently.",
+	"weapon-description-crit-high-frequency": "Crits very often!",
+	"weapon-description-high-knockback": "Makes enemies fly!",
+	"weapon-description-fast": "Fires as fast as you can pull the trigger.",
+	"weapon-description-aoe": "Inflicts splash damage.",
+	"weapon-description-accurate": "Very accurate.",
+	"weapon-description-defense": "Provides defense.",
+	"weapon-description-heals": "Heals when dealing damage.",
 
 	"Abigail-name": "Abigail",
 	"Abigail-relationships": "Caroline 'mom' Pierre 'dad'",

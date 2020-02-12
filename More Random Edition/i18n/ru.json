@@ -25,6 +25,18 @@
 
 	"fish-weather-sunny": "Солнечный",
 	"fish-weather-rainy": "дождливый",
+	
+	"weapon-description-stabbing": "Наносит колющий урон.",
+	"weapon-description-slashing": "Наносит урон.",
+	"weapon-description-crushing": "Наносит сокрушительный урон.",
+	"weapon-description-crit-high-damage": "Криты за смертельный урон очень нечасто.",
+	"weapon-description-crit-high-frequency": "Криты очень часто!",
+	"weapon-description-high-knockback": "Заставляет врагов летать!",
+	"weapon-description-fast": "Очень быстро.",
+	"weapon-description-aoe": "Наносит всплеск урона.",
+	"weapon-description-accurate": "Очень точно.",
+	"weapon-description-defense": "Обеспечивает защиту.",
+	"weapon-description-heals": "Лечит при нанесении урона.",
 
 	"Abigail-name": "Абигейл",
 	"Abigail-relationships": "Caroline 'мама' Pierre 'отец'",

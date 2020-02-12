@@ -25,6 +25,18 @@
 
 	"fish-weather-sunny": "napos",
 	"fish-weather-rainy": "esős",
+	
+	"weapon-description-stabbing": "Szúró károkat okoz.",
+	"weapon-description-slashing": "Vágáskárosodást okoz.",
+	"weapon-description-crushing": "Zúzás káros.",
+	"weapon-description-crit-high-damage": "A halálos károsodás kritériumai nagyon ritkán.",
+	"weapon-description-crit-high-frequency": "Kritik nagyon gyakran!",
+	"weapon-description-high-knockback": "Az ellenségek repülnek!",
+	"weapon-description-fast": "Nagyon gyors.",
+	"weapon-description-aoe": "Eltalálja a közeli ellenségeket.",
+	"weapon-description-accurate": "Nagyon pontos.",
+	"weapon-description-defense": "Védelmet nyújt.",
+	"weapon-description-heals": "Gyógyul, ha kárt okoz.",
 
 	"Abigail-name": "Abigail",
 	"Abigail-relationships": "Caroline 'anyám' Pierre 'apám'",

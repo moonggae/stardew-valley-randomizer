@@ -26,6 +26,18 @@
 	"fish-weather-sunny": "晴れ",
 	"fish-weather-rainy": "雨の",
 	
+	"weapon-description-stabbing": "刺すようなダメージを与えます。",
+	"weapon-description-slashing": "斬撃ダメージを与えます。",
+	"weapon-description-crushing": "押しつぶすようなダメージを与えます。",
+	"weapon-description-crit-high-damage": "致命的な損傷に対するクリティカルは非常にまれです。",
+	"weapon-description-crit-high-frequency": "非常に頻繁にクリティカル！",
+	"weapon-description-high-knockback": "敵を飛ばします！",
+	"weapon-description-fast": "とても早い。",
+	"weapon-description-aoe": "スプラッシュダメージを与えます。",
+	"weapon-description-accurate": "とても正確です。",
+	"weapon-description-defense": "防御を提供します。",
+	"weapon-description-heals": "ダメージを与えると回復します。",
+	
 	"Abigail-name": "アビゲイル",
 	"Abigail-relationships": "Caroline '母さん' Pierre '父さん'",
 	"Caroline-name": "キャロライン",

@@ -26,6 +26,18 @@
 	"fish-weather-sunny": "太阳天",
 	"fish-weather-rainy": "下雨天",
 	
+	"weapon-description-stabbing": "刺伤。",
+	"weapon-description-slashing": "大幅削减伤害。",
+	"weapon-description-crushing": "造成损坏。",
+	"weapon-description-crit-high-damage": "极少会造成致命伤害。",
+	"weapon-description-crit-high-frequency": "经常暴动！",
+	"weapon-description-high-knockback": "可以把敌人推远！",
+	"weapon-description-fast": "非常快。",
+	"weapon-description-aoe": "造成飞溅伤害。",
+	"weapon-description-accurate": "非常精准。",
+	"weapon-description-defense": "提供防御。",
+	"weapon-description-heals": "造成伤害时愈。",
+	
 	"Abigail-name": "阿比盖尔",
 	"Abigail-relationships": "Caroline '妈妈' Pierre '爸爸'",
 	"Caroline-name": "卡洛琳",

@@ -26,6 +26,18 @@
 	"fish-weather-sunny": "sonnig",
 	"fish-weather-rainy": "regnerisch",
 	
+	"weapon-description-stabbing": "Fügt stechenden Schaden zu.",
+	"weapon-description-slashing": "Fügt Schaden zu.",
+	"weapon-description-crushing": "Verursacht Quetschschäden.",
+	"weapon-description-crit-high-damage": "Kritische Treffer für tödlichen Schaden sehr selten.",
+	"weapon-description-crit-high-frequency": "Sehr oft kritisiert!",
+	"weapon-description-high-knockback": "Lässt Feinde fliegen!",
+	"weapon-description-fast": "Sehr schnell.",
+	"weapon-description-aoe": "Verursacht Spritzschaden.",
+	"weapon-description-accurate": "Sehr akkurat.",
+	"weapon-description-defense": "Bietet Verteidigung.",
+	"weapon-description-heals": "Heilt, wenn Schaden verursacht wird.",
+	
 	"Abigail-name": "Abigail",
 	"Abigail-relationships": "Caroline 'Mama' Pierre 'Papa'",
 	"Caroline-name": "Caroline",

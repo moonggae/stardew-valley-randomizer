@@ -26,6 +26,18 @@
 	"fish-weather-sunny": "güneşli",
 	"fish-weather-rainy": "yağışlı",
 	
+	"weapon-description-stabbing": "Bıçaklama hasarı verir.",
+	"weapon-description-slashing": "Hasar verir.",
+	"weapon-description-crushing": "Ezilme hasarı verir.",
+	"weapon-description-crit-high-damage": "Çok seyrek olarak ölümcül hasarlar.",
+	"weapon-description-crit-high-frequency": "Çok sık yaratır!",
+	"weapon-description-high-knockback": "Düşmanları uçurur!",
+	"weapon-description-fast": "Çok hızlı.",
+	"weapon-description-aoe": "Sıçrama hasarı verir.",
+	"weapon-description-accurate": "Çok doğru.",
+	"weapon-description-defense": "Savunma sağlar.",
+	"weapon-description-heals": "Hasar verirken iyileşir.",
+	
 	"Abigail-name": "Abigail",
 	"Abigail-relationships": "Caroline 'anne' Pierre 'baba'",
 	"Caroline-name": "Caroline",

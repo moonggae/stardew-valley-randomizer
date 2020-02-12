@@ -26,6 +26,18 @@
 	"fish-weather-sunny": "맑은",
 	"fish-weather-rainy": "비오는",
 	
+	"weapon-description-stabbing": "찌르는 피해를줍니다.",
+	"weapon-description-slashing": "슬래시 데미지.",
+	"weapon-description-crushing": "분쇄 피해를줍니다.",
+	"weapon-description-crit-high-damage": "치명적인 피해를 입히는 치명타.",
+	"weapon-description-crit-high-frequency": "매우 자주 치명타!",
+	"weapon-description-high-knockback": "적을 날려 버립니다!",
+	"weapon-description-fast": "매우 빠릅니다.",
+	"weapon-description-aoe": "튀김 피해를 입 힙니다.",
+	"weapon-description-accurate": "매우 정밀한.",
+	"weapon-description-defense": "방어를 제공합니다.",
+	"weapon-description-heals": "피해를 입힐 때 치유합니다.",
+	
 	"Abigail-name": "애비게일",
 	"Abigail-relationships": "Caroline '엄마' Pierre '아빠'",
 	"Caroline-name": "캐롤라인",

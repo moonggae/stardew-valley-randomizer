@@ -26,6 +26,18 @@
 	"fish-weather-sunny": "ensolarado",
 	"fish-weather-rainy": "chuvoso",
 	
+	"weapon-description-stabbing": "Dá facadas.",
+	"weapon-description-slashing": "Causa danos.",
+	"weapon-description-crushing": "Causa danos esmagadores.",
+	"weapon-description-crit-high-damage": "Crits por danos letais com pouca frequência.",
+	"weapon-description-crit-high-frequency": "Crits com muita frequência!",
+	"weapon-description-high-knockback": "Faz os inimigos voarem!",
+	"weapon-description-fast": "Muito rápido.",
+	"weapon-description-aoe": "Causa dano de respingo.",
+	"weapon-description-accurate": "Muito preciso.",
+	"weapon-description-defense": "Fornece defesa.",
+	"weapon-description-heals": "Cura ao causar dano.",
+	
 	"Abigail-name": "Abigail",
 	"Abigail-relationships": "Caroline 'mamãe' Pierre 'papai'",
 	"Caroline-name": "Caroline",
