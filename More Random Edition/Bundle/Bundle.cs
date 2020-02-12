@@ -157,7 +157,7 @@ namespace Randomizer
 				minRequiredItemsString = $"/{MinimumRequiredItems.ToString()}";
 			}
 
-			return $"{Name}/{rewardString}/{GetRewardStringForRequiredItems()}/{Color:D}{minRequiredItemsString}";
+			return $"{Name}/{rewardString}/{GetRewardStringForRequiredItems()}/{Color:D}{minRequiredItemsString}/{Name}";
 		}
 
 		/// <summary>
@@ -260,7 +260,7 @@ namespace Randomizer
 			switch (BundleType)
 			{
 				case BundleTypes.AllRandom:
-					Name = "Random";
+					Name = Globals.GetTranslation("bundle-random-all");
 					potentialItems = RequiredItem.CreateList(ItemList.Items.Values.Where(x =>
 						x.DifficultyToObtain < ObtainingDifficulties.Impossible &&
 						x.Id > -4)
@@ -282,7 +282,7 @@ namespace Randomizer
 							).ToList()
 						);
 					} while (potentialItems.Count < 4);
-					Name = $"\"{randomLetter}\"";
+					Name = Globals.GetTranslation("bundle-random-letter", new { letter = randomLetter });
 					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
 					MinimumRequiredItems = 3;
 					break;
