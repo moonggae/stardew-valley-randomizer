@@ -87,6 +87,37 @@
 
 	"bundle-joja-missing": "잃어버린",
 	
+	"vault-money-format": "{{moneyString}}골드",
+	"Vault2500-1": "점심 돈",
+	"Vault2500-2": "버스 요금",
+	"Vault2500-3": "염가",
+	"Vault2500-4": "Tree Fiddy",
+	"Vault2500-5": "인색 한 사람",
+	"Vault2500-6": "주유소 음식",
+	"Vault2500-7": "돼지 저금통",
+
+	"Vault5000-1": "레스토랑 런치",
+	"Vault5000-2": "빠른 우편",
+	"Vault5000-3": "새로운 블렌더",
+	"Vault5000-4": "새 신발",
+	"Vault5000-5": "유원지 패스",
+	"Vault5000-6": "Stardew Valley - 게임",
+
+	"Vault10000-1": "닌텐도 스위치",
+	"Vault10000-2": "노트북",
+	"Vault10000-3": "MLM 스타터 키트",
+	"Vault10000-4": "4k 텔레비전",
+	"Vault10000-5": "바이킹 냉장고",
+	"Vault10000-6": "새 안경",
+
+	"Vault25000-1": "계약금",
+	"Vault25000-2": "대학 등록금",
+	"Vault25000-3": "대한 항공 티켓",
+	"Vault25000-4": "포트 녹스",
+	"Vault25000-5": "머스탱",
+	"Vault25000-6": "렉서스",
+	"Vault25000-7": "아메리칸 병원 빌",
+		
 	"weapon-description-stabbing": "찌르는 피해를줍니다.",
 	"weapon-description-slashing": "슬래시 데미지.",
 	"weapon-description-crushing": "분쇄 피해를줍니다.",

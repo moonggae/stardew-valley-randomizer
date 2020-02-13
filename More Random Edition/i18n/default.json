@@ -49,7 +49,7 @@
 	"bundle-pantry-desert": "Desert",
 	"bundle-pantry-dessert": "Dessert",
 	"bundle-pantry-mexican-food": "Mexican Food",
-	"bundle-pantry-green": "Green Bitch",
+	"bundle-pantry-green": "Green",
 	"bundle-pantry-brown": "Brown",
 
 	"bundle-fishtank-seasonal": "{{season}} Fish",
@@ -87,6 +87,37 @@
 
 	"bundle-joja-missing": "The Missing",
 	
+	"vault-money-format": "{{moneyString}}g",
+	"Vault2500-1": "Lunch Money",
+	"Vault2500-2": "Bus Fare",
+	"Vault2500-3": "Cheapskate",
+	"Vault2500-4": "Tree Fiddy",
+	"Vault2500-5": "Cheapo",
+	"Vault2500-6": "Gas Station Food",
+	"Vault2500-7": "Piggy Bank",
+
+	"Vault5000-1": "Chili's Lunch",
+	"Vault5000-2": "Express Mail",
+	"Vault5000-3": "New Blender",
+	"Vault5000-4": "New Shoes",
+	"Vault5000-5": "Amusement Park Pass",
+	"Vault5000-6": "Stardew Valley - The Game",
+
+	"Vault10000-1": "Nintendo Switch",
+	"Vault10000-2": "Laptop",
+	"Vault10000-3": "MLM Starter Kit",
+	"Vault10000-4": "4k TV",
+	"Vault10000-5": "Viking Fridge",
+	"Vault10000-6": "New Glasses",
+
+	"Vault25000-1": "Down Payment",
+	"Vault25000-2": "College Tuition",
+	"Vault25000-3": "Korean Air Ticket",
+	"Vault25000-4": "Fort Knox",
+	"Vault25000-5": "Mustang",
+	"Vault25000-6": "Lexus",
+	"Vault25000-7": "US Hospital Bill",
+
 	"weapon-description-stabbing": "Does stabbing damage.",
 	"weapon-description-slashing": "Does slashing damage.",
 	"weapon-description-crushing": "Does crushing damage.",

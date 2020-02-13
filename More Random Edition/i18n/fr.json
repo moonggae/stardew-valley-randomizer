@@ -87,6 +87,37 @@
 
 	"bundle-joja-missing": "Disparus",
 	
+	"vault-money-format": "{{moneyString}}po",
+	"Vault2500-1": "Argent du déjeuner",
+	"Vault2500-2": "Tarif du bus",
+	"Vault2500-3": "Rapiat",
+	"Vault2500-4": "Tree Fiddy",
+	"Vault2500-5": "Personne avare",
+	"Vault2500-6": "Station-service alimentaire",
+	"Vault2500-7": "Tirelire",
+
+	"Vault5000-1": "Déjeuner au restaurant",
+	"Vault5000-2": "courrier express",
+	"Vault5000-3": "Nouveau mélangeur",
+	"Vault5000-4": "Nouvelles chaussures",
+	"Vault5000-5": "Laissez-passer pour parc d'attractions",
+	"Vault5000-6": "Stardew Valley - Le jeu",
+
+	"Vault10000-1": "Nintendo Switch",
+	"Vault10000-2": "Portable",
+	"Vault10000-3": "Kit de démarrage MLM",
+	"Vault10000-4": "Télévision 4k",
+	"Vault10000-5": "Réfrigérateur Viking",
+	"Vault10000-6": "Nouvelles lunettes",
+
+	"Vault25000-1": "Acompte",
+	"Vault25000-2": "Frais de scolarité",
+	"Vault25000-3": "Billet d'avion coréen",
+	"Vault25000-4": "Fort Knox",
+	"Vault25000-5": "Mustang",
+	"Vault25000-6": "Lexus",
+	"Vault25000-7": "American Hospital Bill",
+	
 	"weapon-description-stabbing": "Fait des coups de couteau.",
 	"weapon-description-slashing": "Fait des dégâts tranchants.",
 	"weapon-description-crushing": "Fait des dégâts d'écrasement.",

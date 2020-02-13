@@ -87,6 +87,37 @@
 
 	"bundle-joja-missing": "ミッシング",
 	
+	"vault-money-format": "{{moneyString}}G",
+	"Vault2500-1": "ランチマネー",
+	"Vault2500-2": "運賃",
+	"Vault2500-3": "チープスケート",
+	"Vault2500-4": "Tree Fiddy",
+	"Vault2500-5": "けちな人",
+	"Vault2500-6": "ガソリンスタンドの食べ物",
+	"Vault2500-7": "貯金箱",
+
+	"Vault5000-1": "レストランランチ",
+	"Vault5000-2": "速達",
+	"Vault5000-3": "新しいブレンダー",
+	"Vault5000-4": "新しい靴",
+	"Vault5000-5": "遊園地パス",
+	"Vault5000-6": "Stardew Valley - ゲーム",
+
+	"Vault10000-1": "Nintendo Switch",
+	"Vault10000-2": "ラップトップ",
+	"Vault10000-3": "MLMスターターキット",
+	"Vault10000-4": "4kテレビ",
+	"Vault10000-5": "バイキング冷蔵庫",
+	"Vault10000-6": "新しいメガネ",
+
+	"Vault25000-1": "頭金",
+	"Vault25000-2": "大学の授業料",
+	"Vault25000-3": "大韓航空チケット",
+	"Vault25000-4": "フォートノックス",
+	"Vault25000-5": "マスタング",
+	"Vault25000-6": "レクサス",
+	"Vault25000-7": "アメリカ病院法案",
+
 	"weapon-description-stabbing": "刺すようなダメージを与えます。",
 	"weapon-description-slashing": "斬撃ダメージを与えます。",
 	"weapon-description-crushing": "押しつぶすようなダメージを与えます。",

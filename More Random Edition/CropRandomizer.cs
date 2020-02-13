@@ -247,7 +247,8 @@ namespace Randomizer
 			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.Coffee] = coffee.ToString();
 
 			Item coffeeBean = ItemList.Items[(int)ObjectIndexes.CoffeeBean];
-			coffeeBean.OverrideName = Globals.GetTranslation("coffee-bean-name", new { itemName = coffeeName });
+			coffeeBean.OverrideName = $"{coffeeName} Bean";
+			coffeeBean.OverrideDisplayName = Globals.GetTranslation("coffee-bean-name", new { itemName = coffeeName });
 			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.CoffeeBean] = coffeeBean.ToString();
 		}
 
@@ -259,7 +260,8 @@ namespace Randomizer
 		{
 			CropItem unmilledRice = (CropItem)ItemList.Items[(int)ObjectIndexes.UnmilledRice];
 			string riceName = unmilledRice.OverrideName;
-			unmilledRice.OverrideName = Globals.GetTranslation("unmilled-rice-name", new { itemName = riceName });
+			unmilledRice.OverrideName = $"Unmilled {riceName}";
+			unmilledRice.OverrideDisplayName = Globals.GetTranslation("unmilled-rice-name", new { itemName = riceName });
 			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.UnmilledRice] = unmilledRice.ToString();
 
 			Item rice = ItemList.Items[(int)ObjectIndexes.Rice];

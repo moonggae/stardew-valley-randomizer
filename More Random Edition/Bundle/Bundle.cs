@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using static StardewValley.LocalizedContentManager;
 
 namespace Randomizer
 {
@@ -157,7 +158,8 @@ namespace Randomizer
 				minRequiredItemsString = $"/{MinimumRequiredItems.ToString()}";
 			}
 
-			return $"{Name}/{rewardString}/{GetRewardStringForRequiredItems()}/{Color:D}{minRequiredItemsString}/{Name}";
+			string displayNameString = Globals.ModRef.Helper.Translation.LocaleEnum == LanguageCode.en ? "" : $"/{Name}";
+			return $"{Name}/{rewardString}/{GetRewardStringForRequiredItems()}/{Color:D}{minRequiredItemsString}{displayNameString}";
 		}
 
 		/// <summary>

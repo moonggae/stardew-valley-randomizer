@@ -87,6 +87,37 @@
 
 	"bundle-joja-missing": "失踪",
 	
+	"vault-money-format": "{{moneyString}}金",
+	"Vault2500-1": "午餐钱",
+	"Vault2500-2": "公交车票价",
+	"Vault2500-3": "便宜",
+	"Vault2500-4": "Tree Fiddy",
+	"Vault2500-5": "铁公鸡",
+	"Vault2500-6": "加油站食品",
+	"Vault2500-7": "存钱罐",
+
+	"Vault5000-1": "餐厅午餐",
+	"Vault5000-2": "快递邮件",
+	"Vault5000-3": "新搅拌机",
+	"Vault5000-4": "新鞋",
+	"Vault5000-5": "游乐园门票",
+	"Vault5000-6": "星露谷 - 游戏",
+
+	"Vault10000-1": "任天堂Switch",
+	"Vault10000-2": "笔记本电脑",
+	"Vault10000-3": "MLM入门套件",
+	"Vault10000-4": "4k电视",
+	"Vault10000-5": "维京冰箱",
+	"Vault10000-6": "新眼镜",
+
+	"Vault25000-1": "首付",
+	"Vault25000-2": "大学学费",
+	"Vault25000-3": "大韩航空机票",
+	"Vault25000-4": "诺克斯堡",
+	"Vault25000-5": "野马",
+	"Vault25000-6": "雷克萨斯",
+	"Vault25000-7": "美国医院法案",
+	
 	"weapon-description-stabbing": "刺伤。",
 	"weapon-description-slashing": "大幅削减伤害。",
 	"weapon-description-crushing": "造成损坏。",

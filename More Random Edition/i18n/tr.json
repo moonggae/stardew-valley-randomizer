@@ -87,6 +87,37 @@
 
 	"bundle-joja-missing": "Kayıp",
 	
+	"vault-money-format": "{{moneyString}}g",
+	"Vault2500-1": "Öğle yemeği parası",
+	"Vault2500-2": "Otobüs ücreti",
+	"Vault2500-3": "Cimri",
+	"Vault2500-4": "Tree Fiddy",
+	"Vault2500-5": "Cimri kişi",
+	"Vault2500-6": "Benzin Istasyonu Yiyecek",
+	"Vault2500-7": "Kumbara",
+
+	"Vault5000-1": "Restoran Öğle Yemeği",
+	"Vault5000-2": "Hızlı Posta",
+	"Vault5000-3": "Yeni Blender",
+	"Vault5000-4": "Yeni ayakkabılar",
+	"Vault5000-5": "Eğlence Parkı Kartı",
+	"Vault5000-6": "Stardew Valley - Oyun",
+
+	"Vault10000-1": "Nintendo Anahtarı",
+	"Vault10000-2": "Dizüstü",
+	"Vault10000-3": "MLM Başlangıç ​​Kiti",
+	"Vault10000-4": "4k Televizyon",
+	"Vault10000-5": "Viking Buzdolabı",
+	"Vault10000-6": "Yeni gözlük",
+
+	"Vault25000-1": "Peşinat",
+	"Vault25000-2": "Üniversite harcı",
+	"Vault25000-3": "Kore Hava Bileti",
+	"Vault25000-4": "Fort Knox",
+	"Vault25000-5": "Yabani at",
+	"Vault25000-6": "Lexus",
+	"Vault25000-7": "Amerikan Hastane Yasası",
+
 	"weapon-description-stabbing": "Bıçaklama hasarı verir.",
 	"weapon-description-slashing": "Hasar verir.",
 	"weapon-description-crushing": "Ezilme hasarı verir.",

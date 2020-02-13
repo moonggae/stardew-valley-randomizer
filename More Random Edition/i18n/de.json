@@ -87,6 +87,37 @@
 
 	"bundle-joja-missing": "Das fehlende",
 	
+	"vault-money-format": "{{moneyString}} G",
+	"Vault2500-1": "Essensgeld",
+	"Vault2500-2": "Busfahrpreis",
+	"Vault2500-3": "Geizhals",
+	"Vault2500-4": "Tree Fiddy",
+	"Vault2500-5": "Geizige Person",
+	"Vault2500-6": "Tankstelle Essen",
+	"Vault2500-7": "Sparschwein",
+
+	"Vault5000-1": "Restaurant Mittagessen",
+	"Vault5000-2": "Eilbrief",
+	"Vault5000-3": "Neuer Mixer",
+	"Vault5000-4": "Neue Schuhe",
+	"Vault5000-5": "Vergnügungspark-Pass",
+	"Vault5000-6": "Stardew Valley - Das Spiel",
+
+	"Vault10000-1": "Nintendo Switch",
+	"Vault10000-2": "Laptop",
+	"Vault10000-3": "MLM Starter Kit",
+	"Vault10000-4": "4k Fernsehen",
+	"Vault10000-5": "Wikinger-Kühlschrank",
+	"Vault10000-6": "Neue Brille",
+
+	"Vault25000-1": "Anzahlung",
+	"Vault25000-2": "Studiengebühren",
+	"Vault25000-3": "Koreanisches Flugticket",
+	"Vault25000-4": "Fort Knox",
+	"Vault25000-5": "Mustang",
+	"Vault25000-6": "Lexus",
+	"Vault25000-7": "Amerikanische Krankenhausrechnung",
+	
 	"weapon-description-stabbing": "Fügt stechenden Schaden zu.",
 	"weapon-description-slashing": "Fügt Schaden zu.",
 	"weapon-description-crushing": "Verursacht Quetschschäden.",

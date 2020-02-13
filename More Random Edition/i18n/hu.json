@@ -87,6 +87,37 @@
 
 	"bundle-joja-missing": "A hiányzó",
 	
+	"vault-money-format": "{{moneyString}}g",
+	"Vault2500-1": "Ebéd pénz",
+	"Vault2500-2": "Busz viteldíj",
+	"Vault2500-3": "Olcsó ember",
+	"Vault2500-4": "Tree Fiddy",
+	"Vault2500-5": "Ragacsos ember",
+	"Vault2500-6": "Benzinkút ételek",
+	"Vault2500-7": "Malacpersely",
+
+	"Vault5000-1": "Éttermi ebéd",
+	"Vault5000-2": "Expressz",
+	"Vault5000-3": "Új turmixgép",
+	"Vault5000-4": "Új cipők",
+	"Vault5000-5": "Vidámpark bérlet",
+	"Vault5000-6": "Stardew Valley - A játék",
+
+	"Vault10000-1": "Nintendo kapcsoló",
+	"Vault10000-2": "hordozható számítógép",
+	"Vault10000-3": "MLM kezdőkészlet",
+	"Vault10000-4": "4k televízió",
+	"Vault10000-5": "Viking hűtőszekrény",
+	"Vault10000-6": "Új szemüveg",
+
+	"Vault25000-1": "Előleg",
+	"Vault25000-2": "Főiskolai tandíjat",
+	"Vault25000-3": "Koreai repülőjegy",
+	"Vault25000-4": "Fort Knox",
+	"Vault25000-5": "Musztáng",
+	"Vault25000-6": "Lexus",
+	"Vault25000-7": "Amerikai Kórház Bill",
+	
 	"weapon-description-stabbing": "Szúró károkat okoz.",
 	"weapon-description-slashing": "Vágáskárosodást okoz.",
 	"weapon-description-crushing": "Zúzás káros.",
