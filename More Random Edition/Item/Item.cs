@@ -13,6 +13,17 @@ namespace Randomizer
 		{
 			get { return GetName(); }
 		}
+		public string DisplayName
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(OverrideDisplayName))
+				{
+					return Name;
+				}
+				return OverrideDisplayName;
+			}
+		}
 		public string OverrideName { get; set; }
 		public string OverrideDisplayName { get; set; } // Used in the xnb string if it is populated
 		public LocationData ForagableLocationData { get; } = new LocationData();

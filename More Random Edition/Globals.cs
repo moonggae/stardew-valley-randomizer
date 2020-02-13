@@ -168,6 +168,11 @@ namespace Randomizer
 		/// </summary>
 		public static string GetArticle(string word)
 		{
+			if (string.IsNullOrEmpty(word))
+			{
+				return string.Empty;
+			}
+
 			word = word.ToLower();
 			if (word.StartsWith("a") || word.StartsWith("e") || word.StartsWith("i") || word.StartsWith("o") || word.StartsWith("u"))
 				return "an";
