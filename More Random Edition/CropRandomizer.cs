@@ -52,7 +52,7 @@ namespace Randomizer
 				string season = seasons[i];
 				string seasonDisplay = Globals.GetTranslation($"seasons-{season}");
 				Item treeItem = treeItems[i];
-				string treeItemName = GetFruitTreeItemName(treeItem);
+				string treeItemName = treeItem.DisplayName;
 				string fruitTreeName = treeItem.Id == fruitTreesIds[i] ?
 					Globals.GetTranslation("item-recursion-sapling-name") :
 					Globals.GetTranslation("sapling-text", new { itemName = treeItemName });
@@ -69,30 +69,6 @@ namespace Randomizer
 				string fruitTreeObjectValue = $"{fruitTreeName}/{price / 2}/-300/Basic -74/{fruitTreeName}/{Globals.GetTranslation("sapling-description", new { itemName = treeItemName, season = seasonDisplay })}";
 				editedObjectInfo.ObjectInformationReplacements[fruitTreeId] = fruitTreeObjectValue;
 			}
-		}
-
-		/// <summary>
-		/// Gets the fruit tree name from the item
-		/// If the name was randomized, use that name - otherwise, use the translated version
-		/// </summary>
-		/// <param name="treeItem">The item</param>
-		/// <returns>The internationalized item name</returns>
-		private static string GetFruitTreeItemName(Item treeItem)
-		{
-			if (!string.IsNullOrEmpty(treeItem.OverrideName))
-			{
-				bool isRandomizedCookedItem = Globals.Config.RandomizeCrops && treeItem.IsCooked;
-				bool isRandomizedCropOrSeedItem = Globals.Config.RandomizeCrops && (treeItem.IsCrop || treeItem.IsSeed);
-				bool isRandomizedFishItem = Globals.Config.RandomizeFish && treeItem.IsFish;
-				bool useOriginalName = isRandomizedCookedItem || isRandomizedCropOrSeedItem || isRandomizedFishItem;
-
-				if (useOriginalName)
-				{
-					return treeItem.Name;
-				}
-			}
-
-			return Globals.GetTranslation($"item-{treeItem.Id}-display-name");
 		}
 
 		/// <summary>

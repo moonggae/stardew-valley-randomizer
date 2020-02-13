@@ -17,11 +17,25 @@ namespace Randomizer
 		{
 			get
 			{
-				if (string.IsNullOrEmpty(OverrideDisplayName))
+				if (!string.IsNullOrEmpty(OverrideName) || !string.IsNullOrEmpty(OverrideDisplayName))
 				{
-					return Name;
+					bool isRandomizedCookedItem = Globals.Config.RandomizeCrops && IsCooked;
+					bool isRandomizedCropOrSeedItem = Globals.Config.RandomizeCrops && (IsCrop || IsSeed);
+					bool isRandomizedFishItem = Globals.Config.RandomizeFish && IsFish;
+					bool useOriginalName = isRandomizedCookedItem || isRandomizedCropOrSeedItem || isRandomizedFishItem;
+
+					if (useOriginalName)
+					{
+						return Name;
+					}
 				}
-				return OverrideDisplayName;
+
+				if (!string.IsNullOrEmpty(OverrideDisplayName))
+				{
+					return OverrideDisplayName;
+				}
+
+				return Globals.GetTranslation($"item-{Id}-display-name");
 			}
 		}
 		public string OverrideName { get; set; }

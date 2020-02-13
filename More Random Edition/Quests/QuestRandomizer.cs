@@ -11,7 +11,7 @@ namespace Randomizer
 		private static readonly List<Item> FishList = FishItem.Get().ToList();
 		private static readonly List<Item> Items = ItemList.GetItemsBelowDifficulty(ObtainingDifficulties.Impossible).ToList();
 
-		private static readonly int ParsnipCropId = ((SeedItem)ItemList.Items[(int)ObjectIndexes.ParsnipSeeds]).CropGrowthInfo.CropId;
+		private static int ParsnipCropId { get; set; }
 		private static Dictionary<int, string> DefaultQuestData { get; set; }
 
 		/// <summary>
@@ -105,6 +105,7 @@ namespace Randomizer
 		/// </summary>
 		private static void PopulateQuestDictionary()
 		{
+			ParsnipCropId = ((SeedItem)ItemList.Items[(int)ObjectIndexes.ParsnipSeeds]).CropGrowthInfo.CropId;
 			DefaultQuestData = new Dictionary<int, string>
 			{
 				{ 3, Globals.GetTranslation("quest-3", new { crop = ItemList.GetItemName((int)ObjectIndexes.Beet) }) },
@@ -127,8 +128,8 @@ namespace Randomizer
 			//{3, $"Basic/The Mysterious Qi/You've found another note written by 'Mr. Qi'. The request is even more unusual this time./Place 10 {ItemList.GetItemName((int)ObjectIndexes.Beet)}s inside Mayor Lewis' fridge./null/-1/0/-1/false" },
 			//{6, $"ItemHarvest/Getting Started/If you want to become a farmer, you have to start with the basics. Use your hoe to till the soil, then use a seed packet on the tilled soil to sow a crop. Water every day until the crop is ready for harvest./Cultivate and harvest [a] {ItemList.GetItemName(ParsnipCropId)}./{ParsnipCropId}/h7 8/100/-1/true"},
 			//{22, $"Basic/Fish Casserole/Jodi swung by the farm to ask you to dinner at 7:00 PM. Her only request was that you bring one {ItemList.GetItemName((int)ObjectIndexes.LargemouthBass)} for her fish casserole./Enter Jodi's house with one {ItemList.GetItemName((int)ObjectIndexes.LargemouthBass)} at 7:00 PM./-1/-1/0/-1/true"},
-			//{101, "ItemDelivery/[person]'s Request/[person] needs a fresh [crop] for a recipe and is asking you to grow one./Bring [person] [a] [crop]./[person] [id]/-1/[reward]/-1/true/Oh, that looks so delicious! Thank you, this is just what I wanted. It's going to be perfect for my yellow curry."},
-			//{103, "ItemDelivery/[person] Is Hungry/[person] is hankerin' for a [dish]. Nothing else will do. You can probably make one yourself if you have the ingredients./Bring [person] a [dish]./[person] [id]/-1/[reward]/-1/true/Gimme that. *slurp*... Ahh, that's the stuff.#$b#It's real nice and hoppy... notes of citrus and pine, but with a robust body to keep it grounded.#$b#Thanks, kid. This means a lot to me. I knew I could count on you.$h"},
+			//{ 101, "ItemDelivery/[person]'s Request/[person] needs a fresh [crop] for a recipe and is asking you to grow one./Bring [person] [a] [crop]./[person] [id]/-1/[reward]/-1/true/Oh, that looks so delicious! Thank you, this is just what I wanted. It's going to be perfect for my yellow curry."},
+			//{ 103, "ItemDelivery/[person] Is Hungry/[person] is hankerin' for a [dish]. Nothing else will do. You can probably make one yourself if you have the ingredients./Bring [person] a [dish]./[person] [id]/-1/[reward]/-1/true/Gimme that. *slurp*... Ahh, that's the stuff.#$b#It's real nice and hoppy... notes of citrus and pine, but with a robust body to keep it grounded.#$b#Thanks, kid. This means a lot to me. I knew I could count on you.$h"},
 			//{ 104, "ItemDelivery/Crop Research/[person] needs a fresh [crop] for research purposes./Bring [person] [a] [crop]./[person] [id]/-1/[reward]/-1/true/This is perfect! It's just what I need for my research. It's going to be hard not to eat it! Thanks a bunch."},
 			//{ 105, "ItemDelivery/Knee Therapy/[person] needs [a] [crop] to soothe an aching knee./Bring [person] [a] [crop]./[person] [id]/-1/[reward]/-1/true/Took you long enough... hmmph... Well it's good and spicy at least. Thanks."},
 			//{ 106, "ItemDelivery/Cow's Delight/[person] wants to give some cows a special treat and is asking for a single bunch of [crop]s./Bring [person] one bunch of [crop]s./[person] [id]/-1/[reward]/-1/true/Oh, the [crop]s I asked for! Thank you so much... the cows are going to love this!$h"},
@@ -148,8 +149,8 @@ namespace Randomizer
 			//{ 121, "ItemDelivery/Wanted: [fish]/[person] put out a notice requesting a fresh [fish]./Bring [person] [a] [fish]./[person] [id]/-1/[reward]/-1/true/Something smells like fresh [fish]. Oh, that's good.$h#$b#Take care, friend."},
 			//{ 122, "ItemDelivery/[person] Needs Juice/[person]'s TV Remote is dead. For some reason [a] [item] is needed to fix it./Bring [person] [a] [item]./[person] [id]/-1/[reward]/-1/true/Hey, you pulled through with the [item]! Thanks, kid... You're a life-saver!$h"},
 			//{ 123, "ItemDelivery/Staff Of Riches/[person] is creating a staff of phenomenal riches. Who knows what it's for? The power of [a] [item] is needed to finish it./Bring [person] [a] [item]./[person] [id]/-1/[reward]/-1/true/Ah, precious [item]. You've done well, @. You have my gratitude. Now, leave."},
-			//{ 124, "ItemDelivery/Catch a Fish/[person] is challenging you to catch [a] [fish]./Bring [person] [a] [fish]./[person] [id]/-1/[reward]/-1/true/Hey, that's a real lunker! You've certainly got the angler's blood in you.$h"},
-			//{ 125, "ItemDelivery/Exotic Spirits/[person] wants to make [a] [cropstart]-no-no, but the main ingredient's missing./Bring [person] [a] [crop]./[person] [id]/-1/[reward]/-1/true/[crop]! Now there's a soothing sight for my eyes.$h#$b#It's going to be perfect for my [cropstart]-no-no. Thanks!"}
+			//{ 124, "ItemDelivery/Catch a [fish]/[person] is challenging you to catch [a] [fish]./Bring [person] [a] [fish]./[person] [id]/-1/[reward]/-1/true/Hey, that's a real lunker! You've certainly got the angler's blood in you.$h"},
+			//{ 125, "ItemDelivery/Exotic Spirits/[person] wants to make [a] [cropstart]-no-no, but the main ingredient is missing./Bring [person] [a] [crop]./[person] [id]/-1/[reward]/-1/true/[crop]! Now there's a soothing sight for my eyes.$h#$b#It's going to be perfect for my [cropstart]-no-no. Thanks!"}
 			//};
 		}
 
@@ -196,7 +197,7 @@ namespace Randomizer
 			//{
 			//{ "spring_19_1", "Farmer @-^I have a request for you. I need a fresh [crop] for a recipe I want to make. Could you bring me one?^   -[person]%item quest 101 %%[#][person] Asks For [crop]" },
 			//{ "summer_14_1", "Hey Kid,^My stomach's about as empty as a TV remote with no batteries. I'm real hungry for [dish]. You got some? Just any old food won't do. I need [dish].^   -[person]%item quest 103 %%[#][person]'s Request" },
-			//{ "summer_20_1", "@-^I'm gathering data on the correlation between soil alkalinity and crop fructose levels. Long story short, I need a fresh [crop] from your farm. If you brought me one I'd be very grateful.^   -[person]%item quest 104 %%[#][person] Asks For A Sample" },
+			//	{ "summer_20_1", "@-^I'm gathering data on the correlation between soil alkalinity and crop fructose levels. Long story short, I need a fresh [crop] from your farm. If you brought me one I'd be very grateful.^   -[person]%item quest 104 %%[#][person] Asks For A Sample" },
 			//{ "summer_25_1", "To Farmer @:^My knee's acting up again, and you know what helps? ^Rubbing the darn thing with [crop].^ Trouble is, my supply's run dry. If you've got one to spare I'd be much obliged.^   -[person] %item quest 105 %%[#][person] Needs A Crop" },
 			//{ "fall_3_1", "Dear @,^I'd like to give some cows a special treat. They're such good girls and hungry, too. Could you bring me one bunch of [crop]? They love the stuff. ^Thanks, Dear.^   -[person] %item quest 106 %%[#][person]'s Request" },
 			//{ "fall_19_1", "@-^I'd like to buy [a] [crop] from you. [otherperson] and I want to carve a [cropstart]-o-lantern for the upcoming Spirit's Eve festival. ^   -[person]%item quest 108 %%[#][person]'s Request" },
