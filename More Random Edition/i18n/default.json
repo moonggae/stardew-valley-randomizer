@@ -326,7 +326,7 @@
 	"mail-spring_15_2": "Dear @,^I'd like to surprise {{otherPerson}} with a gift. They're a big fan of {{item}}. Could you bring me one?^   -{{person}}%item quest 116 %%[#]{{person}}'s Surprise",
 	"mail-spring_21_2": "NOTICE^{{person}} here... I really, really want a plate of {{item}}. I'll pay top coin to whoever brings me some.^   -{{person}}%item quest 117 %%[#]{{person}}'s Craving",
 	"mail-summer_6_2": "Fisherman Wanted^I need a good {{item}} specimen. I'm conducting an experiment on the toxin created by the {{item}}.^Reward: {{reward}}g^ -{{person}}%item quest 118 %%[#]{{person}}'s Study On Toxins",
-	"mail-summer_15_2": "Dear Farmer @,^I'd like to give {{otherPerson}} a {{item}} for their birthday. Are you growing any on your farm? If you brought me one, I'd be very grateful.^   -{{person}}%item quest 119 %%[#]{{person}} Needs A Gift",
+	"mail-summer_15_2": "Dear Farmer @,^I'd like to give {{otherPerson}} a {{item}} for their birthday. Are you growing any on your farm? If you brought me one, I'd be very grateful.^   -Kent%item quest 119 %%[#]Kent Needs A Gift",
 	"mail-summer_21_2": "@,^I need {{a}} {{item}}. Don't ask me why.^ -{{person}}%item quest 120 %%[#]{{person}}'s Request",
 	"mail-fall_6_2": "Wanted: 1 fresh {{item}} for a marvelous bisque I'm creating.^Who: {{person}}, a soup fanatic.^Reward: {{reward}}g %item quest 121 %%[#]{{person}} Needs {{item}}",
 	"mail-fall_19_2": "NOTICE^Does anybody have {{a}} {{item}}? My TV remote died, and it's a real hassle getting off the couch to change the station.^  -{{person}}%item quest 122 %%[#]{{person}} Needs Help",

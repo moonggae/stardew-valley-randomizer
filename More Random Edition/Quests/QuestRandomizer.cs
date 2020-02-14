@@ -5,11 +5,11 @@ namespace Randomizer
 {
 	public class QuestRandomizer
 	{
-		private static readonly List<string> People = NPC.QuestableNPCsList;
-		private static readonly List<Item> Crops = ItemList.GetCrops(true).ToList();
-		private static readonly List<Item> Dishes = ItemList.GetCookeditems().ToList();
-		private static readonly List<Item> FishList = FishItem.Get().ToList();
-		private static readonly List<Item> Items = ItemList.GetItemsBelowDifficulty(ObtainingDifficulties.Impossible).ToList();
+		private static List<string> People { get; set; }
+		private static List<Item> Crops { get; set; }
+		private static List<Item> Dishes { get; set; }
+		private static List<Item> FishList { get; set; }
+		private static List<Item> Items { get; set; }
 
 		private static int ParsnipCropId { get; set; }
 		private static Dictionary<int, string> DefaultQuestData { get; set; }
@@ -88,6 +88,12 @@ namespace Randomizer
 		/// <returns>The quest information to modify</returns>
 		public static QuestInformation Randomize()
 		{
+			People = NPC.QuestableNPCsList;
+			Crops = ItemList.GetCrops(true).ToList();
+			Dishes = ItemList.GetCookeditems().ToList();
+			FishList = FishItem.Get().ToList();
+			Items = ItemList.GetItemsBelowDifficulty(ObtainingDifficulties.Impossible).ToList();
+
 			PopulateQuestDictionary();
 			PopulateMailDictionary();
 
@@ -193,11 +199,11 @@ namespace Randomizer
 			}
 
 			//TODO: delete these after adding to i18n file
-			//	DefaultMailData = new Dictionary<string, string>()
+			//DefaultMailData = new Dictionary<string, string>()
 			//{
 			//{ "spring_19_1", "Farmer @-^I have a request for you. I need a fresh [crop] for a recipe I want to make. Could you bring me one?^   -[person]%item quest 101 %%[#][person] Asks For [crop]" },
 			//{ "summer_14_1", "Hey Kid,^My stomach's about as empty as a TV remote with no batteries. I'm real hungry for [dish]. You got some? Just any old food won't do. I need [dish].^   -[person]%item quest 103 %%[#][person]'s Request" },
-			//	{ "summer_20_1", "@-^I'm gathering data on the correlation between soil alkalinity and crop fructose levels. Long story short, I need a fresh [crop] from your farm. If you brought me one I'd be very grateful.^   -[person]%item quest 104 %%[#][person] Asks For A Sample" },
+			//{ "summer_20_1", "@-^I'm gathering data on the correlation between soil alkalinity and crop fructose levels. Long story short, I need a fresh [crop] from your farm. If you brought me one I'd be very grateful.^   -[person]%item quest 104 %%[#][person] Asks For A Sample" },
 			//{ "summer_25_1", "To Farmer @:^My knee's acting up again, and you know what helps? ^Rubbing the darn thing with [crop].^ Trouble is, my supply's run dry. If you've got one to spare I'd be much obliged.^   -[person] %item quest 105 %%[#][person] Needs A Crop" },
 			//{ "fall_3_1", "Dear @,^I'd like to give some cows a special treat. They're such good girls and hungry, too. Could you bring me one bunch of [crop]? They love the stuff. ^Thanks, Dear.^   -[person] %item quest 106 %%[#][person]'s Request" },
 			//{ "fall_19_1", "@-^I'd like to buy [a] [crop] from you. [otherperson] and I want to carve a [cropstart]-o-lantern for the upcoming Spirit's Eve festival. ^   -[person]%item quest 108 %%[#][person]'s Request" },
