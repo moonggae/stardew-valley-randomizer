@@ -77,6 +77,8 @@ namespace Randomizer
 			helper.Events.Multiplayer.PeerContextReceived += (sender, args) => FixParsnipSeedBox();
 
 			helper.Events.Display.RenderingActiveMenu += (sender, args) => _modAssetLoader.TryReplaceTitleScreen();
+			helper.Events.Display.MenuChanged += BundleMenuAdjustments.FixRingSelection;
+			helper.Events.Display.RenderingActiveMenu += (sender, args) => BundleMenuAdjustments.FixRingDeposits();
 			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetLoader.ReplaceTitleScreenAfterReturning();
 			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => ImageBuilder.CleanUpReplacementFiles();
 
