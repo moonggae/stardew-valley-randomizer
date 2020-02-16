@@ -306,7 +306,7 @@ namespace Randomizer
 				{ (int)ObjectIndexes.ParsnipSoup, $"{parsnip} Soup/120/34/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.ParsnipSoup, parsnip)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
 				{ (int)ObjectIndexes.BeanHotpot, $"{greenbean} Hotpot/100/50/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.BeanHotpot, greenbean)}/food/0 0 0 0 0 0 2 0 0 0 0/600" },
 				{ (int)ObjectIndexes.GlazedYams, $"Glazed {yam} Platter/200/80/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.GlazedYams, yam)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
-				{ (int)ObjectIndexes.PepperPoppers, $"{hotpepper} Poppers/200/52/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.HotPepper, hotpepper)}/food/2 0 0 0 0 0 0 0 0 1 0/600" },
+				{ (int)ObjectIndexes.PepperPoppers, $"{hotpepper} Poppers/200/52/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.PepperPoppers, hotpepper)}/food/2 0 0 0 0 0 0 0 0 1 0/600" },
 				{ (int)ObjectIndexes.RhubarbPie, $"{rhubarb} Pie/400/86/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.RhubarbPie, rhubarb)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
 				{ (int)ObjectIndexes.EggplantParmesan, $"{eggplant} Parmesan/200/70/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.EggplantParmesan, eggplant)}/food/0 0 1 0 0 0 0 0 0 0 3/400" },
 				{ (int)ObjectIndexes.RicePudding, $"{rice} Pudding/260/46/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.RicePudding, rice)}/food/0 0 0 0 0 0 0 0 0 0 0/0"},
