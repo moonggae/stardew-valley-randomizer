@@ -26,6 +26,15 @@
 	"fish-weather-sunny": "sunny",
 	"fish-weather-rainy": "rainy",
 	
+	"crop-tooltip-flower": "This is a flower.",
+	"crop-tooltip-needs-scythe": "Harvest with the scythe.",
+	"crop-tooltip-trellis": "Grows on a trellis.",
+	"crop-tooltip-growth-time-reproduces": "Takes {{daysToGrow}} days to grow but keeps producing after that.",
+	"crop-tooltip-growth-time": "Takes {{daysToGrow}} days to mature.",
+	"crop-tooltip-seasons": "Plant during: {{seasons}}.",
+	"crop-tooltip-cactus-fruit": "Can only be grown indoors.",
+	"crop-tooltip-rice-shoot": "Grows faster near water.",
+		
 	"bundle-random-all": "Random",
 	"bundle-random-letter": "\"{{letter}}\"",
 

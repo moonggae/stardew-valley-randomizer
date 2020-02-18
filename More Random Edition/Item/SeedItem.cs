@@ -20,15 +20,15 @@ namespace Randomizer
 				}
 
 				CropItem growsCrop = (CropItem)ItemList.Items[CropGrowthInfo.CropId];
-				string flowerString = growsCrop.IsFlower ? "This is a flower. " : "";
-				string scytheString = CropGrowthInfo.CanScythe ? "Harvest with the scythe. " : "";
-				string trellisString = CropGrowthInfo.IsTrellisCrop ? "Grows on a trellis. " : "";
+				string flowerString = growsCrop.IsFlower ? $"{Globals.GetTranslation("crop-tooltip-flower")} " : "";
+				string scytheString = CropGrowthInfo.CanScythe ? $"{Globals.GetTranslation("crop-tooltip-needs-scythe")} " : "";
+				string trellisString = CropGrowthInfo.IsTrellisCrop ? $"{Globals.GetTranslation("crop-tooltip-trellis")} " : "";
 				string growthString = CropGrowthInfo.RegrowsAfterHarvest ?
-					$"Takes {CropGrowthInfo.TimeToGrow} days to grow but keeps producing after that. " :
-					$"Takes {CropGrowthInfo.TimeToGrow} days to mature. ";
-				string seasonsString = $"Plant during: {CropGrowthInfo.GetSeasonsString(true)}. ";
-				string indoorsString = growsCrop.Id == (int)ObjectIndexes.CactusFruit ? "Can only be grown indoors. " : "";
-				string waterString = growsCrop.Id == (int)ObjectIndexes.UnmilledRice ? "Grows faster near water." : "";
+					$"{Globals.GetTranslation($"crop-tooltip-growth-time-reproduces", new { daysToGrow = CropGrowthInfo.TimeToGrow })} " :
+					$"{Globals.GetTranslation($"crop-tooltip-growth-time", new { daysToGrow = CropGrowthInfo.TimeToGrow })} ";
+				string seasonsString = $"Plant during: {CropGrowthInfo.GetSeasonsStringForDisplay()}. ";
+				string indoorsString = growsCrop.Id == (int)ObjectIndexes.CactusFruit ? $"{Globals.GetTranslation("crop-tooltip-cactus-fruit")} " : "";
+				string waterString = growsCrop.Id == (int)ObjectIndexes.UnmilledRice ? $"{Globals.GetTranslation("crop-tooltip-rice-shoot")} " : "";
 
 				return $"{flowerString}{scytheString}{trellisString}{growthString}{seasonsString}{indoorsString}{waterString}";
 			}
