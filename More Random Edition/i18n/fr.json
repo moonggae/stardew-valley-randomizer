@@ -26,6 +26,15 @@
 	"fish-weather-sunny": "ensoleillé",
 	"fish-weather-rainy": "pluvieux",
 	
+	"crop-tooltip-flower": "Ceci est une fleur.",
+	"crop-tooltip-needs-scythe": "Récoltez avec la faux.",
+	"crop-tooltip-trellis": "Pousse sur un treillis.",
+	"crop-tooltip-growth-time-reproduces": "Cela prend {{daysToGrow}} jours pour grandir mais continue à produire après cela.",
+	"crop-tooltip-growth-time": "Il faut {{daysToGrow}} jours pour mûrir.",
+	"crop-tooltip-seasons": "Planter pendant: {{seasons}}.",
+	"crop-tooltip-cactus-fruit": "Ne peut être cultivé qu'en intérieur.",
+	"crop-tooltip-rice-shoot": "Pousse plus vite près de l'eau.",
+	
 	"bundle-random-all": "Aléatoire",
 	"bundle-random-letter": "Anglais \"{{letter}}\"",
 

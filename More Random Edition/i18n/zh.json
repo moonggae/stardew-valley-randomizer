@@ -25,6 +25,15 @@
 
 	"fish-weather-sunny": "晴天",
 	"fish-weather-rainy": "雨天",
+	
+	"crop-tooltip-flower": "这是一朵花。",
+	"crop-tooltip-needs-scythe": "用大镰刀收获。",
+	"crop-tooltip-trellis": "长在格子上。",
+	"crop-tooltip-growth-time-reproduces": "需要{{daysToGrow}}天才能生长，但此后仍保持生产。",
+	"crop-tooltip-growth-time": "需要{{daysToGrow}}天才能成熟。",
+	"crop-tooltip-seasons": "种植期间: {{seasons}}.",
+	"crop-tooltip-cactus-fruit": "只能在室内种植。",
+	"crop-tooltip-rice-shoot": "在水附近生长更快。",
 
 	"bundle-random-all": "随机",
 	"bundle-random-letter": "英文字母 \"{{letter}}\"",

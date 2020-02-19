@@ -26,7 +26,7 @@ namespace Randomizer
 				string growthString = CropGrowthInfo.RegrowsAfterHarvest ?
 					$"{Globals.GetTranslation($"crop-tooltip-growth-time-reproduces", new { daysToGrow = CropGrowthInfo.TimeToGrow })} " :
 					$"{Globals.GetTranslation($"crop-tooltip-growth-time", new { daysToGrow = CropGrowthInfo.TimeToGrow })} ";
-				string seasonsString = $"Plant during: {CropGrowthInfo.GetSeasonsStringForDisplay()}. ";
+				string seasonsString = $"{Globals.GetTranslation("crop-tooltip-seasons", new { seasons = CropGrowthInfo.GetSeasonsStringForDisplay() })} ";
 				string indoorsString = growsCrop.Id == (int)ObjectIndexes.CactusFruit ? $"{Globals.GetTranslation("crop-tooltip-cactus-fruit")} " : "";
 				string waterString = growsCrop.Id == (int)ObjectIndexes.UnmilledRice ? $"{Globals.GetTranslation("crop-tooltip-rice-shoot")} " : "";
 

@@ -26,6 +26,15 @@
 	"fish-weather-sunny": "sonnig",
 	"fish-weather-rainy": "regnerisch",
 	
+	"crop-tooltip-flower": "Das ist eine Blume.",
+	"crop-tooltip-needs-scythe": "Ernte mit der Sense.",
+	"crop-tooltip-trellis": "Wächst auf einem Gitter.",
+	"crop-tooltip-growth-time-reproduces": "Es dauert {{daysToGrow}} Tage, um zu wachsen, aber danach wird weiter produziert.",
+	"crop-tooltip-growth-time": "Die Reifung dauert {{daysToGrow}} Tage.",
+	"crop-tooltip-seasons": "Pflanze während: {{seasons}}.",
+	"crop-tooltip-cactus-fruit": "Kann nur drinnen angebaut werden.",
+	"crop-tooltip-rice-shoot": "Wächst in der Nähe von Wasser schneller.",
+	
 	"bundle-random-all": "Zufällig",
 	"bundle-random-letter": "Englisch \"{{letter}}\"",
 

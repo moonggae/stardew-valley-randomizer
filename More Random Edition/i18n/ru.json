@@ -26,6 +26,15 @@
 	"fish-weather-sunny": "Солнечный",
 	"fish-weather-rainy": "дождливый",
 	
+	"crop-tooltip-flower": "Это цветок.",
+	"crop-tooltip-needs-scythe": "Урожай с косой.",
+	"crop-tooltip-trellis": "Растет на решетке.",
+	"crop-tooltip-growth-time-reproduces": "Требуется {{daysToGrow}} дней, чтобы расти, но продолжает производить после этого.",
+	"crop-tooltip-growth-time": "Требуется {{daysToGrow}} дней для созревания.",
+	"crop-tooltip-seasons": "Завод во время: {{seasons}}.",
+	"crop-tooltip-cactus-fruit": "Можно выращивать только в помещении.",
+	"crop-tooltip-rice-shoot": "Растет быстрее возле воды.",
+	
 	"bundle-random-all": "случайный",
 	"bundle-random-letter": "Английский \"{{letter}}\"",
 

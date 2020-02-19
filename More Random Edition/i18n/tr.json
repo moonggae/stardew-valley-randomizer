@@ -26,6 +26,15 @@
 	"fish-weather-sunny": "güneşli",
 	"fish-weather-rainy": "yağışlı",
 	
+	"crop-tooltip-flower": "Bu bir çiçek.",
+	"crop-tooltip-needs-scythe": "Tırpan ile hasat edin.",
+	"crop-tooltip-trellis": "Bir kafes üzerinde büyür.",
+	"crop-tooltip-growth-time-reproduces": "Büyümek için {{daysToGrow}} gün gerekiyor, ancak bundan sonra da üretime devam ediyor.",
+	"crop-tooltip-growth-time": "Olgunlaşması {{daysToGrow}} gün sürer.",
+	"crop-tooltip-seasons": "Sırasında bitki: {{seasons}}.",
+	"crop-tooltip-cactus-fruit": "Sadece iç mekanlarda yetiştirilebilir.",
+	"crop-tooltip-rice-shoot": "Su yakınında daha hızlı büyür.",
+	
 	"bundle-random-all": "Rasgele",
 	"bundle-random-letter": "İngilizce \"{{letter}}\"",
 
