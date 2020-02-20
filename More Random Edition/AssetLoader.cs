@@ -1,10 +1,13 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley;
+using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using static StardewValley.LocalizedContentManager;
 
 namespace Randomizer
 {
@@ -67,21 +70,55 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Currently this just replaces the title screen
+		/// Nothing to do here at the moment
 		/// </summary>
 		public void CalculateReplacementsBeforeLoad()
+		{
+		}
+
+		/// <summary>
+		/// The current locale
+		/// </summary>
+		private string _currentLocale = "default";
+
+		/// <summary>
+		/// Replaces the title scrren graphics - done whenever the locale is changed or the game is first loaded
+		/// Won't actually replace it if it already did
+		/// </summary>
+		public void TryReplaceTitleScreen()
+		{
+			IClickableMenu genericMenu = Game1.activeClickableMenu;
+			if (genericMenu is null || !(genericMenu is TitleMenu)) { return; }
+
+			if (_currentLocale != _mod.Helper.Translation.Locale)
+			{
+				ReplaceTitleScreen((TitleMenu)genericMenu);
+			}
+		}
+
+		/// <summary>
+		/// Replaces the title screen after returning from a game - called by the appropriate event handler
+		/// </summary>
+		public void ReplaceTitleScreenAfterReturning()
 		{
 			ReplaceTitleScreen();
 		}
 
 		/// <summary>
-		/// Replaces the title scrren graphics - done when the game is first loaded and after returning
-		/// back to the title screen
+		/// Replaces the title screen graphics
 		/// </summary>
-		public void ReplaceTitleScreen()
+		/// <param name="titleMenu">The title menu - passed if we're already on the title screen</param>
+		private void ReplaceTitleScreen(TitleMenu titleMenu = null)
 		{
-			this.AddReplacement("Minigames/TitleButtons", "Assets/Minigames/TitleButtons.png");
+			_currentLocale = _mod.Helper.Translation.Locale;
+			AddReplacement("Minigames/TitleButtons", $"Assets/Minigames/{Globals.GetTranslation("title-graphic")}");
 			_mod.Helper.Content.InvalidateCache("Minigames/TitleButtons");
+
+			if (titleMenu != null)
+			{
+				LanguageCode code = _mod.Helper.Translation.LocaleEnum;
+				_mod.Helper.Reflection.GetMethod(titleMenu, "OnLanguageChange", true).Invoke(code);
+			}
 		}
 
 		/// <summary>

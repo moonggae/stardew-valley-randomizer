@@ -13,7 +13,33 @@ namespace Randomizer
 		{
 			get { return GetName(); }
 		}
+		public string DisplayName
+		{
+			get
+			{
+				if (!string.IsNullOrEmpty(OverrideName) || !string.IsNullOrEmpty(OverrideDisplayName))
+				{
+					bool isRandomizedCookedItem = Globals.Config.RandomizeCrops && IsCooked;
+					bool isRandomizedCropOrSeedItem = Globals.Config.RandomizeCrops && (IsCrop || IsSeed);
+					bool isRandomizedFishItem = Globals.Config.RandomizeFish && IsFish;
+					bool useOriginalName = isRandomizedCookedItem || isRandomizedCropOrSeedItem || isRandomizedFishItem;
+
+					if (useOriginalName)
+					{
+						return Name;
+					}
+				}
+
+				if (!string.IsNullOrEmpty(OverrideDisplayName))
+				{
+					return OverrideDisplayName;
+				}
+
+				return Globals.GetTranslation($"item-{Id}-display-name");
+			}
+		}
 		public string OverrideName { get; set; }
+		public string OverrideDisplayName { get; set; } // Used in the xnb string if it is populated
 		public LocationData ForagableLocationData { get; } = new LocationData();
 		public bool ShouldBeForagable { get; set; }
 		public bool IsForagable
@@ -45,6 +71,8 @@ namespace Randomizer
 		public bool IsResource { get; set; }
 		public Range ItemsRequiredForRecipe { get; set; } = new Range(1, 1);
 		public double RequiredItemMultiplier = 1;
+
+		public string CoffeeIngredient { get; set; }
 
 		/// <summary>
 		/// The difficulty that this item is to obtain
@@ -188,7 +216,7 @@ namespace Randomizer
 		{
 			if (Id == (int)ObjectIndexes.Coffee)
 			{
-				return $"{Name}/150/1/Crafting/{Name}/It smells delicious. This is sure to give you a boost./drink/0 0 0 0 0 0 0 0 0 1 0/120";
+				return $"{Name}/150/1/Crafting/{Globals.GetTranslation("item-coffee-name", new { itemName = CoffeeIngredient })}/{Globals.GetTranslation("item-coffee-description")}/drink/0 0 0 0 0 0 0 0 0 1 0/120";
 			}
 
 			Globals.ConsoleError($"Called the ToString of unexpected item {Id}: {Name}");

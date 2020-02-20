@@ -16,7 +16,6 @@ namespace Randomizer
 		public BootItem(
 			int id,
 			string name,
-			string description,
 			int notActuallyPrice,
 			int defense,
 			int immunity,
@@ -27,7 +26,7 @@ namespace Randomizer
 			ShouldBeForagable = false;
 
 			OverrideName = name;
-			Description = description;
+			Description = Globals.GetTranslation($"boots-{id}-description");
 			NotActuallyPrice = notActuallyPrice;
 			Defense = defense;
 			Immunity = immunity;

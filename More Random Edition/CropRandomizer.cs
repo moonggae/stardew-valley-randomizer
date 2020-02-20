@@ -21,11 +21,6 @@ namespace Randomizer
 		/// <param name="editedObjectInfo">The edited object information</param>
 		private static void RandomizeFruitTrees(EditedObjectInformation editedObjectInfo)
 		{
-			List<Item> allPotentialTreesItems = ItemList.Items.Values.Where(x =>
-				x.Name.EndsWith("Sapling") || x.DifficultyToObtain < ObtainingDifficulties.Impossible
-			).ToList();
-
-			List<Item> treeItems = Globals.RNGGetRandomValuesFromList(allPotentialTreesItems, 6);
 			int[] fruitTreesIds = new int[]
 			{
 				(int)ObjectIndexes.CherrySapling,
@@ -35,17 +30,16 @@ namespace Randomizer
 				(int)ObjectIndexes.PomegranateSapling,
 				(int)ObjectIndexes.AppleSapling
 			};
+			List<Item> allPotentialTreesItems = ItemList.Items.Values.Where(x =>
+				fruitTreesIds.Contains(x.Id) || x.DifficultyToObtain < ObtainingDifficulties.Impossible
+			).ToList();
+
+			List<Item> treeItems = Globals.RNGGetRandomValuesFromList(allPotentialTreesItems, 6);
+
 			string[] seasons = { "spring", "spring", "summer", "summer", "fall", "fall" };
 			seasons[Globals.RNG.Next(0, 6)] = "winter";
 
 			int[] prices = treeItems.Select(x => x.GetPriceForObtainingDifficulty(0.2)).ToArray();
-			ItemList.Items[(int)ObjectIndexes.CherrySapling].OverrideName = "Cherry Sapling";
-			ItemList.Items[(int)ObjectIndexes.ApricotSapling].OverrideName = "Apricot Sapling";
-			ItemList.Items[(int)ObjectIndexes.OrangeSapling].OverrideName = "Orange Sapling";
-			ItemList.Items[(int)ObjectIndexes.PeachSapling].OverrideName = "Peach Sapling";
-			ItemList.Items[(int)ObjectIndexes.PomegranateSapling].OverrideName = "Pomegranate Sapling";
-			ItemList.Items[(int)ObjectIndexes.AppleSapling].OverrideName = "Apple Sapling";
-
 			if (!Globals.Config.RandomizeFruitTrees) { return; }
 
 			// Fruit tree asset replacements
@@ -56,15 +50,23 @@ namespace Randomizer
 			{
 				int price = prices[i];
 				string season = seasons[i];
+				string seasonDisplay = Globals.GetTranslation($"seasons-{season}");
 				Item treeItem = treeItems[i];
-				string fruitTreeName = treeItem.Id == fruitTreesIds[i] ? "Recursion Sapling" : $"{treeItem.Name} Sapling";
+				string treeItemName = treeItem.DisplayName;
+				string fruitTreeName = treeItem.Id == fruitTreesIds[i] ?
+					Globals.GetTranslation("item-recursion-sapling-name") :
+					Globals.GetTranslation("sapling-text", new { itemName = treeItemName });
+				string fruitTreeEnglishName = treeItem.Id == fruitTreesIds[i] ?
+					"Recursion Sapling" :
+					$"{treeItem.Name} Sapling";
+
 				int fruitTreeId = fruitTreesIds[i];
 
 				string fruitTreeValue = $"{i}/{season}/{treeItem.Id}/{price}";
 				editedObjectInfo.FruitTreeReplacements[fruitTreeId] = fruitTreeValue;
 
-				ItemList.Items[fruitTreeId].OverrideName = fruitTreeName;
-				string fruitTreeObjectValue = $"{fruitTreeName}/{price / 2}/-300/Basic -74/{fruitTreeName}/Takes 28 days to produce a mature {treeItem.Name} tree. Bears item in the {season}. Only grows if the 8 surrounding \"tiles\" are empty.";
+				ItemList.Items[fruitTreeId].OverrideName = fruitTreeEnglishName;
+				string fruitTreeObjectValue = $"{fruitTreeName}/{price / 2}/-300/Basic -74/{fruitTreeName}/{Globals.GetTranslation("sapling-description", new { itemName = treeItemName, season = seasonDisplay })}";
 				editedObjectInfo.ObjectInformationReplacements[fruitTreeId] = fruitTreeObjectValue;
 			}
 		}
@@ -76,7 +78,6 @@ namespace Randomizer
 		/// crop format: name/price/-300/Seeds -74/name/tooltip
 		private static void RandomizeCrops(EditedObjectInformation editedObjectInfo)
 		{
-
 			List<int> regrowableSeedIdsToRandomize = ItemList.GetSeeds().Cast<SeedItem>()
 				.Where(x => x.Randomize && x.CropGrowthInfo.RegrowsAfterHarvest)
 				.Select(x => x.Id)
@@ -181,7 +182,6 @@ namespace Randomizer
 			List<string> randomNames,
 			List<string> randomDescriptions)
 		{
-
 			for (int i = 0; i < crops.Count; i++)
 			{
 				CropItem crop = crops[i];
@@ -191,7 +191,12 @@ namespace Randomizer
 				crop.Description = description;
 
 				SeedItem seed = ItemList.GetSeedFromCrop(crop);
-				seed.OverrideName = $"{name} {(seed.CropGrowthInfo.IsTrellisCrop ? "Starter" : "Seeds")}";
+				seed.OverrideDisplayName = seed.CropGrowthInfo.IsTrellisCrop ?
+					Globals.GetTranslation("trellis-text", new { itemName = name }) :
+					Globals.GetTranslation("seed-text", new { itemName = name });
+				seed.OverrideName = seed.CropGrowthInfo.IsTrellisCrop ?
+					$"{name} Starter" :
+					$"{name} Seeds";
 
 				seed.Price = GetRandomSeedPrice();
 				crop.Price = CalculateCropPrice(seed);
@@ -212,13 +217,15 @@ namespace Randomizer
 		{
 			if (!Globals.Config.RandomizeCrops) { return; }
 
-			Item coffeeBean = ItemList.Items[(int)ObjectIndexes.CoffeeBean];
-			coffeeBean.OverrideName = $"{coffeeName} Bean";
-			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.CoffeeBean] = coffeeBean.ToString();
-
 			Item coffee = ItemList.Items[(int)ObjectIndexes.Coffee];
 			coffee.OverrideName = $"Hot {coffeeName}";
+			coffee.CoffeeIngredient = coffeeName;
 			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.Coffee] = coffee.ToString();
+
+			Item coffeeBean = ItemList.Items[(int)ObjectIndexes.CoffeeBean];
+			coffeeBean.OverrideName = $"{coffeeName} Bean";
+			coffeeBean.OverrideDisplayName = Globals.GetTranslation("coffee-bean-name", new { itemName = coffeeName });
+			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.CoffeeBean] = coffeeBean.ToString();
 		}
 
 		/// <summary>
@@ -228,14 +235,15 @@ namespace Randomizer
 		public static void SetUpRice(EditedObjectInformation editedObjectInfo)
 		{
 			CropItem unmilledRice = (CropItem)ItemList.Items[(int)ObjectIndexes.UnmilledRice];
-			string riceName = unmilledRice.OverrideName; //ItemList.GetSeedFromCrop(unmilledRice).OverrideName;
+			string riceName = unmilledRice.OverrideName;
 			unmilledRice.OverrideName = $"Unmilled {riceName}";
+			unmilledRice.OverrideDisplayName = Globals.GetTranslation("unmilled-rice-name", new { itemName = riceName });
 			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.UnmilledRice] = unmilledRice.ToString();
 
 			Item rice = ItemList.Items[(int)ObjectIndexes.Rice];
 			rice.OverrideName = riceName;
 			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.Rice] =
-				$"{riceName}/100/5/Basic/{riceName}/A basic grain often served under vegetables.";
+				$"{riceName}/100/5/Basic/{riceName}/{Globals.GetTranslation("item-rice-description")}";
 		}
 
 		/// <summary>
@@ -267,60 +275,60 @@ namespace Randomizer
 			string trout = ItemList.Items[(int)ObjectIndexes.RainbowTrout].Name;
 			string eel = ItemList.Items[(int)ObjectIndexes.Eel].Name;
 
-			ItemList.Items[(int)ObjectIndexes.CheeseCauliflower].OverrideName = $"Cheese {cauliflower}";
-			ItemList.Items[(int)ObjectIndexes.ParsnipSoup].OverrideName = $"{parsnip} Soup";
-			ItemList.Items[(int)ObjectIndexes.BeanHotpot].OverrideName = $"{greenbean} Hotpot";
-			ItemList.Items[(int)ObjectIndexes.GlazedYams].OverrideName = $"Glazed {yam} Platter";
-			ItemList.Items[(int)ObjectIndexes.PepperPoppers].OverrideName = $"{hotpepper} Poppers";
-			ItemList.Items[(int)ObjectIndexes.RhubarbPie].OverrideName = $"{rhubarb} Pie";
-			ItemList.Items[(int)ObjectIndexes.EggplantParmesan].OverrideName = $"{eggplant} Parmesan";
-			ItemList.Items[(int)ObjectIndexes.BlueberryTart].OverrideName = $"{blueberry} Tart";
-			ItemList.Items[(int)ObjectIndexes.PumpkinSoup].OverrideName = $"{pumpkin} Soup";
-			ItemList.Items[(int)ObjectIndexes.CranberrySauce].OverrideName = $"{cranberry} Sauce";
-			ItemList.Items[(int)ObjectIndexes.PumpkinPie].OverrideName = $"{pumpkin} Pie";
-			ItemList.Items[(int)ObjectIndexes.RadishSalad].OverrideName = $"{radish} Salad";
-			ItemList.Items[(int)ObjectIndexes.CranberryCandy].OverrideName = $"{cranberry} Candy";
-			ItemList.Items[(int)ObjectIndexes.PoppyseedMuffin].OverrideName = $"{poppyseed} Muffin";
-			ItemList.Items[(int)ObjectIndexes.ArtichokeDip].OverrideName = $"{artichoke} Dip";
-			ItemList.Items[(int)ObjectIndexes.FruitSalad].OverrideName = "Harvest Salad";
-			ItemList.Items[(int)ObjectIndexes.RicePudding].OverrideName = $"{rice} Pudding";
+			SetIngredientAndOverrideName((int)ObjectIndexes.CheeseCauliflower, cauliflower, "Cheese {0}");
+			SetIngredientAndOverrideName((int)ObjectIndexes.ParsnipSoup, parsnip, "{0} Soup");
+			SetIngredientAndOverrideName((int)ObjectIndexes.BeanHotpot, greenbean, "{0} Hotpot");
+			SetIngredientAndOverrideName((int)ObjectIndexes.GlazedYams, yam, "Glazed {0} Platter");
+			SetIngredientAndOverrideName((int)ObjectIndexes.PepperPoppers, hotpepper, "{0} Poppers");
+			SetIngredientAndOverrideName((int)ObjectIndexes.RhubarbPie, rhubarb, "{0} Pie");
+			SetIngredientAndOverrideName((int)ObjectIndexes.EggplantParmesan, eggplant, "{0} Parmesan");
+			SetIngredientAndOverrideName((int)ObjectIndexes.BlueberryTart, blueberry, "{0} Tart");
+			SetIngredientAndOverrideName((int)ObjectIndexes.PumpkinSoup, pumpkin, "{0} Soup");
+			SetIngredientAndOverrideName((int)ObjectIndexes.CranberrySauce, cranberry, "{0} Sauce");
+			SetIngredientAndOverrideName((int)ObjectIndexes.PumpkinPie, pumpkin, "{0} Pie");
+			SetIngredientAndOverrideName((int)ObjectIndexes.RadishSalad, radish, "{0} Salad");
+			SetIngredientAndOverrideName((int)ObjectIndexes.CranberryCandy, cranberry, "{0} Candy");
+			SetIngredientAndOverrideName((int)ObjectIndexes.PoppyseedMuffin, poppyseed, "{0} Muffin");
+			SetIngredientAndOverrideName((int)ObjectIndexes.ArtichokeDip, artichoke, "{0} Dip");
+			SetIngredientAndOverrideName((int)ObjectIndexes.FruitSalad, "", "{0} Candy");
+			SetIngredientAndOverrideName((int)ObjectIndexes.RicePudding, rice, "{0} Pudding");
 
-			ItemList.Items[(int)ObjectIndexes.CarpSurprise].OverrideName = $"{carp} Surprise";
-			ItemList.Items[(int)ObjectIndexes.SalmonDinner].OverrideName = $"{salmon} Dinner";
-			ItemList.Items[(int)ObjectIndexes.CrispyBass].OverrideName = $"Crispy {bass}";
-			ItemList.Items[(int)ObjectIndexes.TroutSoup].OverrideName = $"{trout} Soup";
-			ItemList.Items[(int)ObjectIndexes.FriedEel].OverrideName = $"Fried {eel}";
-			ItemList.Items[(int)ObjectIndexes.SpicyEel].OverrideName = $"Spicy {eel}";
+			SetIngredientAndOverrideName((int)ObjectIndexes.CarpSurprise, carp, "{0} Surprise");
+			SetIngredientAndOverrideName((int)ObjectIndexes.SalmonDinner, salmon, "{0} Dinner");
+			SetIngredientAndOverrideName((int)ObjectIndexes.CrispyBass, bass, "Crispy {0}");
+			SetIngredientAndOverrideName((int)ObjectIndexes.TroutSoup, trout, "{0} Soup");
+			SetIngredientAndOverrideName((int)ObjectIndexes.FriedEel, eel, "Fried {0}");
+			SetIngredientAndOverrideName((int)ObjectIndexes.SpicyEel, eel, "Spicy {0}");
 
 			var cropItemReplacements = new Dictionary<int, string>
 			{
-				{ (int)ObjectIndexes.CheeseCauliflower, $"Cheese {cauliflower}/300/55/Cooking -7/Cheese {cauliflower}/It smells great!/food/0 0 0 0 0 0 0 0 0 0 0/0" },
-				{ (int)ObjectIndexes.ParsnipSoup, $"{parsnip} Soup/120/34/Cooking -7/{parsnip} Soup/It's fresh and hearty./food/0 0 0 0 0 0 0 0 0 0 0/0" },
-				{ (int)ObjectIndexes.BeanHotpot, $"{greenbean} Hotpot/100/50/Cooking -7/{greenbean} Hotpot/It sure is healthy./food/0 0 0 0 0 0 2 0 0 0 0/600" },
-				{ (int)ObjectIndexes.GlazedYams, $"Glazed {yam} Platter/200/80/Cooking -7/Glazed {yam} Platter/Sweet and satisfying... The sugar gives it a hint of caramel./food/0 0 0 0 0 0 0 0 0 0 0/0" },
-				{ (int)ObjectIndexes.PepperPoppers, $"{hotpepper} Poppers/200/52/Cooking -7/{hotpepper} Poppers/Spicy, breaded, and filled with cheese./food/2 0 0 0 0 0 0 0 0 1 0/600" },
-				{ (int)ObjectIndexes.RhubarbPie, $"{rhubarb} Pie/400/86/Cooking -7/{rhubarb} Pie/Mmm, tangy and sweet!/food/0 0 0 0 0 0 0 0 0 0 0/0" },
-				{ (int)ObjectIndexes.EggplantParmesan, $"{eggplant} Parmesan/200/70/Cooking -7/{eggplant} Parmesan/Tangy, cheesy, and wonderful./food/0 0 1 0 0 0 0 0 0 0 3/400" },
-				{ (int)ObjectIndexes.RicePudding, $"{rice} Pudding/260/46/Cooking -7/{rice} Pudding/It's creamy, sweet, and fun to eat./food/0 0 0 0 0 0 0 0 0 0 0/0"},
-				{ (int)ObjectIndexes.BlueberryTart, $"{blueberry} Tart/150/50/Cooking -7/{blueberry} Tart/It's subtle and refreshing./food/0 0 0 0 0 0 0 0 0 0 0/0" },
-				{ (int)ObjectIndexes.PumpkinSoup, $"{pumpkin} Soup/300/80/Cooking -7/{pumpkin} Soup/A seasonal favorite./food/0 0 0 0 2 0 0 0 0 0 2/660" },
-				{ (int)ObjectIndexes.CranberrySauce, $"{cranberry} Sauce/120/50/Cooking -7/{cranberry} Sauce/A festive treat./food/0 0 2 0 0 0 0 0 0 0 0/300" },
-				{ (int)ObjectIndexes.ArtichokeDip, $"{artichoke} Dip/210/40/Cooking -7/{artichoke} Dip/It's cool and refreshing./food/0 0 0 0 0 0 0 0 0 0 0/0" },
-				{ (int)ObjectIndexes.PumpkinPie, $"{pumpkin} Pie/385/90/Cooking -7/{pumpkin} Pie/Silky {pumpkin} cream in a flakey crust./food/0 0 0 0 0 0 0 0 0 0 0/0" },
-				{ (int)ObjectIndexes.RadishSalad, $"{radish} Salad/300/80/Cooking -7/{radish} Salad/The {radish} is so crisp!/food/0 0 0 0 0 0 0 0 0 0 0/0" },
-				{ (int)ObjectIndexes.CranberryCandy, $"{cranberry} Candy/175/50/Cooking -7/{cranberry} Candy/It's sweet enough to mask the {cranberry}'s bitterness./drink/0 0 0 0 0 0 0 0 0 0 0/0" },
-				{ (int)ObjectIndexes.PoppyseedMuffin, $"{poppyseed} Muffin/250/60/Cooking -7/{poppyseed} Muffin/It has a soothing effect./food/0 0 0 0 0 0 0 0 0 0 0/0" },
-				{ (int)ObjectIndexes.FruitSalad, $"Harvest Salad/450/105/Cooking -7/Harvest Salad/A delicious combination of local plants./food/0 0 0 0 0 0 0 0 0 0 0/0" }
+				{ (int)ObjectIndexes.CheeseCauliflower, $"Cheese {cauliflower}/300/55/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.CheeseCauliflower, cauliflower)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
+				{ (int)ObjectIndexes.ParsnipSoup, $"{parsnip} Soup/120/34/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.ParsnipSoup, parsnip)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
+				{ (int)ObjectIndexes.BeanHotpot, $"{greenbean} Hotpot/100/50/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.BeanHotpot, greenbean)}/food/0 0 0 0 0 0 2 0 0 0 0/600" },
+				{ (int)ObjectIndexes.GlazedYams, $"Glazed {yam} Platter/200/80/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.GlazedYams, yam)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
+				{ (int)ObjectIndexes.PepperPoppers, $"{hotpepper} Poppers/200/52/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.PepperPoppers, hotpepper)}/food/2 0 0 0 0 0 0 0 0 1 0/600" },
+				{ (int)ObjectIndexes.RhubarbPie, $"{rhubarb} Pie/400/86/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.RhubarbPie, rhubarb)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
+				{ (int)ObjectIndexes.EggplantParmesan, $"{eggplant} Parmesan/200/70/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.EggplantParmesan, eggplant)}/food/0 0 1 0 0 0 0 0 0 0 3/400" },
+				{ (int)ObjectIndexes.RicePudding, $"{rice} Pudding/260/46/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.RicePudding, rice)}/food/0 0 0 0 0 0 0 0 0 0 0/0"},
+				{ (int)ObjectIndexes.BlueberryTart, $"{blueberry} Tart/150/50/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.BlueberryTart, blueberry)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
+				{ (int)ObjectIndexes.PumpkinSoup, $"{pumpkin} Soup/300/80/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.PumpkinSoup, pumpkin)}/food/0 0 0 0 2 0 0 0 0 0 2/660" },
+				{ (int)ObjectIndexes.CranberrySauce, $"{cranberry} Sauce/120/50/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.CranberrySauce, cranberry)}/food/0 0 2 0 0 0 0 0 0 0 0/300" },
+				{ (int)ObjectIndexes.ArtichokeDip, $"{artichoke} Dip/210/40/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.ArtichokeDip, artichoke)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
+				{ (int)ObjectIndexes.PumpkinPie, $"{pumpkin} Pie/385/90/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.PumpkinPie, pumpkin)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
+				{ (int)ObjectIndexes.RadishSalad, $"{radish} Salad/300/80/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.RadishSalad, radish)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
+				{ (int)ObjectIndexes.CranberryCandy, $"{cranberry} Candy/175/50/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.CranberryCandy, cranberry)}/drink/0 0 0 0 0 0 0 0 0 0 0/0" },
+				{ (int)ObjectIndexes.PoppyseedMuffin, $"{poppyseed} Muffin/250/60/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.PoppyseedMuffin, poppyseed)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
+				{ (int)ObjectIndexes.FruitSalad, $"Harvest Salad/450/105/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.FruitSalad, "")}/food/0 0 0 0 0 0 0 0 0 0 0/0" }
 			};
 
 			var fishItemReplacements = new Dictionary<int, string>
 			{
-				{ (int)ObjectIndexes.CarpSurprise, $"{carp} Surprise/150/36/Cooking -7/{carp} Surprise/It's bland and oily./food/0 0 0 0 0 0 0 0 0 0 0/0"},
-				{ (int)ObjectIndexes.SalmonDinner, $"{salmon} Dinner/300/50/Cooking -7/{salmon} Dinner/The lemon spritz makes it special./food/0 0 0 0 0 0 0 0 0 0 0/0"},
-				{ (int)ObjectIndexes.CrispyBass, $"Crispy {bass}/150/36/Cooking -7/Crispy {bass}/Wow, the breading is perfect./food/0 0 0 0 0 0 0 0 64 0 0/600"},
-				{ (int)ObjectIndexes.TroutSoup, $"{trout} Soup/100/40/Cooking -7/{trout} Soup/Pretty salty./food/0 1 0 0 0 0 0 0 0 0 0/400"},
-				{ (int)ObjectIndexes.FriedEel, $"Fried {eel}/120/30/Cooking -7/Fried {eel}/Greasy but flavorful./food/0 0 0 0 1 0 0 0 0 0 0/600"},
-				{ (int)ObjectIndexes.SpicyEel, $"Spicy {eel}/175/46/Cooking -7/Spicy {eel}/It's really spicy! Be careful./food/0 0 0 0 1 0 0 0 0 1 0/600"}
+				{ (int)ObjectIndexes.CarpSurprise, $"{carp} Surprise/150/36/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.CarpSurprise, carp)}/food/0 0 0 0 0 0 0 0 0 0 0/0"},
+				{ (int)ObjectIndexes.SalmonDinner, $"{salmon} Dinner/300/50/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.SalmonDinner, salmon)}/food/0 0 0 0 0 0 0 0 0 0 0/0"},
+				{ (int)ObjectIndexes.CrispyBass, $"Crispy {bass}/150/36/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.CrispyBass, bass)}/food/0 0 0 0 0 0 0 0 64 0 0/600"},
+				{ (int)ObjectIndexes.TroutSoup, $"{trout} Soup/100/40/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.TroutSoup, trout)}/food/0 1 0 0 0 0 0 0 0 0 0/400"},
+				{ (int)ObjectIndexes.FriedEel, $"Fried {eel}/120/30/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.FriedEel, eel)}/food/0 0 0 0 1 0 0 0 0 0 0/600"},
+				{ (int)ObjectIndexes.SpicyEel, $"Spicy {eel}/175/46/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.SpicyEel, eel)}/food/0 0 0 0 1 0 0 0 0 1 0/600"}
 			};
 
 			if (Globals.Config.RandomizeCrops)
@@ -338,6 +346,31 @@ namespace Randomizer
 					editedObjectInfo.ObjectInformationReplacements[pair.Key] = pair.Value;
 				}
 			}
+		}
+
+		/// <summary>
+		/// Sets the ingredient and override name for the given cooked item id
+		/// </summary>
+		/// <param name="id">The id of the cooked item</param>
+		/// <param name="ingredient">The name of the ingredient</param>
+		/// <param name="overrideNameTemplate">The template for the override name</param>
+		/// <returns />
+		private static void SetIngredientAndOverrideName(int id, string ingredient, string overrideNameTemplate)
+		{
+			CookedItem item = (CookedItem)ItemList.Items[id];
+			item.OverrideName = string.Format(overrideNameTemplate, ingredient);
+			item.IngredientName = ingredient;
+		}
+
+		/// <summary>
+		/// Gets the recipe name and description
+		/// </summary>
+		/// <param name="id">The ID of the recipe</param>
+		/// <param name="itemName">The item that is in this recipe</param>
+		/// <returns>The internationalized string</returns>
+		private static string GetRecipeNameAndDescription(int id, string itemName)
+		{
+			return Globals.GetTranslation($"item-{id}-name-and-description", new { itemName });
 		}
 
 		/// <summary>

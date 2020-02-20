@@ -31,7 +31,7 @@ namespace Randomizer
 					GenerateSeasonBundle(Seasons.Winter, BundleColors.Cyan);
 					break;
 				case BundleTypes.FishTankOceanFood:
-					Name = "Fish Food";
+					Name = Globals.GetTranslation("bundle-fishtank-ocean-food");
 					potentialItems = RequiredItem.CreateList(new List<int>
 					{
 						(int)ObjectIndexes.CrispyBass,
@@ -58,7 +58,7 @@ namespace Randomizer
 					Color = BundleColors.Yellow;
 					break;
 				case BundleTypes.FishTankLegendary:
-					Name = "Legendary";
+					Name = Globals.GetTranslation("bundle-fishtank-legendary");
 					RequiredItems = RequiredItem.CreateList(FishItem.GetLegendaries().Cast<Item>().ToList());
 					MinimumRequiredItems = Range.GetRandomValue(3, 4);
 					Color = BundleColors.Red;
@@ -75,14 +75,15 @@ namespace Randomizer
 						Locations.Beach
 					};
 					Locations location = Globals.RNGGetRandomValueFromList(locations);
+					string locationString = Globals.GetTranslation($"fish-{location.ToString().ToLower()}-location");
 
-					Name = location == Locations.NightMarket ? "Night Market" : location.ToString();
+					Name = Globals.GetTranslation("bundle-fishtank-location", new { location = locationString });
 					RequiredItems = RequiredItem.CreateList(Globals.RNGGetRandomValuesFromList(FishItem.Get(location), 8));
 					MinimumRequiredItems = Math.Min(RequiredItems.Count, Range.GetRandomValue(2, 4));
 					Color = BundleColors.Blue;
 					break;
 				case BundleTypes.FishTankRainFish:
-					Name = "Rain Fish";
+					Name = Globals.GetTranslation("bundle-fishtank-rain-fish");
 					RequiredItems = RequiredItem.CreateList(
 						Globals.RNGGetRandomValuesFromList(FishItem.Get(Weather.Rainy), 8)
 					);
@@ -90,7 +91,7 @@ namespace Randomizer
 					Color = BundleColors.Blue;
 					break;
 				case BundleTypes.FishTankNightFish:
-					Name = "Night Fish";
+					Name = Globals.GetTranslation("bundle-fishtank-night-fish");
 					RequiredItems = RequiredItem.CreateList(
 						Globals.RNGGetRandomValuesFromList(FishItem.GetNightFish(), 8)
 					);
@@ -98,7 +99,7 @@ namespace Randomizer
 					Color = BundleColors.Purple;
 					break;
 				case BundleTypes.FishTankQualityFish:
-					Name = "Quality Fish";
+					Name = Globals.GetTranslation("bundle-fishtank-quality-fish");
 					potentialItems = RequiredItem.CreateList(
 						Globals.RNGGetRandomValuesFromList(FishItem.Get(), 8)
 					);
@@ -108,14 +109,14 @@ namespace Randomizer
 					Color = BundleColors.Yellow;
 					break;
 				case BundleTypes.FishTankBeachForagables:
-					Name = "Beach";
+					Name = Globals.GetTranslation("bundle-fishtank-beach-foragables");
 					RequiredItems = RequiredItem.CreateList(
 						Globals.RNGGetRandomValuesFromList(ItemList.GetUniqueBeachForagables(), 6)
 					);
 					Color = BundleColors.Yellow;
 					break;
 				case BundleTypes.FishTankFishingTools:
-					Name = "Fishing Tools";
+					Name = Globals.GetTranslation("bundle-fishtank-fishing-tools");
 					potentialItems = new List<RequiredItem>
 					{
 						new RequiredItem((int)ObjectIndexes.Spinner, 1),
@@ -131,7 +132,7 @@ namespace Randomizer
 					Color = BundleColors.Blue;
 					break;
 				case BundleTypes.FishTankUnique:
-					Name = "Unique Fish";
+					Name = Globals.GetTranslation("bundle-fishtank-unique");
 
 					List<Item> nightFish = FishItem.Get(Locations.NightMarket);
 					List<Item> minesFish = FishItem.Get(Locations.UndergroundMine);
@@ -149,7 +150,8 @@ namespace Randomizer
 					Color = BundleColors.Cyan;
 					break;
 				case BundleTypes.FishTankColorBlue:
-					Name = "Blue";
+					Name = Globals.GetTranslation("bundle-fishtank-blue");
+
 					potentialItems = RequiredItem.CreateList(new List<int>
 					{
 						(int)ObjectIndexes.Aquamarine,
@@ -202,7 +204,7 @@ namespace Randomizer
 					Color = BundleColors.Blue;
 					break;
 				case BundleTypes.FishTankColorPurple:
-					Name = "Purple";
+					Name = Globals.GetTranslation("bundle-fishtank-purple");
 					potentialItems = RequiredItem.CreateList(new List<int>
 					{
 						(int)ObjectIndexes.Amethyst,
@@ -246,7 +248,10 @@ namespace Randomizer
 		/// <param name="color">The color to use</param>
 		private void GenerateSeasonBundle(Seasons season, BundleColors color)
 		{
-			Name = $"{season.ToString()} Fish";
+			string seasonString = Globals.GetTranslation($"seasons-{season.ToString().ToLower()}");
+			seasonString = $"{seasonString[0].ToString().ToUpper()}{seasonString.Substring(1)}";
+
+			Name = Globals.GetTranslation("bundle-fishtank-seasonal", new { season = seasonString });
 			List<RequiredItem> potentialItems = RequiredItem.CreateList(FishItem.Get(season));
 			RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
 			MinimumRequiredItems = Math.Min(Range.GetRandomValue(6, 8), RequiredItems.Count);

@@ -233,20 +233,33 @@ namespace Randomizer
 			return $"{growthStagesString}/{GetSeasonsString()}/{GraphicId}/{CropId}/{(DaysToRegrow == 0 ? -1 : DaysToRegrow)}/{CanScytheInt}/{ExtraCropInfo.ToString()}/{IsTrellisCrop.ToString().ToLower()}/{TintColorInfo.ToString()}";
 		}
 
-		public string GetSeasonsString(bool useCommaDelimiter = false)
+		/// <summary>
+		/// Get the string that's used for seasons
+		/// </summary>
+		/// <returns>The seasons string</returns>
+		public string GetSeasonsString()
 		{
 			string seasonsString = "";
 			foreach (Seasons season in GrowingSeasons)
 			{
 				seasonsString += $"{season.ToString()} ";
 			}
-			seasonsString = seasonsString.Trim().ToLower();
+			return seasonsString.Trim().ToLower();
+		}
 
-			if (useCommaDelimiter)
+		/// <summary>
+		/// Get the string that's used for seasons when displaying the tooltip
+		/// </summary>
+		/// <returns>The seasons string</returns>
+		public string GetSeasonsStringForDisplay(bool useCommaDelimiter = false)
+		{
+			string seasonsString = "";
+			foreach (Seasons season in GrowingSeasons)
 			{
-				seasonsString.Replace(" ", ", ");
+				seasonsString += $"{Globals.GetTranslation($"seasons-{season.ToString().ToLower()}")} ";
 			}
-			return seasonsString;
+			seasonsString = seasonsString.Trim().ToLower();
+			return seasonsString.Replace(" ", ", ");
 		}
 	}
 

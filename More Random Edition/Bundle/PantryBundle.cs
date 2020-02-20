@@ -18,7 +18,7 @@ namespace Randomizer
 			switch (BundleType)
 			{
 				case BundleTypes.PantryAnimal:
-					Name = "Animal";
+					Name = Globals.GetTranslation("bundle-pantry-animal");
 					potentialItems = RequiredItem.CreateList(ItemList.GetAnimalProducts());
 					potentialItems.Add(new RequiredItem((int)ObjectIndexes.Hay, 25, 50));
 					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, Range.GetRandomValue(6, 8));
@@ -26,7 +26,7 @@ namespace Randomizer
 					Color = BundleColors.Orange;
 					break;
 				case BundleTypes.PantryQualityCrops:
-					Name = "Quality Crops";
+					Name = Globals.GetTranslation("bundle-pantry-quality-crops");
 					potentialItems = RequiredItem.CreateList(ItemList.GetCrops());
 					potentialItems.ForEach(x => x.MinimumQuality = ItemQualities.Gold);
 					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
@@ -34,7 +34,7 @@ namespace Randomizer
 					Color = BundleColors.Green;
 					break;
 				case BundleTypes.PantryQualityForagables:
-					Name = "Quality Foragables";
+					Name = Globals.GetTranslation("bundle-pantry-quality-foragables");
 					potentialItems = RequiredItem.CreateList(ItemList.GetForagables());
 					potentialItems.ForEach(x => x.MinimumQuality = ItemQualities.Gold);
 					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
@@ -42,14 +42,14 @@ namespace Randomizer
 					Color = BundleColors.Green;
 					break;
 				case BundleTypes.PantryCooked:
-					Name = "Cooked";
+					Name = Globals.GetTranslation("bundle-pantry-cooked");
 					potentialItems = RequiredItem.CreateList(ItemList.GetCookeditems());
 					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, Range.GetRandomValue(6, 8));
 					MinimumRequiredItems = Range.GetRandomValue(3, 4);
 					Color = BundleColors.Green;
 					break;
 				case BundleTypes.PantryFlower:
-					Name = "Flower";
+					Name = Globals.GetTranslation("bundle-pantry-flower");
 					potentialItems = RequiredItem.CreateList(ItemList.GetFlowers());
 					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, Range.GetRandomValue(6, 8));
 					MinimumRequiredItems = RequiredItems.Count - 2;
@@ -65,7 +65,7 @@ namespace Randomizer
 					GenerateBundleForSeasonCrops(Seasons.Fall, BundleColors.Orange);
 					break;
 				case BundleTypes.PantryEgg:
-					Name = "Egg";
+					Name = Globals.GetTranslation("bundle-pantry-egg");
 					potentialItems = RequiredItem.CreateList(
 						ItemList.Items.Values.Where(x => x.Name.Contains("Egg") && x.Id > -4).ToList());
 					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
@@ -73,7 +73,7 @@ namespace Randomizer
 					Color = BundleColors.Yellow;
 					break;
 				case BundleTypes.PantryRareFoods:
-					Name = "Rare Foods";
+					Name = Globals.GetTranslation("bundle-pantry-rare-foods");
 					RequiredItems = new List<RequiredItem>
 					{
 						new RequiredItem((int)ObjectIndexes.AncientFruit),
@@ -83,7 +83,7 @@ namespace Randomizer
 					Color = BundleColors.Blue;
 					break;
 				case BundleTypes.PantryDesert:
-					Name = "Desert";
+					Name = Globals.GetTranslation("bundle-pantry-desert");
 					RequiredItems = new List<RequiredItem>
 					{
 						new RequiredItem((int)ObjectIndexes.IridiumOre, 5),
@@ -100,7 +100,7 @@ namespace Randomizer
 					Color = BundleColors.Yellow;
 					break;
 				case BundleTypes.PantryDessert:
-					Name = "Dessert";
+					Name = Globals.GetTranslation("bundle-pantry-dessert");
 					potentialItems = new List<RequiredItem>
 					{
 						new RequiredItem((int)ObjectIndexes.CranberryCandy),
@@ -120,7 +120,7 @@ namespace Randomizer
 					Color = BundleColors.Cyan;
 					break;
 				case BundleTypes.PantryMexicanFood:
-					Name = "Mexican Food";
+					Name = Globals.GetTranslation("bundle-pantry-mexican-food");
 					RequiredItems = new List<RequiredItem>
 					{
 						new RequiredItem((int)ObjectIndexes.Tortilla),
@@ -135,7 +135,7 @@ namespace Randomizer
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.PantryColorBrown:
-					Name = "Brown";
+					Name = Globals.GetTranslation("bundle-pantry-brown");
 					potentialItems = RequiredItem.CreateList(new List<int>
 					{
 						(int)ObjectIndexes.WildHorseradish,
@@ -203,7 +203,7 @@ namespace Randomizer
 					Color = BundleColors.Orange;
 					break;
 				case BundleTypes.PantryColorGreen:
-					Name = "Green";
+					Name = Globals.GetTranslation("bundle-pantry-green");
 					potentialItems = RequiredItem.CreateList(new List<int>
 					{
 						(int)ObjectIndexes.Emerald,
@@ -267,7 +267,10 @@ namespace Randomizer
 		/// <param name="color">The color of the bundle</param>
 		private void GenerateBundleForSeasonCrops(Seasons season, BundleColors color)
 		{
-			Name = $"{season.ToString()} Crops";
+			string seasonString = Globals.GetTranslation($"seasons-{season.ToString().ToLower()}");
+			seasonString = $"{seasonString[0].ToString().ToUpper()}{seasonString.Substring(1)}";
+
+			Name = Globals.GetTranslation("bundle-pantry-crops", new { season = seasonString });
 			List<RequiredItem> potentialItems = RequiredItem.CreateList(ItemList.GetCrops(season));
 			RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
 			MinimumRequiredItems = 6;
