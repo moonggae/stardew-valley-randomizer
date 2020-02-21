@@ -14,19 +14,21 @@ namespace Randomizer
 			{
 				if (Id == (int)ObjectIndexes.CoffeeBean)
 				{
-					return "Plant in spring or summer. Place five beans in a keg to make a hot drink.";
+					Item coffee = ItemList.Items[(int)ObjectIndexes.Coffee];
+					string coffeeName = Globals.GetTranslation("item-coffee-name", new { itemName = coffee.CoffeeIngredient });
+					return Globals.GetTranslation("item-coffee-bean-description", new { itemName = coffee.CoffeeIngredient, coffeeName });
 				}
 
 				CropItem growsCrop = (CropItem)ItemList.Items[CropGrowthInfo.CropId];
-				string flowerString = growsCrop.IsFlower ? "This is a flower. " : "";
-				string scytheString = CropGrowthInfo.CanScythe ? "Harvest with the scythe. " : "";
-				string trellisString = CropGrowthInfo.IsTrellisCrop ? "Grows on a trellis. " : "";
+				string flowerString = growsCrop.IsFlower ? $"{Globals.GetTranslation("crop-tooltip-flower")} " : "";
+				string scytheString = CropGrowthInfo.CanScythe ? $"{Globals.GetTranslation("crop-tooltip-needs-scythe")} " : "";
+				string trellisString = CropGrowthInfo.IsTrellisCrop ? $"{Globals.GetTranslation("crop-tooltip-trellis")} " : "";
 				string growthString = CropGrowthInfo.RegrowsAfterHarvest ?
-					$"Takes {CropGrowthInfo.TimeToGrow} days to grow but keeps producing after that. " :
-					$"Takes {CropGrowthInfo.TimeToGrow} days to mature. ";
-				string seasonsString = $"Plant during: {CropGrowthInfo.GetSeasonsString(true)}. ";
-				string indoorsString = growsCrop.Id == (int)ObjectIndexes.CactusFruit ? "Can only be grown indoors. " : "";
-				string waterString = growsCrop.Id == (int)ObjectIndexes.UnmilledRice ? "Grows faster near water." : "";
+					$"{Globals.GetTranslation($"crop-tooltip-growth-time-reproduces", new { daysToGrow = CropGrowthInfo.TimeToGrow })} " :
+					$"{Globals.GetTranslation($"crop-tooltip-growth-time", new { daysToGrow = CropGrowthInfo.TimeToGrow })} ";
+				string seasonsString = $"{Globals.GetTranslation("crop-tooltip-seasons", new { seasons = CropGrowthInfo.GetSeasonsStringForDisplay() })} ";
+				string indoorsString = growsCrop.Id == (int)ObjectIndexes.CactusFruit ? $"{Globals.GetTranslation("crop-tooltip-cactus-fruit")} " : "";
+				string waterString = growsCrop.Id == (int)ObjectIndexes.UnmilledRice ? $"{Globals.GetTranslation("crop-tooltip-rice-shoot")} " : "";
 
 				return $"{flowerString}{scytheString}{trellisString}{growthString}{seasonsString}{indoorsString}{waterString}";
 			}
@@ -49,7 +51,8 @@ namespace Randomizer
 		/// <returns />
 		public override string ToString()
 		{
-			return $"{Name}/{Price}/-300/Seeds -74/{Name}/{Description}";
+			string displayName = string.IsNullOrEmpty(OverrideDisplayName) ? Name : OverrideDisplayName;
+			return $"{Name}/{Price}/-300/Seeds -74/{displayName}/{Description}";
 		}
 	}
 }

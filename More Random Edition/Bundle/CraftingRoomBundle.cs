@@ -30,7 +30,7 @@ namespace Randomizer
 			switch (BundleType)
 			{
 				case BundleTypes.CraftingResource:
-					Name = "Resource";
+					Name = Globals.GetTranslation("bundle-crafting-resource");
 					RequiredItems = new List<RequiredItem>
 					{
 						new RequiredItem((int)ObjectIndexes.Wood, 100, 250),
@@ -42,7 +42,7 @@ namespace Randomizer
 					Color = BundleColors.Orange;
 					break;
 				case BundleTypes.CraftingHappyCrops:
-					Name = "Happy Crops";
+					Name = Globals.GetTranslation("bundle-crafting-happy-crops");
 					RequiredItem qualityCrop = new RequiredItem(Globals.RNGGetRandomValueFromList(ItemList.GetCrops()));
 					qualityCrop.MinimumQuality = ItemQualities.Gold;
 					potentialItems = new List<RequiredItem>
@@ -62,7 +62,7 @@ namespace Randomizer
 					Color = BundleColors.Green;
 					break;
 				case BundleTypes.CraftingTree:
-					Name = "Tree";
+					Name = Globals.GetTranslation("bundle-crafting-tree");
 					potentialItems = new List<RequiredItem>
 					{
 						new RequiredItem((int)ObjectIndexes.MapleSeed, 1, 5),
@@ -82,7 +82,7 @@ namespace Randomizer
 					Color = BundleColors.Green;
 					break;
 				case BundleTypes.CraftingTotems:
-					Name = "Totems";
+					Name = Globals.GetTranslation("bundle-crafting-totems");
 					RequiredItems = new List<RequiredItem>
 					{
 						new RequiredItem((int)ObjectIndexes.WarpTotemFarm),
@@ -94,7 +94,7 @@ namespace Randomizer
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.CraftingBindle:
-					Name = "Bindle";
+					Name = Globals.GetTranslation("bundle-crafting-bindle");
 					potentialItems = new List<RequiredItem>
 					{
 
@@ -127,7 +127,7 @@ namespace Randomizer
 					GenerateForagingBundle(Seasons.Winter, BundleColors.Cyan);
 					break;
 				case BundleTypes.CraftingColorOrange:
-					Name = "Orange";
+					Name = Globals.GetTranslation("bundle-crafting-orange");
 					potentialItems = RequiredItem.CreateList(new List<int>
 					{
 						(int)ObjectIndexes.RustySpur,
@@ -165,7 +165,7 @@ namespace Randomizer
 					Color = BundleColors.Orange;
 					break;
 				case BundleTypes.CraftingColorYellow:
-					Name = "Yellow";
+					Name = Globals.GetTranslation("bundle-crafting-yellow");
 					potentialItems = RequiredItem.CreateList(new List<int>
 					{
 						(int)ObjectIndexes.Daffodil,
@@ -238,7 +238,10 @@ namespace Randomizer
 		/// <param name="color">The color of the bundle</param>
 		private void GenerateForagingBundle(Seasons season, BundleColors color)
 		{
-			Name = $"{season.ToString()} Foraging";
+			string seasonString = Globals.GetTranslation($"seasons-{season.ToString().ToLower()}");
+			seasonString = $"{seasonString[0].ToString().ToUpper()}{seasonString.Substring(1)}";
+
+			Name = Globals.GetTranslation($"bundle-crafting-foraging", new { season = seasonString });
 			List<RequiredItem> potentialItems = RequiredItem.CreateList(ItemList.GetForagables(season));
 			int numberOfChoices = Math.Min(potentialItems.Count, 8);
 			RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, numberOfChoices);

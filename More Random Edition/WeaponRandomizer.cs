@@ -308,13 +308,13 @@ namespace Randomizer
 			{
 				case WeaponType.Dagger:
 				case WeaponType.StabbingSword:
-					description = "Does stabbing damage.";
+					description = Globals.GetTranslation("weapon-description-stabbing");
 					break;
 				case WeaponType.SlashingSword:
-					description = "Does slashing damage.";
+					description = Globals.GetTranslation("weapon-description-slashing");
 					break;
 				case WeaponType.ClubOrHammer:
-					description = "Does crushing damage.";
+					description = Globals.GetTranslation("weapon-description-crushing");
 					break;
 				default:
 					Globals.ConsoleError($"Assigning description to an invalid weapon type: {weapon.ToString()}");
@@ -323,42 +323,42 @@ namespace Randomizer
 
 			if (weapon.CritMultiplier == 100)
 			{
-				description += " Crits for lethal damage very infrequently.";
+				description += $" {Globals.GetTranslation("weapon-description-crit-high-damage")}";
 			}
 
 			else if (weapon.CritChance >= 8)
 			{
-				description += " Crits very often!";
+				description += $" {Globals.GetTranslation("weapon-description-crit-high-frequency")}";
 			}
 
 			if (weapon.Knockback >= 15)
 			{
-				description += " Makes enemies fly!";
+				description += $" {Globals.GetTranslation("weapon-description-high-knockback")}";
 			}
 
 			if (weapon.Speed > 100)
 			{
-				description += " Fires as fast as you can pull the trigger.";
+				description += $" {Globals.GetTranslation("weapon-description-fast")}";
 			}
 
 			if (weapon.AddedAOE > 0)
 			{
-				description += " Inflicts splash damage.";
+				description += $" {Globals.GetTranslation("weapon-description-aoe")}";
 			}
 
 			if (weapon.AddedPrecision > 4)
 			{
-				description += " Very accurate.";
+				description += $" {Globals.GetTranslation("weapon-description-accurate")}";
 			}
 
 			if (weapon.AddedDefense > 0)
 			{
-				description += " Provides defense.";
+				description += $" {Globals.GetTranslation("weapon-description-defense")}";
 			}
 
 			if (weapon.Id == (int)WeaponIndexes.DarkSword)
 			{
-				description += " Heals when dealing damage.";
+				description += $" {Globals.GetTranslation("weapon-description-heals")}";
 			}
 
 			weapon.Description = description;

@@ -92,8 +92,8 @@ namespace Randomizer
 
 				SDate addedDate = AddRandomBirthdayToNPC(birthdaysInUse, name);
 				tokens[BirthdayIndex] = $"{addedDate.Season} {addedDate.Day}";
-				tokens[RelationshipsIndex] = Globals.ModRef.Helper.Translation.Get($"{name}-relationships");
-				tokens[nameIndex] = Globals.ModRef.Helper.Translation.Get($"{name}-name");
+				tokens[RelationshipsIndex] = Globals.GetTranslation($"{name}-relationships");
+				tokens[nameIndex] = Globals.GetTranslation($"{name}-name");
 
 				replacements.Add(name, string.Join("/", tokens));
 			}

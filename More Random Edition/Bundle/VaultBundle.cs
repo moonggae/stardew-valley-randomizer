@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Randomizer
@@ -22,50 +23,50 @@ namespace Randomizer
 				case BundleTypes.Vault2500:
 					bundleNameFlavor = Globals.RNGGetRandomValueFromList(new List<string>
 					{
-						"Lunch Money",
-						"Bus Fare",
-						"Cheapskate",
-						"Tree Fiddy",
-						"Cheapo",
-						"Gas Station Food",
-						"Piggy Bank"
+						Globals.GetTranslation("Vault2500-1"),
+						Globals.GetTranslation("Vault2500-2"),
+						Globals.GetTranslation("Vault2500-3"),
+						Globals.GetTranslation("Vault2500-4"),
+						Globals.GetTranslation("Vault2500-5"),
+						Globals.GetTranslation("Vault2500-6"),
+						Globals.GetTranslation("Vault2500-7")
 					});
 					moneyAmount = Range.GetRandomValue(500, 3500);
 					break;
 				case BundleTypes.Vault5000:
 					bundleNameFlavor = Globals.RNGGetRandomValueFromList(new List<string>
 					{
-						"Chili's Lunch",
-						"Express Mail",
-						"New Blender",
-						"New Shoes",
-						"Amusement Park Pass",
-						"Stardew Valley - The Game"
+						Globals.GetTranslation("Vault5000-1"),
+						Globals.GetTranslation("Vault5000-2"),
+						Globals.GetTranslation("Vault5000-3"),
+						Globals.GetTranslation("Vault5000-4"),
+						Globals.GetTranslation("Vault5000-5"),
+						Globals.GetTranslation("Vault5000-6")
 					});
 					moneyAmount = Range.GetRandomValue(4000, 7000);
 					break;
 				case BundleTypes.Vault10000:
 					bundleNameFlavor = Globals.RNGGetRandomValueFromList(new List<string>
 					{
-						"Nintendo Switch",
-						"Laptop",
-						"MLM Starter Kit",
-						"4k TV",
-						"Viking Fridge",
-						"New Glasses"
+						Globals.GetTranslation("Vault10000-1"),
+						Globals.GetTranslation("Vault10000-2"),
+						Globals.GetTranslation("Vault10000-3"),
+						Globals.GetTranslation("Vault10000-4"),
+						Globals.GetTranslation("Vault10000-5"),
+						Globals.GetTranslation("Vault10000-6")
 					});
 					moneyAmount = Range.GetRandomValue(7500, 12500);
 					break;
 				case BundleTypes.Vault25000:
 					bundleNameFlavor = Globals.RNGGetRandomValueFromList(new List<string>
 					{
-						"Down Payment",
-						"College Tuition",
-						"Korean Air Ticket",
-						"Fort Knox",
-						"Mustang",
-						"Lexus",
-						"US Hospital Bill"
+						Globals.GetTranslation("Vault25000-1"),
+						Globals.GetTranslation("Vault25000-2"),
+						Globals.GetTranslation("Vault25000-3"),
+						Globals.GetTranslation("Vault25000-4"),
+						Globals.GetTranslation("Vault25000-5"),
+						Globals.GetTranslation("Vault25000-6"),
+						Globals.GetTranslation("Vault25000-7")
 					});
 					moneyAmount = Range.GetRandomValue(20000, 30000);
 					break;
@@ -74,7 +75,8 @@ namespace Randomizer
 			}
 
 			RequiredItems = new List<RequiredItem> { new RequiredItem() { MoneyAmount = moneyAmount } };
-			Name = $"{bundleNameFlavor}: {moneyAmount:N0}G";
+			string moneyString = moneyAmount.ToString("N0", new CultureInfo(Globals.ModRef.Helper.Translation.Locale));
+			Name = $"{Globals.GetTranslation("vault-money-format", new { moneyString })}: {bundleNameFlavor}";
 			Color = Globals.RNGGetRandomValueFromList(
 				Enum.GetValues(typeof(BundleColors)).Cast<BundleColors>().ToList());
 		}

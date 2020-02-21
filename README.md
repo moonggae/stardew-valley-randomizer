@@ -31,6 +31,11 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
   * Weapon stats, types, etc. are randomized
   * Many weapons can now appear in mines containers
   * Setting to rename the Galaxy Sword, since there's a hard-coded check on wilderness farms to spawn a high-level bat if you have an item named "Galaxy Sword" in your inventory
+  * Weapon images can be randomized, based on some custom weapon sprites
+    * If you go to Assets/CustomImages/Weapons, you can add images to the relevant folder (Slingshots unused currently).
+      * They should be 16 x 16 - if they aren't, the graphics will end up looking weird
+      * They must end in .png to be potentially picked up by the randomizer
+      * If you delete any, make sure there are at least 49 total in the folder, or you risk needing to fall back to the default image
 * Boot randomization
   * Stats are randomized
   * Names are randomized
@@ -75,11 +80,8 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
 * Add settings for more things, such as stats that can be modified on weapons, possible random names, etc.
   
 ## Known Issues
-* There are issues with the randomization not being consistent if you load more than one farm in your play session
-  * Restart the game before you load each farm, even if it's the same farm
-* The original mine floor randomization sometimes causes crashes when using the elevator - recommended to leave this setting off for now
-* This mod does not fully support other languages
-  * The title screen will use the English title buttons when the game is first loaded
-  * Randomly generated names and descriptions are all in English
-  * Randomizing crops will result in crop and seed names/descriptions to all be English; additionally, recipes that use these crops will have thier names/descriptions switched to English
-  * Randomizing fruit trees will result in their names/descriptions to all be English
+* Queen of Sauce recipes don't use the randomized crop names for the dishes that you learn how to cook
+* This mod does not fully support other languages (but it does for the most part)
+  * Randomly generated weapon/crop names are English
+  * The mad-lib style crop descriptions are English
+  * Everything else has been internationalized

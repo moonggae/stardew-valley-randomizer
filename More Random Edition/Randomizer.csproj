@@ -49,7 +49,9 @@
   <ItemGroup>
     <Compile Include="AssetEditor.cs" />
     <Compile Include="AssetLoader.cs" />
+    <Compile Include="BundleMenuAdjustments.cs" />
     <Compile Include="CraftingRecipeAdjustments.cs" />
+    <Compile Include="Enums\QuestItemTypes.cs" />
     <Compile Include="ImageRandomizers\ImageBuilder.cs" />
     <Compile Include="ImageRandomizers\WeaponImageBuilder.cs" />
     <Compile Include="NPCs\BirthdayRandomizer.cs" />
