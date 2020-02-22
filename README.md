@@ -35,6 +35,7 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
     * If you go to Assets/CustomImages/Weapons, you can add images to the relevant folder (Slingshots unused currently).
       * They should be 16 x 16 - if they aren't, the graphics will end up looking weird
       * They must end in .png to be potentially picked up by the randomizer
+      * Try not to use images with an indexed color palette -  this can cause crashes (on Macs, specifically)
       * If you delete any, make sure there are at least 49 total in the folder, or you risk needing to fall back to the default image
 * Boot randomization
   * Stats are randomized
