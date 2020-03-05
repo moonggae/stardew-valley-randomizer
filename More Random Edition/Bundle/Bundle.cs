@@ -300,7 +300,10 @@ namespace Randomizer
 		protected void GenerateRandomReward()
 		{
 			Item reward = Globals.RNGGetRandomValueFromList(ItemList.Items.Values.Where(x =>
-				x.Id != (int)ObjectIndexes.TransmuteAu && x.Id != (int)ObjectIndexes.TransmuteFe).ToList());
+				x.Id != (int)ObjectIndexes.AnyFish &&
+				x.Id != (int)ObjectIndexes.TransmuteAu &&
+				x.Id != (int)ObjectIndexes.TransmuteFe).ToList()
+			);
 			int numberToGive = Range.GetRandomValue(1, 25);
 			if (!reward.CanStack) { numberToGive = 1; }
 

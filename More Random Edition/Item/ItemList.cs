@@ -647,7 +647,7 @@ namespace Randomizer
 				{ (int)ObjectIndexes.Quartz, new Item((int)ObjectIndexes.Quartz, ObtainingDifficulties.SmallTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
 				{ (int)ObjectIndexes.FireQuartz, new Item((int)ObjectIndexes.FireQuartz, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
 				{ (int)ObjectIndexes.EarthCrystal, new Item((int)ObjectIndexes.EarthCrystal, ObtainingDifficulties.SmallTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
-				{ (int)ObjectIndexes.FrozenTear, new Item((int)ObjectIndexes.FrozenTear, ObtainingDifficulties.SmallTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
+				{ (int)ObjectIndexes.FrozenTear, new Item((int)ObjectIndexes.FrozenTear, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
 
 				{ (int)ObjectIndexes.Geode, new Item((int)ObjectIndexes.Geode, ObtainingDifficulties.SmallTimeRequirements) },
 				{ (int)ObjectIndexes.FrozenGeode, new Item((int)ObjectIndexes.FrozenGeode, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
@@ -805,7 +805,7 @@ namespace Randomizer
 				{ (int)ObjectIndexes.FluteBlock, new Item((int)ObjectIndexes.FluteBlock, ObtainingDifficulties.Impossible) { CanStack = false } },
 				{ (int)ObjectIndexes.TeaSet, new Item((int)ObjectIndexes.TeaSet, ObtainingDifficulties.Impossible) { CanStack = false } },
 				{ (int)ObjectIndexes.PurpleMushroom, new Item((int)ObjectIndexes.PurpleMushroom, ObtainingDifficulties.MediumTimeRequirements) },
-				{ (int)ObjectIndexes.Mead, new Item((int)ObjectIndexes.Mead, ObtainingDifficulties.MediumTimeRequirements) { RequiresBeehouse = true, RequiresKeg = true } },
+				{ (int)ObjectIndexes.Mead, new Item((int)ObjectIndexes.Mead, ObtainingDifficulties.LargeTimeRequirements) { RequiresBeehouse = true, RequiresKeg = true } },
 				{ (int)ObjectIndexes.PaleAle, new Item((int)ObjectIndexes.PaleAle, ObtainingDifficulties.LargeTimeRequirements) { RequiresKeg = true } },
 				{ (int)ObjectIndexes.MermaidsPendant, new Item((int)ObjectIndexes.MermaidsPendant, ObtainingDifficulties.EndgameItem) { OverrideName = "Mermaid's Pendant" } },
 				{ (int)ObjectIndexes.TreasureChest, new Item((int)ObjectIndexes.TreasureChest, ObtainingDifficulties.Impossible) },
