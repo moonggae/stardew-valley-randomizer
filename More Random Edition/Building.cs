@@ -52,10 +52,20 @@ namespace Randomizer
 		/// <param name="itemsRequired"></param>
 		private void PopulateRequiredItems(List<ItemAndMultiplier> itemsRequired)
 		{
-			foreach (ItemAndMultiplier itemAndMultiplier in itemsRequired)
+
+			Dictionary<Item, int> requiredItemsDict = new Dictionary<Item, int>();
+
+			foreach (ItemAndMultiplier requiredItem in itemsRequired)
 			{
-				RequiredItems.Add(new RequiredItem(itemAndMultiplier.Item, itemAndMultiplier.Amount));
+				if (!requiredItemsDict.ContainsKey(requiredItem.Item)) { requiredItemsDict.Add(requiredItem.Item, requiredItem.Amount); }
+				else { requiredItemsDict[requiredItem.Item] += requiredItem.Amount; }
 			}
+
+			foreach (Item item in requiredItemsDict.Keys)
+			{
+				RequiredItems.Add(new RequiredItem(item, requiredItemsDict[item]));
+			}
+
 		}
 
 		/// <summary>
