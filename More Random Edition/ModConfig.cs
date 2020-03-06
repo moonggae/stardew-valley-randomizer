@@ -39,7 +39,6 @@
 	public class FishConfig
 	{
 		public bool Randomize { get; set; } = true;
-		public bool RandomizeNames { get; set; } = true;
 		public bool RandomizeImages { get; set; } = true;
 	}
 }

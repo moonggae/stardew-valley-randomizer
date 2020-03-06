@@ -35,11 +35,7 @@ namespace Randomizer
 				CopyFishInfo(fishToReplace, fish);
 				fish.DartChance = newDartChance;
 				fish.BehaviorType = newBehaviorType;
-
-				if (Globals.Config.Fish.RandomizeNames)
-				{
-					fish.OverrideName = newName;
-				}
+				fish.OverrideName = newName;
 
 				if (new int[] { 158, 161, 162 }.Contains(fish.Id)) // The three hard-coded mines fish
 				{
@@ -75,11 +71,7 @@ namespace Randomizer
 				if (!Globals.Config.Fish.Randomize) { continue; }
 
 				fish.BehaviorType = newBehaviorType;
-
-				if (Globals.Config.Fish.RandomizeNames)
-				{
-					fish.OverrideName = newName;
-				}
+				fish.OverrideName = newName;
 
 				editedObjectInfo.FishReplacements.Add(fish.Id, fish.ToString());
 				editedObjectInfo.ObjectInformationReplacements.Add(fish.Id, GetFishObjectInformation(fish));
