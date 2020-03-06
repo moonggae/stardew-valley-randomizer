@@ -69,6 +69,11 @@ namespace Randomizer
 		protected string BaseFileName { get; set; }
 
 		/// <summary>
+		/// The name of the default image
+		/// </summary>
+		protected const string DefaultFileName = "default.png";
+
+		/// <summary>
 		/// The subdirectory where the base file and replacements are located
 		/// </summary>
 		protected string SubDirectory { get; set; }
@@ -102,10 +107,15 @@ namespace Randomizer
 					Bitmap bitmap = new Bitmap(randomFileName);
 					int xOffset = position.X * SizeInPx;
 					int yOffset = position.Y * SizeInPx;
+
+					graphics.FillRectangle(
+						new SolidBrush(Color.FromArgb(0, 0, 1)),
+						new Rectangle(xOffset, yOffset, SizeInPx, SizeInPx));
 					graphics.DrawImage(bitmap, new Rectangle(xOffset, yOffset, SizeInPx, SizeInPx));
 				}
 
-				if (Globals.Config.RandomizeWeapons && Globals.Config.UseCustomWeaponImages_Needs_Above_Setting_On)
+				finalImage.MakeTransparent(Color.FromArgb(0, 0, 1));
+				if (ShouldSaveImage())
 				{
 					finalImage.Save(OutputFileFullPath);
 				}
@@ -128,7 +138,12 @@ namespace Randomizer
 		private List<string> GetAllCustomImages()
 		{
 			List<string> files = Directory.GetFiles(ImageDirectory).ToList();
-			return files.Where(x => x.EndsWith(".png") && !x.Contains(BaseFileName)).ToList();
+			return files.Where(x =>
+				!x.EndsWith(DefaultFileName) &&
+				!x.EndsWith(OutputFileName) &&
+				!x.EndsWith(BaseFileName) &&
+				x.EndsWith(".png"))
+			.ToList();
 		}
 
 		/// <summary>
@@ -138,8 +153,22 @@ namespace Randomizer
 		/// <returns></returns>
 		protected virtual string GetRandomFileName(Point position)
 		{
+			string fileName = "";
+
+			if (string.IsNullOrEmpty(fileName))
+			{
+				Globals.ConsoleWarn($"Not enough images at directory (need more images, using default image): {ImageDirectory}");
+				return $"{ImageDirectory}/default.png";
+			}
+
 			return Globals.RNGGetAndRemoveRandomValueFromList(_filesToPullFrom);
 		}
+
+		/// <summary>
+		/// Whether we should actually save the image file, or if the setting is off
+		/// </summary>
+		/// <returns />
+		public abstract bool ShouldSaveImage();
 
 		/// <summary>
 		/// Cleans up all replacement files
@@ -148,6 +177,7 @@ namespace Randomizer
 		public static void CleanUpReplacementFiles()
 		{
 			File.Delete($"Mods/Randomizer/Assets/CustomImages/Weapons/randomizedImage.png");
+			File.Delete($"Mods/Randomizer/Assets/CustomImages/Fish/randomizedImage.png");
 		}
 	}
 }

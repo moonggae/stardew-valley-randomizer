@@ -45,6 +45,18 @@ namespace Randomizer
 					}
 				}
 
+				if (Globals.Config.RandomizeFish)
+				{
+					if (fish.AvailableLocations.Contains(Locations.NightMarket))
+					{
+						fish.DifficultyToObtain = ObtainingDifficulties.RareItem;
+					}
+					else
+					{
+						fish.DifficultyToObtain = ObtainingDifficulties.LargeTimeRequirements;
+					}
+				}
+
 				editedObjectInfo.FishReplacements.Add(fish.Id, fish.ToString());
 				editedObjectInfo.ObjectInformationReplacements.Add(fish.Id, GetFishObjectInformation(fish));
 			}

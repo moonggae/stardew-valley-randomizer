@@ -5,6 +5,8 @@
 		public bool CreateSpoilerLog { get; set; } = true;
 
 		public bool RandomizeFish { get; set; } = true;
+		public bool UseCustomFishImages_Needs_Above_Setting_On { get; set; } = true;
+
 		public bool RandomizeForagables { get; set; } = true;
 		public bool AddRandomArtifactItem { get; set; } = true;
 

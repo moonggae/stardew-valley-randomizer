@@ -92,7 +92,9 @@ namespace Randomizer
 			SwordImages = Directory.GetFiles($"{ImageDirectory}/{SwordSubDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
 			DaggerImages = Directory.GetFiles($"{ImageDirectory}/{DaggerSubDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
 			HammerAndClubImages = Directory.GetFiles($"{ImageDirectory}/{HammerAndClubSubDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
-			SlingshotImages = Directory.GetFiles($"{ImageDirectory}/{SlingshotSubDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
+
+			//TODO: enable this when we actually randomize slingshot images
+			//SlingshotImages = Directory.GetFiles($"{ImageDirectory}/{SlingshotSubDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
 		}
 
 		/// <summary>
@@ -143,6 +145,15 @@ namespace Randomizer
 			int weaponId = WeaponPositionToIDMap[position];
 			WeaponItem weapon = WeaponRandomizer.Weapons[weaponId];
 			return weapon.Type;
+		}
+
+		/// <summary>
+		/// Whether the settings premit random weapon images
+		/// </summary>
+		/// <returns>True if so, false otherwise</returns>
+		public override bool ShouldSaveImage()
+		{
+			return Globals.Config.RandomizeWeapons && Globals.Config.UseCustomWeaponImages_Needs_Above_Setting_On;
 		}
 	}
 }

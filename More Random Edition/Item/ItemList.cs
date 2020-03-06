@@ -553,6 +553,12 @@ namespace Randomizer
 				{ (int)ObjectIndexes.ScorpionCarp, new FishItem((int)ObjectIndexes.ScorpionCarp) {
 					AvailableLocations = new List<Locations> { Locations.Desert }
 				} },
+				{ (int)ObjectIndexes.Flounder, new FishItem((int)ObjectIndexes.Flounder) {
+					AvailableLocations = new List<Locations> { Locations.Beach }
+				} },
+				{ (int)ObjectIndexes.MidnightCarp, new FishItem((int)ObjectIndexes.MidnightCarp) {
+					AvailableLocations = new List<Locations> { Locations.Forest, Locations.Mountain }
+				} },
 				{ (int)ObjectIndexes.Sturgeon, new FishItem((int)ObjectIndexes.Sturgeon) {
 					AvailableLocations = new List<Locations> { Locations.Mountain }
 				} },

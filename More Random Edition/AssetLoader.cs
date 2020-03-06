@@ -132,7 +132,8 @@ namespace Randomizer
 
 			if (Globals.Config.RandomizeCrops)
 			{
-				AddReplacement("Maps/springobjects", "Assets/Maps/springobjects.png");
+				//TODO: probably get rid of this completely or move it somewhere
+				//AddReplacement("Maps/springobjects", "Assets/Maps/springobjects.png");
 			}
 
 			if (Globals.Config.RandomizeAnimalSkins)
@@ -229,14 +230,22 @@ namespace Randomizer
 		{
 			WeaponImageBuilder weaponImageBuilder = new WeaponImageBuilder();
 			weaponImageBuilder.BuildImage();
+			HandleImageReplacement(weaponImageBuilder, "TileSheets/weapons");
 
-			if (Globals.Config.RandomizeWeapons && Globals.Config.UseCustomWeaponImages_Needs_Above_Setting_On)
+			FishImageBuilder fishImageBuilder = new FishImageBuilder();
+			fishImageBuilder.BuildImage();
+			HandleImageReplacement(fishImageBuilder, "Maps/springobjects");
+		}
+
+		private void HandleImageReplacement(ImageBuilder imageBuilder, string xnbPath)
+		{
+			if (imageBuilder.ShouldSaveImage())
 			{
-				while (!File.Exists(weaponImageBuilder.OutputFileFullPath))
+				while (!File.Exists(imageBuilder.OutputFileFullPath))
 				{
 					Thread.Sleep(100);
 				}
-				AddReplacement("TileSheets/weapons", weaponImageBuilder.SMAPIOutputFilePath);
+				AddReplacement(xnbPath, imageBuilder.SMAPIOutputFilePath);
 			}
 		}
 
