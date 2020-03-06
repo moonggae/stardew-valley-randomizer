@@ -33,7 +33,7 @@ namespace Randomizer
 		/// <returns>True if so, false otherwise</returns>
 		public override bool ShouldSaveImage()
 		{
-			return Globals.Config.RandomizeFish && Globals.Config.UseCustomFishImages_Needs_Above_Setting_On;
+			return Globals.Config.Fish.Randomize && Globals.Config.Fish.RandomizeImages;
 		}
 	}
 }

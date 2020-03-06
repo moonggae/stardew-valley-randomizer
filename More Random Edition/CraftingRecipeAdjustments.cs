@@ -59,7 +59,7 @@ namespace Randomizer
 
 			if (genericMenu is CraftingPage)
 			{
-				if (!Globals.Config.RandomizeFish && !Globals.Config.RandomizeCrops) { return; }
+				if (!Globals.Config.Fish.Randomize && !Globals.Config.RandomizeCrops) { return; }
 				FixCookingRecipeHoverText((CraftingPage)genericMenu);
 			}
 
@@ -159,7 +159,7 @@ namespace Randomizer
 		/// <param name="recipe">The recipe</param>
 		private static void FixFishDish(CraftingRecipe recipe)
 		{
-			if (!Globals.Config.RandomizeFish) { return; }
+			if (!Globals.Config.Fish.Randomize) { return; }
 
 			if (FishDishesMap.ContainsKey(recipe.name))
 			{

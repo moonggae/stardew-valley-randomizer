@@ -246,7 +246,7 @@ namespace Randomizer
 			// in the backwoods, but doing this just to be safe
 			Locations location = (Location == Locations.Backwoods) ? Locations.Mountain : Location;
 
-			if (!Globals.Config.RandomizeFish) { return defaultString; }
+			if (!Globals.Config.Fish.Randomize) { return defaultString; }
 
 			List<int> allFishIds = FishItem.Get().Select(x => x.Id).ToList();
 			List<int> fishIds = FishItem.Get(location, season).Select(x => x.Id).ToList();

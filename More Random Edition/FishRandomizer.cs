@@ -30,12 +30,16 @@ namespace Randomizer
 					Enum.GetValues(typeof(FishBehaviorType)).Cast<FishBehaviorType>().ToList());
 				string newName = Globals.RNGGetAndRemoveRandomValueFromList(fishNames);
 
-				if (!Globals.Config.RandomizeFish) { continue; }
+				if (!Globals.Config.Fish.Randomize) { continue; }
 
 				CopyFishInfo(fishToReplace, fish);
 				fish.DartChance = newDartChance;
 				fish.BehaviorType = newBehaviorType;
-				fish.OverrideName = newName;
+
+				if (Globals.Config.Fish.RandomizeNames)
+				{
+					fish.OverrideName = newName;
+				}
 
 				if (new int[] { 158, 161, 162 }.Contains(fish.Id)) // The three hard-coded mines fish
 				{
@@ -45,7 +49,7 @@ namespace Randomizer
 					}
 				}
 
-				if (Globals.Config.RandomizeFish)
+				if (Globals.Config.Fish.Randomize)
 				{
 					if (fish.AvailableLocations.Contains(Locations.NightMarket))
 					{
@@ -68,10 +72,14 @@ namespace Randomizer
 
 				string newName = Globals.RNGGetAndRemoveRandomValueFromList(fishNames);
 
-				if (!Globals.Config.RandomizeFish) { continue; }
+				if (!Globals.Config.Fish.Randomize) { continue; }
 
 				fish.BehaviorType = newBehaviorType;
-				fish.OverrideName = newName;
+
+				if (Globals.Config.Fish.RandomizeNames)
+				{
+					fish.OverrideName = newName;
+				}
 
 				editedObjectInfo.FishReplacements.Add(fish.Id, fish.ToString());
 				editedObjectInfo.ObjectInformationReplacements.Add(fish.Id, GetFishObjectInformation(fish));
@@ -150,7 +158,7 @@ namespace Randomizer
 		/// </summary>
 		public static void WriteToSpoilerLog()
 		{
-			if (!Globals.Config.RandomizeFish) { return; }
+			if (!Globals.Config.Fish.Randomize) { return; }
 
 			List<FishItem> allRandomizedFish = FishItem.GetListAsFishItem();
 

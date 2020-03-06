@@ -4,9 +4,7 @@
 	{
 		public bool CreateSpoilerLog { get; set; } = true;
 
-		public bool RandomizeFish { get; set; } = true;
-		public bool UseCustomFishImages_Needs_Above_Setting_On { get; set; } = true;
-
+		public FishConfig Fish { get; set; } = new FishConfig();
 		public bool RandomizeForagables { get; set; } = true;
 		public bool AddRandomArtifactItem { get; set; } = true;
 
@@ -37,4 +35,12 @@
 		public bool RandomizeRain { get; set; } = true;
 		public bool RandomizeMusic { get; set; } = true;
 	}
+
+	public class FishConfig
+	{
+		public bool Randomize { get; set; } = true;
+		public bool RandomizeNames { get; set; } = true;
+		public bool RandomizeImages { get; set; } = true;
+	}
 }
+

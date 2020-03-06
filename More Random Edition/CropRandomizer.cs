@@ -339,7 +339,7 @@ namespace Randomizer
 				}
 			}
 
-			if (Globals.Config.RandomizeFish)
+			if (Globals.Config.Fish.Randomize)
 			{
 				foreach (KeyValuePair<int, string> pair in fishItemReplacements)
 				{
