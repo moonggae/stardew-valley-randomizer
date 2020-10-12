@@ -153,7 +153,7 @@ namespace Randomizer
 		/// <returns></returns>
 		protected virtual string GetRandomFileName(Point position)
 		{
-			string fileName = "";
+			string fileName = Globals.RNGGetAndRemoveRandomValueFromList(_filesToPullFrom);
 
 			if (string.IsNullOrEmpty(fileName))
 			{
@@ -161,7 +161,7 @@ namespace Randomizer
 				return $"{ImageDirectory}/default.png";
 			}
 
-			return Globals.RNGGetAndRemoveRandomValueFromList(_filesToPullFrom);
+			return fileName;
 		}
 
 		/// <summary>
