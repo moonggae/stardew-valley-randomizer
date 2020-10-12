@@ -4,20 +4,14 @@
 	{
 		public bool CreateSpoilerLog { get; set; } = true;
 
+		public CraftingRecipesConfig CraftingRecipies { get; set; } = new CraftingRecipesConfig();
+		public WeaponsConfig Weapons { get; set; } = new WeaponsConfig();
+		public BootsConfig Boots { get; set; } = new BootsConfig();
+		public MonstersConfig Monsters { get; set; } = new MonstersConfig();
 		public FishConfig Fish { get; set; } = new FishConfig();
+
 		public bool RandomizeForagables { get; set; } = true;
 		public bool AddRandomArtifactItem { get; set; } = true;
-
-		public bool RandomizeCraftingRecipes { get; set; } = true;
-		public bool RandomizeCraftingRecipeLevels_Needs_Above_Setting_On { get; set; } = true;
-
-		public bool RandomizeWeapons { get; set; } = true;
-		public bool UseCustomWeaponImages_Needs_Above_Setting_On { get; set; } = true;
-		public bool RandomizeGalaxySwordName_Needs_Above_Setting_On { get; set; } = true;
-		public bool RandomizeBoots { get; set; } = true;
-
-		public bool RandomizeMonsters { get; set; } = true;
-		public bool SwapUniqueMonsterDrops_Needs_Above_Setting_On { get; set; } = true;
 
 		public bool RandomizeBundles { get; set; } = true;
 		public bool RandomizeBuildingCosts { get; set; } = true;
@@ -34,6 +28,31 @@
 
 		public bool RandomizeRain { get; set; } = true;
 		public bool RandomizeMusic { get; set; } = true;
+	}
+
+	public class CraftingRecipesConfig
+	{
+		public bool Randomize { get; set; } = true;
+		public bool RandomizeLevels { get; set; } = true;
+
+	}
+
+	public class WeaponsConfig
+	{
+		public bool Randomize { get; set; } = true;
+		public bool UseCustomWeaponImages { get; set; } = true;
+		public bool RandomizeGalaxySwordName { get; set; } = true;
+	}
+
+	public class BootsConfig
+	{
+		public bool Randomize { get; set; } = true;
+	}
+
+	public class MonstersConfig
+	{
+		public bool Randomize { get; set; } = true;
+		public bool SwapUniqueDrops { get; set; } = true;
 	}
 
 	public class FishConfig

@@ -46,7 +46,7 @@ namespace Randomizer
 		/// <returns />
 		public int GetBuyPrice()
 		{
-			if (!Globals.Config.RandomizeWeapons) { return GetOriginalBuyPrice(); }
+			if (!Globals.Config.Weapons.Randomize) { return GetOriginalBuyPrice(); }
 
 			return GetLevel() * 100 * 4;
 		}

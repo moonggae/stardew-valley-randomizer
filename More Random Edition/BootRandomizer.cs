@@ -51,7 +51,7 @@ namespace Randomizer
 		/// <param name="bootsToUse">The boot data that was used</param>
 		public static void WriteToSpoilerLog(List<BootItem> bootsToUse)
 		{
-			if (!Globals.Config.RandomizeBoots) { return; }
+			if (!Globals.Config.Boots.Randomize) { return; }
 
 			Globals.SpoilerWrite("==== BOOTS ====");
 			foreach (BootItem bootToAdd in bootsToUse)

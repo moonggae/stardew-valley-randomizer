@@ -41,7 +41,7 @@ namespace Randomizer
 		/// </returns>
 		public int GetLevelLearnedAt()
 		{
-			if (!Globals.Config.RandomizeCraftingRecipeLevels_Needs_Above_Setting_On) { return BaseLevelLearnedAt; }
+			if (!Globals.Config.CraftingRecipies.Randomize || !Globals.Config.CraftingRecipies.RandomizeLevels) { return BaseLevelLearnedAt; }
 
 			Range levelRange = new Range(BaseLevelLearnedAt - 3, BaseLevelLearnedAt + 3);
 			int generatedLevel = levelRange.GetRandomValue();
@@ -74,7 +74,7 @@ namespace Randomizer
 				requiredItemsSpoilerString += $" - {itemName}: {amount}";
 			}
 
-			if (Globals.Config.RandomizeCraftingRecipes)
+			if (Globals.Config.CraftingRecipies.Randomize)
 			{
 				Globals.SpoilerWrite($"{Name} - {stringSuffix}");
 				Globals.SpoilerWrite(requiredItemsSpoilerString);

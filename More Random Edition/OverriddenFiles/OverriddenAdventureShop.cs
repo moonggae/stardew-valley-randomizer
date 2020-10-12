@@ -266,7 +266,7 @@ namespace Randomizer
 		/// </summary>
 		public static void FixAdventureShopBuyAndSellPrices()
 		{
-			if (Globals.Config.RandomizeWeapons || Globals.Config.RandomizeBoots)
+			if (Globals.Config.Weapons.Randomize || Globals.Config.Boots.Randomize)
 			{
 				MethodInfo methodToReplace = typeof(Utility).GetMethod("getAdventureShopStock");
 				MethodInfo methodToInject = typeof(OverriddenAdventureShop).GetMethod("NewGetAdventureShopStock");

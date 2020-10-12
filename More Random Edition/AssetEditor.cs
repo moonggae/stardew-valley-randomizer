@@ -33,7 +33,7 @@ namespace Randomizer
 
 		public bool CanEdit<T>(IAssetInfo asset)
 		{
-			if (asset.AssetNameEquals("Data/CraftingRecipes")) { return Globals.Config.RandomizeCraftingRecipes; }
+			if (asset.AssetNameEquals("Data/CraftingRecipes")) { return Globals.Config.CraftingRecipies.Randomize; }
 			if (asset.AssetNameEquals("Data/Bundles")) { return Globals.Config.RandomizeBundles; }
 			if (asset.AssetNameEquals("Data/Blueprints")) { return Globals.Config.RandomizeBuildingCosts; }
 			if (asset.AssetNameEquals("Strings/StringsFromCSFiles")) { return true; }
@@ -43,9 +43,9 @@ namespace Randomizer
 			if (asset.AssetNameEquals("Data/Locations")) { return Globals.Config.Fish.Randomize || Globals.Config.RandomizeForagables || Globals.Config.AddRandomArtifactItem; }
 			if (asset.AssetNameEquals("Data/fruitTrees")) { return Globals.Config.RandomizeFruitTrees; }
 			if (asset.AssetNameEquals("Data/Crops")) { return Globals.Config.RandomizeCrops; }
-			if (asset.AssetNameEquals("Data/weapons")) { return Globals.Config.RandomizeWeapons; }
-			if (asset.AssetNameEquals("Data/Boots")) { return Globals.Config.RandomizeBoots; }
-			if (asset.AssetNameEquals("Data/Monsters")) { return Globals.Config.RandomizeMonsters; }
+			if (asset.AssetNameEquals("Data/weapons")) { return Globals.Config.Weapons.Randomize; }
+			if (asset.AssetNameEquals("Data/Boots")) { return Globals.Config.Boots.Randomize; }
+			if (asset.AssetNameEquals("Data/Monsters")) { return Globals.Config.Monsters.Randomize; }
 			if (asset.AssetNameEquals("Data/NPCDispositions")) { return Globals.Config.RandomizeNPCBirthdays; }
 
 			return false;

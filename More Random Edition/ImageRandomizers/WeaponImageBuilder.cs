@@ -153,7 +153,7 @@ namespace Randomizer
 		/// <returns>True if so, false otherwise</returns>
 		public override bool ShouldSaveImage()
 		{
-			return Globals.Config.RandomizeWeapons && Globals.Config.UseCustomWeaponImages_Needs_Above_Setting_On;
+			return Globals.Config.Weapons.Randomize && Globals.Config.Weapons.UseCustomWeaponImages;
 		}
 	}
 }

@@ -63,7 +63,7 @@ namespace Randomizer
 			SetWeaponDescription(weapon);
 
 			string weaponName = nameRandomizer.GenerateRandomWeaponName(weapon.Type);
-			if (Globals.Config.RandomizeGalaxySwordName_Needs_Above_Setting_On || weapon.Name != "Galaxy Sword")
+			if ((Globals.Config.Weapons.Randomize && Globals.Config.Weapons.RandomizeGalaxySwordName) || weapon.Name != "Galaxy Sword")
 			{
 				weapon.OverrideName = weaponName;
 			}
@@ -370,7 +370,7 @@ namespace Randomizer
 		/// <param name="modifiedWeaponDictionary">The dictionary with changed info</param>
 		private static void WriteToSpoilerLog(Dictionary<int, WeaponItem> modifiedWeaponDictionary)
 		{
-			if (!Globals.Config.RandomizeWeapons) { return; }
+			if (!Globals.Config.Weapons.Randomize) { return; }
 
 			Globals.SpoilerWrite("==== WEAPONS ====");
 			foreach (int id in modifiedWeaponDictionary.Keys)
