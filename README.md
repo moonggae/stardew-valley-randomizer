@@ -86,3 +86,7 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
   * Randomly generated weapon/crop names are English
   * The mad-lib style crop descriptions are English
   * Everything else has been internationalized
+
+## Credits for Pending Changes
+* The new fish images on the FishRework branch are mostly directly pulled form the New New Fish mod: https://www.nexusmods.com/stardewvalley/mods/3578
+  * Specific credits go to Hisane for the sprites: https://www.nexusmods.com/Users/51209496
