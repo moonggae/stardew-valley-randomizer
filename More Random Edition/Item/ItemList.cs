@@ -25,16 +25,6 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Gets the display name of the item with the given id
-		/// </summary>
-		/// <param name="id">The item's id</param>
-		/// <returns />
-		public static string GetItemDisplayName(int id)
-		{
-			return Items[id].DisplayName;
-		}
-
-		/// <summary>
 		/// Gets all the foragables
 		/// </summary>
 		/// <returns />

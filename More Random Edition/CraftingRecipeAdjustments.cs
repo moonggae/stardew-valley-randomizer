@@ -49,6 +49,27 @@ namespace Randomizer
 		};
 
 		/// <summary>
+		/// Fix the cooking recipe display names so that the queen of sauce shows
+		/// can actually display the correct thing
+		/// </summary>
+		public static void FixCookingRecipeDisplayNames()
+		{
+			foreach (KeyValuePair<string, int> entry in CropDishesMap)
+			{
+				int id = entry.Value;
+				CookedItem item = (CookedItem)ItemList.Items[id];
+				item.OverrideDisplayName = GetDishName(entry.Value);
+			}
+
+			foreach (KeyValuePair<string, int> entry in FishDishesMap)
+			{
+				int id = entry.Value;
+				CookedItem item = (CookedItem)ItemList.Items[id];
+				item.OverrideDisplayName = GetDishName(entry.Value);
+			}
+		}
+
+		/// <summary>
 		/// Fixes the cooking recipe names and the crab pot recipe for the tapper profession if the
 		/// appropriate things are randomized
 		/// </summary>

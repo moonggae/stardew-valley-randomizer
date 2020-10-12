@@ -20,9 +20,9 @@ namespace Randomizer
 			public ShowData(int id, int recipeItemId = 0, int item1Id = 0, int item2Id = 0)
 			{
 				ID = id;
-				Recipe = recipeItemId > 0 ? ItemList.GetItemDisplayName(recipeItemId) : "";
-				Item1 = item1Id > 0 ? ItemList.GetItemDisplayName(item1Id) : "";
-				Item2 = item2Id > 0 ? ItemList.GetItemDisplayName(item2Id) : "";
+				Recipe = recipeItemId > 0 ? ItemList.Items[recipeItemId].OverrideDisplayName : "";
+				Item1 = item1Id > 0 ? ItemList.GetItemName(item1Id) : "";
+				Item2 = item2Id > 0 ? ItemList.GetItemName(item2Id) : "";
 			}
 
 			public object GetTokenObject()

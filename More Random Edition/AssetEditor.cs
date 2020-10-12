@@ -171,8 +171,6 @@ namespace Randomizer
 			_cropReplacements = editedObjectInfo.CropsReplacements;
 			_objectInformationReplacements = editedObjectInfo.ObjectInformationReplacements;
 
-			_cookingChannelReplacements = CookingChannel.GetTextEdits();
-
 			_blueprintReplacements = BlueprintRandomizer.Randomize();
 			_monsterReplacements = MonsterRandomizer.Randomize(); // Must be done before recipes since rarities of drops change
 			_recipeReplacements = CraftingRecipeRandomizer.Randomize();
@@ -184,6 +182,9 @@ namespace Randomizer
 			QuestInformation questInfo = QuestRandomizer.Randomize();
 			_questReplacements = questInfo.QuestReplacements;
 			_mailReplacements = questInfo.MailReplacements;
+
+			CraftingRecipeAdjustments.FixCookingRecipeDisplayNames();
+			_cookingChannelReplacements = CookingChannel.GetTextEdits();
 
 			_weaponReplacements = WeaponRandomizer.Randomize();
 			_bootReplacements = BootRandomizer.Randomize();

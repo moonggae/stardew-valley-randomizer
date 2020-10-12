@@ -252,7 +252,7 @@
 	"item-226-name-and-description": "Spicy {{itemName}}/It's really spicy! Be careful.",
 	
 	"Farmer.cs.1918": "You received 15 {{seedName}}!^^'Here's a little something to get you started!^-Mayor Lewis'",
-	"TV.cs.13151": "You already know how to cook this!",
+	"TV.cs.13151": "You already know how to cook this.",
 	"TV.cs.13153": "You learned a new recipe!",
 
 	"cooking-channel-2": "Coleslaw/Coleslaw! Envisioning bland mounds of limp {{item1}}? You're not alone. But a great coleslaw can be so much more. Make sure you have juicy fresh {{item1}} for this one. Toss with a little vinegar and mayonnaise and you're all set. Ah, that's crisp.",
@@ -267,7 +267,7 @@
 	"cooking-channel-18": "Hashbrowns/Hashbrowns! This one's simple, but that's a good thing! You'll just want to shred some {{item1}}s, add a liberal amount of salt, and fry to perfection in your favorite high-heat oil. Sounds easy, right? Well, I've got some pointers that'll make your job a lot easier... ",
 	"cooking-channel-21": "Carp Surprise/Hey, ever have a bunch of {{item1}} laying around and no idea what to do with them? Yeah, me too. Well, I've devised a great solution to this all-too-common problem. I call it... {{recipe}}. It's quite easy to make, but you'll need a lot of {{item1}}... ",
 	"cooking-channel-23": "Pink Cake/A viewer from Pelican Town wrote to me recently... let's see... Her name's Haley. She wrote, 'I tried your pink cake last time I was in Zuzu City and I fell in love with it. Could you share the recipe on your next episode?'. Well, why not? It's a marvelous cake. And you'll never guess the secret ingredient... {{item1}}!",
-	"cooking-channel-25": "Fruit Salad/{{item1}}! Here's a healthy and delicious treat to brighten up your day. The most important thing to remember is that you need ripe fruit. Forget the bland stuff they sell at the supermarket... I'm talking fresh-picked, juicy, bursting-with-flavor fruit. Okay, now watch closely...",
+	"cooking-channel-25": "Fruit Salad/{{recipe}}! Here's a healthy and delicious treat to brighten up your day. The most important thing to remember is that you need ripe fruit. Forget the bland stuff they sell at the supermarket... I'm talking fresh-picked, juicy, bursting-with-flavor fruit. Okay, now watch closely...",
 	"cooking-channel-29": "Poppyseed Muffin/{{recipe}}! {{item1}}s make beautiful ornamental flowers... but why not make full use of the plant with these delightful muffins? I'm a huge fan of {{item2}}. They're subtle, but they add a nice flavor and a great texture to bready desserts. And they're healthy!",
 	"cooking-channel-31": "Bruschetta/Bruschetta! It's a wonderfully simple appetizer that really showcases the quality of the ingredients. You'll need bread, {{item1}}, and oil. First, you'll need to grill the bread. Slice the {{item1}} and place onto the grilled bread. Then drizzle with oil and serve. I told you it was simple!",
 	
