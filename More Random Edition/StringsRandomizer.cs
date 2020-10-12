@@ -18,7 +18,14 @@ namespace Randomizer
 
 			// Fix the "Parsnip" string at the start of the game
 			string parsnipSeedName = ItemList.Items[(int)ObjectIndexes.ParsnipSeeds].Name;
-			stringReplacements["Farmer.cs.1918"] = $"You received 15 {parsnipSeedName}!^^'I found these seeds - I think they're Parsnip seeds but they probably aren't!^-Mayor Lewis'";
+			stringReplacements["Farmer.cs.1918"] = Globals.GetTranslation("Farmer.cs.1918", new { seedName = parsnipSeedName });
+
+			// Fix the queen of sauce strings so it doesn't say the wrong recipe
+			if (Globals.Config.Fish.Randomize || Globals.Config.RandomizeCrops)
+			{
+				stringReplacements["TV.cs.13151"] = Globals.GetTranslation("TV.cs.13151");
+				stringReplacements["TV.cs.13153"] = Globals.GetTranslation("TV.cs.13153");
+			}
 
 			return stringReplacements;
 		}
