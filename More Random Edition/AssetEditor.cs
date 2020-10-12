@@ -20,6 +20,7 @@ namespace Randomizer
 		private Dictionary<int, string> _objectInformationReplacements = new Dictionary<int, string>();
 		private Dictionary<int, string> _fruitTreeReplacements = new Dictionary<int, string>();
 		private Dictionary<int, string> _cropReplacements = new Dictionary<int, string>();
+		private Dictionary<string, string> _cookingChannelReplacements = new Dictionary<string, string>();
 		private Dictionary<int, string> _weaponReplacements = new Dictionary<int, string>();
 		private Dictionary<int, string> _bootReplacements = new Dictionary<int, string>();
 		private Dictionary<string, string> _monsterReplacements = new Dictionary<string, string>();
@@ -43,6 +44,7 @@ namespace Randomizer
 			if (asset.AssetNameEquals("Data/Locations")) { return Globals.Config.Fish.Randomize || Globals.Config.RandomizeForagables || Globals.Config.AddRandomArtifactItem; }
 			if (asset.AssetNameEquals("Data/fruitTrees")) { return Globals.Config.RandomizeFruitTrees; }
 			if (asset.AssetNameEquals("Data/Crops")) { return Globals.Config.RandomizeCrops; }
+			if (asset.AssetNameEquals("Data/TV/CookingChannel")) { return Globals.Config.RandomizeCrops || Globals.Config.Fish.Randomize; }
 			if (asset.AssetNameEquals("Data/weapons")) { return Globals.Config.Weapons.Randomize; }
 			if (asset.AssetNameEquals("Data/Boots")) { return Globals.Config.Boots.Randomize; }
 			if (asset.AssetNameEquals("Data/Monsters")) { return Globals.Config.Monsters.Randomize; }
@@ -107,6 +109,10 @@ namespace Randomizer
 			{
 				this.ApplyEdits(asset, this._cropReplacements);
 			}
+			else if (asset.AssetNameEquals("Data/TV/CookingChannel"))
+			{
+				this.ApplyEdits(asset, this._cookingChannelReplacements);
+			}
 			else if (asset.AssetNameEquals("Data/weapons"))
 			{
 				this.ApplyEdits(asset, this._weaponReplacements);
@@ -139,6 +145,7 @@ namespace Randomizer
 			this._mod.Helper.Content.InvalidateCache("Data/Locations");
 			this._mod.Helper.Content.InvalidateCache("Data/fruitTrees");
 			this._mod.Helper.Content.InvalidateCache("Data/Crops");
+			this._mod.Helper.Content.InvalidateCache("Data/TV/CookingChannel");
 			this._mod.Helper.Content.InvalidateCache("Data/weapons");
 			this._mod.Helper.Content.InvalidateCache("Data/Boots");
 			this._mod.Helper.Content.InvalidateCache("Data/Monsters");
@@ -162,8 +169,9 @@ namespace Randomizer
 			CropRandomizer.Randomize(editedObjectInfo);
 			_fruitTreeReplacements = editedObjectInfo.FruitTreeReplacements;
 			_cropReplacements = editedObjectInfo.CropsReplacements;
-
 			_objectInformationReplacements = editedObjectInfo.ObjectInformationReplacements;
+
+			_cookingChannelReplacements = CookingChannel.GetTextEdits();
 
 			_blueprintReplacements = BlueprintRandomizer.Randomize();
 			_monsterReplacements = MonsterRandomizer.Randomize(); // Must be done before recipes since rarities of drops change

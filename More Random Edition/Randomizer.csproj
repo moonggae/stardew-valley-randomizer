@@ -50,6 +50,7 @@
     <Compile Include="AssetEditor.cs" />
     <Compile Include="AssetLoader.cs" />
     <Compile Include="BundleMenuAdjustments.cs" />
+    <Compile Include="CookingChannel.cs" />
     <Compile Include="CraftingRecipeAdjustments.cs" />
     <Compile Include="Enums\QuestItemTypes.cs" />
     <Compile Include="ImageRandomizers\FishImageBuilder.cs" />
