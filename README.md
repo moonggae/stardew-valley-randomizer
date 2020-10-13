@@ -87,6 +87,13 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
   * The mad-lib style crop descriptions are English
   * Everything else has been internationalized
 
-## Credits for Pending Changes
-* The new fish images on the FishRework branch are mostly directly pulled form the New New Fish mod: https://www.nexusmods.com/stardewvalley/mods/3578
-  * Specific credits go to Hisane for the sprites: https://www.nexusmods.com/Users/51209496
+## Pending Changes on the 0.4.0 branch
+* Fish
+  * When randomizing fish, there's the option of using custom fish images - this is in a similar place to the weapon images
+    * The majority of the new fish images on the FishRework branch are mostly directly pulled form the New New Fish mod: https://www.nexusmods.com/stardewvalley/mods/3578
+      * Specific credits go to Hisane for the sprites: https://www.nexusmods.com/Users/51209496
+* Fixed the Queen of Sauce show - it should now use the randomized crop/fish names in the show text
+* Reworked the config file to be more readable/user friendly
+* Reworked logging to log at appropriate levels (Trace/Wan/Error)
+* Rebalanced Frozen Tears and Mead - they shouldn't appear in lower level recipies anymore
+* Fixed a bug where the "Any Fish" item could be obtained as a bundle reward - the result was that you don't get any reward
