@@ -94,6 +94,6 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
       * Specific credits go to Hisane for the sprites: https://www.nexusmods.com/Users/51209496
 * Fixed the Queen of Sauce show - it should now use the randomized crop/fish names in the show text
 * Reworked the config file to be more readable/user friendly
-* Reworked logging to log at appropriate levels (Trace/Wan/Error)
+* Reworked logging to log at appropriate levels (Trace/Warn/Error)
 * Rebalanced Frozen Tears and Mead - they shouldn't appear in lower level recipies anymore
 * Fixed a bug where the "Any Fish" item could be obtained as a bundle reward - the result was that you don't get any reward
