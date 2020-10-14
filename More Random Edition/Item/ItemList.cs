@@ -464,7 +464,7 @@ namespace Randomizer
 				{ (int)ObjectIndexes.LeadBobber, new Item((int)ObjectIndexes.LeadBobber, ObtainingDifficulties.MediumTimeRequirements) { CanStack = false } },
 
 				// Fish - defaults to ObtainingDifficulties.LargeTimeRequirements
-				{ (int)ObjectIndexes.AnyFish, new FishItem((int)ObjectIndexes.AnyFish, ObtainingDifficulties.NoRequirements) },
+				{ (int)ObjectIndexes.AnyFish, new FishItem((int)ObjectIndexes.AnyFish, ObtainingDifficulties.NonCraftingItem) },
 
 				{ (int)ObjectIndexes.Pufferfish, new FishItem((int)ObjectIndexes.Pufferfish) {
 					AvailableLocations = new List<Locations> { Locations.Beach }
