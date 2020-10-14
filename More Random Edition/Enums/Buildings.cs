@@ -20,6 +20,7 @@
 		PlankCabin,
 		LogCabin,
 		Well,
-		FishPond
+		FishPond,
+		Stable
 	}
 }

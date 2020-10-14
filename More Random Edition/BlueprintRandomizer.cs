@@ -281,6 +281,18 @@ namespace Randomizer
 							"false/2"
 						);
 						break;
+					case Buildings.Stable:
+						currentBuilding = new Building(
+							"Stable",
+							new List<ItemAndMultiplier>
+							{
+								new ItemAndMultiplier(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.MediumTimeRequirements), 2),
+								new ItemAndMultiplier(resource1, 8),
+							},
+							10000,
+							$"4/2/-1/-1/-2/-1/null/{Globals.GetTranslation("Stable-name-and-description")}/Buildings/none/64/96/-1/null/Farm"
+						);
+						break;
 					default:
 						Globals.ConsoleError($"Unhandled building: {buildingType.ToString()}");
 						continue;
