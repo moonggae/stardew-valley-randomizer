@@ -130,7 +130,7 @@ namespace Randomizer
 			// Clear any previous replacements
 			this._replacements.Clear();
 
-			if (Globals.Config.RandomizeCrops)
+			if (Globals.Config.Crops.Randomize)
 			{
 				//TODO: probably get rid of this completely or move it somewhere
 				//AddReplacement("Maps/springobjects", "Assets/Maps/springobjects.png");
@@ -237,6 +237,12 @@ namespace Randomizer
 			HandleImageReplacement(fishImageBuilder, "Maps/springobjects");
 		}
 
+		/// <summary>
+		/// Handles actually adding the image replacement
+		/// If the image doesn't exist, sleep for 0.1 second increments until it does
+		/// </summary>
+		/// <param name="imageBuilder"></param>
+		/// <param name="xnbPath"></param>
 		private void HandleImageReplacement(ImageBuilder imageBuilder, string xnbPath)
 		{
 			if (imageBuilder.ShouldSaveImage())

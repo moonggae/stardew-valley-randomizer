@@ -83,7 +83,7 @@ namespace Randomizer
 
 			if (Globals.Config.RandomizeMusic) { helper.Events.GameLoop.UpdateTicked += (sender, args) => this.TryReplaceSong(); }
 			if (Globals.Config.RandomizeRain) { helper.Events.GameLoop.DayEnding += _modAssetLoader.ReplaceRain; }
-			if (Globals.Config.RandomizeCrops || Globals.Config.Fish.Randomize)
+			if (Globals.Config.Crops.Randomize || Globals.Config.Fish.Randomize)
 			{
 				helper.Events.Display.RenderingActiveMenu += (sender, args) => CraftingRecipeAdjustments.HandleCraftingMenus();
 			}

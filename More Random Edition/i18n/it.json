@@ -254,6 +254,7 @@
 	"Farmer.cs.1918": "Hai ricevuto 15 {{seedName}}!^^'Ecco una cosuccia per farti iniziare.^-Il sindaco Lewis'",
 	"TV.cs.13151": "Sai già come cucinarlo.",
 	"TV.cs.13153": "Hai imparato una nuova ricetta!",
+	"Woods_Statue": "--Vecchio maestro Cannoli--\n...Sto ancora cercando un {{cropName}}...",
 	
 	"cooking-channel-2": "Coleslaw/Insalata russa! Vi immaginate un banale mucchio di {{item1}} floscio? Non siete i soli. Ma una buona insalata russa può essere molto di più. Accertatevi che il {{item1}} sia fresco e succoso. Un po' d'aceto e maionese e siete pronti. Ah, croccante.",
 	"cooking-channel-3": "Radish Salad/{{recipe}}! Non c'è nulla come un {{item1}} fresco e piccantino. Mi ricorda la tarda primavera... mia madre serviva i {{item1}} freschi a fette sul pane integrale con un po' di sale e pepe. Ah, bei tempi... ma sto divagando. Ora, fate attenzione...",

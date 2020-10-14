@@ -64,7 +64,7 @@ namespace Randomizer
 		public static Dictionary<string, string> GetTextEdits()
 		{
 			Dictionary<string, string> replacements = new Dictionary<string, string>();
-			if (!Globals.Config.RandomizeCrops && !Globals.Config.Fish.Randomize) { return replacements; }
+			if (!Globals.Config.Crops.Randomize && !Globals.Config.Fish.Randomize) { return replacements; }
 
 			foreach (ShowData showData in CookingChannelData)
 			{

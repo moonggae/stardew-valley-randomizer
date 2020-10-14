@@ -8,6 +8,7 @@
 		public WeaponsConfig Weapons { get; set; } = new WeaponsConfig();
 		public BootsConfig Boots { get; set; } = new BootsConfig();
 		public MonstersConfig Monsters { get; set; } = new MonstersConfig();
+		public CropsConfig Crops { get; set; } = new CropsConfig();
 		public FishConfig Fish { get; set; } = new FishConfig();
 
 		public bool RandomizeForagables { get; set; } = true;
@@ -16,7 +17,6 @@
 		public bool RandomizeBundles { get; set; } = true;
 		public bool RandomizeBuildingCosts { get; set; } = true;
 
-		public bool RandomizeCrops { get; set; } = true;
 		public bool RandomizeFruitTrees { get; set; } = true;
 
 		public bool RandomizeAnimalSkins { get; set; } = true;
@@ -53,6 +53,12 @@
 	{
 		public bool Randomize { get; set; } = true;
 		public bool SwapUniqueDrops { get; set; } = true;
+	}
+
+	public class CropsConfig
+	{
+		public bool Randomize { get; set; } = true;
+		public bool RandomizeImages { get; set; } = true;
 	}
 
 	public class FishConfig

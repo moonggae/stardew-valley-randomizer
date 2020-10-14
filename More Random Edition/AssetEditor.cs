@@ -13,6 +13,7 @@ namespace Randomizer
 		private Dictionary<string, string> _blueprintReplacements = new Dictionary<string, string>();
 		private Dictionary<string, string> _grandpaStringReplacements = new Dictionary<string, string>();
 		private Dictionary<string, string> _stringReplacements = new Dictionary<string, string>();
+		private Dictionary<string, string> _locationStringReplacements = new Dictionary<string, string>();
 		private Dictionary<int, string> _fishReplacements = new Dictionary<int, string>();
 		private Dictionary<int, string> _questReplacements = new Dictionary<int, string>();
 		private Dictionary<string, string> _mailReplacements = new Dictionary<string, string>();
@@ -42,9 +43,10 @@ namespace Randomizer
 			if (asset.AssetNameEquals("Data/Fish")) { return Globals.Config.Fish.Randomize; }
 			if (asset.AssetNameEquals("Data/Quests") || asset.AssetNameEquals("Data/mail")) { return Globals.Config.RandomizeQuests; }
 			if (asset.AssetNameEquals("Data/Locations")) { return Globals.Config.Fish.Randomize || Globals.Config.RandomizeForagables || Globals.Config.AddRandomArtifactItem; }
+			if (asset.AssetNameEquals("Strings/Locations")) { return Globals.Config.Crops.Randomize; } // For now, as the only thing is the sweet gem berry text
 			if (asset.AssetNameEquals("Data/fruitTrees")) { return Globals.Config.RandomizeFruitTrees; }
-			if (asset.AssetNameEquals("Data/Crops")) { return Globals.Config.RandomizeCrops; }
-			if (asset.AssetNameEquals("Data/TV/CookingChannel")) { return Globals.Config.RandomizeCrops || Globals.Config.Fish.Randomize; }
+			if (asset.AssetNameEquals("Data/Crops")) { return Globals.Config.Crops.Randomize; }
+			if (asset.AssetNameEquals("Data/TV/CookingChannel")) { return Globals.Config.Crops.Randomize || Globals.Config.Fish.Randomize; }
 			if (asset.AssetNameEquals("Data/weapons")) { return Globals.Config.Weapons.Randomize; }
 			if (asset.AssetNameEquals("Data/Boots")) { return Globals.Config.Boots.Randomize; }
 			if (asset.AssetNameEquals("Data/Monsters")) { return Globals.Config.Monsters.Randomize; }
@@ -101,6 +103,10 @@ namespace Randomizer
 			{
 				this.ApplyEdits(asset, this._locationsReplacements);
 			}
+			else if (asset.AssetNameEquals("Strings/Locations"))
+			{
+				this.ApplyEdits(asset, this._locationStringReplacements);
+			}
 			else if (asset.AssetNameEquals("Data/fruitTrees"))
 			{
 				this.ApplyEdits(asset, this._fruitTreeReplacements);
@@ -143,6 +149,7 @@ namespace Randomizer
 			this._mod.Helper.Content.InvalidateCache("Data/Quests");
 			this._mod.Helper.Content.InvalidateCache("Data/mail");
 			this._mod.Helper.Content.InvalidateCache("Data/Locations");
+			this._mod.Helper.Content.InvalidateCache("Strings/Locations");
 			this._mod.Helper.Content.InvalidateCache("Data/fruitTrees");
 			this._mod.Helper.Content.InvalidateCache("Data/Crops");
 			this._mod.Helper.Content.InvalidateCache("Data/TV/CookingChannel");
@@ -154,7 +161,7 @@ namespace Randomizer
 
 		public void CalculateEditsBeforeLoad()
 		{
-			_grandpaStringReplacements = StringsRandomizer.RandomizeGrandpasStory();
+			_grandpaStringReplacements = StringsAdjustments.RandomizeGrandpasStory();
 		}
 
 		public void CalculateEdits()
@@ -174,7 +181,8 @@ namespace Randomizer
 			_blueprintReplacements = BlueprintRandomizer.Randomize();
 			_monsterReplacements = MonsterRandomizer.Randomize(); // Must be done before recipes since rarities of drops change
 			_recipeReplacements = CraftingRecipeRandomizer.Randomize();
-			_stringReplacements = StringsRandomizer.Randomize();
+			_stringReplacements = StringsAdjustments.GetCSFileStringReplacements();
+			_locationStringReplacements = StringsAdjustments.GetLocationStringReplacements();
 			_locationsReplacements = LocationRandomizer.Randomize();
 			_bundleReplacements = BundleRandomizer.Randomize();
 			MusicReplacements = MusicRandomizer.Randomize();

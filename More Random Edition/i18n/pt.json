@@ -254,7 +254,8 @@
 	"Farmer.cs.1918": "Você recebeu 15 {{seedName}}! ^^'Aqui está um presentinho para ajudar você.^-Prefeito Lewis'",
 	"TV.cs.13151": "Você já sabe cozinhar isso.",
 	"TV.cs.13153": "Você aprendeu uma nova receita!",
-	
+	"Woods_Statue": "--Cannoli do Velho Mestre--\n...Ainda procurando por um {{cropName}}...",
+
 	"cooking-channel-2": "Coleslaw/Salada de repolho! Você se imagina comendo uma pilha de {{item1}} insosso? Você não é o único. Mas uma grande salada de repolho pode ser muito mais. Pegue um {{item1}} suculento e fresquinho! Misture com um pouco de vinagre e maionese e está pronto. E como é crocante!/Salada de repolho",
 	"cooking-channel-3": "Radish Salad/{{recipe}}! Não há nada como um {{item1}} fresquinho e picante. Me lembra o fim da primavera... minha mãe cortava {{item1}} frescos e os servia no pão de centeio com um pouquinho de sal e pimenta. Ah, tempo bom aquele... mas enfim. Agora, observe com atenção.../{{recipe}}",
 	"cooking-channel-7": "Maki Roll/Sushi! O delicado sabor do oceano enrolado em uma cama fofinha de {{item1}}. Talvez um pouco de wasabi para os corajosos. Só de falar já dá água na boca! Ah, como amo sushi!.../Rolinhos de arroz",

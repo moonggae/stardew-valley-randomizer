@@ -6,13 +6,13 @@ namespace Randomizer
 	/// <summary>
 	/// Modifies the strings in the game
 	/// </summary>
-	public class StringsRandomizer
+	public class StringsAdjustments
 	{
 		/// <summary>
-		/// Fixes the strings to use the random values generated for the game's seed
+		/// Gets the string replacesments for the StringsFromCSFiles xnb file
 		/// </summary>
 		/// <returns />
-		public static Dictionary<string, string> Randomize()
+		public static Dictionary<string, string> GetCSFileStringReplacements()
 		{
 			Dictionary<string, string> stringReplacements = new Dictionary<string, string>();
 
@@ -21,10 +21,27 @@ namespace Randomizer
 			stringReplacements["Farmer.cs.1918"] = Globals.GetTranslation("Farmer.cs.1918", new { seedName = parsnipSeedName });
 
 			// Fix the queen of sauce strings so it doesn't say the wrong recipe
-			if (Globals.Config.Fish.Randomize || Globals.Config.RandomizeCrops)
+			if (Globals.Config.Fish.Randomize || Globals.Config.Crops.Randomize)
 			{
 				stringReplacements["TV.cs.13151"] = Globals.GetTranslation("TV.cs.13151");
 				stringReplacements["TV.cs.13153"] = Globals.GetTranslation("TV.cs.13153");
+			}
+
+			return stringReplacements;
+		}
+
+		/// <summary>
+		/// Gets the string replacements for the Strings/Locations.xnb
+		/// </summary>
+		/// <returns></returns>
+		public static Dictionary<string, string> GetLocationStringReplacements()
+		{
+			Dictionary<string, string> stringReplacements = new Dictionary<string, string>();
+
+			if (Globals.Config.Crops.Randomize)
+			{
+				string sweetGemBerryName = ItemList.GetItemName((int)ObjectIndexes.SweetGemBerry);
+				stringReplacements["Woods_Statue"] = Globals.GetTranslation("Woods_Statue", new { cropName = sweetGemBerryName });
 			}
 
 			return stringReplacements;

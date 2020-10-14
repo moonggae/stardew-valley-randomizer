@@ -254,6 +254,7 @@
 	"Farmer.cs.1918": "¡Has recibido 15 {{seedName}}!^^«Aquí tienes un detalle para que puedas empezar.^-Alcalde Lewis»",
 	"TV.cs.13151": "¡Ya sabes cocinar esto.!",
 	"TV.cs.13153": "¡Aprendiste una nueva receta!",
+	"Woods_Statue": "--Viejo maestro Cannoli--\nSiempre en pos un {{cropName}}...",
 
 	"cooking-channel-2": "Coleslaw/¡Chucrut! ¿Te viene a la mente un montón de {{item1}} lacia? A ti y a todos. Pero un buen chucrut puede ser mucho más. Lo más importante es tener una {{item1}} fresca y jugosa para este plato. Se mezcla con un poco de vinagre y mayonesa, y listo. Mmm, qué crujiente./Chucrut",
 	"cooking-channel-3": "Radish Salad/¡{{recipe}}! No hay nada como un rábano fresco y picante. Me recuerda a finales de primavera... Mi madre solía cortar {{item1}} frescos y los servía sobre pan de cereales, con un poco de sal y pimienta. Qué tiempos aquellos... Pero me estoy yendo por las ramas. Prestad atención.../{{recipe}}",
