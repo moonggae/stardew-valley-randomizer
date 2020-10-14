@@ -1,30 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-
-namespace Randomizer
+﻿namespace Randomizer
 {
-	public class FishImageBuilder : ImageBuilder
+	/// <summary>
+	/// The image builder for fish icons - inherits from the spring objects builder because
+	/// it modifies the springobjects.xnb image file
+	/// </summary>
+	public class FishImageBuilder : SpringObjectsImageBuilder
 	{
-		private const int ItemsPerRow = 24;
-
-		public FishImageBuilder() : base()
-		{
-			BaseFileName = "springobjects.png";
-			SubDirectory = "Fish";
-			PositionsToOverlay = GetAllFishPoints();
-		}
-
 		/// <summary>
-		/// Gets a list of all points to replace with fish in the default file
-		/// These are all based on the id of the fish
+		/// Constructor
 		/// </summary>
-		/// <returns>A list of points</returns>
-		private List<Point> GetAllFishPoints()
+		public FishImageBuilder() : base("Fish")
 		{
-			return FishItem.Get(true)
-				.Select(x => new Point(x.Id % ItemsPerRow, x.Id / ItemsPerRow))
-				.ToList();
+			PositionsToOverlay = GetAllPoints(FishItem.Get(true));
 		}
 
 		/// <summary>

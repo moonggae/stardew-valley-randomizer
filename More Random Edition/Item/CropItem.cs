@@ -1,4 +1,7 @@
-﻿namespace Randomizer
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Randomizer
 {
 	/// <summary>
 	/// Represents a crop
@@ -8,6 +11,12 @@
 		public int Price { get; set; }
 		public string CategoryString { get; set; }
 		public string Description { get; set; }
+
+		/// <summary>
+		/// This is the ID on Crops.xnb right after the seasons data
+		/// It's the key into the images for when the crop is growing still
+		/// </summary>
+		public int CropGrowthImageIndex { get; set; }
 
 		public override bool IsFlower
 		{
@@ -35,6 +44,20 @@
 		public override string ToString()
 		{
 			return $"{Name}/{Price}/{CategoryString}/{Name}/{Description}";
+		}
+
+		/// <summary>
+		/// Gets all the crop items
+		/// </summary>
+		/// <param name="includeUnchangedCrops">Include unchanged crop items (ancient fruit)</param>
+		/// <returns />
+		public static List<CropItem> Get(bool includeUnchangedCrops = false)
+		{
+			return ItemList.Items.Values.Where(x =>
+				x.IsCrop &&
+				(includeUnchangedCrops || x.Id != (int)ObjectIndexes.AncientFruit))
+			.Cast<CropItem>()
+			.ToList();
 		}
 	}
 }

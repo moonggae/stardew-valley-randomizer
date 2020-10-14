@@ -230,11 +230,26 @@ namespace Randomizer
 		{
 			WeaponImageBuilder weaponImageBuilder = new WeaponImageBuilder();
 			weaponImageBuilder.BuildImage();
-			HandleImageReplacement(weaponImageBuilder, "TileSheets/weapons");
+			if (weaponImageBuilder.ShouldSaveImage())
+			{
+				HandleImageReplacement(
+					weaponImageBuilder.OutputFileFullPath,
+					weaponImageBuilder.SMAPIOutputFilePath,
+					"TileSheets/weapons"
+				);
+			}
 
-			FishImageBuilder fishImageBuilder = new FishImageBuilder();
-			fishImageBuilder.BuildImage();
-			HandleImageReplacement(fishImageBuilder, "Maps/springobjects");
+
+			SpringObjectsImageBuilderWrapper springObjectsBuilder = new SpringObjectsImageBuilderWrapper();
+			springObjectsBuilder.BuildImage();
+			if (weaponImageBuilder.ShouldSaveImage())
+			{
+				HandleImageReplacement(
+					springObjectsBuilder.OutputFileFullPath,
+					springObjectsBuilder.SMAPIOutputFullPath,
+					"Maps/springobjects"
+				);
+			}
 		}
 
 		/// <summary>
@@ -243,16 +258,13 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="imageBuilder"></param>
 		/// <param name="xnbPath"></param>
-		private void HandleImageReplacement(ImageBuilder imageBuilder, string xnbPath)
+		private void HandleImageReplacement(string outputPath, string smapiOutputPath, string xnbPath)
 		{
-			if (imageBuilder.ShouldSaveImage())
+			while (!File.Exists(outputPath))
 			{
-				while (!File.Exists(imageBuilder.OutputFileFullPath))
-				{
-					Thread.Sleep(100);
-				}
-				AddReplacement(xnbPath, imageBuilder.SMAPIOutputFilePath);
+				Thread.Sleep(100);
 			}
+			AddReplacement(xnbPath, smapiOutputPath);
 		}
 
 		/// <summary>

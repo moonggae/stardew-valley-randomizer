@@ -53,8 +53,13 @@
     <Compile Include="CookingChannel.cs" />
     <Compile Include="CraftingRecipeAdjustments.cs" />
     <Compile Include="Enums\QuestItemTypes.cs" />
+    <Compile Include="ImageRandomizers\CropGrowthImageBuilder.cs" />
+    <Compile Include="ImageRandomizers\CropImageBuilder.cs" />
     <Compile Include="ImageRandomizers\FishImageBuilder.cs" />
     <Compile Include="ImageRandomizers\ImageBuilder.cs" />
+    <Compile Include="ImageRandomizers\SeedImageBuilder.cs" />
+    <Compile Include="ImageRandomizers\SpringObjectsImageBuilder.cs" />
+    <Compile Include="ImageRandomizers\SpringObjectsImageBuilderWrapper.cs" />
     <Compile Include="ImageRandomizers\WeaponImageBuilder.cs" />
     <Compile Include="NPCs\BirthdayRandomizer.cs" />
     <Compile Include="BlueprintRandomizer.cs" />

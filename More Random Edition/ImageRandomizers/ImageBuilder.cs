@@ -9,10 +9,14 @@ namespace Randomizer
 	public abstract class ImageBuilder
 	{
 		/// <summary>
-		/// The size of the width/height in px
+		/// The size of the width in px
 		/// </summary>
-		protected const int SizeInPx = 16;
+		protected int WidthInPx = 16;
 
+		/// <summary>
+		/// The size of the height in px
+		/// </summary>
+		protected int HeightInPx = 16;
 
 		/// <summary>
 		/// The name of the output file
@@ -31,9 +35,16 @@ namespace Randomizer
 		}
 
 		/// <summary>
+		/// The directory to place custom images
+		/// If this is not assigned, will use ImageDirectory instead
+		/// </summary>
+		protected string CustomImageDirectory;
+
+
+		/// <summary>
 		/// The path to the custom images
 		/// </summary>
-		protected string BaseFileFullPath
+		public string BaseFileFullPath
 		{
 			get
 			{
@@ -86,41 +97,60 @@ namespace Randomizer
 		/// <summary>
 		/// The files to pull from - gets all images in the directory that don't include the base file
 		/// </summary>
-		private List<string> _filesToPullFrom { get; set; }
+		protected List<string> FilesToPullFrom { get; set; }
 
 		/// <summary>
 		/// Builds the image and saves the result into randomizedImage.png
 		/// </summary>
 		public void BuildImage()
 		{
+			BuildImage(new List<ImageBuilder> { this }, BaseFileFullPath, OutputFileFullPath);
+		}
+
+		/// <summary>
+		/// Builds the image and saves the result into randomizedImage.png
+		/// </summary>
+		/// <param name="imageBuilders">
+		/// A list of image builders - will write to the same file and save it one time
+		/// at the end so that all image builders can do their work on the same image
+		/// </param>
+		/// <param name="imageBuilders">The image builders to use</param>
+		/// <param name="baseFileFullPath">The full path to the base file we're using</param>
+		/// <param name="outputPath">The full path to the output file we're writing to</param>
+		public static void BuildImage(List<ImageBuilder> imageBuilders, string baseFileFullPath, string outputPath)
+		{
 			Bitmap finalImage = null;
 
 			try
 			{
-				finalImage = new Bitmap(BaseFileFullPath);
+				finalImage = new Bitmap(baseFileFullPath);
 				Graphics graphics = Graphics.FromImage(finalImage);
 
-				_filesToPullFrom = GetAllCustomImages();
-				foreach (Point position in PositionsToOverlay)
+				foreach (ImageBuilder imageBuilder in imageBuilders)
 				{
-					string randomFileName = GetRandomFileName(position);
-					Bitmap bitmap = new Bitmap(randomFileName);
-					int xOffset = position.X * SizeInPx;
-					int yOffset = position.Y * SizeInPx;
+					imageBuilder.FilesToPullFrom = imageBuilder.GetAllCustomImages();
+					foreach (Point position in imageBuilder.PositionsToOverlay)
+					{
+						string randomFileName = imageBuilder.GetRandomFileName(position);
+						if (!imageBuilder.ShouldSaveImage()) { continue; }
 
-					graphics.FillRectangle(
-						new SolidBrush(Color.FromArgb(0, 0, 1)),
-						new Rectangle(xOffset, yOffset, SizeInPx, SizeInPx));
-					graphics.DrawImage(bitmap, new Rectangle(xOffset, yOffset, SizeInPx, SizeInPx));
+						Bitmap bitmap = new Bitmap(randomFileName);
+						int xOffset = position.X * WidthInPx;
+						int yOffset = position.Y * HeightInPx;
+
+						graphics.FillRectangle(
+							new SolidBrush(Color.FromArgb(0, 0, 1)),
+							new Rectangle(xOffset, yOffset, WidthInPx, HeightInPx));
+						graphics.DrawImage(bitmap, new Rectangle(xOffset, yOffset, WidthInPx, HeightInPx));
+					}
 				}
 
 				finalImage.MakeTransparent(Color.FromArgb(0, 0, 1));
-				if (ShouldSaveImage())
+				if (imageBuilders.Any(x => x.ShouldSaveImage()))
 				{
-					finalImage.Save(OutputFileFullPath);
+					finalImage.Save(outputPath);
 				}
 			}
-
 			catch (Exception ex)
 			{
 				if (finalImage != null)
@@ -132,12 +162,13 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Gets all the custom images from the directory excluding the base file name
+		/// Gets all the custom images from the given directory excluding the base file name
 		/// </summary>
 		/// <returns></returns>
 		private List<string> GetAllCustomImages()
 		{
-			List<string> files = Directory.GetFiles(ImageDirectory).ToList();
+			string directory = string.IsNullOrEmpty(CustomImageDirectory) ? ImageDirectory : CustomImageDirectory;
+			List<string> files = Directory.GetFiles(directory).ToList();
 			return files.Where(x =>
 				!x.EndsWith(DefaultFileName) &&
 				!x.EndsWith(OutputFileName) &&
@@ -153,12 +184,13 @@ namespace Randomizer
 		/// <returns></returns>
 		protected virtual string GetRandomFileName(Point position)
 		{
-			string fileName = Globals.RNGGetAndRemoveRandomValueFromList(_filesToPullFrom);
+			string directory = string.IsNullOrEmpty(CustomImageDirectory) ? ImageDirectory : CustomImageDirectory;
+			string fileName = Globals.RNGGetAndRemoveRandomValueFromList(FilesToPullFrom);
 
 			if (string.IsNullOrEmpty(fileName))
 			{
-				Globals.ConsoleWarn($"Not enough images at directory (need more images, using default image): {ImageDirectory}");
-				return $"{ImageDirectory}/default.png";
+				Globals.ConsoleWarn($"Not enough images at directory (need more images, using default image): {directory}");
+				return $"{directory}/default.png";
 			}
 
 			return fileName;
@@ -177,7 +209,7 @@ namespace Randomizer
 		public static void CleanUpReplacementFiles()
 		{
 			File.Delete($"Mods/Randomizer/Assets/CustomImages/Weapons/randomizedImage.png");
-			File.Delete($"Mods/Randomizer/Assets/CustomImages/Fish/randomizedImage.png");
+			File.Delete($"Mods/Randomizer/Assets/CustomImages/Shared/randomizedImage.png");
 		}
 	}
 }
