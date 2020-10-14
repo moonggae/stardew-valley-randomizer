@@ -93,7 +93,10 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
     * The majority of the new fish images on the FishRework branch are mostly directly pulled form the New New Fish mod: https://www.nexusmods.com/stardewvalley/mods/3578
       * Specific credits go to Hisane for the sprites: https://www.nexusmods.com/Users/51209496
 * Fixed the Queen of Sauce show - it should now use the randomized crop/fish names in the show text
+* Added the Stable to the list of randomized buildings, as it was overlooked before
 * Reworked the config file to be more readable/user friendly
 * Reworked logging to log at appropriate levels (Trace/Warn/Error)
 * Rebalanced Frozen Tears and Mead - they shouldn't appear in lower level recipies anymore
-* Fixed a bug where the "Any Fish" item could be obtained as a bundle reward - the result was that you don't get any reward
+* Error Item bugfixes
+  * You could get "Error Item" as a reward from a bundle - this was due to the "Any Fish" item being rewarded. This has been fixed.
+  * If a building reuqired the "Any Fish" item to build it, it showed up as "Error Item". This has been fixed by removing "Any Fish" from that pool.
