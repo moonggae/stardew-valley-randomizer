@@ -88,10 +88,13 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
   * Everything else has been internationalized
 
 ## Pending Changes on the 0.4.0 branch
-* Fish
-  * When randomizing fish, there's the option of using custom fish images - this is in a similar place to the weapon images
+* Custom images
+  * When randomizing crops, there's the option of using custom crop images. This will link together the crop as it's growing, the seed packet, and the crop itself into a coherent set of images.
+    * Credits for the artwork (some images were modified from the original):
+      * Mizu - permission is assumed from this page: https://community.playstarbound.com/threads/mizus-sprites.136549/
+  * When randomizing fish, there's the option of using custom fish images
     * The majority of the new fish images on the FishRework branch are mostly directly pulled form the New New Fish mod: https://www.nexusmods.com/stardewvalley/mods/3578
-      * Specific credits go to Hisane for the sprites: https://www.nexusmods.com/Users/51209496
+      * Specific credits go to Hisame for the sprites: https://www.nexusmods.com/Users/51209496
 * Fixed the Queen of Sauce show - it should now use the randomized crop/fish names in the show text
 * Added the Stable to the list of randomized buildings, as it was overlooked before
 * Reworked the config file to be more readable/user friendly
@@ -99,4 +102,4 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
 * Rebalanced Frozen Tears and Mead - they shouldn't appear in lower level recipies anymore
 * Error Item bugfixes
   * You could get "Error Item" as a reward from a bundle - this was due to the "Any Fish" item being rewarded. This has been fixed.
-  * If a building reuqired the "Any Fish" item to build it, it showed up as "Error Item". This has been fixed by removing "Any Fish" from that pool.
+  * If a building required the "Any Fish" item to build it, it showed up as "Error Item". This has been fixed by removing "Any Fish" from that pool.
