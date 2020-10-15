@@ -124,7 +124,7 @@ namespace Randomizer
 					}
 
 					int xOffset = position.X * OffsetWidthInPx;
-					int yOffset = position.Y * OffsetWidthInPx;
+					int yOffset = position.Y * OffsetHeightInPx;
 
 					graphics.FillRectangle(
 						new SolidBrush(Color.FromArgb(0, 0, 1)),
@@ -212,7 +212,7 @@ namespace Randomizer
 		public static void CleanUpReplacementFiles()
 		{
 			File.Delete($"Mods/Randomizer/Assets/CustomImages/Weapons/randomizedImage.png");
-			File.Delete($"Mods/Randomizer/Assets/CustomImages/Shared/randomizedImage.png");
+			File.Delete($"Mods/Randomizer/Assets/CustomImages/SpringObjects/randomizedImage.png");
 			File.Delete($"Mods/Randomizer/Assets/CustomImages/CropGrowth/randomizedImage.png");
 		}
 	}

@@ -129,7 +129,12 @@ namespace Randomizer
 			if (item.IsFlower)
 			{
 				subDirectory = "/Flowers";
-				ImageWidthInPx = 32; // Flower images include the stem and the top
+
+				CropItem cropItem = (CropItem)item;
+				if (cropItem.MatchingSeedItem.CropGrowthInfo.TintColorInfo.HasTint)
+				{
+					ImageWidthInPx = 32; // Flower images include the stem and the top if they have tint
+				}
 			}
 
 			if (!CropIdsToImageNames.TryGetValue(cropId, out fileName))

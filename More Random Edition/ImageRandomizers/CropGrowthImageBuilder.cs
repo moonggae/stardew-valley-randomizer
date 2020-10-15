@@ -10,15 +10,12 @@ namespace Randomizer
 		private const string NormalDirectory = "NormalCrops";
 		private const string RegrowingDirectory = "RegrowingCrops";
 		private const string TrellisDirectory = "TrellisCrops";
-		private const string FlowersWithHuesDirectory = "FlowersWithHues";
-		private const string FlowersWithoutHuesDirectory = "FlowersWithoutHues";
+		private const string FlowersDirectory = "Flowers";
 
-		private List<string> Normal4StageImages { get; set; }
-		private List<string> Normal5StageImages { get; set; }
+		private List<string> NormalImages { get; set; }
 		private List<string> RegrowingImages { get; set; }
 		private List<string> TrellisImages { get; set; }
-		private List<string> FlowersWithHuesImages { get; set; }
-		private List<string> FlowersWithoutHuesImages { get; set; }
+		private List<string> FlowerImages { get; set; }
 
 		/// <summary>
 		/// Keeps track of crop ids mapped to image names so that all the crop images can be linked
@@ -40,13 +37,19 @@ namespace Randomizer
 
 			ImageHeightInPx = 32;
 			ImageWidthInPx = 128;
+			OffsetHeightInPx = 32;
+			OffsetWidthInPx = 128;
 
-			Normal4StageImages = Directory.GetFiles($"{ImageDirectory}/{NormalDirectory}").Where(x => x.EndsWith("-4.png")).OrderBy(x => x).ToList();
-			Normal5StageImages = Directory.GetFiles($"{ImageDirectory}/{NormalDirectory}").Where(x => x.EndsWith("-5.png")).OrderBy(x => x).ToList();
+			NormalImages = Directory.GetFiles($"{ImageDirectory}/{NormalDirectory}")
+				.Where(x => x.EndsWith("-4.png") || x.EndsWith("-5.png"))
+				.Select(x => x.Replace("-4.png", "").Replace("-5.png", ""))
+				.Distinct()
+				.OrderBy(x => x)
+				.ToList();
+
 			RegrowingImages = Directory.GetFiles($"{ImageDirectory}/{RegrowingDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
 			TrellisImages = Directory.GetFiles($"{ImageDirectory}/{TrellisDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
-			FlowersWithHuesImages = Directory.GetFiles($"{ImageDirectory}/{FlowersWithHuesDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
-			FlowersWithoutHuesImages = Directory.GetFiles($"{ImageDirectory}/{FlowersWithoutHuesDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
+			FlowerImages = Directory.GetFiles($"{ImageDirectory}/{FlowersDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
 		}
 
 		/// <summary>
@@ -94,17 +97,8 @@ namespace Randomizer
 
 			if (cropItem.IsFlower)
 			{
-				if (seedItem.CropGrowthInfo.TintColorInfo.HasTint)
-				{
-					defaultFileName = "default-flower-hue";
-					fileName = Globals.RNGGetAndRemoveRandomValueFromList(FlowersWithHuesImages);
-				}
-
-				else
-				{
-					defaultFileName = "default-flower-no-hue";
-					fileName = Globals.RNGGetAndRemoveRandomValueFromList(FlowersWithoutHuesImages);
-				}
+				defaultFileName = "default-flower";
+				fileName = Globals.RNGGetAndRemoveRandomValueFromList(FlowerImages);
 			}
 
 			else if (growthInfo.IsTrellisCrop)
@@ -119,19 +113,24 @@ namespace Randomizer
 				fileName = Globals.RNGGetAndRemoveRandomValueFromList(RegrowingImages);
 			}
 
-			else if (growthInfo.GrowthStages.Count <= 4)
-			{
-				defaultFileName = "default-4";
-				fileName = Globals.RNGGetAndRemoveRandomValueFromList(Normal4StageImages);
-			}
-
 			else
 			{
-				defaultFileName = "default-5";
-				fileName = Globals.RNGGetAndRemoveRandomValueFromList(Normal5StageImages);
+				fileName = Globals.RNGGetAndRemoveRandomValueFromList(NormalImages);
+
+				if (growthInfo.GrowthStages.Count <= 4)
+				{
+					defaultFileName = "default-4";
+					fileName += "-4.png";
+				}
+
+				else
+				{
+					defaultFileName = "default-5";
+					fileName += "-5.png";
+				}
 			}
 
-			if (string.IsNullOrEmpty(fileName))
+			if (string.IsNullOrEmpty(fileName) || fileName == "-4.png" || fileName == "-5.png")
 			{
 				Globals.ConsoleWarn($"Using default image for crop growth - you may not have enough crop growth images: {position.X}, {position.Y}");
 				return $"{ImageDirectory}/{defaultFileName}.png";
