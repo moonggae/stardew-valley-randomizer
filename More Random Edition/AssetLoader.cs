@@ -230,49 +230,33 @@ namespace Randomizer
 		{
 			WeaponImageBuilder weaponImageBuilder = new WeaponImageBuilder();
 			weaponImageBuilder.BuildImage();
-			if (weaponImageBuilder.ShouldSaveImage())
-			{
-				HandleImageReplacement(
-					weaponImageBuilder.OutputFileFullPath,
-					weaponImageBuilder.SMAPIOutputFilePath,
-					"TileSheets/weapons"
-				);
-			}
+			HandleImageReplacement(weaponImageBuilder, "TileSheets/weapons");
 
-			SpringObjectsImageBuilderWrapper springObjectsBuilder = new SpringObjectsImageBuilderWrapper();
-			springObjectsBuilder.BuildImage();
-			if (springObjectsBuilder.ShouldSaveSpringObjectsImage())
-			{
-				HandleImageReplacement(
-					springObjectsBuilder.OutputFileFullPath,
-					springObjectsBuilder.SMAPIOutputFilePath,
-					"Maps/springobjects"
-				);
-			}
+			CropGrowthImageBuilder cropGrowthImageBuilder = new CropGrowthImageBuilder();
+			cropGrowthImageBuilder.BuildImage();
+			HandleImageReplacement(cropGrowthImageBuilder, "TileSheets/crops");
 
-			if (springObjectsBuilder.ShouldSaveCropGrowthImage())
-			{
-				HandleImageReplacement(
-					springObjectsBuilder.CropGrowthBuilder.OutputFileFullPath,
-					springObjectsBuilder.CropGrowthBuilder.SMAPIOutputFilePath,
-					"TileSheets/crops"
-				);
-			}
+			SpringObjectsImageBuilder springObjectsImageBuilder = new SpringObjectsImageBuilder(cropGrowthImageBuilder.CropIdsToImageNames);
+			springObjectsImageBuilder.BuildImage();
+			HandleImageReplacement(springObjectsImageBuilder, "Maps/springobjects");
 		}
 
 		/// <summary>
 		/// Handles actually adding the image replacement
 		/// If the image doesn't exist, sleep for 0.1 second increments until it does
 		/// </summary>
-		/// <param name="imageBuilder"></param>
-		/// <param name="xnbPath"></param>
-		private void HandleImageReplacement(string outputPath, string smapiOutputPath, string xnbPath)
+		/// <param name="imageBuilder">The image builder</param>
+		/// <param name="xnbPath">The path to the xnb image to replace</param>
+		private void HandleImageReplacement(ImageBuilder imageBuilder, string xnbPath)
 		{
-			while (!File.Exists(outputPath))
+			if (imageBuilder.ShouldSaveImage())
 			{
-				Thread.Sleep(100);
+				while (!File.Exists(imageBuilder.OutputFileFullPath))
+				{
+					Thread.Sleep(100);
+				}
+				AddReplacement(xnbPath, imageBuilder.SMAPIOutputFilePath);
 			}
-			AddReplacement(xnbPath, smapiOutputPath);
 		}
 
 		/// <summary>

@@ -38,8 +38,8 @@ namespace Randomizer
 			CropGrowthImagePointsToIds = GetCropGrowthImageMap();
 			PositionsToOverlay = CropGrowthImagePointsToIds.Keys.ToList();
 
-			HeightInPx = 32;
-			WidthInPx = 128;
+			ImageHeightInPx = 32;
+			ImageWidthInPx = 128;
 
 			Normal4StageImages = Directory.GetFiles($"{ImageDirectory}/{NormalDirectory}").Where(x => x.EndsWith("-4.png")).OrderBy(x => x).ToList();
 			Normal5StageImages = Directory.GetFiles($"{ImageDirectory}/{NormalDirectory}").Where(x => x.EndsWith("-5.png")).OrderBy(x => x).ToList();
@@ -153,11 +153,11 @@ namespace Randomizer
 			List<int> graphicIndexesWithSmallerWidths = new List<int> { 32, 34 };
 			if (graphicIndexesWithSmallerWidths.Contains(graphicId))
 			{
-				WidthInPx = 112;
+				ImageWidthInPx = 112;
 			}
 			else
 			{
-				WidthInPx = 128;
+				ImageWidthInPx = 128;
 			}
 		}
 

@@ -8,14 +8,24 @@ namespace Randomizer
 	public abstract class ImageBuilder
 	{
 		/// <summary>
-		/// The size of the width in px
+		/// The image width in px - used when determining whether to crop and when drawing the image itself
 		/// </summary>
-		protected int WidthInPx = 16;
+		protected int ImageWidthInPx = 16;
 
 		/// <summary>
-		/// The size of the height in px
+		/// The image height in px - used when determining whether to crop and when drawing the image itself
 		/// </summary>
-		protected int HeightInPx = 16;
+		protected int ImageHeightInPx = 16;
+
+		/// <summary>
+		/// The offset width in px - used when positioning the image
+		/// </summary>
+		protected int OffsetWidthInPx = 16;
+
+		/// <summary>
+		/// The image height in px - used when positioning the image
+		/// </summary>
+		protected int OffsetHeightInPx = 16;
 
 		/// <summary>
 		/// The name of the output file
@@ -32,13 +42,6 @@ namespace Randomizer
 				return $"Mods/Randomizer/Assets/CustomImages/{SubDirectory}";
 			}
 		}
-
-		/// <summary>
-		/// The directory to place custom images
-		/// If this is not assigned, will use ImageDirectory instead
-		/// </summary>
-		protected string CustomImageDirectory;
-
 
 		/// <summary>
 		/// The path to the custom images
@@ -103,57 +106,36 @@ namespace Randomizer
 		/// </summary>
 		public void BuildImage()
 		{
-			BuildImage(new List<ImageBuilder> { this }, BaseFileFullPath, OutputFileFullPath);
-		}
-
-		/// <summary>
-		/// Builds the image and saves the result into randomizedImage.png
-		/// </summary>
-		/// <param name="imageBuilders">
-		/// A list of image builders - will write to the same file and save it one time
-		/// at the end so that all image builders can do their work on the same image
-		/// </param>
-		/// <param name="imageBuilders">The image builders to use</param>
-		/// <param name="baseFileFullPath">The full path to the base file we're using</param>
-		/// <param name="outputPath">The full path to the output file we're writing to</param>
-		public static void BuildImage(List<ImageBuilder> imageBuilders, string baseFileFullPath, string outputPath)
-		{
 			Bitmap finalImage = null;
 
-			finalImage = new Bitmap(baseFileFullPath);
+			finalImage = new Bitmap(BaseFileFullPath);
 			using (Graphics graphics = Graphics.FromImage(finalImage))
 			{
-				foreach (ImageBuilder imageBuilder in imageBuilders)
+				FilesToPullFrom = GetAllCustomImages();
+				foreach (Point position in PositionsToOverlay)
 				{
-					imageBuilder.FilesToPullFrom = imageBuilder.GetAllCustomImages();
-					foreach (Point position in imageBuilder.PositionsToOverlay)
+					string randomFileName = GetRandomFileName(position);
+					if (!ShouldSaveImage(position)) { continue; }
+
+					Bitmap bitmap = new Bitmap(randomFileName);
+					if (bitmap.Width != ImageWidthInPx || bitmap.Height != ImageHeightInPx)
 					{
-						string randomFileName = imageBuilder.GetRandomFileName(position);
-						if (!imageBuilder.ShouldSaveImage()) { continue; }
-
-						int width = imageBuilder.WidthInPx;
-						int height = imageBuilder.HeightInPx;
-
-						Bitmap bitmap = new Bitmap(randomFileName);
-						if (bitmap.Width != width || bitmap.Height != height)
-						{
-							bitmap = CropImage(bitmap, width, height);
-						}
-
-						int xOffset = position.X * width;
-						int yOffset = position.Y * height;
-
-						graphics.FillRectangle(
-							new SolidBrush(Color.FromArgb(0, 0, 1)),
-							new Rectangle(xOffset, yOffset, width, height));
-						graphics.DrawImage(bitmap, new Rectangle(xOffset, yOffset, width, height));
+						bitmap = CropImage(bitmap, ImageWidthInPx, ImageHeightInPx);
 					}
+
+					int xOffset = position.X * OffsetWidthInPx;
+					int yOffset = position.Y * OffsetWidthInPx;
+
+					graphics.FillRectangle(
+						new SolidBrush(Color.FromArgb(0, 0, 1)),
+						new Rectangle(xOffset, yOffset, ImageWidthInPx, ImageHeightInPx));
+					graphics.DrawImage(bitmap, new Rectangle(xOffset, yOffset, ImageWidthInPx, ImageHeightInPx));
 				}
 
 				finalImage.MakeTransparent(Color.FromArgb(0, 0, 1));
-				if (imageBuilders.Any(x => x.ShouldSaveImage()))
+				if (ShouldSaveImage())
 				{
-					finalImage.Save(outputPath);
+					finalImage.Save(OutputFileFullPath);
 				}
 			}
 		}
@@ -166,7 +148,7 @@ namespace Randomizer
 		/// <param name="width">The desired width</param>
 		/// <param name="height">The desired height</param>
 		/// <returns>The cropped image</returns>
-		public static Bitmap CropImage(Bitmap bitmap, int width, int height)
+		public Bitmap CropImage(Bitmap bitmap, int width, int height)
 		{
 			Bitmap newBitmap = new Bitmap(bitmap);
 			Rectangle rect = new Rectangle(0, 0, width, height);
@@ -179,8 +161,7 @@ namespace Randomizer
 		/// <returns></returns>
 		private List<string> GetAllCustomImages()
 		{
-			string directory = string.IsNullOrEmpty(CustomImageDirectory) ? ImageDirectory : CustomImageDirectory;
-			List<string> files = Directory.GetFiles(directory).ToList();
+			List<string> files = Directory.GetFiles(ImageDirectory).ToList();
 			return files.Where(x =>
 				!x.EndsWith(DefaultFileName) &&
 				!x.EndsWith(OutputFileName) &&
@@ -196,13 +177,12 @@ namespace Randomizer
 		/// <returns></returns>
 		protected virtual string GetRandomFileName(Point position)
 		{
-			string directory = string.IsNullOrEmpty(CustomImageDirectory) ? ImageDirectory : CustomImageDirectory;
 			string fileName = Globals.RNGGetAndRemoveRandomValueFromList(FilesToPullFrom);
 
 			if (string.IsNullOrEmpty(fileName))
 			{
-				Globals.ConsoleWarn($"Not enough images at directory (need more images, using default image): {directory}");
-				return $"{directory}/default.png";
+				Globals.ConsoleWarn($"Not enough images at directory (need more images, using default image): {ImageDirectory}");
+				return $"{ImageDirectory}/default.png";
 			}
 
 			return fileName;
@@ -213,6 +193,17 @@ namespace Randomizer
 		/// </summary>
 		/// <returns />
 		public abstract bool ShouldSaveImage();
+
+		/// <summary>
+		/// Whether we should actually save the image file, or if the setting is off
+		/// This is used to check individual images - default is to check for the entire image builder
+		/// </summary>
+		/// <param name="point">The point to check at</param>
+		/// <returns />
+		protected virtual bool ShouldSaveImage(Point point)
+		{
+			return ShouldSaveImage();
+		}
 
 		/// <summary>
 		/// Cleans up all replacement files
