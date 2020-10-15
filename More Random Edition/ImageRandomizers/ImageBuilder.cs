@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -121,11 +120,9 @@ namespace Randomizer
 		{
 			Bitmap finalImage = null;
 
-			try
+			finalImage = new Bitmap(baseFileFullPath);
+			using (Graphics graphics = Graphics.FromImage(finalImage))
 			{
-				finalImage = new Bitmap(baseFileFullPath);
-				Graphics graphics = Graphics.FromImage(finalImage);
-
 				foreach (ImageBuilder imageBuilder in imageBuilders)
 				{
 					imageBuilder.FilesToPullFrom = imageBuilder.GetAllCustomImages();
@@ -134,14 +131,22 @@ namespace Randomizer
 						string randomFileName = imageBuilder.GetRandomFileName(position);
 						if (!imageBuilder.ShouldSaveImage()) { continue; }
 
+						int width = imageBuilder.WidthInPx;
+						int height = imageBuilder.HeightInPx;
+
 						Bitmap bitmap = new Bitmap(randomFileName);
-						int xOffset = position.X * imageBuilder.WidthInPx;
-						int yOffset = position.Y * imageBuilder.HeightInPx;
+						if (bitmap.Width != width || bitmap.Height != height)
+						{
+							bitmap = CropImage(bitmap, width, height);
+						}
+
+						int xOffset = position.X * width;
+						int yOffset = position.Y * height;
 
 						graphics.FillRectangle(
 							new SolidBrush(Color.FromArgb(0, 0, 1)),
-							new Rectangle(xOffset, yOffset, imageBuilder.WidthInPx, imageBuilder.HeightInPx));
-						graphics.DrawImage(bitmap, new Rectangle(xOffset, yOffset, imageBuilder.WidthInPx, imageBuilder.HeightInPx));
+							new Rectangle(xOffset, yOffset, width, height));
+						graphics.DrawImage(bitmap, new Rectangle(xOffset, yOffset, width, height));
 					}
 				}
 
@@ -151,14 +156,21 @@ namespace Randomizer
 					finalImage.Save(outputPath);
 				}
 			}
-			catch (Exception ex)
-			{
-				if (finalImage != null)
-				{
-					finalImage.Dispose();
-				}
-				throw ex;
-			}
+		}
+
+		/// <summary>
+		/// Crops the given image
+		/// Based on https://stackoverflow.com/questions/734930/how-to-crop-an-image-using-c
+		/// </summary>
+		/// <param name="bitmap">The bitmap containing the original image</param>
+		/// <param name="width">The desired width</param>
+		/// <param name="height">The desired height</param>
+		/// <returns>The cropped image</returns>
+		public static Bitmap CropImage(Bitmap bitmap, int width, int height)
+		{
+			Bitmap newBitmap = new Bitmap(bitmap);
+			Rectangle rect = new Rectangle(0, 0, width, height);
+			return newBitmap.Clone(rect, newBitmap.PixelFormat);
 		}
 
 		/// <summary>
