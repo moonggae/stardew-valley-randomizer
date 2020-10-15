@@ -12,12 +12,6 @@ namespace Randomizer
 		public string CategoryString { get; set; }
 		public string Description { get; set; }
 
-		/// <summary>
-		/// This is the ID on Crops.xnb right after the seasons data
-		/// It's the key into the images for when the crop is growing still
-		/// </summary>
-		public int CropGrowthImageIndex { get; set; }
-
 		public override bool IsFlower
 		{
 			get

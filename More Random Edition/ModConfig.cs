@@ -40,7 +40,7 @@
 	public class WeaponsConfig
 	{
 		public bool Randomize { get; set; } = true;
-		public bool UseCustomWeaponImages { get; set; } = true;
+		public bool UseCustomImages { get; set; } = true;
 		public bool RandomizeGalaxySwordName { get; set; } = true;
 	}
 
@@ -58,13 +58,13 @@
 	public class CropsConfig
 	{
 		public bool Randomize { get; set; } = true;
-		public bool RandomizeImages { get; set; } = true;
+		public bool UseCustomImages { get; set; } = true;
 	}
 
 	public class FishConfig
 	{
 		public bool Randomize { get; set; } = true;
-		public bool RandomizeImages { get; set; } = true;
+		public bool UseCustomImages { get; set; } = true;
 	}
 }
 

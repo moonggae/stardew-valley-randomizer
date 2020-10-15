@@ -12,17 +12,17 @@ namespace Randomizer
 		private Dictionary<Point, int> PointsToCropIds;
 
 		/// <summary>
-		/// Keeps track of crop ids mapped to image names so that it can be used by the seed and
-		/// crop growth image builders
+		/// Keeps track of crop ids mapped to image names so that all the crop images can be linked
 		/// </summary>
-		public Dictionary<int, string> CropIdsToImageNames;
+		private readonly Dictionary<int, string> CropIdsToImageNames;
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public CropImageBuilder() : base("Crops")
+		public CropImageBuilder(Dictionary<int, string> cropIdsToImageNames) : base("Crops")
 		{
-			CropIdsToImageNames = new Dictionary<int, string>();
+			CropIdsToImageNames = cropIdsToImageNames;
+
 			PointsToCropIds = GetPointsToIdsMapping(CropItem.Get().Cast<Item>().ToList());
 			PositionsToOverlay = PointsToCropIds.Keys.ToList();
 		}
@@ -31,18 +31,21 @@ namespace Randomizer
 		/// Gets a random file name from the files to pull from and removes the found entry from the list
 		/// </summary>
 		/// <param name="position">The position of the instrument - unused in this version of the function</param>
-		/// <returns>The random file name</returns>
+		/// <returns>The file name</returns>
 		protected override string GetRandomFileName(Point position)
 		{
-			string retrievedFileName = base.GetRandomFileName(position);
-			if (!retrievedFileName.Contains("default.png"))
-			{
+			string directory = string.IsNullOrEmpty(CustomImageDirectory) ? ImageDirectory : CustomImageDirectory;
 
-				int cropId = PointsToCropIds[position];
-				CropIdsToImageNames[cropId] = retrievedFileName;
+			int cropId = PointsToCropIds[position];
+			CropItem cropItem = (CropItem)ItemList.Items[cropId];
+
+			if (!CropIdsToImageNames.TryGetValue(cropItem.Id, out string fileName))
+			{
+				Globals.ConsoleWarn($"Could not find image for the matching seed of {cropItem.Name}; using default image instead.");
+				return $"{directory}/default.png";
 			}
 
-			return retrievedFileName;
+			return $"{directory}/{fileName}";
 		}
 
 		/// <summary>
@@ -51,7 +54,7 @@ namespace Randomizer
 		/// <returns>True if so, false otherwise</returns>
 		public override bool ShouldSaveImage()
 		{
-			return Globals.Config.Crops.Randomize && Globals.Config.Crops.RandomizeImages;
+			return Globals.Config.Crops.Randomize && Globals.Config.Crops.UseCustomImages;
 		}
 	}
 }

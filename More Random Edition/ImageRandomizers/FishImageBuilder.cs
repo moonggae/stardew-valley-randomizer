@@ -20,7 +20,7 @@
 		/// <returns>True if so, false otherwise</returns>
 		public override bool ShouldSaveImage()
 		{
-			return Globals.Config.Fish.Randomize && Globals.Config.Fish.RandomizeImages;
+			return Globals.Config.Fish.Randomize && Globals.Config.Fish.UseCustomImages;
 		}
 	}
 }

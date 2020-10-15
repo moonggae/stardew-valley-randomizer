@@ -239,15 +239,23 @@ namespace Randomizer
 				);
 			}
 
-
 			SpringObjectsImageBuilderWrapper springObjectsBuilder = new SpringObjectsImageBuilderWrapper();
 			springObjectsBuilder.BuildImage();
-			if (weaponImageBuilder.ShouldSaveImage())
+			if (springObjectsBuilder.ShouldSaveSpringObjectsImage())
 			{
 				HandleImageReplacement(
 					springObjectsBuilder.OutputFileFullPath,
-					springObjectsBuilder.SMAPIOutputFullPath,
+					springObjectsBuilder.SMAPIOutputFilePath,
 					"Maps/springobjects"
+				);
+			}
+
+			if (springObjectsBuilder.ShouldSaveCropGrowthImage())
+			{
+				HandleImageReplacement(
+					springObjectsBuilder.CropGrowthBuilder.OutputFileFullPath,
+					springObjectsBuilder.CropGrowthBuilder.SMAPIOutputFilePath,
+					"TileSheets/crops"
 				);
 			}
 		}

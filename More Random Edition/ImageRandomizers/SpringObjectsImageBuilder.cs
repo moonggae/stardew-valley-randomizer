@@ -54,7 +54,7 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="item">The item</param>
 		/// <returns />
-		private Point GetPointFromItem(Item item)
+		protected Point GetPointFromItem(Item item)
 		{
 			return new Point(item.Id % ItemsPerRow, item.Id / ItemsPerRow);
 		}

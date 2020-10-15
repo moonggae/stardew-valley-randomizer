@@ -9,8 +9,13 @@ namespace Randomizer
 	/// </summary>
 	public class SpringObjectsImageBuilderWrapper
 	{
+		public CropGrowthImageBuilder CropGrowthBuilder;
+		public FishImageBuilder FishBuilder;
+		public CropImageBuilder CropBuilder;
+		public SeedImageBuilder SeedBuilder;
+
 		public string OutputFileFullPath;
-		public string SMAPIOutputFullPath;
+		public string SMAPIOutputFilePath;
 
 		/// <summary>
 		/// Builds the image using all the image builders
@@ -19,22 +24,48 @@ namespace Randomizer
 		/// </summary>
 		public void BuildImage()
 		{
-			FishImageBuilder fishBuilder = new FishImageBuilder();
-			CropImageBuilder cropBuilder = new CropImageBuilder();
-			SeedImageBuilder seedBuilder = new SeedImageBuilder(cropBuilder.CropIdsToImageNames);
+			CropGrowthBuilder = new CropGrowthImageBuilder();
+			CropGrowthBuilder.BuildImage();
 
-			OutputFileFullPath = fishBuilder.OutputFileFullPath;
-			SMAPIOutputFullPath = fishBuilder.SMAPIOutputFilePath;
+			FishBuilder = new FishImageBuilder();
+			CropBuilder = new CropImageBuilder(CropGrowthBuilder.CropIdsToImageNames);
+			SeedBuilder = new SeedImageBuilder(CropGrowthBuilder.CropIdsToImageNames);
+
+			OutputFileFullPath = FishBuilder.OutputFileFullPath;
+			SMAPIOutputFilePath = FishBuilder.SMAPIOutputFilePath;
 
 			ImageBuilder.BuildImage(new List<ImageBuilder>
 				{
-					fishBuilder,
-					cropBuilder,
-					seedBuilder
+					FishBuilder,
+					CropBuilder,
+					SeedBuilder
 				},
-				fishBuilder.BaseFileFullPath,
-				fishBuilder.OutputFileFullPath
+				FishBuilder.BaseFileFullPath,
+				FishBuilder.OutputFileFullPath
 			);
+		}
+
+		/// <summary>
+		/// Returns whether we should save the spring objects image
+		/// This is true if any of the three builders return true
+		/// </summary>
+		/// <returns />
+		public bool ShouldSaveSpringObjectsImage()
+		{
+			if (FishBuilder == null || CropBuilder == null || SeedBuilder == null)
+			{
+				return false;
+			}
+			return FishBuilder.ShouldSaveImage() || CropBuilder.ShouldSaveImage() || SeedBuilder.ShouldSaveImage();
+		}
+
+		/// <summary>
+		/// Returns whether we should save the crop growth image
+		/// </summary>
+		/// <returns />
+		public bool ShouldSaveCropGrowthImage()
+		{
+			return CropGrowthBuilder.ShouldSaveImage();
 		}
 	}
 }

@@ -135,13 +135,13 @@ namespace Randomizer
 						if (!imageBuilder.ShouldSaveImage()) { continue; }
 
 						Bitmap bitmap = new Bitmap(randomFileName);
-						int xOffset = position.X * WidthInPx;
-						int yOffset = position.Y * HeightInPx;
+						int xOffset = position.X * imageBuilder.WidthInPx;
+						int yOffset = position.Y * imageBuilder.HeightInPx;
 
 						graphics.FillRectangle(
 							new SolidBrush(Color.FromArgb(0, 0, 1)),
-							new Rectangle(xOffset, yOffset, WidthInPx, HeightInPx));
-						graphics.DrawImage(bitmap, new Rectangle(xOffset, yOffset, WidthInPx, HeightInPx));
+							new Rectangle(xOffset, yOffset, imageBuilder.WidthInPx, imageBuilder.HeightInPx));
+						graphics.DrawImage(bitmap, new Rectangle(xOffset, yOffset, imageBuilder.WidthInPx, imageBuilder.HeightInPx));
 					}
 				}
 
@@ -210,6 +210,7 @@ namespace Randomizer
 		{
 			File.Delete($"Mods/Randomizer/Assets/CustomImages/Weapons/randomizedImage.png");
 			File.Delete($"Mods/Randomizer/Assets/CustomImages/Shared/randomizedImage.png");
+			File.Delete($"Mods/Randomizer/Assets/CustomImages/CropGrowth/randomizedImage.png");
 		}
 	}
 }

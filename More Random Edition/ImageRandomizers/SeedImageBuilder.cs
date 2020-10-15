@@ -12,10 +12,9 @@ namespace Randomizer
 		private readonly Dictionary<Point, int> PointsToSeedIds;
 
 		/// <summary>
-		/// Keeps track of crop ids mapped to image names so that it can be used by the seed and
-		/// crop growth image builders
+		/// Keeps track of crop ids mapped to image names so that all the crop images can be linked
 		/// </summary>
-		public Dictionary<int, string> CropIdsToImageNames;
+		private readonly Dictionary<int, string> CropIdsToImageNames;
 
 		/// <summary>
 		/// Constructor
@@ -28,6 +27,9 @@ namespace Randomizer
 			List<Item> seedItems = GetAllSeedItems();
 			PointsToSeedIds = GetPointsToIdsMapping(seedItems);
 			PositionsToOverlay = GetAllPoints(seedItems);
+
+			//TODO: deal with coffee - it doesn't have a matching crop since it's marked as a seed!
+			// coffee's growth index is 40, if it matters
 		}
 
 		/// <summary>
@@ -59,7 +61,7 @@ namespace Randomizer
 				return $"{directory}/default.png";
 			}
 
-			return fileName;
+			return $"{directory}/{fileName}";
 		}
 
 		/// <summary>
@@ -68,7 +70,7 @@ namespace Randomizer
 		/// <returns>True if so, false otherwise</returns>
 		public override bool ShouldSaveImage()
 		{
-			return Globals.Config.Crops.Randomize && Globals.Config.Crops.RandomizeImages;
+			return Globals.Config.Crops.Randomize && Globals.Config.Crops.UseCustomImages;
 		}
 	}
 }
