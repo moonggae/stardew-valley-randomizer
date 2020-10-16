@@ -74,11 +74,14 @@ namespace Randomizer
 					break;
 				case BundleTypes.PantryRareFoods:
 					Name = Globals.GetTranslation("bundle-pantry-rare-foods");
+
+					SeedItem starFruitSeed = (SeedItem)ItemList.Items[(int)ObjectIndexes.StarfruitSeeds];
+					SeedItem gemBerrySeed = (SeedItem)ItemList.Items[(int)ObjectIndexes.RareSeed];
 					RequiredItems = new List<RequiredItem>
 					{
 						new RequiredItem((int)ObjectIndexes.AncientFruit),
-						new RequiredItem((int)ObjectIndexes.Starfruit),
-						new RequiredItem((int)ObjectIndexes.SweetGemBerry)
+						new RequiredItem(starFruitSeed.CropGrowthInfo.CropId),
+						new RequiredItem(gemBerrySeed.CropGrowthInfo.CropId),
 					};
 					Color = BundleColors.Blue;
 					break;
