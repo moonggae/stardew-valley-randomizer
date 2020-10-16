@@ -88,6 +88,7 @@ namespace Randomizer
 						new RequiredItem((int)ObjectIndexes.WarpTotemFarm),
 						new RequiredItem((int)ObjectIndexes.WarpTotemBeach),
 						new RequiredItem((int)ObjectIndexes.WarpTotemMountains),
+						new RequiredItem((int)ObjectIndexes.WarpTotemDesert),
 						new RequiredItem((int)ObjectIndexes.RainTotem),
 					};
 					MinimumRequiredItems = Range.GetRandomValue(3, 4);

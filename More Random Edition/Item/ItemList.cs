@@ -375,6 +375,7 @@ namespace Randomizer
 				{ (int)ObjectIndexes.WarpTotemFarm, new CraftableItem((int)ObjectIndexes.WarpTotemFarm, "/Field/688/false/", CraftableCategories.ModerateAndNeedMany, "Foraging", 8) { OverrideName = "Warp Totem: Farm" } },
 				{ (int)ObjectIndexes.WarpTotemMountains, new CraftableItem((int)ObjectIndexes.WarpTotemMountains, "/Field/689/false/", CraftableCategories.ModerateAndNeedMany, "Foraging", 7) { OverrideName = "Warp Totem: Mountains" } },
 				{ (int)ObjectIndexes.WarpTotemBeach, new CraftableItem((int)ObjectIndexes.WarpTotemBeach, "/Field/690/false/", CraftableCategories.ModerateAndNeedMany, "Foraging", 6) { OverrideName = "Warp Totem: Beach" } },
+				{ (int)ObjectIndexes.WarpTotemDesert, new CraftableItem((int)ObjectIndexes.WarpTotemDesert, "/Field/261/false/null", CraftableCategories.ModerateAndNeedMany) { OverrideName = "Warp Totem: Desert" } },
 				{ (int)ObjectIndexes.RainTotem, new CraftableItem((int)ObjectIndexes.RainTotem, "/Field/681/false/", CraftableCategories.Difficult, "Foraging", 9) },
 				{ (int)ObjectIndexes.FieldSnack, new CraftableItem((int)ObjectIndexes.FieldSnack, "/Home/403/false/", CraftableCategories.Easy, "Foraging", 1) },
 				{ (int)ObjectIndexes.JackOLantern, new CraftableItem((int)ObjectIndexes.JackOLantern, "/Home/746/false/null", CraftableCategories.DifficultAndNeedMany) { OverrideName = "Jack-O-Lantern" } },
