@@ -51,6 +51,8 @@ namespace Randomizer
 
 		/// <summary>
 		/// Sets the item mappings for all the spring objects
+		/// Includes the cherry sapling becuase that's the first fruit tree and we need to
+		/// replace the fruit tree sapling images as well
 		/// </summary>
 		private void SetAllItemMappings()
 		{
@@ -59,6 +61,7 @@ namespace Randomizer
 			AddPointsToIdsMapping(FishItem.Get(true));
 			AddPointsToIdsMapping(CropItem.Get().Cast<Item>().ToList());
 			AddPointsToIdsMapping(CropItem.Get().Select(x => x.MatchingSeedItem).Cast<Item>().ToList());
+			AddPointsToIdsMapping(new List<Item> { ItemList.Items[(int)ObjectIndexes.CherrySapling] });
 		}
 
 		/// <summary>
@@ -99,6 +102,12 @@ namespace Randomizer
 
 			string fileName = "";
 			string subDirectory = "";
+
+			if (item.Id == (int)ObjectIndexes.CherrySapling)
+			{
+				ImageWidthInPx = 96;
+				return $"{ImageDirectory}/fruitTreeSprites.png";
+			}
 
 			if (item.IsFish)
 			{
@@ -168,7 +177,7 @@ namespace Randomizer
 			int itemId = PointsToItemIds[point];
 			Item item = ItemList.Items[itemId];
 
-			if (item.IsCrop || item.IsSeed)
+			if (item.IsCrop || item.IsSeed || item.Id == (int)ObjectIndexes.CherrySapling)
 			{
 				return Globals.Config.Crops.Randomize && Globals.Config.Crops.UseCustomImages;
 			}
