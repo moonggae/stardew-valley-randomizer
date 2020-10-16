@@ -50,6 +50,8 @@ namespace Randomizer
 			RegrowingImages = Directory.GetFiles($"{ImageDirectory}/{RegrowingDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
 			TrellisImages = Directory.GetFiles($"{ImageDirectory}/{TrellisDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
 			FlowerImages = Directory.GetFiles($"{ImageDirectory}/{FlowersDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
+
+			ValidateCropImages();
 		}
 
 		/// <summary>
@@ -167,6 +169,96 @@ namespace Randomizer
 		public override bool ShouldSaveImage()
 		{
 			return Globals.Config.Crops.Randomize && Globals.Config.Crops.UseCustomImages;
+		}
+
+		/// <summary>
+		/// Validates that the crop growth images map to the appropriate directories
+		/// </summary>
+		private void ValidateCropImages()
+		{
+			// Gather data for normal images
+			string normalCropGrowthDirectory = $"{ImageDirectory}/{NormalDirectory}";
+			List<string> normalImageNames = Directory.GetFiles(normalCropGrowthDirectory).ToList();
+
+			List<string> normal4StageImages = normalImageNames
+				.Where(x => x.EndsWith("-4.png"))
+				.Select(x => Path.GetFileName(x.Replace("-4.png", "")))
+				.ToList();
+
+			List<string> normal5StageImages = normalImageNames
+				.Where(x => x.EndsWith("-5.png"))
+				.Select(x => Path.GetFileName(x.Replace("-5.png", "")))
+				.ToList();
+
+			// Validate that the stage 4 and 5 match
+			if (normal4StageImages.Count != normal5StageImages.Count)
+			{
+				string missingNumber = normal5StageImages.Count > normal4StageImages.Count ? "5" : "4";
+				Globals.ConsoleWarn($"Missing a stage {missingNumber} image at: {normalCropGrowthDirectory}");
+			}
+
+			// Gather the all of the crop growth images and validate whether their names are all unique
+			List<string> normalCropGrowthImages = NormalImages.Select(x => Path.GetFileNameWithoutExtension(x)).ToList();
+			List<string> regrowingCropGrowthImages = RegrowingImages.Select(x => Path.GetFileNameWithoutExtension(x)).ToList();
+			List<string> trellisCropGrowthImages = TrellisImages.Select(x => Path.GetFileNameWithoutExtension(x)).ToList();
+			List<string> flowerCropGrowthImages = FlowerImages.Select(x => Path.GetFileNameWithoutExtension(x)).ToList();
+
+			List<string> allCropGrowthImages = normalCropGrowthImages
+				.Concat(regrowingCropGrowthImages)
+				.Concat(trellisCropGrowthImages)
+				.Concat(flowerCropGrowthImages)
+				.Distinct()
+				.ToList();
+
+			int countOfEachPath = normalCropGrowthImages.Count + regrowingCropGrowthImages.Count + trellisCropGrowthImages.Count + flowerCropGrowthImages.Count;
+			if (allCropGrowthImages.Count != countOfEachPath)
+			{
+				Globals.ConsoleWarn($"Duplicate image name detected in one of the folders at: {ImageDirectory}");
+			}
+
+			// Check that every crop growth image has a matching seed packet
+			string seedImageDirectory = $"{CustomImagesPath}/SpringObjects/Seeds";
+			List<string> seedImageNames = Directory.GetFiles(seedImageDirectory)
+				.Where(x => x.EndsWith(".png"))
+				.Select(x => Path.GetFileNameWithoutExtension(x))
+				.ToList();
+
+			foreach (string growthImageName in allCropGrowthImages)
+			{
+				if (!seedImageNames.Contains(growthImageName))
+				{
+					Globals.ConsoleWarn($"{growthImageName}.png not found at: {seedImageDirectory}");
+				}
+			}
+
+			// Check that all crop growth images exist as a crop or flower
+			string cropImageDirectory = $"{CustomImagesPath}/SpringObjects/Crops";
+			List<string> cropImageNames = Directory.GetFiles(cropImageDirectory)
+				.Where(x => x.EndsWith(".png"))
+				.Select(x => Path.GetFileNameWithoutExtension(x))
+				.ToList();
+
+			foreach (string cropImageName in normalCropGrowthImages.Concat(regrowingCropGrowthImages).Concat(trellisCropGrowthImages))
+			{
+				if (!cropImageNames.Contains(cropImageName))
+				{
+					Globals.ConsoleWarn($"{cropImageName}.png not found at: {cropImageDirectory}");
+				}
+			}
+
+			string flowerImageDirectory = $"{CustomImagesPath}/SpringObjects/Flowers";
+			List<string> flowerImageNames = Directory.GetFiles(flowerImageDirectory)
+				.Where(x => x.EndsWith(".png"))
+				.Select(x => Path.GetFileNameWithoutExtension(x))
+				.ToList();
+
+			foreach (string flowerImageName in flowerCropGrowthImages)
+			{
+				if (!flowerImageNames.Contains(flowerImageName))
+				{
+					Globals.ConsoleWarn($"{flowerImageName}.png not found at: {flowerImageDirectory}");
+				}
+			}
 		}
 	}
 }

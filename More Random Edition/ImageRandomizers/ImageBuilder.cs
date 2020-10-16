@@ -33,13 +33,18 @@ namespace Randomizer
 		private const string OutputFileName = "randomizedImage.png";
 
 		/// <summary>
+		/// The path for all the custom images
+		/// </summary>
+		protected const string CustomImagesPath = "Mods/Randomizer/Assets/CustomImages";
+
+		/// <summary>
 		/// The path to the custom images
 		/// </summary>
 		protected string ImageDirectory
 		{
 			get
 			{
-				return $"Mods/Randomizer/Assets/CustomImages/{SubDirectory}";
+				return $"{CustomImagesPath}/{SubDirectory}";
 			}
 		}
 
