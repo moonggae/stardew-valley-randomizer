@@ -286,8 +286,6 @@ namespace Randomizer
 					Name = Globals.GetTranslation("bundle-bulletin-pink");
 					potentialItems = RequiredItem.CreateList(new List<int>
 					{
-						(int)ObjectIndexes.Blobfish,
-						(int)ObjectIndexes.VoidSalmon,
 						(int)ObjectIndexes.Shrimp,
 						(int)ObjectIndexes.StrangeBun,
 						(int)ObjectIndexes.SalmonDinner,
@@ -316,7 +314,6 @@ namespace Randomizer
 						(int)ObjectIndexes.OrnamentalFan,
 						(int)ObjectIndexes.DinosaurEgg,
 						(int)ObjectIndexes.ChickenStatue,
-						(int)ObjectIndexes.Ghostfish,
 						(int)ObjectIndexes.WhiteAlgae,
 						(int)ObjectIndexes.WhiteEgg,
 						(int)ObjectIndexes.LargeWhiteEgg,
