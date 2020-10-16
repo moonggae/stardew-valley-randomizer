@@ -61,7 +61,7 @@ namespace Randomizer
 			AddPointsToIdsMapping(FishItem.Get(true));
 			AddPointsToIdsMapping(CropItem.Get().Cast<Item>().ToList());
 			AddPointsToIdsMapping(CropItem.Get().Select(x => x.MatchingSeedItem).Cast<Item>().ToList());
-			AddPointsToIdsMapping(new List<Item> { ItemList.Items[(int)ObjectIndexes.CherrySapling] });
+			AddPointsToIdsMapping(new List<Item> { ItemList.Items[(int)ObjectIndexes.CherrySapling], ItemList.Items[(int)ObjectIndexes.CoffeeBean] });
 		}
 
 		/// <summary>
@@ -123,12 +123,12 @@ namespace Randomizer
 			}
 
 			int cropId = item.Id;
-			if (item.IsCrop)
+			if (item.IsCrop || item.Id == (int)ObjectIndexes.CoffeeBean)
 			{
 				subDirectory = "/Crops";
 			}
 
-			if (item.IsSeed)
+			else if (item.IsSeed)
 			{
 				SeedItem seedItem = (SeedItem)item;
 				cropId = seedItem.CropGrowthInfo.CropId;

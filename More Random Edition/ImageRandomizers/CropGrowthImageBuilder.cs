@@ -25,14 +25,14 @@ namespace Randomizer
 		/// <summary>
 		/// Keeps track of crop growth images to crop ids
 		/// </summary>
-		private readonly Dictionary<Point, int> CropGrowthImagePointsToIds;
+		private Dictionary<Point, int> CropGrowthImagePointsToIds;
 
 		public CropGrowthImageBuilder()
 		{
 			CropIdsToImageNames = new Dictionary<int, string>();
 			BaseFileName = "Crops.png";
 			SubDirectory = "CropGrowth";
-			CropGrowthImagePointsToIds = GetCropGrowthImageMap();
+			SetUpCropGrowthImagePointsToIds();
 			PositionsToOverlay = CropGrowthImagePointsToIds.Keys.ToList();
 
 			ImageHeightInPx = 32;
@@ -56,27 +56,28 @@ namespace Randomizer
 
 		/// <summary>
 		/// Gets the map of crop growth images to their ids
-		/// Excludes coffee (TODO) and Ancient Seeds, as they aren't randomized
+		/// Excludes Ancient Seeds, as they aren't randomized
+		/// Coffee beans are also the crop, so use their seed ID as the crop ID
 		/// </summary>
 		/// <returns></returns>
-		private Dictionary<Point, int> GetCropGrowthImageMap()
+		private void SetUpCropGrowthImagePointsToIds()
 		{
 			const int itemsPerRow = 2;
 
-			Dictionary<Point, int> imageMap = new Dictionary<Point, int>();
+			CropGrowthImagePointsToIds = new Dictionary<Point, int>();
 			List<int> seedIdsToExclude = new List<int>
 			{
-				(int)ObjectIndexes.CoffeeBean,
 				(int)ObjectIndexes.AncientSeeds
 			};
+
 			foreach (SeedItem seedItem in ItemList.GetSeeds().Where(x => !seedIdsToExclude.Contains(x.Id)).Cast<SeedItem>())
 			{
 				int sheetIndex = seedItem.CropGrowthInfo.GraphicId;
-				CropItem cropItem = (CropItem)ItemList.Items[seedItem.CropGrowthInfo.CropId];
-				imageMap[new Point(sheetIndex % itemsPerRow, sheetIndex / itemsPerRow)] = cropItem.Id;
-			}
+				int cropId = seedItem.Id == (int)ObjectIndexes.CoffeeBean ?
+					seedItem.Id : seedItem.CropGrowthInfo.CropId;
 
-			return imageMap;
+				CropGrowthImagePointsToIds[new Point(sheetIndex % itemsPerRow, sheetIndex / itemsPerRow)] = cropId;
+			}
 		}
 
 		/// <summary>
@@ -91,13 +92,15 @@ namespace Randomizer
 			string defaultFileName = "default";
 
 			int cropId = CropGrowthImagePointsToIds[position];
-			CropItem cropItem = (CropItem)ItemList.Items[cropId];
-			CropGrowthInformation growthInfo = cropItem.MatchingSeedItem.CropGrowthInfo;
-			SeedItem seedItem = cropItem.MatchingSeedItem;
+			Item item = ItemList.Items[cropId];
+
+			SeedItem seedItem = item.Id == (int)ObjectIndexes.CoffeeBean ?
+				(SeedItem)item : ((CropItem)item).MatchingSeedItem;
+			CropGrowthInformation growthInfo = seedItem.CropGrowthInfo;
 
 			FixWidthValue(seedItem.CropGrowthInfo.GraphicId);
 
-			if (cropItem.IsFlower)
+			if (item.IsFlower)
 			{
 				defaultFileName = "default-flower";
 				fileName = Globals.RNGGetAndRemoveRandomValueFromList(FlowerImages);
