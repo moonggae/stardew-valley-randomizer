@@ -28,6 +28,11 @@ namespace Randomizer
 		protected int OffsetHeightInPx = 16;
 
 		/// <summary>
+		/// The image height in px - this is the initial height to start drawing at
+		/// </summary>
+		protected int InitialHeightOffetInPx = 0;
+
+		/// <summary>
 		/// The name of the output file
 		/// </summary>
 		private const string OutputFileName = "randomizedImage.png";
@@ -129,7 +134,7 @@ namespace Randomizer
 					}
 
 					int xOffset = position.X * OffsetWidthInPx;
-					int yOffset = position.Y * OffsetHeightInPx;
+					int yOffset = position.Y * OffsetHeightInPx + InitialHeightOffetInPx;
 
 					graphics.FillRectangle(
 						new SolidBrush(Color.FromArgb(0, 0, 1)),

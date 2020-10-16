@@ -39,6 +39,15 @@ namespace Randomizer
 		public int? MinimumRequiredItems { get; set; }
 		public BundleTypes BundleType { get; set; } = BundleTypes.None;
 
+		public string ImageNameSuffix { get; set; }
+		public string ImageName
+		{
+			get
+			{
+				return $"{BundleType.ToString()}{ImageNameSuffix}";
+			}
+		}
+
 		private static bool _isInitialized { get; set; }
 		private static List<BundleTypes> _randomBundleTypes { get; set; }
 
@@ -285,6 +294,7 @@ namespace Randomizer
 						);
 					} while (potentialItems.Count < 4);
 					Name = Globals.GetTranslation("bundle-random-letter", new { letter = randomLetter });
+					ImageNameSuffix = randomLetter;
 					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
 					MinimumRequiredItems = 3;
 					break;

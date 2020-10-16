@@ -239,6 +239,10 @@ namespace Randomizer
 			SpringObjectsImageBuilder springObjectsImageBuilder = new SpringObjectsImageBuilder(cropGrowthImageBuilder.CropIdsToImageNames);
 			springObjectsImageBuilder.BuildImage();
 			HandleImageReplacement(springObjectsImageBuilder, "Maps/springobjects");
+
+			BundleImageBuilder bundleImageBuilder = new BundleImageBuilder();
+			bundleImageBuilder.BuildImage();
+			HandleImageReplacement(bundleImageBuilder, "LooseSprites/JunimoNote");
 		}
 
 		/// <summary>

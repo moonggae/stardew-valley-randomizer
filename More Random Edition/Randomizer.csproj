@@ -53,6 +53,7 @@
     <Compile Include="CookingChannel.cs" />
     <Compile Include="CraftingRecipeAdjustments.cs" />
     <Compile Include="Enums\QuestItemTypes.cs" />
+    <Compile Include="ImageRandomizers\BundleImageBuilder.cs" />
     <Compile Include="ImageRandomizers\CropGrowthImageBuilder.cs" />
     <Compile Include="ImageRandomizers\ImageBuilder.cs" />
     <Compile Include="ImageRandomizers\SpringObjectsImageBuilder.cs" />

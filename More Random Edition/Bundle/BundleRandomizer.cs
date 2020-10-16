@@ -11,6 +11,7 @@ namespace Randomizer
 		public CommunityCenterRooms Room { get; set; }
 		public int StartingIndex { get; set; }
 		public int EndingIndex { get; set; }
+		public List<Bundle> Bundles { get; set; } = new List<Bundle>();
 
 		/// <summary>
 		/// Constructor
@@ -83,6 +84,7 @@ namespace Randomizer
 			{
 				if (i == 18) { continue; } // That's just how this is set up
 				Bundle bundle = CreateBundleForRoom(room.Room, i);
+				room.Bundles.Add(bundle);
 				WriteToSpoilerLog(bundle, i);
 			}
 		}
