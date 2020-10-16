@@ -93,6 +93,7 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
     * Credits for the artwork (some images were modified from the original):
       * Mizu - permission is assumed from this page: https://community.playstarbound.com/threads/mizus-sprites.136549/
       * Bonster - permission is assumed based on the bottom of the mod page for Bonster's Crops: https://www.nexusmods.com/stardewvalley/mods/3438
+      * Marrorow
   * When randomizing fish, there's the option of using custom fish images
     * The majority of the new fish images on the FishRework branch are mostly directly pulled form the New New Fish mod: https://www.nexusmods.com/stardewvalley/mods/3578
       * Specific credits go to Hisame for the sprites: https://www.nexusmods.com/Users/51209496
