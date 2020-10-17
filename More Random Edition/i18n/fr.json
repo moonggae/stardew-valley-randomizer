@@ -256,7 +256,8 @@
 	"TV.cs.13151": "Vous savez déjà comment cuisiner ça.",
 	"TV.cs.13153": "Vous avez appris une nouvelle recette!",
 	"Woods_Statue": "--Vieux Maitre Cannoli--\n... Toujours à la recherche un {{cropName}}...",
-
+	"Railroad_Box_MrQiNote": "\"Bien joué. Ta prochaine tâche : Déposer 10 {{cropName}} dans le réfrigérateur du maire. -M. Qi\"",
+		
 	"cooking-channel-2": "Coleslaw/Salade de chou ! Ce plat vous fait-il penser à une montagne de {{item1}} mou et fade ? Je vous comprends. Cependant, une bonne salade de chou peut être tellement plus. Assurez-vous d’avoir du {{item1}} bien frais pour ce plat. Mélangez avec un peu de vinaigre et de mayonnaise et le tour est joué. Ah, c’est tellement croustillant.",
 	"cooking-channel-3": "Radish Salad/{{recipe}} ! Rien de tel que du {{item1}} frais et poivré. Cela me rappelle la fin du printemps... ma mère coupait nos {{item1}} frais et les servait sur du pain de céréales avec un peu de sel et de poivre. Ah, c’était le bon temps... mais je m’éloigne du sujet. Maintenant, regardez bien...",
 	"cooking-channel-7": "Maki Roll/Makis ! Les saveurs délicates de la mer, scellées dans un nuage de {{item1}} épais. Peut-être une pointe de wasabi pour les plus aventureux. J'en salive rien que d'en parler. Oh, comme j’aime les sushis...",

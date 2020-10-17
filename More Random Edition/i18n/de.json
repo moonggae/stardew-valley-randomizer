@@ -256,6 +256,7 @@
 	"TV.cs.13151": "Sie wissen bereits, wie man das kocht.",
 	"TV.cs.13153": "Du hast ein neues Rezept gelernt!",
 	"Woods_Statue": "--Altmeister Cannoli--\n...Noch immer auf der Suche nach ein {{cropName}}....",
+	"Railroad_Box_MrQiNote": "\"Gut gemacht. Deine nächste Aufgabe: Platziere 10 {{cropName}} im Kühlschrank des Bürgermeisters. -Mr. Qi\"",
 
 	"cooking-channel-2": "Coleslaw/Kohlsalat! Stellst du dir fade, schlaffe {{item1}} berge vor? Das geht nicht nur dir so. Aber ein guter Kohlsalat kann so viel mehr sein. Hierfür benötigst du saftigen, frischen {{item1}}. Vermische ihn mit ein wenig Essig und Mayonnaise und schon bist du fertig. Ah, so knackig und frisch./Kohlsalat",
 	"cooking-channel-3": "Radish Salad/{{recipe}}! Es geht nichts über frische, gepfefferte {{item1}}. Das erinnert mich an den späten Frühling... Meine Mutter schnitt unsere frischen {{item1}} und brachte sie uns auf körnigem Brot mit etwas Salz und Pfeffer. Ah, das waren noch Tage... aber ich schweife ab. Jetzt, schau gut zu.../{{recipe}}",

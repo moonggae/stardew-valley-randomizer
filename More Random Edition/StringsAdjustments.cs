@@ -33,7 +33,7 @@ namespace Randomizer
 		/// <summary>
 		/// Gets the string replacements for the Strings/Locations.xnb
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>The dictionary of replacements</returns>
 		public static Dictionary<string, string> GetLocationStringReplacements()
 		{
 			Dictionary<string, string> stringReplacements = new Dictionary<string, string>();
@@ -42,6 +42,9 @@ namespace Randomizer
 			{
 				string sweetGemBerryName = ItemList.GetItemName((int)ObjectIndexes.SweetGemBerry);
 				stringReplacements["Woods_Statue"] = Globals.GetTranslation("Woods_Statue", new { cropName = sweetGemBerryName });
+
+				string beetName = ItemList.GetItemName((int)ObjectIndexes.Beet);
+				stringReplacements["Railroad_Box_MrQiNote"] = Globals.GetTranslation("Railroad_Box_MrQiNote", new { cropName = beetName });
 			}
 
 			return stringReplacements;
