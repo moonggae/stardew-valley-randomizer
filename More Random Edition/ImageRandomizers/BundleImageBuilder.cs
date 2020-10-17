@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -29,6 +30,7 @@ namespace Randomizer
 				.Where(x => x.EndsWith(".png"))
 				.Select(x => Path.GetFileNameWithoutExtension(x))
 				.OrderBy(x => x).ToList();
+			ValidateImages();
 
 			ImageHeightInPx = 32;
 			ImageWidthInPx = 32;
@@ -89,8 +91,62 @@ namespace Randomizer
 				return true;
 			}
 
-			Globals.ConsoleWarn($"Could not find bundle image: {ImageDirectory}/{bundle.ImageName}");
+			Globals.ConsoleWarn($"Could not find bundle image: {ImageDirectory}/{bundle.ImageName}.png");
 			return false;
+		}
+
+		/// <summary>
+		/// Validates that all the potentially needed bundle images exist
+		/// </summary>
+		private void ValidateImages()
+		{
+			foreach (BundleTypes bundleType in Enum.GetValues(typeof(BundleTypes)))
+			{
+				string bundleString = bundleType.ToString();
+
+				if (bundleType == BundleTypes.None)
+				{
+					return;
+				}
+				else if (bundleString.StartsWith("Vault"))
+				{
+					int maxSuffix = 6;
+					if (bundleString == "Vault2500" || bundleString == "Vault25000")
+					{
+						maxSuffix = 7;
+					}
+
+					for (int bundleSuffix = 1; bundleSuffix <= maxSuffix; bundleSuffix++)
+					{
+						ValidateImage($"{bundleString}-{bundleSuffix}");
+					}
+				}
+
+				else if (bundleType == BundleTypes.AllLetter)
+				{
+					string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+					foreach (char letter in letters)
+					{
+						ValidateImage($"{bundleString}{letter}");
+					}
+				}
+
+				else
+				{
+					ValidateImage(bundleString);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Validates that the image exists given the name
+		/// </summary>
+		private void ValidateImage(string fileName)
+		{
+			if (!BundleImageNames.Contains(fileName))
+			{
+				Globals.ConsoleWarn($"Could not validate bundle image: {ImageDirectory}/{fileName}.png");
+			}
 		}
 	}
 }
