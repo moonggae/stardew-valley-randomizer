@@ -33,7 +33,7 @@ namespace Randomizer
 			ImageHeightInPx = 32;
 			ImageWidthInPx = 32;
 			OffsetWidthInPx = 32;
-			OffsetWidthInPx = 32;
+			OffsetHeightInPx = 32;
 			InitialHeightOffetInPx = 180;
 		}
 
