@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StardewValley;
+using System;
 
 namespace Randomizer
 {
@@ -16,6 +17,7 @@ namespace Randomizer
 		public BootItem(
 			int id,
 			string name,
+			string description,
 			int notActuallyPrice,
 			int defense,
 			int immunity,
@@ -26,11 +28,37 @@ namespace Randomizer
 			ShouldBeForagable = false;
 
 			OverrideName = name;
-			Description = Globals.GetTranslation($"boots-{id}-description");
 			NotActuallyPrice = notActuallyPrice;
 			Defense = defense;
 			Immunity = immunity;
 			ColorSheetIndex = colorSheetIndex;
+
+			Description = Globals.GetTranslation($"boots-{id}-description"); ;
+			if (Globals.ModRef.Helper.Translation.LocaleEnum == LocalizedContentManager.LanguageCode.en)
+			{
+				Description = description;
+			}
+		}
+
+		public BootItem(
+			int id,
+			string name,
+			int notActuallyPrice,
+			int defense,
+			int immunity,
+			int colorSheetIndex) : base(id)
+		{
+			DifficultyToObtain = ObtainingDifficulties.NonCraftingItem;
+			CanStack = false;
+			ShouldBeForagable = false;
+
+			OverrideName = name;
+			Description = Globals.GetTranslation($"boots-{id}-description"); ;
+			NotActuallyPrice = notActuallyPrice;
+			Defense = defense;
+			Immunity = immunity;
+			ColorSheetIndex = colorSheetIndex;
+
 		}
 
 		/// <summary>

@@ -57,8 +57,7 @@ namespace Randomizer
 			{49, "Rapier/An elegant blade./15/25/1/4/0/0/0/100/95/2/.02/3" },
 			{50, "Steel Falchion/Light and powerful./28/46/1/8/5/0/0/142/100/0/.02/3.4" },
 			{51, "Broken Trident/It came from the sea, but it's still sharp./15/26/.5/0/8/0/1/-1/-1/2/.02/3" },
-			{52, "Tempered Broadsword/It looks like it could withstand anything./29/44/1.2/-6/0/3/0/135/100/1/.02/3" },
-			{53, "Golden Scythe/It's more powerful than a normal scythe./13/13/1/0/0/0/0/-1/-1/2/.02/4" }
+			{52, "Tempered Broadsword/It looks like it could withstand anything./29/44/1.2/-6/0/3/0/135/100/1/.02/3" }
 		};
 
 		public enum WeaponFields

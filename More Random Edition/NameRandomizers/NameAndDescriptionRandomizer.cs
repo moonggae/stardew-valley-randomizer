@@ -735,6 +735,18 @@ namespace Randomizer
 			return CreateDescriptionFromPieces(numberOfDescriptions, descriptionBases, nouns, adjectives, names);
 		}
 
+		public static List<string> GenerateBootDescriptions(int numberOfDescriptions)
+		{
+			//TODO!!!
+			List<string> descriptions = new List<string>();
+			for (int i = 0; i < numberOfDescriptions; i++)
+			{
+				descriptions.Add("poop shoe " + i);
+			}
+
+			return descriptions;
+		}
+
 		private static List<string> CreateDescriptionFromPieces(int numberOfDescriptions, List<string> descriptionBases, List<string> nouns, List<string> adjectives, List<string> names)
 		{
 			List<string> createdDescriptions = new List<string>();

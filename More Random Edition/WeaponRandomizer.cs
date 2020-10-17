@@ -24,12 +24,8 @@ namespace Randomizer
 			foreach (WeaponItem weapon in weaponDictionary.Values)
 			{
 				RandomizeWeapon(weapon, nameRandomizer);
-
-				if (weapon.Id != 53) //TODO: remove in 0.3.0 - here to prevent seed from changing
-				{
-					stringReplacements.Add(weapon.Id, weapon.ToString());
-					Weapons.Add(weapon.Id, weapon);
-				}
+				stringReplacements.Add(weapon.Id, weapon.ToString());
+				Weapons.Add(weapon.Id, weapon);
 			}
 
 			WriteToSpoilerLog(weaponDictionary);
