@@ -91,6 +91,7 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
 * Custom images
   * When randomizing crops, there's the option of using custom crop images. This will link together the crop as it's growing, the seed packet, and the crop itself into a coherent set of images.
     * The text in the Secret Woods that tells you to bring a Sweet Gem Berry will now specifically tell you what crop you need to bring, since there's now no way to tell otherwise
+    * The Mr Qi quest now mentions which 10 crops to put in the Mayor's fridge for the initial textbox, and not just the quest description
     * Credits for the artwork (some images were modified from the original):
       * Mizu - permission is assumed from this page: https://community.playstarbound.com/threads/mizus-sprites.136549/
       * Bonster - permission is assumed based on the bottom of the mod page for Bonster's Crops: https://www.nexusmods.com/stardewvalley/mods/3438
@@ -99,6 +100,7 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
     * The majority of the new fish images on the FishRework branch are mostly directly pulled form the New New Fish mod: https://www.nexusmods.com/stardewvalley/mods/3578
       * Specific credits go to Hisame for the sprites: https://www.nexusmods.com/Users/51209496
   * The new bundles now have matching images
+  * Boots now have custom images and descriptions (descriptions are enabled in English only)
 * Fixed the Queen of Sauce show - it should now use the randomized crop/fish names in the show text
 * Added the Stable to the list of randomized buildings, as it was overlooked before
 * Added Desert Totems to the item pool, and included them in the appropriate bundles
