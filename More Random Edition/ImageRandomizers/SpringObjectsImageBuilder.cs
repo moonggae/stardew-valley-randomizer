@@ -11,8 +11,10 @@ namespace Randomizer
 		private const string FlowersDirectory = "Flowers";
 		private const string SeedsDirectory = "Seeds";
 		private const string FishDirectory = "Fish";
+		private const string BootsDirectory = "Boots";
 
 		private List<string> FishImages { get; set; }
+		private List<string> BootImages { get; set; }
 
 		/// <summary>
 		/// The number of items per row in the spring objects file
@@ -47,6 +49,11 @@ namespace Randomizer
 				.Where(x => !x.EndsWith("default.png"))
 				.Where(x => x.EndsWith(".png"))
 				.OrderBy(x => x).ToList();
+
+			BootImages = Directory.GetFiles($"{ImageDirectory}/{BootsDirectory}")
+				.Where(x => !x.EndsWith("default.png"))
+				.Where(x => x.EndsWith(".png"))
+				.OrderBy(x => x).ToList();
 		}
 
 		/// <summary>
@@ -58,10 +65,11 @@ namespace Randomizer
 		{
 			PointsToItemIds = new Dictionary<Point, int>();
 
-			AddPointsToIdsMapping(FishItem.Get(true));
-			AddPointsToIdsMapping(CropItem.Get().Cast<Item>().ToList());
-			AddPointsToIdsMapping(CropItem.Get().Select(x => x.MatchingSeedItem).Cast<Item>().ToList());
-			AddPointsToIdsMapping(new List<Item> { ItemList.Items[(int)ObjectIndexes.CherrySapling], ItemList.Items[(int)ObjectIndexes.CoffeeBean] });
+			AddPointsToIdsMapping(FishItem.Get(true).Select(x => x.Id).ToList());
+			AddPointsToIdsMapping(BootData.AllBoots.Select(x => x.Id).ToList());
+			AddPointsToIdsMapping(CropItem.Get().Select(x => x.Id).ToList());
+			AddPointsToIdsMapping(CropItem.Get().Select(x => x.MatchingSeedItem.Id).ToList());
+			AddPointsToIdsMapping(new List<int> { (int)ObjectIndexes.CherrySapling, (int)ObjectIndexes.CoffeeBean });
 		}
 
 		/// <summary>
@@ -69,22 +77,22 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="items"></param>
 		/// <returns></returns>
-		protected void AddPointsToIdsMapping(List<Item> items)
+		protected void AddPointsToIdsMapping(List<int> itemIds)
 		{
-			foreach (Item item in items)
+			foreach (int id in itemIds)
 			{
-				PointsToItemIds[GetPointFromItem(item)] = item.Id;
+				PointsToItemIds[GetPointFromId(id)] = id;
 			}
 		}
 
 		/// <summary>
-		/// Gets the point in the springobjects file that belongs to the given item
+		/// Gets the point in the springobjects file that belongs to the given item id
 		/// </summary>
-		/// <param name="item">The item</param>
+		/// <param name="id">The id</param>
 		/// <returns />
-		protected Point GetPointFromItem(Item item)
+		protected Point GetPointFromId(int id)
 		{
-			return new Point(item.Id % ItemsPerRow, item.Id / ItemsPerRow);
+			return new Point(id % ItemsPerRow, id / ItemsPerRow);
 		}
 
 		/// <summary>
@@ -95,13 +103,25 @@ namespace Randomizer
 		/// <returns>The selected file name</returns>
 		protected override string GetRandomFileName(Point position)
 		{
-			int itemId = PointsToItemIds[position];
-			Item item = ItemList.Items[itemId];
-
 			ImageWidthInPx = 16;
 
+			int itemId = PointsToItemIds[position];
 			string fileName = "";
 			string subDirectory = "";
+			if (BootData.AllBoots.Any(x => x.Id == itemId))
+			{
+				fileName = Globals.RNGGetAndRemoveRandomValueFromList(BootImages);
+
+				if (string.IsNullOrEmpty(fileName))
+				{
+					Globals.ConsoleWarn($"Could not find the boot image for id {itemId}; using default image instead.");
+					return $"{ImageDirectory}/{BootsDirectory}/default.png";
+				}
+
+				return fileName;
+			}
+
+			Item item = ItemList.Items[itemId];
 
 			if (item.Id == (int)ObjectIndexes.CherrySapling)
 			{
@@ -116,7 +136,7 @@ namespace Randomizer
 				if (string.IsNullOrEmpty(fileName))
 				{
 					Globals.ConsoleWarn($"Could not find the fish image for {item.Name}; using default image instead.");
-					return $"{ImageDirectory}/Fish/default.png";
+					return $"{ImageDirectory}/{FishDirectory}/default.png";
 				}
 
 				return fileName;
@@ -175,8 +195,12 @@ namespace Randomizer
 		protected override bool ShouldSaveImage(Point point)
 		{
 			int itemId = PointsToItemIds[point];
-			Item item = ItemList.Items[itemId];
+			if (BootData.AllBoots.Any(x => x.Id == itemId))
+			{
+				return Globals.Config.Boots.Randomize && Globals.Config.Boots.UseCustomImages;
+			}
 
+			Item item = ItemList.Items[itemId];
 			if (item.IsCrop || item.IsSeed || item.Id == (int)ObjectIndexes.CherrySapling)
 			{
 				return Globals.Config.Crops.Randomize && Globals.Config.Crops.UseCustomImages;

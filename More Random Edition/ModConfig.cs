@@ -47,6 +47,7 @@
 	public class BootsConfig
 	{
 		public bool Randomize { get; set; } = true;
+		public bool UseCustomImages { get; set; } = true;
 	}
 
 	public class MonstersConfig
