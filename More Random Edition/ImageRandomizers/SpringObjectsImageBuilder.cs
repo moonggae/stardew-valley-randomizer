@@ -46,12 +46,10 @@ namespace Randomizer
 			PositionsToOverlay = PointsToItemIds.Keys.ToList();
 
 			FishImages = Directory.GetFiles($"{ImageDirectory}/{FishDirectory}")
-				.Where(x => !x.EndsWith("default.png"))
 				.Where(x => x.EndsWith(".png"))
 				.OrderBy(x => x).ToList();
 
 			BootImages = Directory.GetFiles($"{ImageDirectory}/{BootsDirectory}")
-				.Where(x => !x.EndsWith("default.png"))
 				.Where(x => x.EndsWith(".png"))
 				.OrderBy(x => x).ToList();
 		}
@@ -115,7 +113,7 @@ namespace Randomizer
 				if (string.IsNullOrEmpty(fileName))
 				{
 					Globals.ConsoleWarn($"Could not find the boot image for id {itemId}; using default image instead.");
-					return $"{ImageDirectory}/{BootsDirectory}/default.png";
+					return null;
 				}
 
 				return fileName;
@@ -136,7 +134,7 @@ namespace Randomizer
 				if (string.IsNullOrEmpty(fileName))
 				{
 					Globals.ConsoleWarn($"Could not find the fish image for {item.Name}; using default image instead.");
-					return $"{ImageDirectory}/{FishDirectory}/default.png";
+					return null;
 				}
 
 				return fileName;
@@ -169,7 +167,7 @@ namespace Randomizer
 			if (!CropIdsToImageNames.TryGetValue(cropId, out fileName))
 			{
 				Globals.ConsoleWarn($"Could not find the matching image for {item.Name}; using default image instead.");
-				return $"{ImageDirectory}{subDirectory}/default.png";
+				return null;
 			}
 
 			return $"{ImageDirectory}{subDirectory}/{fileName}";

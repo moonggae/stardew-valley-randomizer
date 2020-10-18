@@ -92,11 +92,6 @@ namespace Randomizer
 		protected string BaseFileName { get; set; }
 
 		/// <summary>
-		/// The name of the default image
-		/// </summary>
-		protected const string DefaultFileName = "default.png";
-
-		/// <summary>
 		/// The subdirectory where the base file and replacements are located
 		/// </summary>
 		protected string SubDirectory { get; set; }
@@ -125,7 +120,13 @@ namespace Randomizer
 				foreach (Point position in PositionsToOverlay)
 				{
 					string randomFileName = GetRandomFileName(position);
-					if (!ShouldSaveImage(position)) { continue; }
+					if (string.IsNullOrWhiteSpace(randomFileName) || !ShouldSaveImage(position)) { continue; }
+
+					if (!File.Exists(randomFileName))
+					{
+						Globals.ConsoleError($"File {randomFileName} does not exist! Using default image instead.");
+						continue;
+					}
 
 					Bitmap bitmap = new Bitmap(randomFileName);
 					if (bitmap.Width != ImageWidthInPx || bitmap.Height != ImageHeightInPx)
@@ -173,7 +174,6 @@ namespace Randomizer
 		{
 			List<string> files = Directory.GetFiles(ImageDirectory).ToList();
 			return files.Where(x =>
-				!x.EndsWith(DefaultFileName) &&
 				!x.EndsWith(OutputFileName) &&
 				!x.EndsWith(BaseFileName) &&
 				x.EndsWith(".png"))
@@ -192,7 +192,7 @@ namespace Randomizer
 			if (string.IsNullOrEmpty(fileName))
 			{
 				Globals.ConsoleWarn($"Not enough images at directory (need more images, using default image): {ImageDirectory}");
-				return $"{ImageDirectory}/default.png";
+				return null;
 			}
 
 			return fileName;
@@ -221,6 +221,7 @@ namespace Randomizer
 		/// </summary>
 		public static void CleanUpReplacementFiles()
 		{
+			File.Delete($"Mods/Randomizer/Assets/CustomImages/Bundles/randomizedImage.png");
 			File.Delete($"Mods/Randomizer/Assets/CustomImages/Weapons/randomizedImage.png");
 			File.Delete($"Mods/Randomizer/Assets/CustomImages/SpringObjects/randomizedImage.png");
 			File.Delete($"Mods/Randomizer/Assets/CustomImages/CropGrowth/randomizedImage.png");

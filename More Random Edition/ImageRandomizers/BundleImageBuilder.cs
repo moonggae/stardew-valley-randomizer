@@ -26,7 +26,6 @@ namespace Randomizer
 			PositionsToOverlay = PointsToBundlesMap.Keys.ToList();
 
 			BundleImageNames = Directory.GetFiles($"{ImageDirectory}")
-				.Where(x => !x.EndsWith("default.png"))
 				.Where(x => x.EndsWith(".png"))
 				.Select(x => Path.GetFileNameWithoutExtension(x))
 				.OrderBy(x => x).ToList();

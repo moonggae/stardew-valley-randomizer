@@ -130,7 +130,7 @@ namespace Randomizer
 			if (string.IsNullOrEmpty(fileName))
 			{
 				Globals.ConsoleWarn($"Using default image for weapon at image position - you may not have enough weapon images: {position.X}, {position.Y}");
-				return $"{ImageDirectory}/default.png";
+				return null;
 			}
 			return fileName;
 		}

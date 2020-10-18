@@ -89,7 +89,6 @@ namespace Randomizer
 		protected override string GetRandomFileName(Point position)
 		{
 			string fileName = "";
-			string defaultFileName = "default";
 
 			int cropId = CropGrowthImagePointsToIds[position];
 			Item item = ItemList.Items[cropId];
@@ -102,19 +101,16 @@ namespace Randomizer
 
 			if (item.IsFlower)
 			{
-				defaultFileName = "default-flower";
 				fileName = Globals.RNGGetAndRemoveRandomValueFromList(FlowerImages);
 			}
 
 			else if (growthInfo.IsTrellisCrop)
 			{
-				defaultFileName = "default-trellis";
 				fileName = Globals.RNGGetAndRemoveRandomValueFromList(TrellisImages);
 			}
 
 			else if (growthInfo.RegrowsAfterHarvest)
 			{
-				defaultFileName = "default-regrows";
 				fileName = Globals.RNGGetAndRemoveRandomValueFromList(RegrowingImages);
 			}
 
@@ -124,13 +120,11 @@ namespace Randomizer
 
 				if (growthInfo.GrowthStages.Count <= 4)
 				{
-					defaultFileName = "default-4";
 					fileName += "-4.png";
 				}
 
 				else
 				{
-					defaultFileName = "default-5";
 					fileName += "-5.png";
 				}
 			}
@@ -138,7 +132,7 @@ namespace Randomizer
 			if (string.IsNullOrEmpty(fileName) || fileName == "-4.png" || fileName == "-5.png")
 			{
 				Globals.ConsoleWarn($"Using default image for crop growth - you may not have enough crop growth images: {position.X}, {position.Y}");
-				return $"{ImageDirectory}/{defaultFileName}.png";
+				return null;
 			}
 
 
