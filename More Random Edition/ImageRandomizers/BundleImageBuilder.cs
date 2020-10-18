@@ -72,7 +72,7 @@ namespace Randomizer
 		/// <returns>True if so, false otherwise</returns>
 		public override bool ShouldSaveImage()
 		{
-			return Globals.Config.RandomizeBundles;
+			return Globals.Config.Bundles.Randomize;
 		}
 
 		/// <summary>
@@ -81,7 +81,7 @@ namespace Randomizer
 		/// <returns>True if so, false otherwise</returns>
 		protected override bool ShouldSaveImage(Point position)
 		{
-			if (!Globals.Config.RandomizeBundles) { return false; }
+			if (!Globals.Config.Bundles.Randomize) { return false; }
 
 			Bundle bundle = PointsToBundlesMap[position];
 

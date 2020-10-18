@@ -10,11 +10,11 @@
 		public MonstersConfig Monsters { get; set; } = new MonstersConfig();
 		public CropsConfig Crops { get; set; } = new CropsConfig();
 		public FishConfig Fish { get; set; } = new FishConfig();
+		public BundleConfig Bundles { get; set; } = new BundleConfig();
 
 		public bool RandomizeForagables { get; set; } = true;
 		public bool AddRandomArtifactItem { get; set; } = true;
 
-		public bool RandomizeBundles { get; set; } = true;
 		public bool RandomizeBuildingCosts { get; set; } = true;
 
 		public bool RandomizeFruitTrees { get; set; } = true;
@@ -66,6 +66,12 @@
 	{
 		public bool Randomize { get; set; } = true;
 		public bool UseCustomImages { get; set; } = true;
+	}
+
+	public class BundleConfig
+	{
+		public bool Randomize { get; set; } = true;
+		public bool ShowDescriptionsInBundleTooltips { get; set; } = true;
 	}
 }
 

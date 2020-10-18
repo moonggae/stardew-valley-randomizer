@@ -36,7 +36,7 @@ namespace Randomizer
 		public bool CanEdit<T>(IAssetInfo asset)
 		{
 			if (asset.AssetNameEquals("Data/CraftingRecipes")) { return Globals.Config.CraftingRecipies.Randomize; }
-			if (asset.AssetNameEquals("Data/Bundles")) { return Globals.Config.RandomizeBundles; }
+			if (asset.AssetNameEquals("Data/Bundles")) { return Globals.Config.Bundles.Randomize; }
 			if (asset.AssetNameEquals("Data/Blueprints")) { return Globals.Config.RandomizeBuildingCosts; }
 			if (asset.AssetNameEquals("Strings/StringsFromCSFiles")) { return true; }
 			if (asset.AssetNameEquals("Data/ObjectInformation")) { return true; }

@@ -57,10 +57,10 @@ namespace Randomizer
 			_randomizedBundles.Clear();
 			Bundle.InitializeAllBundleTypes(); // Must be done so that reloading the game is consistent
 
-			if (Globals.Config.RandomizeBundles) { Globals.SpoilerWrite("==== BUNDLES ===="); }
+			if (Globals.Config.Bundles.Randomize) { Globals.SpoilerWrite("==== BUNDLES ===="); }
 			foreach (RoomInformation room in Rooms)
 			{
-				if (Globals.Config.RandomizeBundles) { Globals.SpoilerWrite(room.Room.ToString()); }
+				if (Globals.Config.Bundles.Randomize) { Globals.SpoilerWrite(room.Room.ToString()); }
 				CreateBundlesForRoom(room);
 			}
 
@@ -96,7 +96,7 @@ namespace Randomizer
 		/// <param name="index">The bundle index</param>
 		private static void WriteToSpoilerLog(Bundle bundle, int index)
 		{
-			if (!Globals.Config.RandomizeBundles) { return; }
+			if (!Globals.Config.Bundles.Randomize) { return; }
 
 			Globals.SpoilerWrite($"Bundle index: {index} - {bundle.Name} Bundle");
 
