@@ -172,6 +172,7 @@
     <Compile Include="SpoilerLogger.cs" />
     <Compile Include="StringsAdjustments.cs" />
     <Compile Include="WeaponRandomizer.cs" />
+    <Compile Include="WildSeedAdjustments.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Characters\Abigail.xnb">
