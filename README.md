@@ -94,6 +94,7 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
         * Mizu - permission is assumed from this page: https://community.playstarbound.com/threads/mizus-sprites.136549/
         * Bonster - permission is assumed based on the bottom of the mod page for Bonster's Crops: https://www.nexusmods.com/stardewvalley/mods/3438
         * Marrorow
+  * Wild seeds will now grow one of the randomized foragables of the season
   * Crop text fixes
     * The Queen of Sauce show now uses the randomized crop/fish names
     * The text in the Secret Woods that tells you to bring a Sweet Gem Berry will now specifically tell you what crop you need to bring, since there's now no way to tell otherwise
