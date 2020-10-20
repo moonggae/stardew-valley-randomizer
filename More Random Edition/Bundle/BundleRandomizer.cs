@@ -61,6 +61,7 @@ namespace Randomizer
 			foreach (RoomInformation room in Rooms)
 			{
 				if (Globals.Config.Bundles.Randomize) { Globals.SpoilerWrite(room.Room.ToString()); }
+				room.Bundles.Clear(); // Clear the bundles in case this was ran multiple times in a session
 				CreateBundlesForRoom(room);
 			}
 
