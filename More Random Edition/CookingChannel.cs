@@ -37,28 +37,6 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// The data that we need to replace in each show
-		/// </summary>
-		private static readonly List<ShowData> CookingChannelData = new List<ShowData>
-		{
-			new ShowData(2, 0, (int)ObjectIndexes.RedCabbage),
-			new ShowData(3, (int)ObjectIndexes.RadishSalad, (int)ObjectIndexes.Radish),
-			new ShowData(7, 0, (int)ObjectIndexes.Rice),
-			new ShowData(10, (int)ObjectIndexes.TroutSoup, (int)ObjectIndexes.RainbowTrout),
-			new ShowData(11, (int)ObjectIndexes.GlazedYams, (int)ObjectIndexes.Yam),
-			new ShowData(12, (int)ObjectIndexes.ArtichokeDip, (int)ObjectIndexes.Artichoke),
-			new ShowData(15, (int)ObjectIndexes.PumpkinPie, (int)ObjectIndexes.Pumpkin),
-			new ShowData(16, (int)ObjectIndexes.CranberryCandy, (int)ObjectIndexes.Cranberries),
-			new ShowData(17, 0, (int)ObjectIndexes.Tomato),
-			new ShowData(18, 0, (int)ObjectIndexes.Potato),
-			new ShowData(21, (int)ObjectIndexes.CarpSurprise, (int)ObjectIndexes.Carp),
-			new ShowData(23, 0, (int)ObjectIndexes.Melon),
-			new ShowData(24, (int)ObjectIndexes.FruitSalad),
-			new ShowData(29, (int)ObjectIndexes.PoppyseedMuffin, (int)ObjectIndexes.Poppy, ((CropItem)ItemList.Items[(int)ObjectIndexes.Poppy]).MatchingSeedItem.Id),
-			new ShowData(31, 0, (int)ObjectIndexes.Tomato),
-		};
-
-		/// <summary>
 		/// Gets the text edits for the cooking channel so it makes sense with the randomized items
 		/// </summary>
 		public static Dictionary<string, string> GetTextEdits()
@@ -66,12 +44,38 @@ namespace Randomizer
 			Dictionary<string, string> replacements = new Dictionary<string, string>();
 			if (!Globals.Config.Crops.Randomize && !Globals.Config.Fish.Randomize) { return replacements; }
 
-			foreach (ShowData showData in CookingChannelData)
+			foreach (ShowData showData in GetCookingChannelData())
 			{
 				AddReplacement(replacements, showData.ID, showData.GetTokenObject());
 			}
 
 			return replacements;
+		}
+
+		/// <summary>
+		/// Gets the cooking channel data
+		/// </summary>
+		/// <returns>A list of the ShowData</returns>
+		private static List<ShowData> GetCookingChannelData()
+		{
+			return new List<ShowData>
+			{
+				new ShowData(2, 0, (int)ObjectIndexes.RedCabbage),
+				new ShowData(3, (int)ObjectIndexes.RadishSalad, (int)ObjectIndexes.Radish),
+				new ShowData(7, 0, (int)ObjectIndexes.Rice),
+				new ShowData(10, (int)ObjectIndexes.TroutSoup, (int)ObjectIndexes.RainbowTrout),
+				new ShowData(11, (int)ObjectIndexes.GlazedYams, (int)ObjectIndexes.Yam),
+				new ShowData(12, (int)ObjectIndexes.ArtichokeDip, (int)ObjectIndexes.Artichoke),
+				new ShowData(15, (int)ObjectIndexes.PumpkinPie, (int)ObjectIndexes.Pumpkin),
+				new ShowData(16, (int)ObjectIndexes.CranberryCandy, (int)ObjectIndexes.Cranberries),
+				new ShowData(17, 0, (int)ObjectIndexes.Tomato),
+				new ShowData(18, 0, (int)ObjectIndexes.Potato),
+				new ShowData(21, (int)ObjectIndexes.CarpSurprise, (int)ObjectIndexes.Carp),
+				new ShowData(23, 0, (int)ObjectIndexes.Melon),
+				new ShowData(24, (int)ObjectIndexes.FruitSalad),
+				new ShowData(29, (int)ObjectIndexes.PoppyseedMuffin, (int)ObjectIndexes.Poppy, ((CropItem)ItemList.Items[(int)ObjectIndexes.Poppy]).MatchingSeedItem.Id),
+				new ShowData(31, 0, (int)ObjectIndexes.Tomato),
+			};
 		}
 
 		/// <summary>
