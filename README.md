@@ -106,6 +106,7 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
   * The new bundles now have matching images
   * Made the Rare Foods bundle based off of the crop seeds, rather than the crop
     * This means that Ancient Seeds, the old Starfruit Seeds (from the desert shop), and the Rare Seeds (from the traveling cart) will be requried
+  * The fish in the Night market submarine should no longer appear for season-specific bundles that are not winter
   * As a QoL feature, added the option (it's on by default) for a tooltip over the possible things to put into a bundle - this will make it easier to know where/when to get the fish
 * Boots now have custom images and descriptions (descriptions are enabled in English only)
 * Added the Stable to the list of randomized buildings, as it was overlooked before
