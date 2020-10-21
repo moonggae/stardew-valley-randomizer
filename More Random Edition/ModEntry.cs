@@ -281,11 +281,6 @@ namespace Randomizer
 			string currentSong = Game1.currentSong?.Name;
 			if (this._modAssetEditor.MusicReplacements.TryGetValue(currentSong?.ToLower() ?? "", out string value) && _lastCurrentSong != currentSong)
 			{
-				if (value == "coin") //TODO: get rid of this in the actual release
-				{
-					value = this._modAssetEditor.MusicReplacements["coin"];
-				}
-
 				_lastCurrentSong = value;
 				Game1.changeMusicTrack(value);
 

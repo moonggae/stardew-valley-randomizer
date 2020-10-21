@@ -26,7 +26,6 @@ namespace Randomizer
 				"Cloth",
 				"CloudCountry",
 				"clubloop",
-				"coin",
 				"communityCenter",
 				"cowboy_boss",
 				"cowboy_outlawsong",

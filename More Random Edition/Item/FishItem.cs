@@ -21,9 +21,9 @@ namespace Randomizer
 		public bool IsRainFish { get { return Weathers.Contains(Weather.Rainy); } }
 		public bool IsSunFish { get { return Weathers.Contains(Weather.Sunny); } }
 
-		public bool IsSpringFish { get { return AvailableSeasons.Contains(Seasons.Spring); } }
-		public bool IsSummerFish { get { return AvailableSeasons.Contains(Seasons.Summer); } }
-		public bool IsFallFish { get { return AvailableSeasons.Contains(Seasons.Fall); } }
+		public bool IsSpringFish { get { return AvailableSeasons.Contains(Seasons.Spring) && !IsSubmarineOnlyFish; } }
+		public bool IsSummerFish { get { return AvailableSeasons.Contains(Seasons.Summer) && !IsSubmarineOnlyFish; } }
+		public bool IsFallFish { get { return AvailableSeasons.Contains(Seasons.Fall) && !IsSubmarineOnlyFish; } }
 		public bool IsWinterFish { get { return AvailableSeasons.Contains(Seasons.Winter); } }
 
 		public int DartChance { get; set; }
@@ -37,6 +37,31 @@ namespace Randomizer
 		public int MinFishingLevel { get; set; }
 
 		/// <summary>
+		/// Returns whether this fish is a mines fish
+		/// These are the three hard-coded mines-specific fish
+		/// </summary>
+		public bool IsMinesFish
+		{
+			get
+			{
+				return new int[] { (int)ObjectIndexes.Stonefish, (int)ObjectIndexes.IcePip, (int)ObjectIndexes.LavaEel }.Contains(Id);
+			}
+		}
+
+		/// <summary>
+		/// Returns whether this fish is a submarine only fish
+		/// This will let us know whether it's actually a winter only fish as well
+		/// Used with retrieving season-specific fish and descriptions
+		/// </summary>
+		public bool IsSubmarineOnlyFish
+		{
+			get
+			{
+				return AvailableLocations.Count == 1 && AvailableLocations.Contains(Locations.NightMarket);
+			}
+		}
+
+		/// <summary>
 		/// The description - used in the tooltip
 		/// </summary>
 		public string Description
@@ -47,6 +72,11 @@ namespace Randomizer
 				string seasonsString = GetStringForSeasons();
 				string locationString = GetStringForLocations();
 				string weatherString = GetStringForWeather();
+
+				if (IsSubmarineOnlyFish)
+				{
+					return $"{seasonsString} {locationString}";
+				}
 				return $"{timesString} {seasonsString} {locationString} {weatherString}";
 			}
 		}
@@ -147,7 +177,13 @@ namespace Randomizer
 		private string GetStringForSeasons()
 		{
 			if (AvailableSeasons.Count == 0) { return ""; }
-			if (AvailableSeasons.Count == 4)
+
+			if (IsSubmarineOnlyFish)
+			{
+				string winterSeason = Globals.GetTranslation($"seasons-winter");
+				return Globals.GetTranslation("fish-tooltip-seasons", new { seasons = winterSeason });
+			}
+			else if (AvailableSeasons.Count == 4)
 			{
 				return Globals.GetTranslation("fish-tooltip-seasons-all");
 			}
@@ -156,8 +192,8 @@ namespace Randomizer
 				.Select(x => x.ToString().ToLower())
 				.Select(x => Globals.GetTranslation($"seasons-{x}"))
 				.ToArray();
-			string seasons = string.Join(", ", seasonStrings);
 
+			string seasons = string.Join(", ", seasonStrings);
 			return Globals.GetTranslation("fish-tooltip-seasons", new { seasons });
 		}
 
@@ -309,7 +345,7 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Gets all the fish that can be caught at a given location and season
+		/// Gets all the fish that can be caught at a given location
 		/// </summary>
 		/// <param name="location">The location</param>
 		/// <param name="includeLegendaries">Include the legendary fish</param>

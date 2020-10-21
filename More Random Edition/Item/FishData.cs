@@ -236,7 +236,7 @@ namespace Randomizer
 						fish.AvailableSeasons.Add(Seasons.Winter);
 						break;
 					default:
-						Globals.ConsoleError($"Tries to parse {seasonString} into a season when parsing fish with input: {input}");
+						Globals.ConsoleError($"Tried to parse {seasonString} into a season when parsing fish with input: {input}");
 						return;
 				}
 			}

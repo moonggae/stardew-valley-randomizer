@@ -37,7 +37,7 @@ namespace Randomizer
 				fish.BehaviorType = newBehaviorType;
 				fish.OverrideName = newName;
 
-				if (new int[] { 158, 161, 162 }.Contains(fish.Id)) // The three hard-coded mines fish
+				if (fish.IsMinesFish)
 				{
 					if (!fish.AvailableLocations.Contains(Locations.UndergroundMine))
 					{
@@ -47,7 +47,7 @@ namespace Randomizer
 
 				if (Globals.Config.Fish.Randomize)
 				{
-					if (fish.AvailableLocations.Contains(Locations.NightMarket))
+					if (fish.IsSubmarineOnlyFish)
 					{
 						fish.DifficultyToObtain = ObtainingDifficulties.RareItem;
 					}
