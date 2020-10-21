@@ -49,7 +49,7 @@ namespace Randomizer
 
 			RegrowingImages = Directory.GetFiles($"{ImageDirectory}/{RegrowingDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
 			TrellisImages = Directory.GetFiles($"{ImageDirectory}/{TrellisDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
-			FlowerImages = Directory.GetFiles($"{ImageDirectory}/{FlowersDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
+			FlowerImages = Directory.GetFiles($"{ImageDirectory}/{FlowersDirectory}").Where(x => x.EndsWith(".png") && !x.EndsWith("-NoHue.png")).OrderBy(x => x).ToList();
 
 			ValidateCropImages();
 		}
@@ -102,6 +102,11 @@ namespace Randomizer
 			if (item.IsFlower)
 			{
 				fileName = Globals.RNGGetAndRemoveRandomValueFromList(FlowerImages);
+
+				if (!seedItem.CropGrowthInfo.TintColorInfo.HasTint)
+				{
+					fileName = $"{fileName.Substring(0, fileName.Length - 4)}-NoHue.png";
+				}
 			}
 
 			else if (growthInfo.IsTrellisCrop)
@@ -136,7 +141,7 @@ namespace Randomizer
 			}
 
 
-			CropIdsToImageNames[cropId] = Path.GetFileName(fileName).Replace("-4.png", ".png").Replace("-5.png", ".png");
+			CropIdsToImageNames[cropId] = Path.GetFileName(fileName).Replace("-4.png", ".png").Replace("-5.png", ".png").Replace("-NoHue.png", ".png");
 			return fileName;
 		}
 
@@ -254,6 +259,21 @@ namespace Randomizer
 				if (!flowerImageNames.Contains(flowerImageName))
 				{
 					Globals.ConsoleWarn($"{flowerImageName}.png not found at: {flowerImageDirectory}");
+				}
+			}
+
+			// Check that each flower image contains the no-hue version
+			List<string> noHueFlowerImages = Directory.GetFiles($"{ImageDirectory}/{FlowersDirectory}")
+				.Where(x => x.EndsWith("-NoHue.png"))
+				.Select(x => Path.GetFileNameWithoutExtension(x))
+				.OrderBy(x => x)
+				.ToList();
+
+			foreach (string flowerImageName in flowerCropGrowthImages)
+			{
+				if (!noHueFlowerImages.Contains($"{flowerImageName}-NoHue"))
+				{
+					Globals.ConsoleWarn($"{flowerImageName}-NoHue.png not found at: {ImageDirectory}/{FlowersDirectory}");
 				}
 			}
 		}
