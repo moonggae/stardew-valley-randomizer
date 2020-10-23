@@ -10,6 +10,7 @@
 	"fish-tooltip-seasons": "Talált: {{seasons}}",
 	"fish-tooltip-locations": "Élőhely: {{locations}}.",
 	"fish-tooltip-weather": "Csak akkor találja meg, ha {{weather}}.",
+	"fish-tooltip-legendary": "Ez a hal legendás!",
 
 	"fish-desert-location": "Sivatag",
 	"fish-forest-location": "Erdő",

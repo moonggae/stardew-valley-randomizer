@@ -10,6 +10,7 @@
 	"fish-tooltip-seasons": "季節: {{seasons}}。",
 	"fish-tooltip-locations": "生息地: {{locations}}。",
 	"fish-tooltip-weather": "{{weather}}の場合にのみ見つかります。",
+	"fish-tooltip-legendary": "この魚は伝説的です！",
 
 	"fish-desert-location": "砂漠",
 	"fish-forest-location": "森林",

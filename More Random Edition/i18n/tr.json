@@ -10,6 +10,7 @@
 	"fish-tooltip-seasons": "Sırasında bulundu: {{seasons}}.",
 	"fish-tooltip-locations": "Yetişme ortamı: {{locations}}.",
 	"fish-tooltip-weather": "Yalnızca {{weather}} olduğunda bulundu.",
+	"fish-tooltip-legendary": "Bu balık efsanevi!",
 
 	"fish-desert-location": "Çöl",
 	"fish-forest-location": "Orman",

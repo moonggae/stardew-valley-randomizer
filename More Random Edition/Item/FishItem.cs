@@ -49,6 +49,33 @@ namespace Randomizer
 		}
 
 		/// <summary>
+		/// Returns whether this is one of the 5 legendary fish
+		/// </summary>
+		public bool IsLegendaryFish
+		{
+			get
+			{
+				return IsLegendary(Id);
+			}
+		}
+
+		/// <summary>
+		/// Returns whether the given ID maps to one of the legendary fish
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public static bool IsLegendary(int id)
+		{
+			return new int[] {
+				(int)ObjectIndexes.Crimsonfish,
+				(int)ObjectIndexes.Angler,
+				(int)ObjectIndexes.Legend,
+				(int)ObjectIndexes.Glacierfish,
+				(int)ObjectIndexes.MutantCarp
+			}.Contains(id);
+		}
+
+		/// <summary>
 		/// Returns whether this fish is a submarine only fish
 		/// This will let us know whether it's actually a winter only fish as well
 		/// Used with retrieving season-specific fish and descriptions
@@ -68,16 +95,20 @@ namespace Randomizer
 		{
 			get
 			{
-				string timesString = GetTimesString();
 				string seasonsString = GetStringForSeasons();
 				string locationString = GetStringForLocations();
-				string weatherString = GetStringForWeather();
 
 				if (IsSubmarineOnlyFish)
 				{
 					return $"{seasonsString} {locationString}";
 				}
-				return $"{timesString} {seasonsString} {locationString} {weatherString}";
+
+				string timesString = GetTimesString();
+				string weatherString = GetStringForWeather();
+				string initialDescription = $"{timesString} {seasonsString} {locationString} {weatherString}";
+
+				string legendaryString = GetStringForLegendary();
+				return $"{initialDescription.Trim()} {legendaryString}";
 			}
 		}
 
@@ -224,6 +255,20 @@ namespace Randomizer
 		}
 
 		/// <summary>
+		/// Gets the string to use for when the fish is a legendary fish
+		/// </summary>
+		/// <returns />
+		public string GetStringForLegendary()
+		{
+			if (!IsLegendaryFish)
+			{
+				return "";
+			}
+
+			return Globals.GetTranslation("fish-tooltip-legendary");
+		}
+
+		/// <summary>
 		/// Returns the ToString representation to be used for the Fish asset
 		/// </summary>
 		/// <returns />
@@ -269,7 +314,7 @@ namespace Randomizer
 				x.IsFish &&
 				x.Id != (int)ObjectIndexes.AnyFish &&
 				x.DifficultyToObtain != ObtainingDifficulties.Impossible &&
-				(includeLegendaries || (!includeLegendaries && x.DifficultyToObtain < ObtainingDifficulties.EndgameItem))
+				(includeLegendaries || (!includeLegendaries && !IsLegendary(x.Id)))
 			).ToList();
 		}
 
@@ -378,10 +423,7 @@ namespace Randomizer
 		/// <returns />
 		public static List<Item> GetLegendaries()
 		{
-			return ItemList.Items.Values.Where(x =>
-				x.IsFish &&
-				x.DifficultyToObtain == ObtainingDifficulties.EndgameItem
-			).ToList();
+			return ItemList.Items.Values.Where(x => x.IsFish && IsLegendary(x.Id)).ToList();
 		}
 	}
 }

@@ -152,7 +152,7 @@ namespace Randomizer
 		{
 			if (!Globals.Config.Fish.Randomize) { return; }
 
-			List<FishItem> allRandomizedFish = FishItem.GetListAsFishItem();
+			List<FishItem> allRandomizedFish = FishItem.GetListAsFishItem(true);
 
 			Globals.SpoilerWrite("==== FISH ====");
 			foreach (FishItem fish in allRandomizedFish)

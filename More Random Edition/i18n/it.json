@@ -10,6 +10,7 @@
 	"fish-tooltip-seasons": "Trovato durante: {{seasons}}.",
 	"fish-tooltip-locations": "Habitat: {{locations}}.",
 	"fish-tooltip-weather": "Trovato solo quando è {{weather}}.",
+	"fish-tooltip-legendary": "Questo pesce è leggendario!",
 
 	"fish-desert-location": "Deserto",
 	"fish-forest-location": "Foresta",

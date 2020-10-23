@@ -10,6 +10,7 @@
 	"fish-tooltip-seasons": "会出现的季节: {{seasons}}。",
 	"fish-tooltip-locations": "栖息地: {{locations}}。",
 	"fish-tooltip-weather": "在{{weather}}才会出现。",
+	"fish-tooltip-legendary": "这是传说中的鱼！",
 
 	"fish-desert-location": "沙漠",
 	"fish-forest-location": "森林",

@@ -10,6 +10,7 @@
 	"fish-tooltip-seasons": "Найден во время: {{seasons}}.",
 	"fish-tooltip-locations": "Место обитания: {{locations}}.",
 	"fish-tooltip-weather": "Найден только когда {{weather}}.",
+	"fish-tooltip-legendary": "Эта рыба легендарная!",
 
 	"fish-desert-location": "пустынный",
 	"fish-forest-location": "лес",

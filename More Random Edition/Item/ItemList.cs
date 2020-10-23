@@ -438,7 +438,7 @@ namespace Randomizer
 				{ (int)ObjectIndexes.Hardwood, new ResourceItem((int)ObjectIndexes.Hardwood, 1, new Range(1, 15)) { DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements } },
 				{ (int)ObjectIndexes.Stone, new ResourceItem((int)ObjectIndexes.Stone) },
 				{ (int)ObjectIndexes.Fiber, new ResourceItem((int)ObjectIndexes.Fiber, 3, new Range(1, 5)) },
-				{ (int)ObjectIndexes.Clay, new ResourceItem((int)ObjectIndexes.Clay, 1, new Range(1, 15)) },
+				{ (int)ObjectIndexes.Clay, new ResourceItem((int)ObjectIndexes.Clay, 1, new Range(1, 5)) },
 
 				// Items you get as a byproduct of collection resources
 				{ (int)ObjectIndexes.Sap, new Item((int)ObjectIndexes.Sap, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 15) } },

@@ -1,6 +1,6 @@
 {
 	"title-graphic": "TitleButtons.pt-BR.png",
-	"junimo-note-graphic": "JunimoNote.pt.BR.png",
+	"junimo-note-graphic": "JunimoNote.pt-BR.png",
 	
 	"time-format": "HH:mm",
 	"fish-tooltip-all-day": "Disponível o dia todo.",
@@ -10,6 +10,7 @@
 	"fish-tooltip-seasons": "Encontrado durante: {{seasons}}.",
 	"fish-tooltip-locations": "Habitat: {{locations}}.",
 	"fish-tooltip-weather": "Encontrado apenas quando está {{weather}}.",
+	"fish-tooltip-legendary": "Este peixe é lendário!",
 
 	"fish-desert-location": "Deserto",
 	"fish-forest-location": "Floresta",
