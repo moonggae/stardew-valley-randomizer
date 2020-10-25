@@ -83,6 +83,7 @@ namespace Randomizer
 						new RequiredItem(starFruitSeed.CropGrowthInfo.CropId),
 						new RequiredItem(gemBerrySeed.CropGrowthInfo.CropId),
 					};
+					MinimumRequiredItems = 2;
 					Color = BundleColors.Blue;
 					break;
 				case BundleTypes.PantryDesert:
