@@ -401,7 +401,7 @@ namespace Randomizer
 				{ (int)ObjectIndexes.BarbedHook, new CraftableItem((int)ObjectIndexes.BarbedHook, "/Home/691/false/", CraftableCategories.Moderate, "Fishing", 8) },
 				{ (int)ObjectIndexes.OilOfGarlic, new CraftableItem((int)ObjectIndexes.OilOfGarlic, "/Home/772 1/false/", CraftableCategories.Difficult, "Fishing", 6) },
 				{ (int)ObjectIndexes.LifeElixir, new CraftableItem((int)ObjectIndexes.LifeElixir, "/Home/773 1/false/", CraftableCategories.DifficultAndNeedMany, "Fishing", 2) },
-				{ (int)ObjectIndexes.CrabPot, new CraftableItem((int)ObjectIndexes.CrabPot, "/Home/710/false/", CraftableCategories.Moderate, "Fishing", 9) },
+				{ (int)ObjectIndexes.CrabPot, new CraftableItem((int)ObjectIndexes.CrabPot, "/Home/710/false/", CraftableCategories.Moderate, "Fishing", 3, 1) }, // Limit the level you can learn this to prevent it from being learned twice
 				{ (int)ObjectIndexes.IridiumBand, new CraftableItem((int)ObjectIndexes.IridiumBand, "/Home/527/false/", CraftableCategories.Endgame, "Combat", 9) { IsRing = true } },
 				{ (int)ObjectIndexes.WeddingRing, new CraftableItem((int)ObjectIndexes.WeddingRing, "/Home/801/false/null", CraftableCategories.Endgame) { IsRing = true } },
 				{ (int)ObjectIndexes.RingOfYoba, new CraftableItem((int)ObjectIndexes.RingOfYoba, "/Home/524/false/", CraftableCategories.Difficult, "Combat", 7) { OverrideName = "Ring of Yoba", IsRing = true } },

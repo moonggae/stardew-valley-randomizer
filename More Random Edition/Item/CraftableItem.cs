@@ -8,6 +8,7 @@ namespace Randomizer
 		public string Path { get; set; }
 		public string SkillString { get; set; }
 		public int BaseLevelLearnedAt { get; set; }
+		public int OverrideBaseLevelLearnedAt { get; set; }
 		public bool IsLearnedOnLevelup
 		{
 			get { return SkillString.Length > 0; }
@@ -22,7 +23,7 @@ namespace Randomizer
 		/// <param name="path">The hard-coded path for this craftable item</param>
 		/// <param name="skillString">The name of the skill you need to level up to learn the recipe</param>
 		/// <param name="baseLevelLearnedAt">The base level you can learn this recipe at</param>
-		public CraftableItem(int id, string path, CraftableCategories category, string skillString = "", int baseLevelLearnedAt = 0) : base(id)
+		public CraftableItem(int id, string path, CraftableCategories category, string skillString = "", int baseLevelLearnedAt = 0, int overrideBaseLevelLearnedAt = -1) : base(id)
 		{
 			IsCraftable = true;
 			Path = path;
@@ -30,6 +31,11 @@ namespace Randomizer
 			SkillString = skillString;
 			BaseLevelLearnedAt = baseLevelLearnedAt;
 			DifficultyToObtain = ObtainingDifficulties.NonCraftingItem; // By default, craftable items won't be materials for other craftable items
+
+			if (overrideBaseLevelLearnedAt == -1)
+			{
+				OverrideBaseLevelLearnedAt = baseLevelLearnedAt;
+			}
 		}
 
 		/// <summary>
@@ -41,16 +47,16 @@ namespace Randomizer
 		/// </returns>
 		public int GetLevelLearnedAt()
 		{
-			if (!Globals.Config.CraftingRecipies.Randomize || !Globals.Config.CraftingRecipies.RandomizeLevels) { return BaseLevelLearnedAt; }
-
-			Range levelRange = new Range(BaseLevelLearnedAt - 3, BaseLevelLearnedAt + 3);
+			Range levelRange = new Range(OverrideBaseLevelLearnedAt - 3, OverrideBaseLevelLearnedAt + 3);
 			int generatedLevel = levelRange.GetRandomValue();
 			if (generatedLevel > 8) { return 9; }
 			if (generatedLevel < 1) { return 1; }
 			if (generatedLevel == 5)
 			{
-				return Globals.RNGGetNextBoolean() ? 4 : 6;
+				generatedLevel = Globals.RNGGetNextBoolean() ? 4 : 6;
 			}
+
+			if (!Globals.Config.CraftingRecipies.Randomize || !Globals.Config.CraftingRecipies.RandomizeLevels) { return BaseLevelLearnedAt; }
 
 			return generatedLevel;
 		}
