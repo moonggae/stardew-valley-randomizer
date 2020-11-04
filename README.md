@@ -99,6 +99,7 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
     * The Queen of Sauce show now uses the randomized crop/fish names
     * The text in the Secret Woods that tells you to bring a Sweet Gem Berry will now specifically tell you what crop you need to bring, since there's now no way to tell otherwise
     * The Mr Qi quest now mentions which 10 crops to put in the Mayor's fridge for the initial textbox, and not just the quest description
+  * Wild seed recipies now require 4 random foragables from the appropriate season
 * Fish Changes
   * When randomizing fish, there's the option of using custom fish images
     * The majority of the new fish images on the FishRework branch are mostly directly pulled form the New New Fish mod: https://www.nexusmods.com/stardewvalley/mods/3578
@@ -114,10 +115,14 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
 * Balances changes
   * Frozen tears were marked as easy to get - this has been rebalanced, since it does take time to get there
   * Mead was marked as easy to get - this has been rebalanced since this could potentialaly take a long time to obtain
-  * Clay was potentially required for crafting recipies - this was rebalanced to require about 1/3 of the original requirements, as it was too high before
+  * Clay
+    * Marked it as harder to get, since it's annoying to get it in bulk
+    * Less is now required if chosen for a recipe
+  * Rebalanced all animal products to better reflect how long it takes to get them - should result in more reasonable crafting recipes
 * Boots now have custom images and descriptions (descriptions are enabled in English only)
 * Added the Stable to the list of randomized buildings, as it was overlooked before
 * Added Desert Totems to the item pool, and included them in the appropriate bundles
+* Fixed an issue where the crop pot recipe is learned twice
 * Reworked the config file to be more readable/user friendly
 * Reworked logging to log at appropriate levels (Trace/Warn/Error)
 * Removed a track called "coin" form the random music list - this seems to just be a sound effect used for picking up an item, and not a real song (so it was really annoying to listen to on loop!)
