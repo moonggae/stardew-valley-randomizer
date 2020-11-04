@@ -93,9 +93,9 @@ namespace Randomizer
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Blue;
 					break;
-				case BundleTypes.BulletinElliot:
-					Name = Globals.GetTranslation("Elliot-name");
-					potentialItems = RequiredItem.CreateList(Elliot.Loves);
+				case BundleTypes.BulletinElliott:
+					Name = Globals.GetTranslation("Elliott-name");
+					potentialItems = RequiredItem.CreateList(Elliott.Loves);
 					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Red;
