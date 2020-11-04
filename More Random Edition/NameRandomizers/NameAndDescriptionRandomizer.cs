@@ -377,7 +377,7 @@ namespace Randomizer
 				"Very [adjective], but not [adjective2].",
 				"Like [noun], not wholly unpleasant.",
 				"First cultivated by the [adjective] Dr. [name].",
-				"Would be great with a slice of [noun].",
+				"Would be great with slices of [noun].",
 				"Part of a [adjective] breakfast!",
 				"Your Aunt [name]'s favorite as a child.",
 				"Back in 1945, these were called [noun].",
@@ -391,12 +391,12 @@ namespace Randomizer
 				"A popular frosting for [name] Cake.",
 				"Adds a [adjective] flavor to dishes.",
 				"Closely related to [noun].",
-				"Makes a great side to an entree of [noun].",
+				"Makes a great side to entrees of [noun].",
 				"Popular with [name], Ruler of Parsnandia.",
 				"It's [adjective] with a hint of sweetness.",
 				"The popular alcohol, [name]'s [noun], is fermented from this crop.",
 				"Its [adjective] flavor may make some go blind when tasted.",
-				"Can be used medicinally to cure [adjective][noun] disease.",
+				"Can be used medicinally to cure [adjective] [noun] disease.",
 				"It's [noun]-licking good!",
 				"Often used in [adjective] desserts.",
 				"An extremely [adjective] crop that loves to be watered.",
@@ -415,7 +415,7 @@ namespace Randomizer
 				"Beloved by the masses.",
 				"Always served at the [name] Fan Club's annual conventions.",
 				"It's a mystery to everyone.",
-				"Hated by [noun] lovers everywhere.",
+				"Hated by lovers of [noun] everywhere.",
 				"Some people find it too [adjective] for them.",
 				"Tastes [adjective] when steeped into tea.",
 				"Karate master [name] Lee first cultivated this crop.",
@@ -744,10 +744,10 @@ namespace Randomizer
 				"The [noun] are very [adjective].",
 				"They're [adjective] for extra [noun].",
 				"Reinforced with [adjective] [noun].",
-				"The [adjective] lining keeps your [nouns] so [adjective].",
-				"Designed with extreme [nouns] in mind.",
+				"The [adjective] lining keeps your [noun] so [adjective2].",
+				"Designed with extreme [noun] in mind.",
 				"Made from [adjective] black [noun].",
-				"It's said these can withstand the [adjectives] [noun].",
+				"It's said these can withstand the [adjective] [noun].",
 				"The [adjective] [noun] permeate the fabric.",
 				"The [adjective] [noun] give them a [adjective2] sheen.",
 				"It's the height of country [noun].",
@@ -1090,7 +1090,7 @@ namespace Randomizer
 			string newDescription = "default description";
 			for (int i = 0; i < numberOfDescriptions; i++)
 			{
-				if (descriptionBases.Count > 0 && adjectives.Count > 1 && nouns.Count > 0 && names.Count > 0)
+				if (descriptionBases.Count > 0 && adjectives.Count > 1 && nouns.Count > 1 && names.Count > 0)
 				{
 					newDescription = Globals.RNGGetAndRemoveRandomValueFromList(descriptionBases);
 					newDescription = newDescription.Replace("[noun]", Globals.RNGGetAndRemoveRandomValueFromList(nouns));
