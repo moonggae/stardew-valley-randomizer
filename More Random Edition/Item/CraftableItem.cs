@@ -124,6 +124,9 @@ namespace Randomizer
 				case CraftableCategories.Endgame:
 					craftingString = GetStringForEndgame();
 					break;
+				case CraftableCategories.Foragables:
+					craftingString = GetStringForForagables();
+					break;
 				default:
 					Globals.ConsoleError($"Invalid category when generating recipe for {Name}!");
 					craftingString = "18 9"; // just a random value for now
@@ -441,6 +444,56 @@ namespace Randomizer
 			}
 
 			return $"{item1.GetStringForCrafting()} {item2.GetStringForCrafting()} {item3.GetStringForCrafting()}";
+		}
+
+		/// <summary>
+		/// Gets the string for the Foragable type
+		/// This will be 4 of any of the foragables of the appropriate season
+		/// </summary>
+		/// <returns />
+		private string GetStringForForagables()
+		{
+			Seasons season = Seasons.Spring;
+			switch (Id)
+			{
+				case (int)ObjectIndexes.SpringSeeds:
+					season = Seasons.Spring;
+					break;
+				case (int)ObjectIndexes.SummerSeeds:
+					season = Seasons.Summer;
+					break;
+				case (int)ObjectIndexes.FallSeeds:
+					season = Seasons.Fall;
+					break;
+				case (int)ObjectIndexes.WinterSeeds:
+					season = Seasons.Winter;
+					break;
+				default:
+					Globals.ConsoleError("Generated string for Foragable type for a non-wild seed! Using 1 wood instead...");
+					return $"{(int)ObjectIndexes.Wood} 1";
+			}
+
+			Dictionary<int, int> foragablesToUse = new Dictionary<int, int>();
+			for (int i = 0; i < 4; i++)
+			{
+				int foragableId = Globals.RNGGetRandomValueFromList(ItemList.GetForagables(season)).Id;
+				if (foragablesToUse.ContainsKey(foragableId))
+				{
+					foragablesToUse[foragableId]++;
+				}
+				else
+				{
+					foragablesToUse.Add(foragableId, 1);
+				}
+			}
+
+			string craftingString = "";
+			foreach (int id in foragablesToUse.Keys)
+			{
+				craftingString += $"{id} {foragablesToUse[id]} ";
+			}
+
+			return craftingString.Trim();
 		}
 	}
 }
