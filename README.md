@@ -73,10 +73,18 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
   * New sprites for fish
 * Palette randomization (if possible)
   * Randomly shift the color of the in-game graphics towards a different hue
+* Enemy changes
+  * New enemy sprites/colors
+  * Change where enemies can appear
+  * More varied drop randomization (they currently have all the same base drops)
 * NPC schedule shuffle and/or randomization
 * Cooking recipe randomization
 * Tea trees and the new items associated with it need to be randomized
 * Stables need to be randomized still
+* Randomize store stock
+  * The desert shop, specifically, is a good candidate for random stuff
+* Randomize tool upgrade cost
+* Randomize house upgrade cost
 * Randomize tailoring recipes
 * Add settings for more things, such as stats that can be modified on weapons, possible random names, etc.
   
