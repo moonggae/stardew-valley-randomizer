@@ -96,6 +96,19 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
   * Everything else has been internationalized
 
 ## Pending Changes on the 0.4.0 branch
+* 1.5 Compatibility
+  * The mod has been updated to work with the 1.5 update - it now requires at least SMAPI 3.8.3 to be installed
+  * In terms of the new items added, the following is randomized:
+    * New weapons and boots
+    * New enemy stats, including the new random drop
+  * The following is NOT randomized on the new island (these will come in a future update):
+    * Fish
+      * The new fish will be there as expected
+      * The rest of the fish will SEEM random, but they'll actually match their original IDs assigned
+      * The tooltip will NOT reflect whether the specific fish will be found on the island at this time
+    * The new crops (including the fruit trees)
+    * The random artifact drop
+    * Any foragables
 * Crop changes
   * When randomizing crops, there's the option of using custom crop images. This will link together the crop as it's growing, the seed packet, and the crop itself into a coherent set of images.
       * Credits for the crop sprites not made by us (some images were modified from the originals):
