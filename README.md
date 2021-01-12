@@ -101,6 +101,7 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
   * In terms of the new items added, the following is randomized:
     * New weapons and boots
     * New enemy stats, including the new random drop
+    * 3 of the new songs - if anyone knows how to get the song IDs of the rest of them, that would be helpful!
   * The following is NOT randomized on the new island (these will come in a future update):
     * Fish
       * The new fish will be there as expected
