@@ -195,6 +195,9 @@ namespace Randomizer
 			_modAssetLoader.InvalidateCache();
 			_modAssetEditor.InvalidateCache();
 
+			// Use when debugging to ensure that the bundles get changed if they're meant to
+			//Game1.GenerateBundles(Game1.bundleType, true);
+
 			ChangeDayOneForagables();
 			FixParsnipSeedBox();
 			OverriddenSeedShop.ReplaceShopStockMethod();
