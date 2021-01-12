@@ -640,6 +640,7 @@ namespace Randomizer
 				{ (int)ObjectIndexes.VoidEssence, new MonsterItem((int)ObjectIndexes.VoidEssence, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
 				{ (int)ObjectIndexes.SolarEssence, new MonsterItem((int)ObjectIndexes.SolarEssence, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
 				{ (int)ObjectIndexes.SquidInk, new MonsterItem((int)ObjectIndexes.SquidInk, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
+				{ (int)ObjectIndexes.BoneFragment, new Item((int)ObjectIndexes.BoneFragment, ObtainingDifficulties.LargeTimeRequirements) },
 				{ (int)ObjectIndexes.GreenSlimeEgg, new Item((int)ObjectIndexes.GreenSlimeEgg, ObtainingDifficulties.LargeTimeRequirements) },
 				{ (int)ObjectIndexes.BlueSlimeEgg, new Item((int)ObjectIndexes.BlueSlimeEgg, ObtainingDifficulties.LargeTimeRequirements) },
 				{ (int)ObjectIndexes.RedSlimeEgg, new Item((int)ObjectIndexes.RedSlimeEgg, ObtainingDifficulties.EndgameItem) },
@@ -799,6 +800,15 @@ namespace Randomizer
 				{ (int)ObjectIndexes.GoldenMask, new ArtifactItem((int)ObjectIndexes.GoldenMask, ObtainingDifficulties.RareItem) },
 				{ (int)ObjectIndexes.GoldenRelic, new ArtifactItem((int)ObjectIndexes.GoldenRelic, ObtainingDifficulties.RareItem) },
 				{ (int)ObjectIndexes.AncientSeed, new ArtifactItem((int)ObjectIndexes.AncientSeed, ObtainingDifficulties.RareItem) },
+
+				// Items on Ginger Island - not randomizing yet, so marking as impossible
+				{ (int)ObjectIndexes.TaroRoot, new Item((int)ObjectIndexes.TaroRoot, ObtainingDifficulties.Impossible) },
+				{ (int)ObjectIndexes.TaroTuber, new Item((int)ObjectIndexes.TaroTuber, ObtainingDifficulties.Impossible) },
+				{ (int)ObjectIndexes.Pineapple, new Item((int)ObjectIndexes.Pineapple, ObtainingDifficulties.Impossible) },
+				{ (int)ObjectIndexes.PineappleSeeds, new Item((int)ObjectIndexes.PineappleSeeds, ObtainingDifficulties.Impossible) },
+				{ (int)ObjectIndexes.CinderShard, new Item((int)ObjectIndexes.CinderShard, ObtainingDifficulties.Impossible) },
+				{ (int)ObjectIndexes.MagmaCap, new Item((int)ObjectIndexes.MagmaCap, ObtainingDifficulties.Impossible) },
+				{ (int)ObjectIndexes.DragonTooth, new Item((int)ObjectIndexes.DragonTooth, ObtainingDifficulties.Impossible) },
 
 				// Misc - those marked as impossible you can only get a limited amount of
 				{ (int)ObjectIndexes.Battery, new Item((int)ObjectIndexes.Battery, ObtainingDifficulties.LargeTimeRequirements) },

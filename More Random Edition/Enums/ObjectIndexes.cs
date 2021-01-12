@@ -53,7 +53,14 @@
 		MidnightSquid = 798, SpookFish = 799, Blobfish = 800, WeddingRing = 801, CactusSeeds = 802, IridiumMilk = 803, SquidInk = 814,
 
 		// New from 1.5 update (add later when these will be in the pool)
-		//BoneFragment = 881,
+		TaroRoot = 830,
+		TaroTuber = 831,
+		Pineapple = 832,
+		PineappleSeeds = 833,
+		CinderShard = 848,
+		MagmaCap = 851,
+		DragonTooth = 852,
+		BoneFragment = 881,
 
 
 		// UNOFFICIAL ITEM IDS - A LOT OF THESE ARE THE "BigCraftables"
