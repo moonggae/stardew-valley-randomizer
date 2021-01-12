@@ -288,7 +288,10 @@ namespace Randomizer
 						letters.Replace(randomLetter, "");
 						potentialItems = RequiredItem.CreateList(
 							ItemList.Items.Values.Where(x =>
-								x.Name.StartsWith(randomLetter, StringComparison.InvariantCultureIgnoreCase) &&
+								(
+									(x.OverrideDisplayName == null && x.Name.StartsWith(randomLetter, StringComparison.InvariantCultureIgnoreCase)) ||
+									(x.OverrideDisplayName != null && x.OverrideDisplayName.StartsWith(randomLetter, StringComparison.InvariantCultureIgnoreCase))
+								) &&
 								x.Id > -4
 							).ToList()
 						);
