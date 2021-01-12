@@ -315,7 +315,7 @@ namespace Randomizer
 		/// <returns />
 		private static List<ItemAndMultiplier> GetRequiredItemsForCabin()
 		{
-			Item resource = ItemList.GetRandomResourceItem();
+			Item resource = ItemList.GetRandomResourceItem(new int[(int)ObjectIndexes.Hardwood]);
 			Item easyItem = Globals.RNGGetRandomValueFromList(
 				ItemList.GetItemsBelowDifficulty(ObtainingDifficulties.MediumTimeRequirements, new List<int> { resource.Id })
 			);
