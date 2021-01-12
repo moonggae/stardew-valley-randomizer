@@ -52,6 +52,9 @@
 		OilOfGarlic = 772, LifeElixir = 773, WildBait = 774, Glacierfish = 775, Battery = 787, LostAxe = 788, LuckyPurpleShorts = 789, BerryBasket = 790, VoidSalmon = 795, Slimejack = 796, Pearl = 797,
 		MidnightSquid = 798, SpookFish = 799, Blobfish = 800, WeddingRing = 801, CactusSeeds = 802, IridiumMilk = 803, SquidInk = 814,
 
+		// New from 1.5 update (add later when these will be in the pool)
+		//BoneFragment = 881,
+
 
 		// UNOFFICIAL ITEM IDS - A LOT OF THESE ARE THE "BigCraftables"
 		Chest = -100,
