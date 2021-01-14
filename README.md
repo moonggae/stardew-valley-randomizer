@@ -142,6 +142,7 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
     * Less is now required if chosen for a recipe
   * Rebalanced all animal products to better reflect how long it takes to get them - should result in more reasonable crafting recipes
 * Boots now have custom images and descriptions (descriptions are enabled in English only)
+* Added 33 total new weapon images to accomodate the 11 new weapons in the 1.5 update
 * Added the Stable to the list of randomized buildings, as it was overlooked before
 * Added Desert Totems to the item pool, and included them in the appropriate bundles
 * Fixed an issue where the crop pot recipe is learned twice
