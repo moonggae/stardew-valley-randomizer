@@ -112,6 +112,6 @@ Weapons:
 The weapons are divided among four different folders, to represent the different weapon types. Each directory has the following rules, with the exception of the Slingshots directory, which is currently unused:
 
 - Each image must be 16 x 16
-- Having less than 60 images could reslult in default images being used
+- Having less than 49 images could reslult in default images being used
 
 DO NOT delete the weapons.png image in the Weapons directory, as it's used as the base image.
