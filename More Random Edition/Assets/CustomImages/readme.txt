@@ -15,7 +15,7 @@ The image randomizer works by randomly choosing images in specific directories, 
 - DO NOT delete any image in the directory that is a spritesheet - this is likely the base file that's used; deleting these will cause errors
 - Most issues will be detected by the randomizer when first loading your farm, so it's a good idea to scroll through the console output to locate any errors if you make any changes
 - The effects of most errors would be that the category you're trying to randomize will use the default graphics instead of the custom ones
-- The randomizer will create a "randomizedImages.png" in these directories; if you're not running the game, it's safe to delete these, but they're cleared when the game is started anyway, so it doesn't do much
+- The randomizer will create a "randomizedImage.png" in these directories; if you're not running the game, it's safe to delete these, but they're cleared when the game is started anyway, so it doesn't do much
 
 The following sections are about each folder located in the CustomImages directory, and specifics about them.
 
@@ -112,6 +112,6 @@ Weapons:
 The weapons are divided among four different folders, to represent the different weapon types. Each directory has the following rules, with the exception of the Slingshots directory, which is currently unused:
 
 - Each image must be 16 x 16
-- Having less than 49 images could reslult in default images being used
+- Having less than 60 images could reslult in default images being used
 
 DO NOT delete the weapons.png image in the Weapons directory, as it's used as the base image.
