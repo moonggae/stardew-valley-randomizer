@@ -14,7 +14,7 @@ The image randomizer works by randomly choosing images in specific directories, 
 - Each image should be a png, and should end in ".png", else it won't be picked up as a possible choice
 - DO NOT delete any image in the directory that is a spritesheet - this is likely the base file that's used; deleting these will cause errors
 - Most issues will be detected by the randomizer when first loading your farm, so it's a good idea to scroll through the console output to locate any errors if you make any changes
-- The effects of most errors would be that the category you're trying to randomize will use the default graphics instead of the custom ones
+- Most errors would result in default graphics being used instead of the custom ones
 - The randomizer will create a "randomizedImage.png" in these directories; if you're not running the game, it's safe to delete these, but they're cleared when the game is started anyway, so it doesn't do much
 
 The following sections are about each folder located in the CustomImages directory, and specifics about them.
@@ -24,14 +24,14 @@ Bundles
 -------
 These images are all linked with a specific randomized bundle name. If you with to use your own, you must replace the existing image with the one you wish to use instead. Any extra files placed in here will never be used.
 
-- Any replacement must be 32 x 32
+- Any replacement must be 32 x 32px
 - DO NOT delete the JunimoNote images, as these are the base images used for the UI
  - If you plan on replacing it, note that the bundle image section will be overwritten by the randomizer, and that you only really need to replace the one that matches the language you're using (the English version is the one with no suffix)
 
 
 CropGrowth
 ----------
-These images are the sprites used when crops are growing on your farm. These images consist of eight 16 x 32 sprites (meaning the entire image must be 128 x 32). The order of the sprites depends on the folder. DO NOT delete the crops.png image here, as it is the base image used.
+These images are the sprites used when crops are growing on your farm. These images consist of eight 16 x 32px sprites (meaning the entire image must be 128 x 32px). The order of the sprites depends on the folder. DO NOT delete the crops.png image here, as it is the base image used.
 
 You MUST have the appropriate matching images in the SpringObjects directory, or you will see errors. Specificaly, the Seeds, Crops, and Flowers subdirectories. See the SpringObjects section for more details.
 
@@ -44,14 +44,14 @@ Here's an overview of all the folders and what the sprites mean:
 
 
 Flowers:
-Two versions of each flower must be placed here. One is for flowers with hues, and is for flowers without hues. The image to use for the flower without hues should end with "-NoHue.png". The following is an example of two file names that will work:
+Two versions of each flower must be placed here. One is for flowers with hues, and one is for flowers without hues. The image to use for the flower without hues should end with "-NoHue.png". The following is an example of two file names that will work:
 - MyFlower.png
 - MyFlower-NoHue.png
 
 Here's an outline of how the rest of the sprites work:
 - 1, 2: Two variations of when the seed is first planted
 - 3, 4, 5: Three of the growth stages of the flower
-- 6: The stem of the final growth stage of the folder
+- 6: The stem of the final growth stage of the flower
 - 7: (Only for flowers with hues, unused otherwise): The top of the flower - a hue is applied to this flower, depending on the flower being replaced
 
 
@@ -76,32 +76,32 @@ This directory consists of replacements to be made in the springobjects.png spri
 
 DO NOT delete the springobjects.png image, as it's used as the base image for these replacements.
 
-Fruit tree sapling sprites are replaced when the appropriate setting is on. The image to be used for that is directly in the SpringObjects directory, and is called "fruitTreeSprites.png". This consists of six 16 x 16 fruit tree sapling sprites in the following order:
+Fruit tree sapling sprites are replaced when the appropriate setting is on. The image to be used for that is directly in the SpringObjects directory, and is called "fruitTreeSprites.png". This consists of six 16 x 16px fruit tree sapling sprites in the following order:
 - cherry, apricot, orange, peach, pomegranate, apple
 
-The following is details about each folder:
+The following are details about each folder:
 
 
 Boots and Fish:
-- Each image must be 16 x 16
+- Each image must be 16 x 16px
 
 
 Crops: 
-- Each image must be 16 x 16
-- One image with a matching name must exist for each corresponding crop growth image under the following:
+- Each image must be 16 x 16px
+- For each crop growth in the following folders, there has to be one crop image with the same name:
  - CustomImages/CropGrowth/NormalCrops (without the -4 or -5 in the name)
  - CustomImages/CropGrowth/RegrowingCrops
  - CustomImages/CropGrowth/TrellisCrops
 
 
 Flowers:
-- Each image must be 32 x 16 - the first 16 x 16 image being the flower that's used if no custom hue is applied, and the second being the base image to apply hue to, before overlaying on top of the first image.
-- One image with a mathcing name must exist for the corresponding crop growth image under CustomImages/CropGrowth/Flowers
+- Each image must be 32 x 16px - the first 16 x 16px image being the flower that's used if no custom hue is applied. The second image is overlayed onto the first image if the flower is using hues.
+- One image with a matching name must exist for the corresponding crop growth image under CustomImages/CropGrowth/Flowers
 
 
 Seeds:
-- Each image must be 16 x 16
-- One image with a matching name must exist for each corresponding crop growth image under the following:
+- Each image must be 16 x 16px
+- For each crop growth in the following folders, there has to be one crop image with the same name:
  - CustomImages/CropGrowth/NormalCrops (without the -4 or -5 in the name)
  - CustomImages/CropGrowth/RegrowingCrops
  - CustomImages/CropGrowth/TrellisCrops
@@ -111,7 +111,7 @@ Seeds:
 Weapons:
 The weapons are divided among four different folders, to represent the different weapon types. Each directory has the following rules, with the exception of the Slingshots directory, which is currently unused:
 
-- Each image must be 16 x 16
-- Having less than 49 images could reslult in default images being used
+- Each image must be 16 x 16px
+- Having less than 60 images could result in default images being used
 
 DO NOT delete the weapons.png image in the Weapons directory, as it's used as the base image.
