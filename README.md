@@ -90,6 +90,7 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
   
 ## Known Issues
 * Queen of Sauce recipes don't use the randomized crop names for the dishes that you learn how to cook
+* Music restarts when you transition screens, even if it's the same song
 * This mod does not fully support other languages (but it does for the most part)
   * Randomly generated weapon/crop names are English
   * The mad-lib style crop descriptions are English
@@ -98,15 +99,14 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
 ## Pending Changes on the 0.4.0 branch
 * 1.5 Compatibility
   * The mod has been updated to work with the 1.5 update - it now requires at least SMAPI 3.8.3 to be installed
-  * In terms of the new items added, the following is randomized:
+  * In terms of the new items added, the following are randomized:
     * New weapons and boots
-    * New enemy stats, including the new random drop
+    * New enemies' stats and their random item drop
     * 3 of the new songs - if anyone knows how to get the song IDs of the rest of them, that would be helpful!
-  * The following is NOT randomized on the new island (these will come in a future update):
+  * The following are NOT randomized on the new island (these will come in a future update):
     * Fish
       * The new fish will be there as expected
-      * The rest of the fish will SEEM random, but they'll actually match their original IDs assigned
-      * The tooltip will NOT reflect whether the specific fish will be found on the island at this time
+      * For existing fish, the tooltip will NOT reflect whether the specific fish will be found on the island at this time
     * The new crops (including the fruit trees)
     * The random artifact drop
     * Any foragables
@@ -121,34 +121,35 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
     * The Queen of Sauce show now uses the randomized crop/fish names
     * The text in the Secret Woods that tells you to bring a Sweet Gem Berry will now specifically tell you what crop you need to bring, since there's now no way to tell otherwise
     * The Mr Qi quest now mentions which 10 crops to put in the Mayor's fridge for the initial textbox, and not just the quest description
-  * Wild seed recipies now require 4 random foragables from the appropriate season
+  * Wild seed recipes now require 4 random foragables from the appropriate season
 * Fish Changes
   * When randomizing fish, there's the option of using custom fish images
-    * The majority of the new fish images on the FishRework branch are mostly directly pulled form the New New Fish mod: https://www.nexusmods.com/stardewvalley/mods/3578
+    * The majority of the new fish images on the FishRework branch are mostly directly pulled from the More New Fish mod: https://www.nexusmods.com/stardewvalley/mods/3578
       * Specific credits go to Hisame for the sprites: https://www.nexusmods.com/Users/51209496
   * Legendary fish can now be identified from their tooltip
   * Legendary fish now show up in the spoiler log
 * Bundle changes
   * The new bundles now have matching images
   * Made the Rare Foods bundle based off of the crop seeds, rather than the crop
-    * This means that Ancient Seeds, the old Starfruit Seeds (from the desert shop), and the Rare Seeds (from the traveling cart) will be requried
+    * This means that Ancient Seeds, the old Starfruit Seeds (from the desert shop), and the Rare Seeds (from the traveling cart) will be required
   * The fish in the Night market submarine should no longer appear for season-specific bundles that are not winter
   * As a QoL feature, added the option (it's on by default) for a tooltip over the possible things to put into a bundle - this will make it easier to know where/when to get the fish
-* Balances changes
+* Balance changes
   * Frozen tears were marked as easy to get - this has been rebalanced, since it does take time to get there
-  * Mead was marked as easy to get - this has been rebalanced since this could potentialaly take a long time to obtain
+  * Mead was marked as easy to get - this has been rebalanced since this could potentially take a long time to obtain
   * Clay
     * Marked it as harder to get, since it's annoying to get it in bulk
     * Less is now required if chosen for a recipe
   * Rebalanced all animal products to better reflect how long it takes to get them - should result in more reasonable crafting recipes
+  * Cabins will no longer require hardwood
 * Boots now have custom images and descriptions (descriptions are enabled in English only)
 * Added 33 total new weapon images to accomodate the 11 new weapons in the 1.5 update
 * Added the Stable to the list of randomized buildings, as it was overlooked before
 * Added Desert Totems to the item pool, and included them in the appropriate bundles
-* Fixed an issue where the crop pot recipe is learned twice
+* Fixed an issue where the Crab Pot recipe is learned twice
 * Reworked the config file to be more readable/user friendly
 * Reworked logging to log at appropriate levels (Trace/Warn/Error)
-* Removed a track called "coin" form the random music list - this seems to just be a sound effect used for picking up an item, and not a real song (so it was really annoying to listen to on loop!)
+* Removed a track called "coin" from the random music list - this seems to just be a sound effect used for picking up an item, and not a real song (so it was really annoying to listen to on loop!)
 * The weather string for fish in Korean has been fixed
 * Error Item bugfixes
   * You could get "Error Item" as a reward from a bundle - this was due to the "Any Fish" item being rewarded. This has been fixed.
