@@ -90,7 +90,7 @@
 		BulletinClint,
 		BulletinDemetrius,
 		BulletinDwarf,
-		BulletinElliot,
+		BulletinElliott,
 		BulletinEmily,
 		BulletinEvelyn,
 		BulletinGeorge,

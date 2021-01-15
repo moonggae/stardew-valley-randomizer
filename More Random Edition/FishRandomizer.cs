@@ -30,18 +30,30 @@ namespace Randomizer
 					Enum.GetValues(typeof(FishBehaviorType)).Cast<FishBehaviorType>().ToList());
 				string newName = Globals.RNGGetAndRemoveRandomValueFromList(fishNames);
 
-				if (!Globals.Config.RandomizeFish) { continue; }
+				if (!Globals.Config.Fish.Randomize) { continue; }
 
 				CopyFishInfo(fishToReplace, fish);
 				fish.DartChance = newDartChance;
 				fish.BehaviorType = newBehaviorType;
 				fish.OverrideName = newName;
 
-				if (new int[] { 158, 161, 162 }.Contains(fish.Id)) // The three hard-coded mines fish
+				if (fish.IsMinesFish)
 				{
 					if (!fish.AvailableLocations.Contains(Locations.UndergroundMine))
 					{
 						fish.AvailableLocations.Add(Locations.UndergroundMine);
+					}
+				}
+
+				if (Globals.Config.Fish.Randomize)
+				{
+					if (fish.IsSubmarineOnlyFish)
+					{
+						fish.DifficultyToObtain = ObtainingDifficulties.RareItem;
+					}
+					else
+					{
+						fish.DifficultyToObtain = ObtainingDifficulties.LargeTimeRequirements;
 					}
 				}
 
@@ -56,7 +68,7 @@ namespace Randomizer
 
 				string newName = Globals.RNGGetAndRemoveRandomValueFromList(fishNames);
 
-				if (!Globals.Config.RandomizeFish) { continue; }
+				if (!Globals.Config.Fish.Randomize) { continue; }
 
 				fish.BehaviorType = newBehaviorType;
 				fish.OverrideName = newName;
@@ -138,9 +150,9 @@ namespace Randomizer
 		/// </summary>
 		public static void WriteToSpoilerLog()
 		{
-			if (!Globals.Config.RandomizeFish) { return; }
+			if (!Globals.Config.Fish.Randomize) { return; }
 
-			List<FishItem> allRandomizedFish = FishItem.GetListAsFishItem();
+			List<FishItem> allRandomizedFish = FishItem.GetListAsFishItem(true);
 
 			Globals.SpoilerWrite("==== FISH ====");
 			foreach (FishItem fish in allRandomizedFish)

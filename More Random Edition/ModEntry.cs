@@ -74,23 +74,43 @@ namespace Randomizer
 
 			this.PreLoadReplacments();
 			helper.Events.GameLoop.SaveLoaded += (sender, args) => this.CalculateAllReplacements();
-			helper.Events.Multiplayer.PeerContextReceived += (sender, args) => FixParsnipSeedBox();
-
 			helper.Events.Display.RenderingActiveMenu += (sender, args) => _modAssetLoader.TryReplaceTitleScreen();
-			helper.Events.Display.MenuChanged += BundleMenuAdjustments.FixRingSelection;
-			helper.Events.Display.RenderingActiveMenu += (sender, args) => BundleMenuAdjustments.FixRingDeposits();
 			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetLoader.ReplaceTitleScreenAfterReturning();
-			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => ImageBuilder.CleanUpReplacementFiles();
 
 			if (Globals.Config.RandomizeMusic) { helper.Events.GameLoop.UpdateTicked += (sender, args) => this.TryReplaceSong(); }
 			if (Globals.Config.RandomizeRain) { helper.Events.GameLoop.DayEnding += _modAssetLoader.ReplaceRain; }
-			if (Globals.Config.RandomizeCrops || Globals.Config.RandomizeFish)
+
+			if (Globals.Config.Crops.Randomize)
+			{
+				helper.Events.Multiplayer.PeerContextReceived += (sender, args) => FixParsnipSeedBox();
+			}
+
+			if (Globals.Config.Crops.Randomize || Globals.Config.Fish.Randomize)
 			{
 				helper.Events.Display.RenderingActiveMenu += (sender, args) => CraftingRecipeAdjustments.HandleCraftingMenus();
 			}
 
-			helper.Events.GameLoop.DayStarted += (sender, args) => UseOverriddenSubmarine();
-			helper.Events.GameLoop.DayEnding += (sender, args) => RestoreSubmarineLocation();
+			if (Globals.Config.RandomizeForagables)
+			{
+				helper.Events.GameLoop.GameLaunched += (sender, args) => WildSeedAdjustments.ReplaceGetRandomWildCropForSeason();
+			}
+
+			if (Globals.Config.Fish.Randomize)
+			{
+				helper.Events.GameLoop.DayStarted += (sender, args) => UseOverriddenSubmarine();
+				helper.Events.GameLoop.DayEnding += (sender, args) => RestoreSubmarineLocation();
+			}
+
+			if (Globals.Config.Bundles.Randomize)
+			{
+				helper.Events.Display.MenuChanged += BundleMenuAdjustments.FixRingSelection;
+				helper.Events.Display.RenderingActiveMenu += (sender, args) => BundleMenuAdjustments.FixRingDeposits();
+
+				if (Globals.Config.Bundles.ShowDescriptionsInBundleTooltips)
+				{
+					helper.Events.Display.RenderedActiveMenu += (sender, args) => BundleMenuAdjustments.AddDescriptionsToBundleTooltips();
+				}
+			}
 		}
 
 
@@ -175,6 +195,9 @@ namespace Randomizer
 			_modAssetLoader.InvalidateCache();
 			_modAssetEditor.InvalidateCache();
 
+			// Use when debugging to ensure that the bundles get changed if they're meant to
+			//Game1.GenerateBundles(Game1.bundleType, true);
+
 			ChangeDayOneForagables();
 			FixParsnipSeedBox();
 			OverriddenSeedShop.ReplaceShopStockMethod();
@@ -187,7 +210,6 @@ namespace Randomizer
 		/// </summary>
 		public void ChangeDayOneForagables()
 		{
-			// Replace all the foragables on day 1
 			SDate currentDate = SDate.Now();
 			if (currentDate.DaysSinceStart < 2)
 			{
@@ -200,9 +222,9 @@ namespace Randomizer
 					).ToList();
 
 				List<Item> newForagables =
-				ItemList.GetForagables(Seasons.Spring)
-					.Where(x => x.ShouldBeForagable) // Removes the 1/1000 items
-					.Cast<Item>().ToList();
+					ItemList.GetForagables(Seasons.Spring)
+						.Where(x => x.ShouldBeForagable) // Removes the 1/1000 items
+						.Cast<Item>().ToList();
 
 				foreach (GameLocation location in locations)
 				{
@@ -214,7 +236,7 @@ namespace Randomizer
 
 					foreach (Vector2 oldForagableKey in tiles)
 					{
-						Item newForagable = Globals.RNGGetRandomValueFromList(newForagables);
+						Item newForagable = Globals.RNGGetRandomValueFromList(newForagables, true);
 						location.Objects[oldForagableKey].ParentSheetIndex = newForagable.Id;
 						location.Objects[oldForagableKey].Name = newForagable.Name;
 					}
@@ -259,13 +281,13 @@ namespace Randomizer
 		/// </summary>
 		public void TryReplaceSong()
 		{
-			//Game1.addHUDMessage(new HUDMessage(Game1.currentSong?.Name));
-
 			string currentSong = Game1.currentSong?.Name;
 			if (this._modAssetEditor.MusicReplacements.TryGetValue(currentSong?.ToLower() ?? "", out string value) && _lastCurrentSong != currentSong)
 			{
 				_lastCurrentSong = value;
 				Game1.changeMusicTrack(value);
+
+				//Game1.addHUDMessage(new HUDMessage($"Song: {currentSong} | Replaced with: {value}"));
 			}
 		}
 	}

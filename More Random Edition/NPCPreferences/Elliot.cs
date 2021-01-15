@@ -2,7 +2,7 @@
 
 namespace Randomizer
 {
-	public class Elliot : NPC
+	public class Elliott : NPC
 	{
 		public static List<Item> Loves = new List<Item>
 		{

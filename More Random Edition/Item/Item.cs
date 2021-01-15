@@ -19,9 +19,9 @@ namespace Randomizer
 			{
 				if (!string.IsNullOrEmpty(OverrideName) || !string.IsNullOrEmpty(OverrideDisplayName))
 				{
-					bool isRandomizedCookedItem = Globals.Config.RandomizeCrops && IsCooked;
-					bool isRandomizedCropOrSeedItem = Globals.Config.RandomizeCrops && (IsCrop || IsSeed);
-					bool isRandomizedFishItem = Globals.Config.RandomizeFish && IsFish;
+					bool isRandomizedCookedItem = Globals.Config.Crops.Randomize && IsCooked;
+					bool isRandomizedCropOrSeedItem = Globals.Config.Crops.Randomize && (IsCrop || IsSeed);
+					bool isRandomizedFishItem = Globals.Config.Fish.Randomize && IsFish;
 					bool useOriginalName = isRandomizedCookedItem || isRandomizedCropOrSeedItem || isRandomizedFishItem;
 
 					if (useOriginalName)
@@ -150,8 +150,8 @@ namespace Randomizer
 		private string GetName()
 		{
 			bool ignoreOverrideName =
-				(!Globals.Config.RandomizeCrops && (IsCrop || IsSeed)) ||
-				(!Globals.Config.RandomizeFish && IsFish);
+				(!Globals.Config.Crops.Randomize && (IsCrop || IsSeed)) ||
+				(!Globals.Config.Fish.Randomize && IsFish);
 			if (!ignoreOverrideName && !string.IsNullOrEmpty(OverrideName))
 			{
 				return OverrideName;

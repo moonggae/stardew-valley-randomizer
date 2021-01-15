@@ -15,12 +15,13 @@ namespace Randomizer
 	{
 		private static JunimoNoteMenu _currentActiveBundleMenu { get; set; }
 
+
 		/// <summary>
 		/// Fixes the ability to highlight rings in the bundle menu
 		/// </summary>
 		public static void FixRingSelection(object sender, MenuChangedEventArgs e)
 		{
-			if (!Globals.Config.RandomizeBundles || !(e.NewMenu is JunimoNoteMenu))
+			if (!Globals.Config.Bundles.Randomize || !(e.NewMenu is JunimoNoteMenu))
 			{
 				_currentActiveBundleMenu = null;
 				return;
@@ -46,6 +47,20 @@ namespace Randomizer
 				return !(bool)((NetFieldBase<bool, NetBool>)(item as SVObject).bigCraftable);
 			}
 			return false;
+		}
+
+		/// <summary>
+		/// Adds tooltips for the bundle items so that you can see where to get fish
+		/// </summary>
+		public static void AddDescriptionsToBundleTooltips()
+		{
+			bool settingEnabled = Globals.Config.Bundles.Randomize && Globals.Config.Bundles.ShowDescriptionsInBundleTooltips;
+			if (!settingEnabled || _currentActiveBundleMenu == null) { return; }
+
+			foreach (ClickableTextureComponent ingredient in _currentActiveBundleMenu.ingredientList)
+			{
+				ingredient.hoverText = $"{ingredient.item.DisplayName}:\n{ingredient.item.getDescription()}";
+			}
 		}
 
 		/// <summary>

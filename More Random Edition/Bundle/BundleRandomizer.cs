@@ -11,6 +11,7 @@ namespace Randomizer
 		public CommunityCenterRooms Room { get; set; }
 		public int StartingIndex { get; set; }
 		public int EndingIndex { get; set; }
+		public List<Bundle> Bundles { get; set; } = new List<Bundle>();
 
 		/// <summary>
 		/// Constructor
@@ -56,10 +57,11 @@ namespace Randomizer
 			_randomizedBundles.Clear();
 			Bundle.InitializeAllBundleTypes(); // Must be done so that reloading the game is consistent
 
-			if (Globals.Config.RandomizeBundles) { Globals.SpoilerWrite("==== BUNDLES ===="); }
+			if (Globals.Config.Bundles.Randomize) { Globals.SpoilerWrite("==== BUNDLES ===="); }
 			foreach (RoomInformation room in Rooms)
 			{
-				if (Globals.Config.RandomizeBundles) { Globals.SpoilerWrite(room.Room.ToString()); }
+				if (Globals.Config.Bundles.Randomize) { Globals.SpoilerWrite(room.Room.ToString()); }
+				room.Bundles.Clear(); // Clear the bundles in case this was ran multiple times in a session
 				CreateBundlesForRoom(room);
 			}
 
@@ -83,6 +85,7 @@ namespace Randomizer
 			{
 				if (i == 18) { continue; } // That's just how this is set up
 				Bundle bundle = CreateBundleForRoom(room.Room, i);
+				room.Bundles.Add(bundle);
 				WriteToSpoilerLog(bundle, i);
 			}
 		}
@@ -94,7 +97,7 @@ namespace Randomizer
 		/// <param name="index">The bundle index</param>
 		private static void WriteToSpoilerLog(Bundle bundle, int index)
 		{
-			if (!Globals.Config.RandomizeBundles) { return; }
+			if (!Globals.Config.Bundles.Randomize) { return; }
 
 			Globals.SpoilerWrite($"Bundle index: {index} - {bundle.Name} Bundle");
 

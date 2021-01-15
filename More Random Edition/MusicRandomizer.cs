@@ -26,7 +26,6 @@ namespace Randomizer
 				"Cloth",
 				"CloudCountry",
 				"clubloop",
-				"coin",
 				"communityCenter",
 				"cowboy_boss",
 				"cowboy_outlawsong",
@@ -126,7 +125,10 @@ namespace Randomizer
 				"winter3",
 				"WizardSong",
 				"woodsTheme",
-				"XOR"
+				"XOR",
+				"tropical_island_day_ambient",
+				"VolcanoMines",
+				"Volcano_Ambient"
 			};
 			List<string> musicReplacementPool = new List<string>(musicList);
 			Dictionary<string, string> musicReplacements = new Dictionary<string, string>();
