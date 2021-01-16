@@ -1,6 +1,7 @@
 # Stardew Valley Randomizer (More Random Edition)
 
 An update for cTooshi's Stardew Valley Randomizer to fix errors, add new features and make the existing features more random.
+Nexus Mods page available here: https://www.nexusmods.com/stardewvalley/mods/5311
 
 ## Installation
 
