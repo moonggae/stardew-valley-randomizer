@@ -11,6 +11,7 @@ namespace Randomizer
 		private Dictionary<string, string> _recipeReplacements = new Dictionary<string, string>();
 		private Dictionary<string, string> _bundleReplacements = new Dictionary<string, string>();
 		private Dictionary<string, string> _blueprintReplacements = new Dictionary<string, string>();
+		private Dictionary<string, string> _uiStringReplacements = new Dictionary<string, string>();
 		private Dictionary<string, string> _grandpaStringReplacements = new Dictionary<string, string>();
 		private Dictionary<string, string> _stringReplacements = new Dictionary<string, string>();
 		private Dictionary<string, string> _locationStringReplacements = new Dictionary<string, string>();
@@ -39,6 +40,7 @@ namespace Randomizer
 			if (asset.AssetNameEquals("Data/Bundles")) { return Globals.Config.Bundles.Randomize; }
 			if (asset.AssetNameEquals("Data/Blueprints")) { return Globals.Config.RandomizeBuildingCosts; }
 			if (asset.AssetNameEquals("Strings/StringsFromCSFiles")) { return true; }
+			if (asset.AssetNameEquals("Strings/UI")) { return true; }
 			if (asset.AssetNameEquals("Data/ObjectInformation")) { return true; }
 			if (asset.AssetNameEquals("Data/Fish")) { return Globals.Config.Fish.Randomize; }
 			if (asset.AssetNameEquals("Data/Quests") || asset.AssetNameEquals("Data/mail")) { return Globals.Config.RandomizeQuests; }
@@ -82,6 +84,10 @@ namespace Randomizer
 			{
 				this.ApplyEdits(asset, this._grandpaStringReplacements);
 				this.ApplyEdits(asset, this._stringReplacements);
+			}
+			else if (asset.AssetNameEquals("Strings/UI"))
+			{
+				this.ApplyEdits(asset, this._uiStringReplacements);
 			}
 			else if (asset.AssetNameEquals("Data/ObjectInformation"))
 			{
@@ -143,6 +149,7 @@ namespace Randomizer
 			this._mod.Helper.Content.InvalidateCache("Data/Bundles");
 			this._mod.Helper.Content.InvalidateCache("Data/Blueprints");
 			this._mod.Helper.Content.InvalidateCache("Strings/StringsFromCSFiles");
+			this._mod.Helper.Content.InvalidateCache("Strings/UI");
 			this._mod.Helper.Content.InvalidateCache("Data/ObjectInformation");
 			this._mod.Helper.Content.InvalidateCache("Data/Events/Farm");
 			this._mod.Helper.Content.InvalidateCache("Data/Fish");
@@ -161,6 +168,7 @@ namespace Randomizer
 
 		public void CalculateEditsBeforeLoad()
 		{
+			_uiStringReplacements = StringsAdjustments.ModifyRemixedBundleUI();
 			_grandpaStringReplacements = StringsAdjustments.RandomizeGrandpasStory();
 		}
 

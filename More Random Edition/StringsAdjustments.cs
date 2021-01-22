@@ -51,6 +51,20 @@ namespace Randomizer
 		}
 
 		/// <summary>
+		/// Changes the UI to be clear about what settings to use if using random bundles
+		/// </summary>
+		public static Dictionary<string, string> ModifyRemixedBundleUI()
+		{
+			Dictionary<string, string> stringReplacements = new Dictionary<string, string>();
+
+			stringReplacements["AGO_CCB"] = "Bundles (Read the Tooltips):";
+			stringReplacements["AGO_CCB_Tooltip"] = "Keep this on Normal if using the randomizer's random bundle feature.";
+			stringReplacements["AGO_Year1Completable_Tooltip"] = "Doesn't guarantee much if using the randomizer's random bundle or crop features.";
+
+			return stringReplacements;
+		}
+
+		/// <summary>
 		/// Taken from the original code
 		/// Randomizes the story that Grandpa tells you at the start of the game
 		/// </summary>
