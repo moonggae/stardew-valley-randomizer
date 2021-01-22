@@ -16,6 +16,54 @@ namespace Randomizer
 		public OverriddenSubmarine() : base("Maps\\Submarine", "Submarine") { }
 
 		/// <summary>
+		/// The old submarine location
+		/// </summary>
+		private static Submarine NormalSubmarineLocation { get; set; }
+
+		/// <summary>
+		/// Replaces the submarine location with an overridden one so that the fish that
+		/// appear there are correct
+		/// </summary>
+		public static void UseOverriddenSubmarine()
+		{
+			int submarineIndex;
+			foreach (GameLocation location in Game1.locations)
+			{
+				if (location.Name == "Submarine")
+				{
+					if (location.GetType() != typeof(OverriddenSubmarine))
+					{
+						NormalSubmarineLocation = (Submarine)location;
+					}
+
+					submarineIndex = Game1.locations.IndexOf(location);
+					Game1.locations[submarineIndex] = new OverriddenSubmarine();
+					break;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Restores the submarine location - this should be done before saving the game
+		/// to avoid a crash
+		/// </summary>
+		public static void RestoreSubmarineLocation()
+		{
+			if (NormalSubmarineLocation == null) { return; }
+
+			int submarineIndex;
+			foreach (GameLocation location in Game1.locations)
+			{
+				if (location.Name == "Submarine")
+				{
+					submarineIndex = Game1.locations.IndexOf(location);
+					Game1.locations[submarineIndex] = NormalSubmarineLocation;
+					break;
+				}
+			}
+		}
+
+		/// <summary>
 		/// Gets the fish that can be found on the submarine
 		/// </summary>
 		/// <param name="millisecondsAfterNibble"></param>

@@ -104,8 +104,8 @@ namespace Randomizer
 
 			if (Globals.Config.Fish.Randomize)
 			{
-				helper.Events.GameLoop.DayStarted += (sender, args) => UseOverriddenSubmarine();
-				helper.Events.GameLoop.DayEnding += (sender, args) => RestoreSubmarineLocation();
+				helper.Events.GameLoop.DayStarted += (sender, args) => OverriddenSubmarine.UseOverriddenSubmarine();
+				helper.Events.GameLoop.DayEnding += (sender, args) => OverriddenSubmarine.RestoreSubmarineLocation();
 			}
 
 			if (Globals.Config.Bundles.Randomize)
@@ -116,55 +116,6 @@ namespace Randomizer
 				if (Globals.Config.Bundles.ShowDescriptionsInBundleTooltips)
 				{
 					helper.Events.Display.RenderedActiveMenu += (sender, args) => BundleMenuAdjustments.AddDescriptionsToBundleTooltips();
-				}
-			}
-		}
-
-
-		/// <summary>
-		/// The old submarine location
-		/// </summary>
-		private Submarine NormalSubmarineLocation { get; set; }
-
-		/// <summary>
-		/// Replaces the submarine location with an overridden one so that the fish that
-		/// appear there are correct
-		/// </summary>
-		public void UseOverriddenSubmarine()
-		{
-			int submarineIndex;
-			foreach (GameLocation location in Game1.locations)
-			{
-				if (location.Name == "Submarine")
-				{
-					if (location.GetType() != typeof(OverriddenSubmarine))
-					{
-						NormalSubmarineLocation = (Submarine)location;
-					}
-
-					submarineIndex = Game1.locations.IndexOf(location);
-					Game1.locations[submarineIndex] = new OverriddenSubmarine();
-					break;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Restores the submarine location - this should be done before saving the game
-		/// to avoid a crash
-		/// </summary>
-		public void RestoreSubmarineLocation()
-		{
-			if (NormalSubmarineLocation == null) { return; }
-
-			int submarineIndex;
-			foreach (GameLocation location in Game1.locations)
-			{
-				if (location.Name == "Submarine")
-				{
-					submarineIndex = Game1.locations.IndexOf(location);
-					Game1.locations[submarineIndex] = NormalSubmarineLocation;
-					break;
 				}
 			}
 		}
