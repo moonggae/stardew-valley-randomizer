@@ -57,9 +57,9 @@ namespace Randomizer
 		{
 			Dictionary<string, string> stringReplacements = new Dictionary<string, string>();
 
-			stringReplacements["AGO_CCB"] = "Bundles (Read the Tooltips):";
-			stringReplacements["AGO_CCB_Tooltip"] = "Keep this on Normal if using the randomizer's random bundle feature.";
-			stringReplacements["AGO_Year1Completable_Tooltip"] = "Doesn't guarantee much if using the randomizer's random bundle or crop features.";
+			stringReplacements["AGO_CCB"] = Globals.GetTranslation("ui-remixed-bundle-title");
+			stringReplacements["AGO_CCB_Tooltip"] = Globals.GetTranslation("ui-remixed-bundle-tooltip");
+			stringReplacements["AGO_Year1Completable_Tooltip"] = Globals.GetTranslation("ui-year1-completable-tooltip");
 
 			return stringReplacements;
 		}

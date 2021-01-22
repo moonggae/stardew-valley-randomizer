@@ -1,6 +1,10 @@
 {
 	"title-graphic": "TitleButtons.es-ES.png",
 	"junimo-note-graphic": "JunimoNote.es-ES.png",
+
+	"ui-remixed-bundle-title": "Paquetes (Leer la información sobre herramientas):",
+	"ui-remixed-bundle-tooltip":  "Mantenga esto en Normal si usa la función de paquete del aleatorizador.",
+	"ui-year1-completable-tooltip":  "No garantiza mucho si usa el paquete del aleatorizador o las funciones de recorte.",
 	
 	"time-format": "HH:mm",
 	"fish-tooltip-all-day": "Disponible todo el dia.",

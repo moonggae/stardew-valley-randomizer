@@ -105,7 +105,7 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Replaces the title screen graphics
+		/// Replaces the title screen graphics and refreshes the settings UI page
 		/// </summary>
 		/// <param name="titleMenu">The title menu - passed if we're already on the title screen</param>
 		private void ReplaceTitleScreen(TitleMenu titleMenu = null)
@@ -119,6 +119,8 @@ namespace Randomizer
 				LanguageCode code = _mod.Helper.Translation.LocaleEnum;
 				_mod.Helper.Reflection.GetMethod(titleMenu, "OnLanguageChange", true).Invoke(code);
 			}
+
+			_mod.CalculateAndInvalidateUIEdits();
 		}
 
 		/// <summary>

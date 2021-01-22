@@ -1,6 +1,10 @@
 {
 	"title-graphic": "TitleButtons.hu-HU.png",
 	"junimo-note-graphic": "JunimoNote.hu-HU.png",
+
+	"ui-remixed-bundle-title": "Csomagok (Olvassa el az eszköztippeket):",
+	"ui-remixed-bundle-tooltip": "Tartsa ezt a Normál értéken, ha a randomizáló csomag-funkcióját használja.",
+	"ui-year1-completable-tooltip": "Nem garantál sokat, ha a randomizáló csomagját vagy vágási funkcióit használja.",
 	
 	"time-format": "HH:mm",
 	"fish-tooltip-all-day": "Egész nap elérhető.",

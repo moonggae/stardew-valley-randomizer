@@ -212,6 +212,15 @@ namespace Randomizer
 		}
 
 		/// <summary>
+		/// A passthrough to calculate adn invalidate UI edits
+		/// Used when the lanauage is changed
+		/// </summary>
+		public void CalculateAndInvalidateUIEdits()
+		{
+			_modAssetEditor.CalculateAndInvalidateUIEdits();
+		}
+
+		/// <summary>
 		/// Fixes the foragables on day 1 - the save file is created too quickly for it to be
 		/// randomized right away, so we'll change them on the spot on the first day
 		/// </summary>

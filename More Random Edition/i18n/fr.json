@@ -1,6 +1,10 @@
 {
 	"title-graphic": "TitleButtons.fr-FR.png",
 	"junimo-note-graphic": "JunimoNote.fr-FR.png",
+
+	"ui-remixed-bundle-title": "Lots (Lire les info-bulles):",
+	"ui-remixed-bundle-tooltip": "Gardez ceci sur Commun si vous utilisez la fonction de bundle du randomizer..",
+	"ui-year1-completable-tooltip": "Ne garantit pas grand-chose si vous utilisez les fonctionnalités de regroupement ou de recadrage du randomizer.",
 	
 	"time-format": "HH:mm",
 	"fish-tooltip-all-day": "Disponible toute la journée.",

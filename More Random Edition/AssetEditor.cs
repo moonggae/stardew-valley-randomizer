@@ -180,10 +180,23 @@ namespace Randomizer
 			this._mod.Helper.Content.InvalidateCache("Data/NPCDispositions");
 		}
 
+		/// <summary>
+		/// Calculates edits that need to happen before a save file is loaded
+		/// </summary>
 		public void CalculateEditsBeforeLoad()
 		{
-			_uiStringReplacements = StringsAdjustments.ModifyRemixedBundleUI();
+			CalculateAndInvalidateUIEdits();
 			_grandpaStringReplacements = StringsAdjustments.RandomizeGrandpasStory();
+		}
+
+		/// <summary>
+		/// Calculates the UI string replacements and invalidates the cache so it can be updated
+		/// Should be called on game load and after a language change
+		/// </summary>
+		public void CalculateAndInvalidateUIEdits()
+		{
+			_uiStringReplacements = StringsAdjustments.ModifyRemixedBundleUI();
+			this._mod.Helper.Content.InvalidateCache("Strings/UI");
 		}
 
 		public void CalculateEdits()
@@ -219,8 +232,6 @@ namespace Randomizer
 			_weaponReplacements = WeaponRandomizer.Randomize();
 			_bootReplacements = BootRandomizer.Randomize();
 			_birthdayReplacements = BirthdayRandomizer.Randomize();
-
-			UndoObjectInformationReplacements();
 		}
 
 		/// <summary>
