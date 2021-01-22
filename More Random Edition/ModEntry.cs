@@ -88,6 +88,13 @@ namespace Randomizer
 			if (Globals.Config.Crops.Randomize || Globals.Config.Fish.Randomize)
 			{
 				helper.Events.Display.RenderingActiveMenu += (sender, args) => CraftingRecipeAdjustments.HandleCraftingMenus();
+
+				// Fix for the Special Orders causing crashes
+				// Re-instate the object info when the save is first loaded for the session, and when saving so that the
+				// items have the correct names on the items sold summary screen
+				helper.Events.GameLoop.DayEnding += (sender, args) => _modAssetEditor.UndoObjectInformationReplacements();
+				helper.Events.GameLoop.SaveLoaded += (sender, args) => _modAssetEditor.RedoObjectInformationReplacements();
+				helper.Events.GameLoop.Saving += (sender, args) => _modAssetEditor.RedoObjectInformationReplacements();
 			}
 
 			if (Globals.Config.RandomizeForagables)

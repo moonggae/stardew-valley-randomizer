@@ -29,6 +29,13 @@ namespace Randomizer
 		private Dictionary<string, string> _birthdayReplacements = new Dictionary<string, string>();
 		public Dictionary<string, string> MusicReplacements = new Dictionary<string, string>();
 
+		/// <summary>
+		/// Whether we're currently ignoring replacing object information
+		/// This is done between day loads to prevent errors with the Special Orders
+		/// Eventually this can be removed when we modify the orders themselves
+		/// </summary>
+		private bool IgnoreObjectInformationReplacements { get; set; }
+
 		public AssetEditor(ModEntry mod)
 		{
 			this._mod = mod;
@@ -91,7 +98,14 @@ namespace Randomizer
 			}
 			else if (asset.AssetNameEquals("Data/ObjectInformation"))
 			{
-				this.ApplyEdits(asset, this._objectInformationReplacements);
+				if (IgnoreObjectInformationReplacements)
+				{
+					this.ApplyEdits(asset, new Dictionary<int, string>());
+				}
+				else
+				{
+					this.ApplyEdits(asset, this._objectInformationReplacements);
+				}
 			}
 			else if (asset.AssetNameEquals("Data/Fish"))
 			{
@@ -205,6 +219,28 @@ namespace Randomizer
 			_weaponReplacements = WeaponRandomizer.Randomize();
 			_bootReplacements = BootRandomizer.Randomize();
 			_birthdayReplacements = BirthdayRandomizer.Randomize();
+
+			UndoObjectInformationReplacements();
+		}
+
+		/// <summary>
+		/// Turns on the flag to ignore object information replacements and invalidates the cache
+		/// so that the original values are reloaded
+		/// </summary>
+		public void UndoObjectInformationReplacements()
+		{
+			IgnoreObjectInformationReplacements = true;
+			this._mod.Helper.Content.InvalidateCache("Data/ObjectInformation");
+		}
+
+		/// <summary>
+		/// Turns off the flag to ignore object information replacements and invalidates the cache
+		/// so that the randomized values are reloaded
+		/// </summary>
+		public void RedoObjectInformationReplacements()
+		{
+			IgnoreObjectInformationReplacements = false;
+			this._mod.Helper.Content.InvalidateCache("Data/ObjectInformation");
 		}
 
 		/// <summary>
