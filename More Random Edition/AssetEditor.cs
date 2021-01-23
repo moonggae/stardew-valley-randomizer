@@ -27,6 +27,7 @@ namespace Randomizer
 		private Dictionary<int, string> _bootReplacements = new Dictionary<int, string>();
 		private Dictionary<string, string> _monsterReplacements = new Dictionary<string, string>();
 		private Dictionary<string, string> _birthdayReplacements = new Dictionary<string, string>();
+		private Dictionary<string, string> _preferenceReplacements = new Dictionary<string, string>();
 		public Dictionary<string, string> MusicReplacements = new Dictionary<string, string>();
 
 		/// <summary>
@@ -60,6 +61,7 @@ namespace Randomizer
 			if (asset.AssetNameEquals("Data/Boots")) { return Globals.Config.Boots.Randomize; }
 			if (asset.AssetNameEquals("Data/Monsters")) { return Globals.Config.Monsters.Randomize; }
 			if (asset.AssetNameEquals("Data/NPCDispositions")) { return Globals.Config.RandomizeNPCBirthdays; }
+			if (asset.AssetNameEquals("Data/NPCGiftTastes")) { return Globals.Config.RandomizeNPCPreferences; }
 
 			return false;
 		}
@@ -155,6 +157,10 @@ namespace Randomizer
 			{
 				this.ApplyEdits(asset, this._birthdayReplacements);
 			}
+			else if (asset.AssetNameEquals("Data/NPCGiftTastes"))
+            {
+				this.ApplyEdits(asset, this._preferenceReplacements);
+            }
 		}
 
 		public void InvalidateCache()
@@ -178,6 +184,7 @@ namespace Randomizer
 			this._mod.Helper.Content.InvalidateCache("Data/Boots");
 			this._mod.Helper.Content.InvalidateCache("Data/Monsters");
 			this._mod.Helper.Content.InvalidateCache("Data/NPCDispositions");
+			this._mod.Helper.Content.InvalidateCache("Data/NPCGiftTastes");
 		}
 
 		/// <summary>
@@ -232,6 +239,7 @@ namespace Randomizer
 			_weaponReplacements = WeaponRandomizer.Randomize();
 			_bootReplacements = BootRandomizer.Randomize();
 			_birthdayReplacements = BirthdayRandomizer.Randomize();
+			_preferenceReplacements = PreferenceRandomizer.Randomize();
 		}
 
 		/// <summary>
