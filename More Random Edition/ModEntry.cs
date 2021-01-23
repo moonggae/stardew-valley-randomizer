@@ -61,11 +61,11 @@ namespace Randomizer
 		/// <param name="helper">Provides simplified APIs for writing mods</param>
 		public override void Entry(IModHelper helper)
 		{
-			ImageBuilder.CleanUpReplacementFiles();
-
 			_helper = helper;
 			Globals.ModRef = this;
 			Globals.Config = Helper.ReadConfig<ModConfig>();
+
+			ImageBuilder.CleanUpReplacementFiles();
 
 			this._modAssetLoader = new AssetLoader(this);
 			this._modAssetEditor = new AssetEditor(this);

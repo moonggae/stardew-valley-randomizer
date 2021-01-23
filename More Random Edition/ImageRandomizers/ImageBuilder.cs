@@ -40,7 +40,7 @@ namespace Randomizer
 		/// <summary>
 		/// The path for all the custom images
 		/// </summary>
-		protected const string CustomImagesPath = "Mods/Randomizer/Assets/CustomImages";
+		protected readonly string CustomImagesPath = Globals.GetFilePath("Assets/CustomImages");
 
 		/// <summary>
 		/// The path to the custom images
@@ -221,10 +221,10 @@ namespace Randomizer
 		/// </summary>
 		public static void CleanUpReplacementFiles()
 		{
-			File.Delete($"Mods/Randomizer/Assets/CustomImages/Bundles/randomizedImage.png");
-			File.Delete($"Mods/Randomizer/Assets/CustomImages/Weapons/randomizedImage.png");
-			File.Delete($"Mods/Randomizer/Assets/CustomImages/SpringObjects/randomizedImage.png");
-			File.Delete($"Mods/Randomizer/Assets/CustomImages/CropGrowth/randomizedImage.png");
+			File.Delete(Globals.GetFilePath("Assets/CustomImages/Bundles/randomizedImage.png"));
+			File.Delete(Globals.GetFilePath("Assets/CustomImages/Weapons/randomizedImage.png"));
+			File.Delete(Globals.GetFilePath("Assets/CustomImages/SpringObjects/randomizedImage.png"));
+			File.Delete(Globals.GetFilePath("Assets/CustomImages/CropGrowth/randomizedImage.png"));
 		}
 	}
 }
