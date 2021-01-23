@@ -226,6 +226,14 @@ namespace Randomizer
 			_recipeReplacements = CraftingRecipeRandomizer.Randomize();
 			_stringReplacements = StringsAdjustments.GetCSFileStringReplacements();
 			_locationStringReplacements = StringsAdjustments.GetLocationStringReplacements();
+			CraftingRecipeAdjustments.FixCookingRecipeDisplayNames();
+			_cookingChannelReplacements = CookingChannel.GetTextEdits();
+
+			// Pass editedObjectInfo in for access to randomized fish
+			// Delicate balance - needs to run after Cooking Recipe fix so that cooked items are properly named,
+			// and needs to run before bundles so that NPC Loved Item bundles are properly generated
+			_preferenceReplacements = PreferenceRandomizer.Randomize(editedObjectInfo);
+
 			_bundleReplacements = BundleRandomizer.Randomize();
 			MusicReplacements = MusicRandomizer.Randomize();
 
@@ -233,13 +241,10 @@ namespace Randomizer
 			_questReplacements = questInfo.QuestReplacements;
 			_mailReplacements = questInfo.MailReplacements;
 
-			CraftingRecipeAdjustments.FixCookingRecipeDisplayNames();
-			_cookingChannelReplacements = CookingChannel.GetTextEdits();
 
 			_weaponReplacements = WeaponRandomizer.Randomize();
 			_bootReplacements = BootRandomizer.Randomize();
 			_birthdayReplacements = BirthdayRandomizer.Randomize();
-			_preferenceReplacements = PreferenceRandomizer.Randomize();
 		}
 
 		/// <summary>

@@ -14,7 +14,8 @@ namespace Randomizer
 		//TODO: 
 		//  Fix Bundles generated based on preferences - this will need to run before bundles are generated
 		//  Randomize Universal Preferences - need to work out numbers of items and categories to do
-		//  Clean up Randomize() function
+
+		static EditedObjectInformation _editedObjectInfo;
 
 		/// <summary>
 		/// Default data for universal preferences - these can be overridden by an NPC's individual preference
@@ -97,27 +98,31 @@ namespace Randomizer
 			[-81] = "Foragables"
 		};
 
-		// Ugly workaround until better method is found for isolating giftable items
 		/// <summary>
-		/// List of items which are giftable to NPCs.
+		/// Initialize list of items which are giftable to NPCs.
 		/// </summary>
-		private readonly static List<Item> GiftableItems = new List<Item>(
-			ItemList.GetAnimalProducts().Concat(ItemList.GetArtifacts())
-										.Concat(ItemList.GetCookeditems())
-										.Concat(ItemList.GetCrops())
-										.Concat(ItemList.GetFlowers())
-										.Concat(ItemList.GetForagables())
-										.Concat(ItemList.GetFruit())
-										.Concat(ItemList.GetGeodeMinerals())
-										.Concat(ItemList.GetResources())
-										.Concat(ItemList.GetSeeds())
-										.Concat(ItemList.GetTrash())
-										.Concat(ItemList.GetUniqueBeachForagables())
-										.Concat(ItemList.GetUniqueDesertForagables())
-										.Concat(ItemList.GetUniqueWoodsForagables())
-										.ToList()
-			);
+		private static List<Item> InitializeGiftableItemsList()
+        {
+			List<Item> GiftableItems = new List<Item>(
+				ItemList.GetAnimalProducts().Concat(ItemList.GetArtifacts())
+											.Concat(ItemList.GetCookeditems())
+											.Concat(ItemList.GetCrops())
+											.Concat(ItemList.GetFlowers())
+											.Concat(ItemList.GetForagables())
+											.Concat(ItemList.GetFruit())
+											.Concat(ItemList.GetGeodeMinerals())
+											.Concat(ItemList.GetResources())
+											.Concat(ItemList.GetSeeds())
+											.Concat(ItemList.GetTrash())
+											.Concat(ItemList.GetUniqueBeachForagables())
+											.Concat(ItemList.GetUniqueDesertForagables())
+											.Concat(ItemList.GetUniqueWoodsForagables())
+											.ToList()
+				);
+			return GiftableItems;
+		}
 
+		// Set of indices to use when parsing npc prefstrings.
 		private const int LovesIndex = 1;
 		private const int LikesIndex = 3;
 		private const int DislikesIndex = 5;
@@ -127,66 +132,44 @@ namespace Randomizer
 		/// <summary>
 		/// Does the preference randomization
 		/// </summary>
+		/// <param name="editedObjectInfo">Used to access the FishItem info if fish randomization is turned on.</param>
 		/// <returns>The dictionary to use for replacements</returns>
-		public static Dictionary<string, string> Randomize()
+		public static Dictionary<string, string> Randomize(EditedObjectInformation editedObjectInfo)
 		{
+			_editedObjectInfo = editedObjectInfo;
 			Dictionary<string, string> replacements = new Dictionary<string, string>();
 			
 			// TODO: Randomize Universal Preferences
+			// Randomize Universal Preferences, then check config for specific preference to determine whether or not to write to replacements
 
 			// Randomize NPC Preferences
 			foreach (KeyValuePair<string, string> npcPreferences in DefaultNPCPreferenceData)
 			{
 				List<int> unusedCategories = new List<int>(ItemCategoryIDs.Keys);
-				List<Item> unusedItems = new List<Item>(GiftableItems);
+				List<Item> unusedItems = InitializeGiftableItemsList();
+
+                //Add fish if fish randomization is turned on
+                if (Globals.Config.Fish.Randomize)
+                {
+                    // Create dummy Item with Fish ID - ID is all that's needed
+                    foreach (int fishID in _editedObjectInfo.FishReplacements.Keys)
+                    {
+                        Item dummyFishItem = new Item(fishID);
+                        unusedItems.Add(dummyFishItem);
+                    }
+                }
+                // If fish randomization is turned off, add vanilla fish
+                else
+                {
+                    List<Item> fishList = FishItem.Get();
+                    unusedItems = unusedItems.Concat(fishList).ToList();
+                }
 
 
-				string[] tokens = npcPreferences.Value.Split('/');
+                string[] tokens = npcPreferences.Value.Split('/');
 				string name = npcPreferences.Key;
 
-				// Couldn't think of a better way to structure this
-				for (int i = 1; i <= 9; i += 2)
-                {
-					int minItems;
-					int maxItems;
-					
-					// Should probably be moved into its own function
-					// Determine how many items to add per category - data available here: https://pastebin.com/gFEduBVd
-					// Basically, add more loved/liked items than hated/disliked, and few neutrals
-					switch (i)
-                    {
-						case 1:
-						case 7:
-							minItems = 1;
-							maxItems = 11;
-							break;
-
-						case 3:
-						case 5:
-							minItems = 1;
-							maxItems = 18;
-							break;
-
-						case 9:
-							minItems = 1;
-							maxItems = 3;
-							break;
-
-						default:
-							minItems = 0;
-							maxItems = 0;
-							break;
-                    }
-
-					int itemNum = Range.GetRandomValue(minItems, maxItems);
-					int catNum = Range.GetRandomValue(1, 4);
-
-					string itemString = GetRandomItemString(unusedItems, itemNum);
-					string catString = GetRandomCategoryString(unusedCategories, catNum);
-
-					string tokenString = catString + " " + itemString;
-					tokens[i] = tokenString;
-                }
+				for (int index = 1; index <= 9; index += 2) { tokens[index] = GetPreferenceString(index, unusedCategories, unusedItems); }
 
 				replacements.Add(name, string.Join("/", tokens));
 			}
@@ -195,7 +178,57 @@ namespace Randomizer
 			return replacements;
 		}
 
-		/// <summary>Builds a string consisting of <paramref name="quantity"/> randomly selected IDs from <paramref name="unusedItemIDs"/>.</summary>
+		/// <summary>
+		/// Builds an NPC's preference string for a given index (loves, hates, etc.).
+		/// </summary>
+		/// <param name="index">the index of the NPC's prefstring.</param>
+		/// <param name="unusedCategories">Holds list of categories which have not yet been assigned - prevents double-assignment.</param>
+		/// <param name="unusedItems">Holds list of Items which have not yet been assigned - prevents double-assignment.</param>
+		/// <returns>NPC's preference string for a given index.</returns>
+		private static string GetPreferenceString(int index, List<int> unusedCategories, List<Item> unusedItems)
+        {
+			int minItems;
+			int maxItems;
+
+			// Should probably be moved into its own function
+			// Determine how many items to add per category - data available here: https://pastebin.com/gFEduBVd
+			// Basically, add more loved/liked items than hated/disliked, and few neutrals
+			switch (index)
+			{
+				case 1:
+				case 7:
+					minItems = 1;
+					maxItems = 11;
+					break;
+
+				case 3:
+				case 5:
+					minItems = 1;
+					maxItems = 18;
+					break;
+
+				case 9:
+					minItems = 1;
+					maxItems = 3;
+					break;
+
+				default:
+					minItems = 0;
+					maxItems = 0;
+					break;
+			}
+
+			int itemNum = Range.GetRandomValue(minItems, maxItems);
+			int catNum = Range.GetRandomValue(1, 4);
+
+			string itemString = GetRandomItemString(unusedItems, itemNum);
+			string catString = GetRandomCategoryString(unusedCategories, catNum);
+
+			string tokenString = catString + " " + itemString;
+			return tokenString;
+		}
+
+		/// <summary>Builds a string consisting of <paramref name="quantity"/> randomly selected IDs from <paramref name="unusedItems"/>.</summary>
 		/// <param name="quantity">the number of IDs to add.</param>
 		/// <param name="unusedItems"> the list of IDs to pull from.</param>
 		/// <returns>A string of Item IDs with no leading/trailing whitespace.</returns>
@@ -269,14 +302,24 @@ namespace Randomizer
 				int ID = int.Parse(IDStringArray[arrayPos]);
 
 				// Positive numbers only - negative numbers represent categories
+				// Not all positive numbers are represented in ItemList - fish IDs are excluded if randomized
 				if (ID > 0)
 				{
-					outputString += ItemList.GetItemName(ID);
+
+					if (!ItemList.Items.ContainsKey(ID))
+					{
+						// ID not in ItemList - is a Fish
+						outputString += _editedObjectInfo.FishReplacements[ID];
+					}
+					else
+					{
+						outputString += ItemList.GetItemName(ID);
+					}
 				}
 				else
-                {
+				{
 					outputString += "[" + ItemCategoryIDs[ID] + "]";
-                }
+				}
 
 				// Not last item - put comma after
 				if (arrayPos != IDStringArray.Length - 1)
