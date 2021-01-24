@@ -117,7 +117,7 @@ namespace Randomizer
 			{
 				this.ApplyEdits(asset, this._questReplacements);
 			}
-			if (asset.AssetNameEquals("Data/mail"))
+			else if (asset.AssetNameEquals("Data/mail"))
 			{
 				this.ApplyEdits(asset, this._mailReplacements);
 			}
@@ -158,9 +158,9 @@ namespace Randomizer
 				this.ApplyEdits(asset, this._birthdayReplacements);
 			}
 			else if (asset.AssetNameEquals("Data/NPCGiftTastes"))
-            {
+			{
 				this.ApplyEdits(asset, this._preferenceReplacements);
-            }
+			}
 		}
 
 		public void InvalidateCache()
