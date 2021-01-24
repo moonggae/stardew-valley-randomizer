@@ -126,13 +126,11 @@ namespace Randomizer
 		private const int NeutralIndex = 9;
 
 		/// <summary>
-		/// Does the preference randomization
+		/// Randomize NPC Preference information.
 		/// </summary>
-		/// <param name="editedObjectInfo">Used to access the FishItem info if fish randomization is turned on.</param>
 		/// <returns>The dictionary to use for replacements</returns>
-		public static Dictionary<string, string> Randomize(EditedObjectInformation editedObjectInfo)
+		public static Dictionary<string, string> Randomize()
 		{
-			_editedObjectInfo = editedObjectInfo;
 			Dictionary<string, string> replacements = new Dictionary<string, string>();
 
 			List<int> universalUnusedCategories = new List<int>(ItemCategoryIDs.Keys);
@@ -372,19 +370,9 @@ namespace Randomizer
 				}
 
 				// Positive numbers only - negative numbers represent categories
-				// Not all positive numbers are represented in ItemList - fish IDs are excluded if randomized
 				if (ID > 0)
 				{
-
-					if (!ItemList.Items.ContainsKey(ID))
-					{
-						// ID not in ItemList - is a Fish
-						outputString += _editedObjectInfo.FishReplacements[ID];
-					}
-					else
-					{
-						outputString += ItemList.GetItemName(ID);
-					}
+					outputString += ItemList.GetItemName(ID);
 				}
 				else
 				{

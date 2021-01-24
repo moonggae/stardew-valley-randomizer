@@ -229,10 +229,9 @@ namespace Randomizer
 			CraftingRecipeAdjustments.FixCookingRecipeDisplayNames();
 			_cookingChannelReplacements = CookingChannel.GetTextEdits();
 
-			// Pass editedObjectInfo in for access to randomized fish
-			// Delicate balance - needs to run after Cooking Recipe fix so that cooked items are properly named,
+			// Needs to run after Cooking Recipe fix so that cooked items are properly named,
 			// and needs to run before bundles so that NPC Loved Item bundles are properly generated
-			_preferenceReplacements = PreferenceRandomizer.Randomize(editedObjectInfo);
+			_preferenceReplacements = PreferenceRandomizer.Randomize();
 
 			_bundleReplacements = BundleRandomizer.Randomize();
 			MusicReplacements = MusicRandomizer.Randomize();
