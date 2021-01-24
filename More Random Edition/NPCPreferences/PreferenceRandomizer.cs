@@ -74,7 +74,7 @@ namespace Randomizer
             }
 
             // Add generated prefstrings only if config option enabled
-            if (Globals.Config.NPCPreferences.RandomizeUniversalPreferences)
+            if (Globals.Config.NPCs.RandomizeUniversalPreferences)
             {
                 foreach (KeyValuePair<string, string> keyValuePair in universalPreferenceDataReplacements)
                 {
@@ -246,7 +246,7 @@ namespace Randomizer
         /// </summary>
         private static void WriteToSpoilerLog(Dictionary<string, string> replacements)
         {
-            if (!Globals.Config.NPCPreferences.Randomize) { return; }
+            if (!Globals.Config.NPCs.RandomizePreferences) { return; }
 
             Globals.SpoilerWrite("===== NPC GIFT TASTES =====");
             foreach (KeyValuePair<string, string> NPCPreferences in replacements)
