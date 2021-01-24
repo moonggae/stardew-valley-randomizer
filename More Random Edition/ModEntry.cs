@@ -77,7 +77,7 @@ namespace Randomizer
 			helper.Events.Display.RenderingActiveMenu += (sender, args) => _modAssetLoader.TryReplaceTitleScreen();
 			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetLoader.ReplaceTitleScreenAfterReturning();
 
-			if (Globals.Config.RandomizeMusic) { helper.Events.GameLoop.UpdateTicked += (sender, args) => this.TryReplaceSong(); }
+			if (Globals.Config.Music.Randomize) { helper.Events.GameLoop.UpdateTicked += (sender, args) => MusicRandomizer.TryReplaceSong(); }
 			if (Globals.Config.RandomizeRain) { helper.Events.GameLoop.DayEnding += _modAssetLoader.ReplaceRain; }
 
 			if (Globals.Config.Crops.Randomize)
@@ -234,32 +234,6 @@ namespace Randomizer
 					itemInChest.Name = parsnipSeedsName;
 					itemInChest.DisplayName = parsnipSeedsName;
 				}
-			}
-		}
-
-		/// <summary>
-		/// The last song that played/is playing
-		/// </summary>
-		private string _lastCurrentSong { get; set; }
-
-		/// <summary>
-		/// Attempts to replace the current song with a different one
-		/// If the song was barely replaced, it doesn't do anything
-		/// </summary>
-		public void TryReplaceSong()
-		{
-			string currentSong = Game1.currentSong?.Name;
-			if (this._modAssetEditor.MusicReplacements.TryGetValue(currentSong?.ToLower() ?? "", out string value) && _lastCurrentSong != currentSong)
-			{
-				if (value == "Volcano_Ambient") //TODO: get rid of this in the next major release (includes removing it from the Music Randomizer)
-				{
-					value = this._modAssetEditor.MusicReplacements["volcano_ambient"];
-				}
-
-				_lastCurrentSong = value;
-				Game1.changeMusicTrack(value);
-
-				//Game1.addHUDMessage(new HUDMessage($"Song: {currentSong} | Replaced with: {value}"));
 			}
 		}
 	}
