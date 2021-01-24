@@ -64,6 +64,7 @@ Note the following:
   * This does not yet include anything you don't get from Robin (Obelisks, the Gold Clock, etc.)
 * Music randomization
   * Most in-game songs and ambience are now randomly swapped 1 to 1 with another in-game song or ambience
+  * Option to play a completely random song each time an area is moved to
 * Quest randomization
   * Quest givers, required items, and rewards are randomly selected.
   * Help Wanted quests are unaffected, but the randomized item names should appear as expected.
