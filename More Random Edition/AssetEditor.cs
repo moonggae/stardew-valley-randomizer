@@ -61,7 +61,7 @@ namespace Randomizer
 			if (asset.AssetNameEquals("Data/Boots")) { return Globals.Config.Boots.Randomize; }
 			if (asset.AssetNameEquals("Data/Monsters")) { return Globals.Config.Monsters.Randomize; }
 			if (asset.AssetNameEquals("Data/NPCDispositions")) { return Globals.Config.NPCs.RandomizeBirthdays; }
-			if (asset.AssetNameEquals("Data/NPCGiftTastes")) { return Globals.Config.NPCs.RandomizePreferences; }
+			if (asset.AssetNameEquals("Data/NPCGiftTastes")) { return Globals.Config.NPCs.RandomizePreferences || Globals.Config.NPCs.RandomizeUniversalPreferences; }
 
 			return false;
 		}

@@ -54,35 +54,34 @@ namespace Randomizer
         private const int DislikesIndex = 5;
         private const int HatesIndex = 7;
         private const int NeutralIndex = 9;
+        private const int IndexOffset = 2;
 
         /// <summary>
-        /// Randomize NPC Preference information.
+        /// Randomize NPC Preferences information.
         /// </summary>
-        /// <returns>The dictionary to use for replacements</returns>
+        /// <returns>Dictionary&lt;string, string&gt; which holds the replacement prefstrings for the enabled preferences (NPC/Universal).</returns>
         public static Dictionary<string, string> Randomize()
         {
             Dictionary<string, string> replacements = new Dictionary<string, string>();
 
             List<int> universalUnusedCategories = new List<int>(GiftableItemCategories.Keys);
             List<Item> universalUnusedItems = ItemList.GetGiftables();
-            Dictionary<string, string> universalPreferenceDataReplacements = new Dictionary<string, string>();
 
-            // Generate randomized Universal Preferences strings even if not enabled - keeps RNG stable
+            // Generate randomized Universal Preferences strings
+            // Only add if corresponding config option enabled - keeps RNG stable
+            // Also allows for configuring Universal/NPC Prefs independently
+            bool UniversalPrefsEnabled = Globals.Config.NPCs.RandomizeUniversalPreferences;
             foreach (KeyValuePair<string, string> universalPrefs in DefaultUniversalPreferenceData)
             {
-                universalPreferenceDataReplacements.Add(universalPrefs.Key, GetUniversalPreferenceString(universalUnusedCategories, universalUnusedItems));
-            }
-
-            // Add generated prefstrings only if config option enabled
-            if (Globals.Config.NPCs.RandomizeUniversalPreferences)
-            {
-                foreach (KeyValuePair<string, string> keyValuePair in universalPreferenceDataReplacements)
+                if (UniversalPrefsEnabled)
                 {
-                    replacements.Add(keyValuePair.Key, keyValuePair.Value);
+                    replacements.Add(universalPrefs.Key, GetUniversalPreferenceString(universalUnusedCategories, universalUnusedItems));
                 }
             }
 
-            // Randomize NPC Preferences
+            // Generate randomized NPC Preferences strings
+            // Same as above - only add if config option is enabled
+            bool NPCPrefsEnabled = Globals.Config.NPCs.RandomizePreferences;
             foreach (string NPC in NPC.GiftableNPCs)
             {
                 List<int> unusedCategories = new List<int>(GiftableItemCategories.Keys);
@@ -91,9 +90,15 @@ namespace Randomizer
                 string[] tokens = Globals.GetTranslation($"{NPC}-prefs").Split('/');
                 string name = NPC;
 
-                for (int index = 1; index <= 9; index += 2) { tokens[index] = GetPreferenceString(index, unusedCategories, unusedItems); }
+                for (int index = LovesIndex; index <= NeutralIndex; index += IndexOffset)
+                {
+                    tokens[index] = GetPreferenceString(index, unusedCategories, unusedItems);
+                }
 
-                replacements.Add(name, string.Join("/", tokens));
+                if (NPCPrefsEnabled)
+                {
+                    replacements.Add(name, string.Join("/", tokens));
+                }
             }
 
             // Update Loves/Hates for Bundle reqs
@@ -151,22 +156,23 @@ namespace Randomizer
             switch (index)
             {
                 // Loved Items - higher minimum, so generated bundles have more items to draw from
-                case 1:
+                case LovesIndex:
                     minItems = 6;
                     maxItems = 11;
                     break;
-                case 7:
-                    minItems = 1;
-                    maxItems = 11;
-                    break;
 
-                case 3:
-                case 5:
+                case LikesIndex:
+                case DislikesIndex:
                     minItems = 1;
                     maxItems = 18;
                     break;
 
-                case 9:
+                case HatesIndex:
+                    minItems = 1;
+                    maxItems = 11;
+                    break;
+
+                case NeutralIndex:
                     minItems = 1;
                     maxItems = 3;
                     break;
@@ -246,7 +252,7 @@ namespace Randomizer
         /// </summary>
         private static void WriteToSpoilerLog(Dictionary<string, string> replacements)
         {
-            if (!Globals.Config.NPCs.RandomizePreferences) { return; }
+            if (!Globals.Config.NPCs.RandomizePreferences && !Globals.Config.NPCs.RandomizeUniversalPreferences) { return; }
 
             Globals.SpoilerWrite("===== NPC GIFT TASTES =====");
             foreach (KeyValuePair<string, string> NPCPreferences in replacements)
