@@ -23,7 +23,7 @@ namespace Randomizer
         /// <summary>
         /// Item Category indexes - only includes categories which are giftable - full list available here: https://stardewcommunitywiki.com/Modding:Object_data#Categories
         /// </summary>
-        private readonly static Dictionary<int, string> ItemCategoryIDs = new Dictionary<int, string>
+        private readonly static Dictionary<int, string> GiftableItemCategories = new Dictionary<int, string>
         {
             [-2] = "Gems",
             [-4] = "Fish",
@@ -63,7 +63,7 @@ namespace Randomizer
         {
             Dictionary<string, string> replacements = new Dictionary<string, string>();
 
-            List<int> universalUnusedCategories = new List<int>(ItemCategoryIDs.Keys);
+            List<int> universalUnusedCategories = new List<int>(GiftableItemCategories.Keys);
             List<Item> universalUnusedItems = ItemList.GetGiftables();
             Dictionary<string, string> universalPreferenceDataReplacements = new Dictionary<string, string>();
 
@@ -85,7 +85,7 @@ namespace Randomizer
             // Randomize NPC Preferences
             foreach (string NPC in NPC.GiftableNPCs)
             {
-                List<int> unusedCategories = new List<int>(ItemCategoryIDs.Keys);
+                List<int> unusedCategories = new List<int>(GiftableItemCategories.Keys);
                 List<Item> unusedItems = ItemList.GetGiftables();
 
                 string[] tokens = Globals.GetTranslation($"{NPC}-prefs").Split('/');
@@ -301,7 +301,7 @@ namespace Randomizer
                 }
                 else
                 {
-                    outputString += "[" + ItemCategoryIDs[ID] + "]";
+                    outputString += "[" + GiftableItemCategories[ID] + "]";
                 }
 
                 // Not last item - put comma after
