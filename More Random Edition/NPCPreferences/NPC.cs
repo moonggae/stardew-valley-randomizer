@@ -219,6 +219,47 @@ namespace Randomizer
 			UniversalHates.AddRange(ItemList.GetArtifacts());
 		}
 
+		/// <summary>
+		/// All NPCs which can be gifted items.
+		/// </summary>
+		public static List<string> GiftableNPCs = new List<string>
+		{
+			"Robin", 
+			"Demetrius", 
+			"Maru", 
+			"Sebastian", 
+			"Linus", 
+			"Pierre", 
+			"Caroline", 
+			"Abigail", 
+			"Alex", 
+			"George",
+			"Evelyn", 
+			"Lewis", 
+			"Clint", 
+			"Penny", 
+			"Pam", 
+			"Emily", 
+			"Haley", 
+			"Jas", 
+			"Vincent", 
+			"Jodi", 
+			"Kent", 
+			"Sam",
+			"Leah", 
+			"Shane", 
+			"Marnie", 
+			"Elliott", 
+			"Gus", 
+			"Dwarf", 
+			"Wizard", 
+			"Harvey", 
+			"Sandy", 
+			"Willy", 
+			"Krobus", 
+			"Leo"
+		};
+
 		public static List<string> QuestableNPCsList = new List<string>
 		{ // Kent is not included because of him not appearing for awhile
 			"Alex",
