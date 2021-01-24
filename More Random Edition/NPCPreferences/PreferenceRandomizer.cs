@@ -9,12 +9,7 @@ namespace Randomizer
 	/// Randomizes the preferences of all NPCs
 	/// </summary>
 	public class PreferenceRandomizer
-	{
-
-		//TODO: 
-		//  Fix Bundles generated based on preferences - this will need to run before bundles are generated
-		//  Randomize Universal Preferences - need to work out numbers of items and categories to do
-
+	{	
 		static EditedObjectInformation _editedObjectInfo;
 
 		/// <summary>
@@ -190,6 +185,9 @@ namespace Randomizer
 				replacements.Add(name, string.Join("/", tokens));
 			}
 
+			// Update Loves/Hates for Bundle reqs
+			UpdateBundlePrefs(replacements);
+
 			WriteToSpoilerLog(replacements);
 			return replacements;
 		}
@@ -244,7 +242,11 @@ namespace Randomizer
 			// Basically, add more loved/liked items than hated/disliked, and few neutrals
 			switch (index)
 			{
+				// Loved Items - higher minimum, so generated bundles have more items to draw from
 				case 1:
+					minItems = 6;
+					maxItems = 11;
+					break;
 				case 7:
 					minItems = 1;
 					maxItems = 11;
@@ -312,6 +314,27 @@ namespace Randomizer
 		}
 
 		/// <summary>
+		/// Updates Universal Loves, Universal Hates, and all NPC Loves for Bundles.
+		/// </summary>
+		private static void UpdateBundlePrefs(Dictionary<string, string> replacements)
+        {
+			List<Item> newLovesList = ItemList.GetItemListFromString(replacements["Universal_Love"], ' ');
+			List<Item> newHatesList = ItemList.GetItemListFromString(replacements["Universal_Hate"], ' ');
+
+			NPC.UpdateUniversalLoves(newLovesList);
+			NPC.UpdateUniversalHates(newHatesList);
+
+			foreach (KeyValuePair<string, string> NPCPreferences in replacements)
+			{
+				// If Universal Preference, skip
+				if (DefaultUniversalPreferenceData.ContainsKey(NPCPreferences.Key)) { continue; }
+
+				string NPCLoves = NPCPreferences.Value.Split('/')[LovesIndex];
+				NPC.UpdateNPCLoves(NPCPreferences.Key, ItemList.GetItemListFromString(NPCLoves, ' '));
+			}
+        }
+
+		/// <summary>
 		/// Write to the spoiler log.
 		/// </summary>
 		private static void WriteToSpoilerLog(Dictionary<string, string> replacements)
@@ -319,17 +342,17 @@ namespace Randomizer
 			if (!Globals.Config.NPCPreferences.Randomize) { return; }
 
 			Globals.SpoilerWrite("===== NPC GIFT TASTES =====");
-			foreach (KeyValuePair<string, string> npcPreferences in replacements)
+			foreach (KeyValuePair<string, string> NPCPreferences in replacements)
 			{
-				if (DefaultUniversalPreferenceData.ContainsKey(npcPreferences.Key))
+				if (DefaultUniversalPreferenceData.ContainsKey(NPCPreferences.Key))
 				{
-					Globals.SpoilerWrite($"{npcPreferences.Key.Replace('_', ' ')}: {TranslateIDs(npcPreferences.Value)}");
-					if (npcPreferences.Key == "Universal_Hate") { Globals.SpoilerWrite(""); }
+					Globals.SpoilerWrite($"{NPCPreferences.Key.Replace('_', ' ')}: {TranslateIDs(NPCPreferences.Value)}");
+					if (NPCPreferences.Key == "Universal_Hate") { Globals.SpoilerWrite(""); }
 				}
 				else
 				{
-					string npcName = npcPreferences.Key;
-					string[] tokens = npcPreferences.Value.Split('/');
+					string npcName = NPCPreferences.Key;
+					string[] tokens = NPCPreferences.Value.Split('/');
 
 					Globals.SpoilerWrite(npcName);
 

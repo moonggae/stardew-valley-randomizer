@@ -12,7 +12,164 @@ namespace Randomizer
 			ItemList.Items[(int)ObjectIndexes.RabbitsFoot]
 		};
 
+		/// <summary>
+		/// Updates UniversalLoves list to provided List&lt;Item&gt;<paramref name="newUniversalLoves"/>.
+		/// </summary>
+		/// <param name="newUniversalLoves">New list of universal loves.</param>
+		public static void UpdateUniversalLoves(List<Item> newUniversalLoves)
+        {
+			UniversalLoves = newUniversalLoves;
+        }
+
 		public static List<Item> UniversalHates;
+		
+		/// <summary>
+		/// Updates UniversalHates list to provided List&lt;Item&gt;<paramref name="newUniversalHates"/>.
+		/// </summary>
+		/// <param name="newUniversalHates">New list of universal hates.</param>
+		public static void UpdateUniversalHates(List<Item> newUniversalHates)
+        {
+			UniversalHates = newUniversalHates;
+        }
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="newNPCLoves"></param>
+		public static void UpdateNPCLoves(string NPC, List<Item> newNPCLoves)
+        {
+			switch (NPC)
+			{
+				case "Abigail":
+					Abigail.Loves = newNPCLoves;
+					break;
+
+				case "Alex":
+					Alex.Loves = newNPCLoves;
+					break;
+
+				case "Caroline":
+					Caroline.Loves = newNPCLoves;
+					break;
+
+				case "Clint":
+					Clint.Loves = newNPCLoves;
+					break;
+
+				case "Dwarf":
+					Dwarf.Loves = newNPCLoves;
+					break;
+
+				case "Demetrius":
+					Demetrius.Loves = newNPCLoves;
+					break;
+
+				case "Elliott":
+					Elliott.Loves = newNPCLoves;
+					break;
+
+				case "Emily":
+					Emily.Loves = newNPCLoves;
+					break;
+
+				case "Evelyn":
+					Evelyn.Loves = newNPCLoves;
+					break;
+
+				case "George":
+					George.Loves = newNPCLoves;
+					break;
+
+				case "Gus":
+					Gus.Loves = newNPCLoves;
+					break;
+
+				case "Haley":
+					Haley.Loves = newNPCLoves;
+					break;
+
+				case "Harvey":
+					Harvey.Loves = newNPCLoves;
+					break;
+
+				case "Jas":
+					Jas.Loves = newNPCLoves;
+					break;
+
+				case "Jodi":
+					Jodi.Loves = newNPCLoves;
+					break;
+
+				case "Kent":
+					Kent.Loves = newNPCLoves;
+					break;
+
+				case "Krobus":
+					Krobus.Loves = newNPCLoves;
+					break;
+
+				case "Leah":
+					Leah.Loves = newNPCLoves;
+					break;
+
+				case "Lewis":
+					Lewis.Loves = newNPCLoves;
+					break;
+
+				case "Linus":
+					Linus.Loves = newNPCLoves;
+					break;
+
+				case "Marnie":
+					Marnie.Loves = newNPCLoves;
+					break;
+
+				case "Maru":
+					Maru.Loves = newNPCLoves;
+					break;
+
+				case "Pam":
+					Pam.Loves = newNPCLoves;
+					break;
+
+				case "Robin":
+					Robin.Loves = newNPCLoves;
+					break;
+
+				case "Sam":
+					Sam.Loves = newNPCLoves;
+					break;
+
+				case "Sandy":
+					Sandy.Loves = newNPCLoves;
+					break;
+
+				case "Sebastian":
+					Sebastian.Loves = newNPCLoves;
+					break;
+
+				case "Shane":
+					Shane.Loves = newNPCLoves;
+					break;
+
+				case "Vincent":
+					Vincent.Loves = newNPCLoves;
+					break;
+
+				case "Willy":
+					Willy.Loves = newNPCLoves;
+					break;
+
+				case "Wizard":
+					Wizard.Loves = newNPCLoves;
+					break;
+
+				default:
+					break;
+			}
+		}
+
+
 		static NPC()
 		{
 			UniversalHates = new List<Item>
