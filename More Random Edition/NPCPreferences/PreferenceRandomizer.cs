@@ -112,6 +112,7 @@ namespace Randomizer
 											.Concat(ItemList.GetUniqueBeachForagables())
 											.Concat(ItemList.GetUniqueDesertForagables())
 											.Concat(ItemList.GetUniqueWoodsForagables())
+											.Concat(FishItem.Get()).ToList()
 											.ToList()
 				);
 			return GiftableItems;
@@ -158,24 +159,6 @@ namespace Randomizer
 			{
 				List<int> unusedCategories = new List<int>(ItemCategoryIDs.Keys);
 				List<Item> unusedItems = InitializeGiftableItemsList();
-
-				//Add fish if fish randomization is turned on
-				if (Globals.Config.Fish.Randomize)
-				{
-					// Create dummy Item with Fish ID - ID is all that's needed
-					foreach (int fishID in _editedObjectInfo.FishReplacements.Keys)
-					{
-						Item dummyFishItem = new Item(fishID);
-						unusedItems.Add(dummyFishItem);
-					}
-				}
-				// If fish randomization is turned off, add vanilla fish
-				else
-				{
-					List<Item> fishList = FishItem.Get();
-					unusedItems = unusedItems.Concat(fishList).ToList();
-				}
-
 
 				string[] tokens = npcPreferences.Value.Split('/');
 				string name = npcPreferences.Key;
