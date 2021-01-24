@@ -70,10 +70,10 @@
 	}
 
 	public class NPCPreferencesConfig
-    {
+	{
 		public bool Randomize { get; set; } = true;
 		public bool RandomizeUniversalPreferences { get; set; } = true;
-    }
+	}
 
 	public class BundleConfig
 	{

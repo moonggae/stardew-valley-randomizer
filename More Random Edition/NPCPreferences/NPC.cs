@@ -17,9 +17,9 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="newUniversalLoves">New list of universal loves.</param>
 		public static void UpdateUniversalLoves(List<Item> newUniversalLoves)
-        {
+		{
 			UniversalLoves = newUniversalLoves;
-        }
+		}
 
 		public static List<Item> UniversalHates;
 		
@@ -28,16 +28,16 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="newUniversalHates">New list of universal hates.</param>
 		public static void UpdateUniversalHates(List<Item> newUniversalHates)
-        {
+		{
 			UniversalHates = newUniversalHates;
-        }
+		}
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="newNPCLoves"></param>
 		public static void UpdateNPCLoves(string NPC, List<Item> newNPCLoves)
-        {
+		{
 			switch (NPC)
 			{
 				case "Abigail":

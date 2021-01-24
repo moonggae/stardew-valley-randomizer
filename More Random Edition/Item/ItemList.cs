@@ -220,22 +220,22 @@ namespace Randomizer
 		/// <param name="separator">The character to split <c>itemString</c> by.</param>
 		/// <returns></returns>
 		public static List<Item> GetItemListFromString(string itemString, char separator)
-        {
+		{
 			List<Item> itemList = new List<Item>();
 
 			string[] items = itemString.Split(separator);
 			foreach (string item in items)
-            {
+			{
 				int ID = int.Parse(item);
 				// Negative values represent Item Categories, not Items - ignore
 				if (ID > 0)
 				{
 					itemList.Add(Items[ID]);
 				}
-            }
+			}
 
 			return itemList;
-        }
+		}
 
 		/// <summary>
 		/// Gets all the items below the given difficulty - exclusive

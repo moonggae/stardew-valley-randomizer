@@ -97,7 +97,7 @@ namespace Randomizer
 		/// Initialize list of items which are giftable to NPCs.
 		/// </summary>
 		private static List<Item> InitializeGiftableItemsList()
-        {
+		{
 			List<Item> GiftableItems = new List<Item>(
 				ItemList.GetAnimalProducts().Concat(ItemList.GetArtifacts())
 											.Concat(ItemList.GetCookeditems())
@@ -140,7 +140,7 @@ namespace Randomizer
 
 			// Generate randomized Universal Preferences strings even if not enabled - keeps RNG stable
 			foreach (KeyValuePair<string, string> universalPrefs in DefaultUniversalPreferenceData)
-            {
+			{
 				universalPreferenceDataReplacements.Add(universalPrefs.Key, GetUniversalPreferenceString(universalUnusedCategories, universalUnusedItems));
 			}
 
@@ -148,9 +148,9 @@ namespace Randomizer
 			if (Globals.Config.NPCPreferences.RandomizeUniversalPreferences)
 			{
 				foreach (KeyValuePair<string, string> keyValuePair in universalPreferenceDataReplacements)
-                {
+				{
 					replacements.Add(keyValuePair.Key, keyValuePair.Value);
-                }
+				}
 			}
 
 			// Randomize NPC Preferences
@@ -159,25 +159,25 @@ namespace Randomizer
 				List<int> unusedCategories = new List<int>(ItemCategoryIDs.Keys);
 				List<Item> unusedItems = InitializeGiftableItemsList();
 
-                //Add fish if fish randomization is turned on
-                if (Globals.Config.Fish.Randomize)
-                {
-                    // Create dummy Item with Fish ID - ID is all that's needed
-                    foreach (int fishID in _editedObjectInfo.FishReplacements.Keys)
-                    {
-                        Item dummyFishItem = new Item(fishID);
-                        unusedItems.Add(dummyFishItem);
-                    }
-                }
-                // If fish randomization is turned off, add vanilla fish
-                else
-                {
-                    List<Item> fishList = FishItem.Get();
-                    unusedItems = unusedItems.Concat(fishList).ToList();
-                }
+				//Add fish if fish randomization is turned on
+				if (Globals.Config.Fish.Randomize)
+				{
+					// Create dummy Item with Fish ID - ID is all that's needed
+					foreach (int fishID in _editedObjectInfo.FishReplacements.Keys)
+					{
+						Item dummyFishItem = new Item(fishID);
+						unusedItems.Add(dummyFishItem);
+					}
+				}
+				// If fish randomization is turned off, add vanilla fish
+				else
+				{
+					List<Item> fishList = FishItem.Get();
+					unusedItems = unusedItems.Concat(fishList).ToList();
+				}
 
 
-                string[] tokens = npcPreferences.Value.Split('/');
+				string[] tokens = npcPreferences.Value.Split('/');
 				string name = npcPreferences.Key;
 
 				for (int index = 1; index <= 9; index += 2) { tokens[index] = GetPreferenceString(index, unusedCategories, unusedItems); }
@@ -199,7 +199,7 @@ namespace Randomizer
 		/// <param name="unusedItems"></param>
 		/// <returns>Universal preference string</returns>
 		private static string GetUniversalPreferenceString(List<int> unusedCategories, List<Item> unusedItems)
-        {
+		{
 			int catNum = Range.GetRandomValue(0, 10);
 			int itemNum = Range.GetRandomValue(5, 30);
 
@@ -210,13 +210,13 @@ namespace Randomizer
 
 			// If there are still categories to be added
 			while (unusedCategories.Any() && catNum > 0)
-            {
+			{
 				catString += Globals.RNGGetAndRemoveRandomValueFromList(unusedCategories) + " ";
 				catNum--;
 			}
 
 			while (unusedItems.Any() && itemNum > 0)
-            {
+			{
 				itemString += Globals.RNGGetAndRemoveRandomValueFromList(unusedItems).Id + " ";
 				itemNum--;
 			}
@@ -233,7 +233,7 @@ namespace Randomizer
 		/// <param name="unusedItems">Holds list of Items which have not yet been assigned - prevents double-assignment.</param>
 		/// <returns>NPC's preference string for a given index.</returns>
 		private static string GetPreferenceString(int index, List<int> unusedCategories, List<Item> unusedItems)
-        {
+		{
 			int minItems;
 			int maxItems;
 
@@ -284,14 +284,14 @@ namespace Randomizer
 		/// <param name="unusedItems"> the list of IDs to pull from.</param>
 		/// <returns>A string of Item IDs with no leading/trailing whitespace.</returns>
 		private static string GetRandomItemString(List<Item> unusedItems, int quantity)
-        {
+		{
 			List<Item> giftableItems = new List<Item>(unusedItems);
 			string itemString = "";
 			
 			for (int itemQuantity = quantity; itemQuantity > 0; itemQuantity--)
-            {
+			{
 				itemString += Globals.RNGGetAndRemoveRandomValueFromList(giftableItems).Id + " ";
-            }
+			}
 
 			return itemString.Trim();
 		}
@@ -301,7 +301,7 @@ namespace Randomizer
 		/// <param name="unusedCategoryIDs"> the list of IDs to pull from.</param>
 		/// <returns>A string of Category IDs with no leading/trailing whitespace.</returns>
 		private static string GetRandomCategoryString(List<int> unusedCategoryIDs, int quantity)
-        {
+		{
 			List<int> catIDs = new List<int>(unusedCategoryIDs);
 			string catString = "";
 
@@ -317,7 +317,7 @@ namespace Randomizer
 		/// Updates Universal Loves, Universal Hates, and all NPC Loves for Bundles.
 		/// </summary>
 		private static void UpdateBundlePrefs(Dictionary<string, string> replacements)
-        {
+		{
 			List<Item> newLovesList = ItemList.GetItemListFromString(replacements["Universal_Love"], ' ');
 			List<Item> newHatesList = ItemList.GetItemListFromString(replacements["Universal_Hate"], ' ');
 
@@ -332,7 +332,7 @@ namespace Randomizer
 				string NPCLoves = NPCPreferences.Value.Split('/')[LovesIndex];
 				NPC.UpdateNPCLoves(NPCPreferences.Key, ItemList.GetItemListFromString(NPCLoves, ' '));
 			}
-        }
+		}
 
 		/// <summary>
 		/// Write to the spoiler log.
@@ -347,7 +347,7 @@ namespace Randomizer
 				if (DefaultUniversalPreferenceData.ContainsKey(NPCPreferences.Key))
 				{
 					Globals.SpoilerWrite($"{NPCPreferences.Key.Replace('_', ' ')}: {TranslateIDs(NPCPreferences.Value)}");
-					if (NPCPreferences.Key == "Universal_Hate") { Globals.SpoilerWrite(""); }
+					Globals.SpoilerWrite("");
 				}
 				else
 				{
@@ -373,7 +373,7 @@ namespace Randomizer
 		/// <param name="ItemIDString">the list of item IDs to parse. Expected format: ID numbers separated by spaces.</param>
 		/// <returns>String of item names in a comma-separated list.</returns>
 		private static string TranslateIDs(string ItemIDString)
-        {
+		{
 			string[] IDStringArray= ItemIDString.Split(' ');
 			string outputString = "";
 
@@ -383,7 +383,7 @@ namespace Randomizer
 				bool IDParsed = int.TryParse(IDStringArray[arrayPos], out ID);
 
 				if (!IDParsed)
-                {
+				{
 					Globals.ConsoleWarn($"Input string was not in a correct format: '{IDStringArray[arrayPos]}'");
 					continue;
 				}
@@ -416,6 +416,6 @@ namespace Randomizer
 			}
 
 			return outputString;
-        }
+		}
 	}
 }
