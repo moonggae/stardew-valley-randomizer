@@ -93,31 +93,6 @@ namespace Randomizer
 			[-81] = "Foragables"
 		};
 
-		/// <summary>
-		/// Initialize list of items which are giftable to NPCs.
-		/// </summary>
-		private static List<Item> InitializeGiftableItemsList()
-		{
-			List<Item> GiftableItems = new List<Item>(
-				ItemList.GetAnimalProducts().Concat(ItemList.GetArtifacts())
-											.Concat(ItemList.GetCookeditems())
-											.Concat(ItemList.GetCrops())
-											.Concat(ItemList.GetFlowers())
-											.Concat(ItemList.GetForagables())
-											.Concat(ItemList.GetFruit())
-											.Concat(ItemList.GetGeodeMinerals())
-											.Concat(ItemList.GetResources())
-											.Concat(ItemList.GetSeeds())
-											.Concat(ItemList.GetTrash())
-											.Concat(ItemList.GetUniqueBeachForagables())
-											.Concat(ItemList.GetUniqueDesertForagables())
-											.Concat(ItemList.GetUniqueWoodsForagables())
-											.Concat(FishItem.Get()).ToList()
-											.ToList()
-				);
-			return GiftableItems;
-		}
-
 		// Set of indices to use when parsing npc prefstrings.
 		private const int LovesIndex = 1;
 		private const int LikesIndex = 3;
@@ -134,7 +109,7 @@ namespace Randomizer
 			Dictionary<string, string> replacements = new Dictionary<string, string>();
 
 			List<int> universalUnusedCategories = new List<int>(ItemCategoryIDs.Keys);
-			List<Item> universalUnusedItems = InitializeGiftableItemsList();
+			List<Item> universalUnusedItems = ItemList.GetGiftables();
 			Dictionary<string, string> universalPreferenceDataReplacements = new Dictionary<string, string>();
 
 			// Generate randomized Universal Preferences strings even if not enabled - keeps RNG stable
@@ -156,7 +131,7 @@ namespace Randomizer
 			foreach (KeyValuePair<string, string> npcPreferences in DefaultNPCPreferenceData)
 			{
 				List<int> unusedCategories = new List<int>(ItemCategoryIDs.Keys);
-				List<Item> unusedItems = InitializeGiftableItemsList();
+				List<Item> unusedItems = ItemList.GetGiftables();
 
 				string[] tokens = npcPreferences.Value.Split('/');
 				string name = npcPreferences.Key;

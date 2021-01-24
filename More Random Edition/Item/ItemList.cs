@@ -97,6 +97,17 @@ namespace Randomizer
 		}
 
 		/// <summary>
+		/// Gets all items which are giftable to NPCs.
+		/// </summary>
+		/// <returns>List&lt;Item&gt; containing all giftable items</returns>
+		public static List<Item> GetGiftables()
+		{
+			return Items.Values.Where(x => x.IsAnimalProduct || x.IsArtifact || x.IsCooked || x.IsCrabPotItem || x.IsCrop || x.IsFish
+										|| x.IsFlower || x.IsForagable || x.IsFruit || x.IsGeodeMineral || x.IsMayonaisse || x.IsMonsterItem
+										|| x.IsResource || x.IsSeed || x.IsSmelted || x.IsTrash).ToList();
+		}
+
+		/// <summary>
 		/// Gets all the seeds
 		/// </summary>
 		/// <returns />
