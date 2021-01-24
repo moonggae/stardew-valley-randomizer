@@ -138,9 +138,25 @@ namespace Randomizer
 		{
 			_editedObjectInfo = editedObjectInfo;
 			Dictionary<string, string> replacements = new Dictionary<string, string>();
-			
-			// TODO: Randomize Universal Preferences
-			// Randomize Universal Preferences, then check config for specific preference to determine whether or not to write to replacements
+
+			List<int> universalUnusedCategories = new List<int>(ItemCategoryIDs.Keys);
+			List<Item> universalUnusedItems = InitializeGiftableItemsList();
+			Dictionary<string, string> universalPreferenceDataReplacements = new Dictionary<string, string>();
+
+			// Generate randomized Universal Preferences strings even if not enabled - keeps RNG stable
+			foreach (KeyValuePair<string, string> universalPrefs in DefaultUniversalPreferenceData)
+            {
+				universalPreferenceDataReplacements.Add(universalPrefs.Key, GetUniversalPreferenceString(universalUnusedCategories, universalUnusedItems));
+			}
+
+			// Add generated prefstrings only if config option enabled
+			if (Globals.Config.NPCPreferences.RandomizeUniversalPreferences)
+			{
+				foreach (KeyValuePair<string, string> keyValuePair in universalPreferenceDataReplacements)
+                {
+					replacements.Add(keyValuePair.Key, keyValuePair.Value);
+                }
+			}
 
 			// Randomize NPC Preferences
 			foreach (KeyValuePair<string, string> npcPreferences in DefaultNPCPreferenceData)
@@ -176,6 +192,39 @@ namespace Randomizer
 
 			WriteToSpoilerLog(replacements);
 			return replacements;
+		}
+
+		/// <summary>
+		/// Universal preference strings - no need to vary quantities per index. May end up with lots of loved items, lots of hated items, both, neither, etc.
+		/// </summary>
+		/// <param name="unusedCategories"></param>
+		/// <param name="unusedItems"></param>
+		/// <returns>Universal preference string</returns>
+		private static string GetUniversalPreferenceString(List<int> unusedCategories, List<Item> unusedItems)
+        {
+			int catNum = Range.GetRandomValue(0, 10);
+			int itemNum = Range.GetRandomValue(5, 30);
+
+			string catString = "";
+			string itemString = "";
+
+			string universalPrefString = "";
+
+			// If there are still categories to be added
+			while (unusedCategories.Any() && catNum > 0)
+            {
+				catString += Globals.RNGGetAndRemoveRandomValueFromList(unusedCategories) + " ";
+				catNum--;
+			}
+
+			while (unusedItems.Any() && itemNum > 0)
+            {
+				itemString += Globals.RNGGetAndRemoveRandomValueFromList(unusedItems).Id + " ";
+				itemNum--;
+			}
+
+			universalPrefString = catString + itemString;
+			return universalPrefString.Trim();
 		}
 
 		/// <summary>
@@ -267,22 +316,30 @@ namespace Randomizer
 		/// </summary>
 		private static void WriteToSpoilerLog(Dictionary<string, string> replacements)
 		{
-			if (!Globals.Config.RandomizeNPCPreferences) { return; }
+			if (!Globals.Config.NPCPreferences.Randomize) { return; }
 
 			Globals.SpoilerWrite("===== NPC GIFT TASTES =====");
 			foreach (KeyValuePair<string, string> npcPreferences in replacements)
 			{
-				string npcName = npcPreferences.Key;
-				string[] tokens = npcPreferences.Value.Split('/');
+				if (DefaultUniversalPreferenceData.ContainsKey(npcPreferences.Key))
+				{
+					Globals.SpoilerWrite($"{npcPreferences.Key.Replace('_', ' ')}: {TranslateIDs(npcPreferences.Value)}");
+					if (npcPreferences.Key == "Universal_Hate") { Globals.SpoilerWrite(""); }
+				}
+				else
+				{
+					string npcName = npcPreferences.Key;
+					string[] tokens = npcPreferences.Value.Split('/');
 
-				Globals.SpoilerWrite(npcName);
-				
-				Globals.SpoilerWrite($"    Loves: {TranslateIDs(tokens[LovesIndex])}");
-				Globals.SpoilerWrite($"    Likes: {TranslateIDs(tokens[LikesIndex])}");
-				Globals.SpoilerWrite($"    Dislikes: {TranslateIDs(tokens[DislikesIndex])}");
-				Globals.SpoilerWrite($"    Hates: {TranslateIDs(tokens[HatesIndex])}");
-				Globals.SpoilerWrite($"    Neutral: {TranslateIDs(tokens[NeutralIndex])}");
-				Globals.SpoilerWrite("");
+					Globals.SpoilerWrite(npcName);
+
+					Globals.SpoilerWrite($"    Loves: {TranslateIDs(tokens[LovesIndex])}");
+					Globals.SpoilerWrite($"    Likes: {TranslateIDs(tokens[LikesIndex])}");
+					Globals.SpoilerWrite($"    Dislikes: {TranslateIDs(tokens[DislikesIndex])}");
+					Globals.SpoilerWrite($"    Hates: {TranslateIDs(tokens[HatesIndex])}");
+					Globals.SpoilerWrite($"    Neutral: {TranslateIDs(tokens[NeutralIndex])}");
+					Globals.SpoilerWrite("");
+				}
 			}
 			Globals.SpoilerWrite("");
 		}
@@ -299,7 +356,14 @@ namespace Randomizer
 
 			for (int arrayPos = 0; arrayPos < IDStringArray.Length; arrayPos++)
 			{
-				int ID = int.Parse(IDStringArray[arrayPos]);
+				int ID;
+				bool IDParsed = int.TryParse(IDStringArray[arrayPos], out ID);
+
+				if (!IDParsed)
+                {
+					Globals.ConsoleWarn($"Input string was not in a correct format: '{IDStringArray[arrayPos]}'");
+					continue;
+				}
 
 				// Positive numbers only - negative numbers represent categories
 				// Not all positive numbers are represented in ItemList - fish IDs are excluded if randomized

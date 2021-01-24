@@ -10,6 +10,7 @@
 		public MonstersConfig Monsters { get; set; } = new MonstersConfig();
 		public CropsConfig Crops { get; set; } = new CropsConfig();
 		public FishConfig Fish { get; set; } = new FishConfig();
+		public NPCPreferencesConfig NPCPreferences { get; set; } = new NPCPreferencesConfig();
 		public BundleConfig Bundles { get; set; } = new BundleConfig();
 
 		public bool RandomizeForagables { get; set; } = true;
@@ -22,7 +23,6 @@
 		public bool RandomizeAnimalSkins { get; set; } = true;
 		public bool RandomizeNPCSkins { get; set; } = false;
 		public bool RandomizeNPCBirthdays { get; set; } = true;
-		public bool RandomizeNPCPreferences { get; set; } = true;
 
 		public bool RandomizeIntroStory { get; set; } = true;
 		public bool RandomizeQuests { get; set; } = true;
@@ -68,6 +68,12 @@
 		public bool Randomize { get; set; } = true;
 		public bool UseCustomImages { get; set; } = true;
 	}
+
+	public class NPCPreferencesConfig
+    {
+		public bool Randomize { get; set; } = true;
+		public bool RandomizeUniversalPreferences { get; set; } = true;
+    }
 
 	public class BundleConfig
 	{
