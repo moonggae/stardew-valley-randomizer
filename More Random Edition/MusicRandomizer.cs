@@ -1,6 +1,5 @@
 ﻿using StardewValley;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Randomizer
 {
@@ -131,8 +130,7 @@ namespace Randomizer
 				"woodsTheme",
 				"XOR",
 				"tropical_island_day_ambient",
-				"VolcanoMines",
-				"Volcano_Ambient"
+				"VolcanoMines"
 			};
 
 		/// <summary>
@@ -169,13 +167,6 @@ namespace Randomizer
 			if (_lastCurrentSong == currentSong) { return; }
 
 			string newSongToPlay = Globals.Config.Music.RandomSongEachTransition ? GetRandomSong() : GetMappedSong(currentSong);
-
-			//TODO: get rid of this in the next major release (includes removing it from MusicList)
-			if (newSongToPlay == "Volcano_Ambient")
-			{
-				newSongToPlay = MusicReplacements["Volcano_Ambient"];
-			}
-
 			if (!string.IsNullOrWhiteSpace(newSongToPlay))
 			{
 				_lastCurrentSong = newSongToPlay;
@@ -205,9 +196,7 @@ namespace Randomizer
 		/// <returns />
 		private static string GetRandomSong()
 		{
-			//TODO: remove the Volcano_Ambient check in the next major release
-			return Globals.RNGGetRandomValueFromList(
-				MusicList.Where(song => song != "Volcano_Ambient").ToList(), true);
+			return Globals.RNGGetRandomValueFromList(MusicList, true);
 		}
 
 		/// <summary>
