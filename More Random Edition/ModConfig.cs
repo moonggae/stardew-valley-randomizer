@@ -12,6 +12,7 @@
 		public FishConfig Fish { get; set; } = new FishConfig();
 		public NPCsConfig NPCs { get; set; } = new NPCsConfig();
 		public BundleConfig Bundles { get; set; } = new BundleConfig();
+		public MusicConfig Music { get; set; } = new MusicConfig();
 
 		public bool RandomizeForagables { get; set; } = true;
 		public bool AddRandomArtifactItem { get; set; } = true;
@@ -24,9 +25,7 @@
 
 		public bool RandomizeIntroStory { get; set; } = true;
 		public bool RandomizeQuests { get; set; } = true;
-
 		public bool RandomizeRain { get; set; } = true;
-		public bool RandomizeMusic { get; set; } = true;
 	}
 
 	public class CraftingRecipesConfig
@@ -79,6 +78,12 @@
 	{
 		public bool Randomize { get; set; } = true;
 		public bool ShowDescriptionsInBundleTooltips { get; set; } = true;
+	}
+
+	public class MusicConfig
+	{
+		public bool Randomize { get; set; } = true;
+		public bool RandomSongEachTransition { get; set; } = false;
 	}
 }
 

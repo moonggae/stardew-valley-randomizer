@@ -2,6 +2,7 @@
 using StardewValley;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 
 namespace Randomizer
@@ -65,6 +66,16 @@ namespace Randomizer
 				return ModRef.Helper.Translation.Get(key);
 			}
 			return ModRef.Helper.Translation.Get(key, tokens);
+		}
+
+		/// <summary>
+		/// Gets the file path given the path from the mod directory
+		/// </summary>
+		/// <param name="pathFromModFolder">The path to the file from the mod folder</param>
+		/// <returns></returns>
+		public static string GetFilePath(string pathFromModFolder)
+		{
+			return Path.Combine(ModRef.Helper.DirectoryPath, pathFromModFolder);
 		}
 
 		/// <summary>
