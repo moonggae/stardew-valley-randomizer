@@ -169,7 +169,7 @@ namespace Randomizer
 		/// <param name="replacements">The replacements made - need to filter out the "HOLIDAY" entries</param>
 		private static void WriteToSpoilerLog(Dictionary<SDate, string> replacements)
 		{
-			if (!Globals.Config.RandomizeNPCBirthdays) { return; }
+			if (!Globals.Config.NPCs.RandomizeBirthdays) { return; }
 
 			Globals.SpoilerWrite("===== NPC BIRTHDAYS =====");
 			foreach (SDate date in replacements.Keys)

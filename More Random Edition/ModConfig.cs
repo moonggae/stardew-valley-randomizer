@@ -10,7 +10,9 @@
 		public MonstersConfig Monsters { get; set; } = new MonstersConfig();
 		public CropsConfig Crops { get; set; } = new CropsConfig();
 		public FishConfig Fish { get; set; } = new FishConfig();
+		public NPCsConfig NPCs { get; set; } = new NPCsConfig();
 		public BundleConfig Bundles { get; set; } = new BundleConfig();
+		public MusicConfig Music { get; set; } = new MusicConfig();
 
 		public bool RandomizeForagables { get; set; } = true;
 		public bool AddRandomArtifactItem { get; set; } = true;
@@ -20,14 +22,10 @@
 		public bool RandomizeFruitTrees { get; set; } = true;
 
 		public bool RandomizeAnimalSkins { get; set; } = true;
-		public bool RandomizeNPCSkins { get; set; } = false;
-		public bool RandomizeNPCBirthdays { get; set; } = true;
 
 		public bool RandomizeIntroStory { get; set; } = true;
 		public bool RandomizeQuests { get; set; } = true;
-
 		public bool RandomizeRain { get; set; } = true;
-		public bool RandomizeMusic { get; set; } = true;
 	}
 
 	public class CraftingRecipesConfig
@@ -68,10 +66,24 @@
 		public bool UseCustomImages { get; set; } = true;
 	}
 
+	public class NPCsConfig
+	{
+		public bool RandomizeSkins { get; set; } = false;
+		public bool RandomizeBirthdays { get; set; } = true;
+		public bool RandomizePreferences { get; set; } = true;
+		public bool RandomizeUniversalPreferences { get; set; } = true;
+	}
+
 	public class BundleConfig
 	{
 		public bool Randomize { get; set; } = true;
 		public bool ShowDescriptionsInBundleTooltips { get; set; } = true;
+	}
+
+	public class MusicConfig
+	{
+		public bool Randomize { get; set; } = true;
+		public bool RandomSongEachTransition { get; set; } = false;
 	}
 }
 

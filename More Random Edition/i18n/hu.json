@@ -5,7 +5,7 @@
 	"ui-remixed-bundle-title": "Csomagok (Olvassa el az eszköztippeket):",
 	"ui-remixed-bundle-tooltip": "Tartsa ezt a Normál értéken, ha a randomizáló csomag-funkcióját használja.",
 	"ui-year1-completable-tooltip": "Nem garantál sokat, ha a randomizáló csomagját vagy vágási funkcióit használja.",
-	
+
 	"time-format": "HH:mm",
 	"fish-tooltip-all-day": "Egész nap elérhető.",
 	"fish-tooltip-time-range": "Elérhető {{fromTime}} -tól {{toTime}} -ig.",
@@ -31,7 +31,7 @@
 
 	"fish-weather-sunny": "napos",
 	"fish-weather-rainy": "esős",
-	
+
 	"crop-tooltip-flower": "Ez egy virág.",
 	"crop-tooltip-needs-scythe": "Betakarítás a kaszával.",
 	"crop-tooltip-trellis": "Rácson nő.",
@@ -40,7 +40,7 @@
 	"crop-tooltip-seasons": "Növény a következő időszakban: {{seasons}}.",
 	"crop-tooltip-cactus-fruit": "Csak beltérben termeszthető.",
 	"crop-tooltip-rice-shoot": "Gyorsabban nő víz közelében.",
-	
+
 	"bundle-random-all": "Véletlen",
 	"bundle-random-letter": "Angol \"{{letter}}\"",
 
@@ -101,7 +101,7 @@
 	"bundle-bulletin-white": "Fehér",
 
 	"bundle-joja-missing": "A hiányzó",
-	
+
 	"vault-money-format": "{{moneyString}}g",
 	"Vault2500-1": "Ebéd pénz",
 	"Vault2500-2": "Busz viteldíj",
@@ -132,7 +132,7 @@
 	"Vault25000-5": "Musztáng",
 	"Vault25000-6": "Lexus",
 	"Vault25000-7": "Amerikai Kórház Bill",
-	
+
 	"weapon-description-stabbing": "Szúró károkat okoz.",
 	"weapon-description-slashing": "Vágáskárosodást okoz.",
 	"weapon-description-crushing": "Zúzás káros.",
@@ -152,7 +152,7 @@
 	"Clint-name": "Clint",
 	"Clint-relationships": "Emily ''",
 	"Demetrius-name": "Demetrius",
-	"Demetrius-relationships":"Robin 'feleségem' Maru ''",
+	"Demetrius-relationships": "Robin 'feleségem' Maru ''",
 	"Willy-name": "Willy",
 	"Willy-relationships": "Elliott ''",
 	"Elliott-name": "Elliott",
@@ -160,7 +160,7 @@
 	"Emily-name": "Emily",
 	"Emily-relationships": "Haley 'testvérem'",
 	"Evelyn-name": "Evelyn",
-	"Evelyn-relationships":"George 'férjem' Alex 'unokám'",
+	"Evelyn-relationships": "George 'férjem' Alex 'unokám'",
 	"George-name": "George",
 	"George-relationships": "Evelyn 'feleségem' Alex 'unokám'",
 	"Gus-name": "Gus",
@@ -213,25 +213,60 @@
 	"Sandy-relationships": "Emily ''",
 	"Krobus-name": "Krobus",
 	"Krobus-relationships": "",
-	
+
+	"Robin-prefs": "Ez az enyém? Váó, ezt imádom!!/224 426 636/Köszönöm! Ez nagyon jó!/-6 -79 424 709/Őőő... miért?/16 330/Ez meg...? Ez szörnyű!/2/Köszönöm. Ez még jól jöhet.//",
+	"Demetrius-prefs": "Ezt nekem adod? Ez lenyűgöző!/207 232 233 400/Köszönöm! Ez egy nagyon érdekes példány./-5 -79 422/...Ez meg mi?/80 330/Ez undorító./2/Ez kedves volt tőled./-4/",
+	"Maru-prefs": "Csak nem...? Ó váó, @! Ez látványos!/72 197 190 215 222 243 336 337 400 787 910/Ez egy szuper ajándék! Köszönöm!/-260 62 64 66 68 70 334 335 725 726 909/Ó... Ez az enyém? Akkor most ide rakom.../-4 330 414 410 404 724/Fúj! Azt gondoltad, hogy ez tetszene nekem?/340 342 2 430 416/Köszönöm.//",
+	"Sebastian-prefs": "Ezt nagyon szeretem. Honnan tudtad?/84 227 236 575 305/Köszönöm, ezt szeretem./267 614 276/...?/-81 30 -80/...Ezt utálom./-5 2 459 195 201 240 330 -26 873/...köszi./-4/",
+	"Linus-prefs": "Ez csodálatos! Feldobtad a napomat./88 90 234 242 280/Ez egy nagyszerű ajándék. Köszönöm!/-5 -6 -79 -81/Hmm... Ez nem igazán jön be nekem./-2 330/Ezt miért adnád nekem? Azt hiszed szeretem a szemetet, mert egy sátorban élek? Ez borzasztó./2/Egy ajándék? Milyen kedves./-4/",
+	"Pierre-prefs": "Ez a mindenkori kedvencem! Köszönöm!/202/Ez nagyon kedves tőled. Ez tetszik./-5 -6 -7 18 22 402 418 259/Ez pont nem a kedvencem.../-2 -81 330/Kérlek, soha többet ne adj ilyet./167 -4 199 270 229 248/Egy ajándék? Köszönöm!//",
+	"Caroline-prefs": "Ezt most... nekem adod? Szóhoz sem jutok./213 614 593 907/Ó, egek? Ez komoly?/-7 18 815 402 418/Nem, nem, nem.../-81 330 300 306 307/Ez csak szemét. Meg vagyok sértődve./80 296/Ó, ez kedves. Köszönöm.//",
+	"Abigail-prefs": "Ezt nagyon csípem! Te vagy a legjobb, @!/66 128 220 226 276 611 904/Hé, honnan tudtad, hogy éhes vagyok? Ez finomnak néz ki!//Ezzel meg mégis mit csináljak?/-5 -75 -79 16 245 246/Mit képzeltél? Ez borzalmas!/330/Hoztál nekem ajándékot? Köszönöm.//",
+	"Alex-prefs": "Hé, ez menő! Imádom ezt a cuccost!/201 212 662 664/Ez királyság! Köszi./-5/Őőő... Oké. Köszi./16 330/Ez most komoly? Ez csak szemét./80/Köszönöm!//",
+	"George-prefs": "Ez a kedvencem! Köszönöm./20 205/Köszönöm./18 195 199 200 214 219 223 231 233/Ez egy borzalmas ajándék./-80 16/Ez valószínűleg a legrosszabb ajándék amit valaha is láttam. Köszönöm./22 80 330/Egy ajándék? Hmm...#$e#Akarsz valamit cserébe?//",
+	"Evelyn-prefs": "*meghökken*... Ez egyszerűen lenyűgöző!$u#$e#Most nagyon boldoggá tettél egy öregasszonyt./72 220 239 284 591 595/Ó, egek, ez csodálatosan néz ki! Ez nagyon kedves tőled./-6 18 402 418/Őőő, ezt hová fogom tenni?/16 80/...szörnyen rossz szaga van./225 226 227 228 219 396 397 393 372 248 296 -4 330/Milyen kedves. Köszönöm, kedveském.//",
+	"Lewis-prefs": "Váó, ez a kedvencem! Köszönöm!/200 208 235 614 260/Köszönöm, ez nagyszerű!/-80 24 88 90 192 258 264 272 274 278/Nos, azt hiszem a szándék a fontos.../-6 16 330/Ettől rosszul leszek. Milyen szörnyűséges ajándék./80/Ez nagyon kedves tőled. Köszönöm.//",
+	"Clint-prefs": "Igen! Pont ez az, amit kerestem!/60 62 64 66 68 70 336 337 605 649 749/Ez egy mókás ajándék. Köszönöm!/334 335/*Sóhaj*.../-80 2 16 80 /Ettől depressziós leszek./4/Köszönöm./-15/",
+	"Penny-prefs": "Köszönöm! Ezt nagyon szeretem!/60 376 651 72 164 218 230 244 254/Köszönöm! Ez különlegesnek tűnik./-6 20 22/Izé, ez az enyém? ...Köszönöm./-4 80 330 456 457 444 440 422 420/Uhhh... Sajnálom, de ezt szívből gyűlölöm./446 346 348 303 304 398 459 873/Köszönöm, ez jól néz ki.//",
+	"Pam-prefs": "Hé, hé! Na ez már döfi! Ezer hála, kölyök./24 90 199 208 303 346 459 873/Ezt most jól eltaláltad, kölyök. Köszönöm!/-6 -75 -79 18 227 228 231 232 233 234 235 236 238 402 418/Ez nem jön be nekem./-5 16 80 330/Na ez aztán már tényleg alávaló.$u#$e#(Ez most valami rossz vicc akarna lenni?)/149 151/Köszönöm, kölyök./-4/",
+	"Emily-prefs": "Ez az ajándék mesébe illő! Annyira köszönöm!/60 62 64 66 68 70 241 428 440/Köszönöm! Ebből pozitív energiát érzek./18 82 84 86 196 200 207 230 235 402 418/Sajnálom, @. Ez nem tetszik./78 2 232 233 225 226/Ennek az ajándéknak erős negatív energiája van. Nem bírom elviselni./212 213 227 228/Köszönöm!//",
+	"Haley-prefs": "Ó egek, ez a kedvencem!!/221 421 610 88/*meghökken* ...ez az enyém? Köszönöm!/18 60 62 64 70 88 222 223 232 233 234 402 418/Uhh ...ez egy olyan ostoba ajándék./-5 -6 -75 -79 -81 80 -27/Undorító!/-4 2 16 330 74/Köszönöm. Szeretem az ajándékokat.//",
+	"Jas-prefs": "*meghökken*...Váó!! Köszönöm szépen!$h/221 595 604/Szeretem az ajándékokat! Köszönöm szépen!/18 60 64 70 88 232 233 234 222 223 340 344 402 418 903/Ez egy ajándék volna? Ó...$s/-5 -81 -75 -79 80/Fúj. Ez undi.$s/253 395 459 -26 2 16 330 873/Köszönöm!//",
+	"Vincent-prefs": "Váó, nagyon szépen köszönöm! Ez óriási!/221 398 612 721 903/Ez az enyém? Váó, köszönöm!/18 60 64 70 88 232 233 234 222 223 340 344 402 418/Ez nem volt vicces...$s/-5 -75 -79 -81 80/Fúj, ez meg micsoda?$s/253 395 459 -26 2 16 330 873/Köszönöm!//",
+	"Jodi-prefs": "Ó, te olyan édes vagy! Ez nagyon tetszik!/72 200 211 214 220 222 225 231/Köszönöm! Ettől most feldobtad a napomat./-5 -6 -79 18 402 418/Hmm, végül is bármikor komposztot készíthetek belőle.../-81 80 248 330/*Pföjj*... Ezt utálom.../18 22 396/Ez olyan kedves tőled! Köszönöm.//",
+	"Kent-prefs": "Ó...! Az anyám fiatal koromban mindig ilyet adott nekem. Régi szép emlékeket idéz fel. Köszönöm./607 649/Hé, na ez aztán a jó ajándék. Köszönöm./-5 -79 18 402 418/Ah... Ez egy... mi is ez tulajdonképpen? Hmm.../80 330 416 873/Ez... Ilyet adtak nekem a Gotoroi börtöntáborban. Azóta is próbálom elfelejteni. *reszket*/-6 2 227 229 456/Ez kedves tőled. A családnak is tetszeni fog.//",
+	"Sam-prefs": "Ezaz! Ez a nagy kedvencem!/90 206 655 658 562 731/Köszönöm! Ezt nagyon szeretem./167 210 213 220 223 224 228 232 233 239 -5/Hmm... ez... érdekes./-81 80 152 330 -75/Semmit se értesz, ugye?/306 307 342 -15 2/Ezt nekem hoztad? Köszönöm!//",
+	"Leah-prefs": "Ó! Pont ez az, amire vágytam! Köszönöm!/196 200 348 606 651 650 426 430/Ez tényleg nagyszerű ajándék! Köszönöm!/-5 -6 -79 -81 18 402 169 406 408 418 86/Hmm... Azt hiszem mindenkinek más az ízlése./-2 2 152 330 221 223 229 232 233 241 209 194/Ez egy elég szörnyű ajándék, nem gondolod?/305 211 210 206 216/Köszönöm.//",
+	"Shane-prefs": "Ó, váó, @! Honnan tudtad, hogy ez a kedvencem?/206 215 260 346/Ez nagyszerű! Köszönöm!/-5 -79 303/Ezt nem igazán szeretem./-81 152 330/Miért adod nekem a szemetedet?/80 342/Ó, hoztál nekem valamit? Köszönöm!//",
+	"Marnie-prefs": "Ez egy hihetetlen ajándék! Köszönöm!!/72 221 240 608/Köszönöm!/-5 -6 402 418/Ó. Akkor azt hiszem átveszem./16 152/Ez értéktelen. Nem értelek./330/Köszönöm! Ez jól néz ki.//",
+	"Elliott-prefs": "@, ez egy varázslatos ajándék! Hálás vagyok érte!/715 732 218 444 637 814/Ez az enyém? Csodálatos!/727 728 -79 60 80 82 84 149 151 346 348 728/Hmm... Nem igazán rajongok érte./16 206 330 -79 -81 -6/Ennek a dolognak rossz kisugárzása van. Meg kell szabadulnom tőle./80 154 300 296/Ó, egy ajándék! Hálás köszönetem!/-4/",
+	"Gus-prefs": "Ezt most... nekem adod? Szóhoz sem jutok./72 213 635 729 907/Ó, egek! Ez komoly?/348 303 -7 18/Nem, nem, nem.../16 330/Ez csak szemét. Meg vagyok sértődve./80 167 648/Ó, ez kedves. Köszönöm.//",
+	"Dwarf-prefs": "Hé, ezt nagyon szeretem. Jó dolgokat lehet találni a bányában./554 60 62 64 66 68 70 749/Ah, ez az otthonomra emlékeztet./78 82 84 86 96 97 98 99 121 122/Hmm... Az emberek ezt szeretik?/-5 -6 16 -81 2 4 330/Nem érdekel, hogy milyen a fajtád. Ez értéktelen szemét.//Egy felajánlás! Köszönöm./-28/",
+	"Wizard-prefs": "Ahh, ez erős misztikus erővel van átitatva. Jól fog jönni a tanulmányozásaim során. Köszönöm!/155 422 769 768/Ezer hála. Ennek a tárgynak érdekes tulajdonságai vannak./-12 72 82 84/Ez? ...Azt hiszem majd meglesem hogyan reagál arra, ha a tűzbe dobom./-5 -6 -81 2 16 330 766/Uhhh... Ezek nagyon egyszerű dolgok. Kérlek a jövőben ne zavarj engem ilyenekkel.//Köszönöm. Azt hiszem ez még hasznomra válhat.//",
+	"Harvey-prefs": "Ez az enyém? Ez a kedvencem! Mintha olvasnál a gondolataimban./348 237 432 395 342/Ez egy kedves ajándék. Köszönöm!/-81 -79 -7 402 614 418 422 436 438 442 444 422/Hmm... Biztos, hogy ez egészséges?/-4 424 426 2 330 233 232 238 234 223 222 221 220 216 211 210 208 206 205/...Azt hiszem erre allergiás vagyok./296 245 397 396 394 393 392/Köszönöm. Ez nagyon kedves tőled.//",
+	"Sandy-prefs": "Óóó! Szeretem a völgyben termő virágokat. Olyan boldog vagyok!~/18 402 418 905/Ez csodálatosan néz ki. Nagyon szépen köszönöm!/-75 -79 88 428 436 438 440/Ó... Őőő. Köszönöm./-4 2 330/*szimat* ...ez meg micsoda?//Ez az enyém? Köszönöm!//",
+	"Willy-prefs": "Ez nagyszerű! Bárcsak itt lenne a nagyapám. Megőrülne érte./72 143 149 154 276 337 698 459/Ez nagyszerűen néz ki. Köszönöm!/66 336 340 699 707 198 202 209 212 213 214 219 225 727 730 728 732 265/Hmmm... Te szereted az ilyet? Hmmm./-7 -81 2 4 330/... *szimat*... Nos, azt hiszem ezt behajítom a pajtás vödörbe.//Egy ajándék! Köszönöm./-4 227 228 242/",
+	"Krobus-prefs": "Ez egy lenyűgöző ajándék. A népemnek nagy megtiszteltetés ilyet ajándékba kapni./72 16 276 337 305 308/Nagyon szépen köszönöm./66 265 336 340/Az embereknek... érdekes az ízlésük./-7 -81 2 330/Ó... Őőő. Azt hiszem ezt elfogadom.//Köszönöm.//",
+	"Leo-prefs": "Ezt szeretem. Berakom a fészkembe./444 289 834 906/Biztos vagy benne? Ez olyan jó.../852 396 392 394 397 905/Ó... Nem tudom, hogy ezt meg tudom-e emészteni.../-7 -81 2 330 303 459 342 346 348/*szimat* *szimat*... Miért adod ezt nekem? Azt akarod, hogy elássam neked?/257 253 247 271 283 304 303 346 873 348 459 167/Elfogadom az ajándékodat./-4 395/",
+
 	"seasons-spring": "tavaszi",
 	"seasons-summer": "nyári",
 	"seasons-fall": "ősz",
 	"seasons-winter": "téli",
-	
+
 	"sapling-description": "28 nap múlva érik meg, és {{itemName}}fa lesz belőle. A {{season}} gyümölcsöt viseli. Csak akkor nő meg, ha a 8 környező \"négyzet\" üres.",
-	
+
 	"sapling-text": "{{itemName}} csemete",
 	"seed-text": "{{itemName}} magvak",
 	"trellis-text": "{{itemName}}magvak",
 	"coffee-bean-name": "{{itemName}}bab",
 	"unmilled-rice-name": "Darálatlan {{itemName}}",
-	
+
 	"item-rice-description": "Egy alap gabona, amit gyakran tálalnak zöldségek alatt.",
 	"item-coffee-description": "Finom az illata. Ez majd biztosan felélénkít.",
 	"item-coffee-bean-description": "Tavasszal vagy nyáron ültesd el, hogy {{itemName}} növényt termessz. Egy keghordóba ötöt helyezve {{coffeeName}} lesz belőle.",
 	"item-coffee-name": "Forró {{itemName}}",
-	"item-recursion-sapling-name": "Rekurziós csemete", 
+	"item-recursion-sapling-name": "Rekurziós csemete",
 
 	"Farmer.cs.1918": "Kaptál 15 {{seedName}}!^^'Itt egy kis apróság, így kezdésképpen.^-Lewis polgármester'",
 	"TV.cs.13151": "Ezt már tudod főzni.",
@@ -278,7 +313,7 @@
 	"item-219-name-and-description": "{{itemName}} leves/Elég sós.",
 	"item-225-name-and-description": "Sült {{itemName}}/Olajos, de tele van ízekkel.",
 	"item-226-name-and-description": "Fűszeres {{itemName}}/Ez nagyon fűszeres! Légy óvatos.",
-	
+
 	"Silo-name-and-description": "Siló/Segítségével levághatod és etetéshez raktározhatod el a füvet.",
 	"Mill-name-and-description": "Malom/Segítségével búzából lisztet, céklából cukrot készíthetsz.",
 	"Earth-Obelisk-name-and-description": "Föld obeliszk/Elteleportál a hegyekbe.",
@@ -304,7 +339,7 @@
 	"Fish-Pond-name-and-description": "Halas tó/Nevelj halakat és gyűjtsd be a terméküket. A halak idővel szaporodnak.",
 	"Big-Shed-name-and-description": "Nagy raktár/Megduplázza a raktár méretét. A belseje dekorálható.",
 	"Desert-Obelisk-name-and-description": "Sivatagi obeliszk/Elteleportál a sivatagba.",
-	
+
 	"boots-504-description": "Egy kicsit gyengék... de divatosak!",
 	"boots-505-description": "Védelem az elemekkel szemben.",
 	"boots-506-description": "A bőr nagyon rugalmas.",
@@ -319,7 +354,7 @@
 	"boots-515-description": "Ez a vidéki divat legteteje.",
 	"boots-804-description": "Szeretettel Emilytől. 100% komposztálható!",
 	"boots-806-description": "A csatja színaranyból van.",
-	
+
 	"quest-3": "Basic/A Rejtélyes Qi/Találtál egy másik jegyzetet, amit 'Mr. Qi' írt alá. Ezúttal még szokatlanabb a kérése./Helyezz 10 {{item}} Lewis polgármester hűtőjébe./null/-1/0/-1/false",
 	"quest-6": "ItemHarvest/Kezdő Lépések/Ha gazda akarsz lenni, akkor az alapokkal kell kezdened. A kapával megmunkálhatod a földet, majd magokat ültethetsz el. Öntözd meg a termést minden nap, míg készen nem áll a begyűjtésre./Termessz egy {{item}}./{{id}}/h7 8/100/-1/true",
 	"quest-22": "Basic/Halragu/Jodi benézett a farmra, és kérte, hogy menj el hozzájuk vacsorázni du. 7:00-re. Csak annyi a kérése, hogy vigyél neki egy {{item}}, mert az kell a ragujához./Vigyél Jodinak egy {{item}} legkésőbb du. 7:00-ig./-1/-1/0/-1/true",
@@ -370,7 +405,7 @@
 	"mail-winter_5_2": "@,^Egy fenomenális gazdagon elvarázsolt botot készítenék.^De sajnos hiányzik valami: egy {{item}}.^Hajlandó vagyok a piaci ár 5x-ösét fizetni érte. Hozz nekem egyet amilyen gyorsan csak tudsz.^ -{{person}} %item quest 123 %%[#]{{person}}nek szüksége van valamilyen véletlenszerű elemre",
 	"mail-winter_13_2": "Van számodra egy másik kihívásom: Fogj ki nekem egy {{item}}.^Nem olyan könnyű legyűrni őket, de tudom, hogy te képes vagy rá.^  -{{person}}%item quest 124 %%[#]A {{person}} jobb halászati kihívása",
 	"mail-winter_19_2": "Kedves @,^Kezdek meggajdulni. Kétségbeesetten szükségem volna egy {{cropStart}}-no-nora a szalonban, de nem tudok készíteni, mivel nincs {{item}}!^Tudnál segíteni?^  -{{person}}%item quest 125 %%[#]{{person}} italt készít",
-	
+
 	"item-0-display-name": "Gyomok",
 	"item-2-display-name": "Kő",
 	"item-4-display-name": "Kő",

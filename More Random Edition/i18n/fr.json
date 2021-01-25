@@ -5,7 +5,7 @@
 	"ui-remixed-bundle-title": "Lots (Lire les info-bulles):",
 	"ui-remixed-bundle-tooltip": "Gardez ceci sur Commun si vous utilisez la fonction de bundle du randomizer..",
 	"ui-year1-completable-tooltip": "Ne garantit pas grand-chose si vous utilisez les fonctionnalités de regroupement ou de recadrage du randomizer.",
-	
+
 	"time-format": "HH:mm",
 	"fish-tooltip-all-day": "Disponible toute la journée.",
 	"fish-tooltip-time-range": "Disponible du {{fromTime}} au {{toTime}}.",
@@ -31,7 +31,7 @@
 
 	"fish-weather-sunny": "ensoleillé",
 	"fish-weather-rainy": "pluvieux",
-	
+
 	"crop-tooltip-flower": "Ceci est une fleur.",
 	"crop-tooltip-needs-scythe": "Récoltez avec la faux.",
 	"crop-tooltip-trellis": "Pousse sur un treillis.",
@@ -40,7 +40,7 @@
 	"crop-tooltip-seasons": "Planter pendant: {{seasons}}.",
 	"crop-tooltip-cactus-fruit": "Ne peut être cultivé qu'en intérieur.",
 	"crop-tooltip-rice-shoot": "Pousse plus vite près de l'eau.",
-	
+
 	"bundle-random-all": "Aléatoire",
 	"bundle-random-letter": "Anglais \"{{letter}}\"",
 
@@ -101,7 +101,7 @@
 	"bundle-bulletin-white": "blanc",
 
 	"bundle-joja-missing": "Disparus",
-	
+
 	"vault-money-format": "{{moneyString}}po",
 	"Vault2500-1": "Argent du déjeuner",
 	"Vault2500-2": "Tarif du bus",
@@ -132,7 +132,7 @@
 	"Vault25000-5": "Mustang",
 	"Vault25000-6": "Lexus",
 	"Vault25000-7": "American Hospital Bill",
-	
+
 	"weapon-description-stabbing": "Fait des coups de couteau.",
 	"weapon-description-slashing": "Fait des dégâts tranchants.",
 	"weapon-description-crushing": "Fait des dégâts d'écrasement.",
@@ -152,7 +152,7 @@
 	"Clint-name": "Clint",
 	"Clint-relationships": "Emily ''",
 	"Demetrius-name": "Demetrius",
-	"Demetrius-relationships":"Robine 'femme' Maru ''",
+	"Demetrius-relationships": "Robine 'femme' Maru ''",
 	"Willy-name": "Willy",
 	"Willy-relationships": "Elliott ''",
 	"Elliott-name": "Elliott",
@@ -160,7 +160,7 @@
 	"Emily-name": "Emily",
 	"Emily-relationships": "Haley 'soeur'",
 	"Evelyn-name": "Evelyn",
-	"Evelyn-relationships":"George 'mari' Alex 'petit-fils'",
+	"Evelyn-relationships": "George 'mari' Alex 'petit-fils'",
 	"George-name": "George",
 	"George-relationships": "Evelyn 'femme' Alex 'petit-fils'",
 	"Gus-name": "Gus",
@@ -213,25 +213,60 @@
 	"Sandy-relationships": "Emily ''",
 	"Krobus-name": "Krobus",
 	"Krobus-relationships": "",
-		
+
+	"Robin-prefs": "C’est pour moi ? Waouh, je l’adore !!!/224 426 636/Merci ! C’est vraiment gentil de ta part !/-6 -79 424 709/Euh... Pourquoi ?/16 330/Qu'est-ce que...? C’est horrible !/2/Merci. Ça pourrait me servir.//",
+	"Demetrius-prefs": "C’est pour moi ? C’est incroyable !/207 232 233 400/Merci ! C’est un spécimen très intéressant./-5 -79 422/... Qu’est-ce que c’est ?/80 330/C’est dégoûtant./2/C’était très gentil de ta part./-4/",
+	"Maru-prefs": "Est-ce... ? Oh waouh, @ ! C’est spectaculaire !/72 197 190 215 222 243 336 337 400 787 910/C’est un cadeau génial ! Merci !/-260 62 64 66 68 70 334 335 725 726 909/Oh... C’est pour moi ? Je vais mettre ça ici.../-4 330 414 410 404 724/Beurk ! Tu croyais vraiment que ça me plairait ?/340 342 2 430 416/Merci.//",
+	"Sebastian-prefs": "Je l’adore. Comment as-tu deviné ?/84 227 236 575 305/Merci, ça me plaît beaucoup./267 614 276/...?/-81 30 -80/... Je déteste ça./-5 2 459 195 201 240 330 -26 873/... Merci./-4/",
+	"Linus-prefs": "C’est merveilleux ! Tu as vraiment illuminé ma journée./88 90 234 242 280/C’est un cadeau formidable. Merci !/-5 -6 -79 -81/Mmm... ce n'est pas vraiment mon truc./-2 330/Pourquoi tu me donnes ça ? Tu crois vraiment que j’aime la camelote juste parce que je vis dans une tente ? C’est méchant./2/Un cadeau ? Comme c’est gentil./-4/",
+	"Pierre-prefs": "C'est ce que j'aime par-dessus tout ! Merci !/202/C'est très gentil de ta part. Ça me plaît./-5 -6 -7 18 22 402 418 259/Ce n'est pas vraiment ce que je préfère.../-2 -81 330/S'il te plaît, ne me rapporte plus jamais de trucs comme ça./167 -4 199 270 229 248/Un cadeau ? Merci !//",
+	"Caroline-prefs": "C’est pour moi... vraiment ? Je suis sans voix./213 614 593 907/Oh, mon Dieu ! Vraiment ?/-7 18 815 402 418/Non, non, non.../-81 330 300 306 307/C’est absolument dégoutant. Je suis offensée./80 296/Oh, c’est gentil. Je te remercie.//",
+	"Abigail-prefs": "Je l'adore ! Tu es formidable @ !/66 128 220 226 276 611 904/Hé, comment as-tu su que j’avais faim ? Ça a l’air délicieux !//Qu'est-ce que tu veux que j'en fasse ?/-5 -75 -79 16 245 246/À quoi pouvais-tu bien penser ? C’est immonde !/330/Tu m’as apporté un cadeau ? Merci.//",
+	"Alex-prefs": "Ah, génial ! J’adore ça !/201 212 662 664/C’est trop cool ! Merci ./-5/Euh... D’accord. Merci./16 330/Tu es sérieux ? C’est dégoutant./80/Merci !//",
+	"George-prefs": "C’est mon péché mignon ! Merci./20 205/Merci./18 195 199 200 214 219 223 231 233/C’est un cadeau horrible./-80 16/C’est probablement le pire cadeau qu'on m'ait jamais fait. Merci beaucoup./22 80 330/Un cadeau ? Mmm...#$e#Tu attends quelque chose en retour ?//",
+	"Evelyn-prefs": "*Cri de surprise*... C’est absolument merveilleux !$u#$e#Tu as rendu une vieille dame très heureuse./72 220 239 284 591 595/Oh, mon Dieu, c’est magnifique ! C’est très gentil de ta part./-6 18 402 418/Euh, je ne sais pas quoi faire de ça !/16 80/... Ça sent très mauvais./225 226 227 228 219 396 397 393 372 248 296 -4 330/Comme c’est gentil . Merci beaucoup.//",
+	"Lewis-prefs": "Waouh, c’est mon péché mignon ! Merci !/200 208 235 614 260/Merci, c’est génial !/-80 24 88 90 192 258 264 272 274 278/Eh bien, je suppose que c’est l’intention qui compte.../-6 16 330/Ça me rend malade. Quel cadeau horrible./80/C’est très gentil de votre part. Merci.//",
+	"Clint-prefs": "Oui ! C’est exactement ce que je cherchais !/60 62 64 66 68 70 336 337 605 649 749/C’est un cadeau amusant. Merci./334 335/*Soupir*.../-80 2 16 80 /Ça me déprime./4/Merci./-15/",
+	"Penny-prefs": "Merci ! J'adore ça !/60 376 651 72 164 218 230 244 254/Merci ! Je ne vois pas ça tous les jours./-6 20 22/Oh, c'est pour moi ?... Merci./-4 80 330 456 457 444 440 422 420/Euh, je suis désolée, mais je déteste ça./446 346 348 303 304 398 459 873/Merci, ça a l'air très bon.//",
+	"Pam-prefs": "Hé hé ! Ça, c’est vraiment quelque chose ! Merci mille fois./24 90 199 208 303 346 459 873/C'est parfait ! Merci./-6 -75 -79 18 227 228 231 232 233 234 235 236 238 402 418/Ce n’est tout simplement pas mon truc./-5 16 80 330/C’est absolument abominable.$u#$e#(Est-ce que c’est une mauvaise blague ?)/149 151/Merci à toi./-4/",
+	"Emily-prefs": "Ce cadeau est fabuleux ! Merci beaucoup !/60 62 64 66 68 70 241 428 440/Merci ! Je ressens une énergie positive qui émane de ce cadeau/18 82 84 86 196 200 207 230 235 402 418/Je suis désolée, @. Je n’aime pas ça./78 2 232 233 225 226/Ce cadeau a une forte énergie négative. Je ne peux pas le supporter./212 213 227 228/Merci !//",
+	"Haley-prefs": "Oh, mon dieu, j’adore ça !!!/221 421 610 88/*Cri de surprise *... c’est pour moi ? Merci !/18 60 62 64 70 88 222 223 232 233 234 402 418/Beurk... c’est un cadeau vraiment stupide./-5 -6 -75 -79 -81 80 -27/Dégoutant !/-4 2 16 330 74/ Merci. J’adore les cadeaux.//",
+	"Jas-prefs": "*Cri de surprise*... Waouh !!! Merci !$h/221 595 604/J’adore les cadeaux ! Merci !/18 60 64 70 88 232 233 234 222 223 340 344 402 418 903/Est-ce un cadeau pour moi ? Oh...$s/-5 -81 -75 -79 80/Beurk. C’est dégoûtant.$s/253 395 459 -26 2 16 330 873/Merci !//",
+	"Vincent-prefs": "Waouh, merci beaucoup ! C’est génial !/221 398 612 721 903/Pour moi ? Waouh, merci !/18 60 64 70 88 232 233 234 222 223 340 344 402 418/ Ce n’est pas très amusant...$s/-5 -75 -79 -81 80/ Beurk, qu’est-ce que c’est ?$s/253 395 459 -26 2 16 330 873/Merci !//",
+	"Jodi-prefs": "Oh, tu es tellement adorable ! Je l’adore !/72 200 211 214 220 222 225 231/Merci ! Ça va me donner le sourire pour toute la journée./-5 -6 -79 18 402 418/Mmm, eh bien... je suppose que je pourrais toujours m'en servir pour le compost.../-81 80 248 330/... Je déteste ça.../18 22 396/C’est si gentil de ta part ! Merci.//",
+	"Kent-prefs": "Oh...! Maman m’en donnait quand j’étais petit. Cela me rapelle de merveilleux souvenirs. Merci./607 649/C’est un très beau cadeau. Merci./-5 -79 18 402 418/Ah... C’est un... qu’est-ce que c’est, exactement ? Mmm.../80 330 416 873/Ces choses-là... On m’en donnait dans le camp de prisonniers de Gotoro. J'essayais d'oublier ça. *Frissonne*/-6 2 227 229 456/C’est gentil de ta part. Cela fera plaisir à la famille.//",
+	"Sam-prefs": "Ah oui ! C'est ce que je préfère par-dessus tout !/90 206 655 658 562 731/Merci ! J’aime vraiment ça./167 210 213 220 223 224 228 232 233 239 -5/ Mmm... c’est... intéressant./-81 80 152 330 -75/Tu ne comprends vraiment pas, hein ?/306 307 342 -15 2/Tu as fait ça pour moi ? Merci !//",
+	"Leah-prefs": "Oh ! C’est exactement ce que je voulais ! Merci !/196 200 348 606 651 650 426 430/C’est un très beau cadeau ! Merci !/-5 -6 -79 -81 18 402 169 406 408 418 86/Mmm... Je suppose que tous les goûts sont dans la nature !/-2 2 152 330 221 223 229 232 233 241 209 194/C’est une un cadeau vraiment horrible, n’est-ce pas ?/305 211 210 206 216/Merci.//",
+	"Shane-prefs": "Oh waouh, @ ! Comment as-tu deviné ?/206 215 260 346/C'est génial ! Merci !/-5 -79 303/Je n'aime pas trop ça/-81 152 330/Pourquoi me donnes-tu tes détritus ?/80 342/Oh, tu m'as apporté quelque chose ? Merci !//",
+	"Marnie-prefs": "C’est un cadeau incroyable ! Merci !!!/72 221 240 608/Merci !/-5 -6 402 418/Oh. Je suppose que je vais le prendre./16 152/Ça ne vaut rien. Je ne te comprends pas./330/Merci ! Ça a l’air vraiment pas mal.//",
+	"Elliott-prefs": "@, c’est un beau cadeau ! Merci !/715 732 218 444 637 814/C’est pour moi ? Merveilleux !/727 728 -79 60 80 82 84 149 151 346 348 728/Mmm... Je ne suis pas très fan./16 206 330 -79 -81 -6/Cet objet me met mal à l'aise. Je vais devoir m’en débarrasser./80 154 300 296/Oh, un cadeau ! Merci !/-4/",
+	"Gus-prefs": "C’est pour moi... vraiment ? Je suis sans voix./72 213 635 729 907/Oh, mon Dieu ! Vraiment ?/348 303 -7 18/Non, non, non.../16 330/C’est absolument dégoutant. Je suis offensé./80 167 648/Oh, c’est très gentil. Je te remercie.//",
+	"Dwarf-prefs": "J'adore ça ! Tu peux trouver pas mal de choses dans les mines./554 60 62 64 66 68 70 749/Ah, ça me rappelle la maison./78 82 84 86 96 97 98 99 121 122/Mmm... Est-ce ce que les humains aiment ça ?/-5 -6 16 -81 2 4 330/Je me moque de quelle espèce tu es. C’est dégoutant et sans valeur.//Une offrande ! Merci./-28/",
+	"Wizard-prefs": "Ahh, c’est imprégné d’énergies arcaniques puissantes. C’est très utile pour mes recherches. Merci !/155 422 769 768/Merci beaucoup. Cet objet a des propriétés très intéressantes./-12 72 82 84/Ça ?... Je suppose que je vais y jeter dans les flammes pour voir ce qu'il se passera./-5 -6 -81 2 16 330 766/Euh... Ce sont des choses tout à fait ordinaires. S’il te plaît, abstiens-toi de m’embêter avec ça à l’avenir.//Merci. Cela me sera utile. Enfin... je crois.//",
+	"Harvey-prefs": "C’est pour moi ? J’adore ça ! C’est comme si tu lisais dans mes pensées./348 237 432 395 342/C’est un si beau cadeau. Merci !/-81 -79 -7 402 614 418 422 436 438 442 444 422/Hmm... Tu es sûr que c’est bon pour la santé ?/-4 424 426 2 330 233 232 238 234 223 222 221 220 216 211 210 208 206 205/... Je crois que j’y suis allergique./296 245 397 396 394 393 392/Merci. C’est très gentil de ta part.//",
+	"Sandy-prefs": "Waouh ! J’adore recevoir des fleurs de la vallée. Je suis tellement contente !~/18 402 418 905/Elles sont magnifiques. Merci beaucoup !/-75 -79 88 428 436 438 440/Oh... Euh. Merci./-4 2 330/*Renifle les fleurs*... Qu’est-ce que c’est ? //C’est pour moi ? Je te remercie.//",
+	"Willy-prefs": "C’est génial ! Si seulement mon père était là. Il aurait adoré./72 143 149 154 276 337 698 459/C’est vraiment génial. Merci !/66 336 340 699 707 198 202 209 212 213 214 219 225 727 730 728 732 265/Mmm... Tu aimes ce genre de choses ? Hein ?/-7 -81 2 4 330/... *Renifle*... Eh bien, je suppose que je peux y jeter dans le seau à appâts.//Un cadeau ! Merci./-4 227 228 242/",
+	"Krobus-prefs": "C’est un cadeau incroyable. Pour mon peuple, c’est un grand honneur de recevoir quelque chose comme ça./72 16 276 337 305 308/Merci beaucoup./66 265 336 340/L’espèce humaine a... des goûts intéressants./-7 -81 2 330/Oh... Euh. Je pense que je vais l'accepter//Merci.//",
+	"Leo-prefs": "Je l'adore. Je vais le mettre dans mon nid./444 289 834 906/Tu es sur ? C'est tellement gentil.../852 396 392 394 397 905/Euh... Je ne sais pas si je pourrais digérer ça.../-7 -81 2 330 303 459 342 346 348/*Renifle* *Renifle*... Pourquoi tu me donnes ça ? Tu veux que je l’enterre pour toi ?/257 253 247 271 283 304 303 346 873 348 459 167/J'accepte ton cadeau./-4 395/",
+
 	"seasons-spring": "printemps",
 	"seasons-summer": "été",
 	"seasons-fall": "automne",
 	"seasons-winter": "hiver",
-	
+
 	"sapling-description": "Il faut 28 jours pour produire un arbre à {{itemName}} mature. Porte des fruits en {{season}}. Ne se développe que si les 8 \"carreaux\" environnants sont vides.",
-	
+
 	"sapling-text": "Gaules de {{itemName}}",
 	"seed-text": "Graines de {{itemName}}",
 	"trellis-text": "Graine de {{itemName}}",
 	"coffee-bean-name": "Grain de {{itemName}}",
 	"unmilled-rice-name": "{{itemName}} non moulu",
-	
+
 	"item-rice-description": "Céréale de base souvent servie avec des légumes.",
 	"item-coffee-description": "L'odeur est exquise. Ça vous donnera un petit coup de fouet.",
 	"item-coffee-bean-description": "À planter au printemps ou en été pour faire pousser un usine de {{itemName}}. Placez 5 grains dans un tonneau pour faire du {{coffeeName}}.",
 	"item-coffee-name": "{{itemName}} chaud",
-	"item-recursion-sapling-name": "Arbrisseau récursif", 
+	"item-recursion-sapling-name": "Arbrisseau récursif",
 
 	"item-197-name-and-description": "Gratin de {{itemName}}/Ça sent très bon !",
 	"item-199-name-and-description": "Soupe de {{itemName}}/C’est frais et copieux.",
@@ -256,13 +291,13 @@
 	"item-219-name-and-description": "Soupe à la {{itemName}}/Très salée.",
 	"item-225-name-and-description": "{{itemName}} grillée/Gras mais savoureux.",
 	"item-226-name-and-description": "{{itemName}} épicée/C’est vraiment très épicé ! Faites attention.",
-	
+
 	"Farmer.cs.1918": "Vous avez reçu 15 {{seedName}} !^^\"Voici un petit quelque chose pour vous aider à démarrer.^-Le maire Lewis\"",
 	"TV.cs.13151": "Vous savez déjà comment cuisiner ça.",
 	"TV.cs.13153": "Vous avez appris une nouvelle recette!",
 	"Woods_Statue": "--Vieux Maitre Cannoli--\n... Toujours à la recherche un {{cropName}}...",
 	"Railroad_Box_MrQiNote": "\"Bien joué. Ta prochaine tâche : Déposer 10 {{cropName}} dans le réfrigérateur du maire. -M. Qi\"",
-		
+
 	"cooking-channel-2": "Coleslaw/Salade de chou ! Ce plat vous fait-il penser à une montagne de {{item1}} mou et fade ? Je vous comprends. Cependant, une bonne salade de chou peut être tellement plus. Assurez-vous d’avoir du {{item1}} bien frais pour ce plat. Mélangez avec un peu de vinaigre et de mayonnaise et le tour est joué. Ah, c’est tellement croustillant.",
 	"cooking-channel-3": "Radish Salad/{{recipe}} ! Rien de tel que du {{item1}} frais et poivré. Cela me rappelle la fin du printemps... ma mère coupait nos {{item1}} frais et les servait sur du pain de céréales avec un peu de sel et de poivre. Ah, c’était le bon temps... mais je m’éloigne du sujet. Maintenant, regardez bien...",
 	"cooking-channel-7": "Maki Roll/Makis ! Les saveurs délicates de la mer, scellées dans un nuage de {{item1}} épais. Peut-être une pointe de wasabi pour les plus aventureux. J'en salive rien que d'en parler. Oh, comme j’aime les sushis...",
@@ -277,7 +312,7 @@
 	"cooking-channel-25": "Fruit Salad/{{recipe}} ! Voici une petite gâterie bonne pour la santé et délicieuse pour égayer votre journée. La chose la plus importante à retenir est que vous aurez besoin de fruits bien mûrs. Oubliez ces trucs fades qu’ils vendent au supermarché... Je parle de fruits fraîchement cueillis, juteux et débordants de saveurs. Ok, maintenant regarde bien...",
 	"cooking-channel-29": "Poppyseed Muffin/{{recipe}} ! Le {{item1}} font de belles fleurs ornementales... Mais pourquoi ne pas en profiter pleinement avec ces délicieux muffins ? J'adore les {{item2}}. Elles ont un goût subtil et elles ajoutent une certaine saveur, ainsi qu’une texture agréable aux desserts briochés. Et elles sont très bonnes pour la santé !",
 	"cooking-channel-31": "Bruschetta/Bruschetta ! C’est un apéritif merveilleusement simple qui met vraiment en valeur la qualité des ingrédients utilisés. Vous aurez besoin de pain, de {{item1}} et d’huile. Tout d’abord, faites griller le pain. Coupez la {{item1}} et placez-la sur le pain grillé. Puis arrosez d’huile et servir. Je vous ai dit que c’était simple !",
-	
+
 	"Silo-name-and-description": "Silo/Permet de couper et de stocker de l’herbe pour l’alimentation des animaux.",
 	"Mill-name-and-description": "Moulin/Permet de faire de la farine à partir de blé et de sucre de betterave.",
 	"Earth-Obelisk-name-and-description": "Obélisque terrestre/Vous téléporte à la montagne.",
@@ -303,7 +338,7 @@
 	"Fish-Pond-name-and-description": "Étang à poissons/Élevez des poissons et récoltez ce qu’ils produisent. Au fil du temps, les poissons se multiplient.",
 	"Big-Shed-name-and-description": "Grand cabanon/Double la taille de la remise. L'intérieur peut être décoré.",
 	"Desert-Obelisk-name-and-description": "Obélisque du désert/Vous téléporte dans le désert.",
-	
+
 	"boots-504-description": "Un peu légères... mais à la mode !",
 	"boots-505-description": "Protection contre le mauvais temps.",
 	"boots-506-description": "Le cuir est très souple.",

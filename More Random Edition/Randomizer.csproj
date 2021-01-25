@@ -55,6 +55,7 @@
     <Compile Include="ImageRandomizers\ImageBuilder.cs" />
     <Compile Include="ImageRandomizers\SpringObjectsImageBuilder.cs" />
     <Compile Include="ImageRandomizers\WeaponImageBuilder.cs" />
+    <Compile Include="NPCPreferences\PreferenceRandomizer.cs" />
     <Compile Include="NPCs\BirthdayRandomizer.cs" />
     <Compile Include="BlueprintRandomizer.cs" />
     <Compile Include="BootRandomizer.cs" />
