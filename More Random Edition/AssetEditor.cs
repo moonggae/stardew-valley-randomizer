@@ -27,6 +27,7 @@ namespace Randomizer
 		private Dictionary<int, string> _bootReplacements = new Dictionary<int, string>();
 		private Dictionary<string, string> _monsterReplacements = new Dictionary<string, string>();
 		private Dictionary<string, string> _birthdayReplacements = new Dictionary<string, string>();
+		private Dictionary<string, string> _preferenceReplacements = new Dictionary<string, string>();
 		public Dictionary<string, string> MusicReplacements = new Dictionary<string, string>();
 
 		/// <summary>
@@ -59,7 +60,8 @@ namespace Randomizer
 			if (asset.AssetNameEquals("Data/weapons")) { return Globals.Config.Weapons.Randomize; }
 			if (asset.AssetNameEquals("Data/Boots")) { return Globals.Config.Boots.Randomize; }
 			if (asset.AssetNameEquals("Data/Monsters")) { return Globals.Config.Monsters.Randomize; }
-			if (asset.AssetNameEquals("Data/NPCDispositions")) { return Globals.Config.RandomizeNPCBirthdays; }
+			if (asset.AssetNameEquals("Data/NPCDispositions")) { return Globals.Config.NPCs.RandomizeBirthdays; }
+			if (asset.AssetNameEquals("Data/NPCGiftTastes")) { return Globals.Config.NPCs.RandomizePreferences || Globals.Config.NPCs.RandomizeUniversalPreferences; }
 
 			return false;
 		}
@@ -115,7 +117,7 @@ namespace Randomizer
 			{
 				this.ApplyEdits(asset, this._questReplacements);
 			}
-			if (asset.AssetNameEquals("Data/mail"))
+			else if (asset.AssetNameEquals("Data/mail"))
 			{
 				this.ApplyEdits(asset, this._mailReplacements);
 			}
@@ -155,6 +157,10 @@ namespace Randomizer
 			{
 				this.ApplyEdits(asset, this._birthdayReplacements);
 			}
+			else if (asset.AssetNameEquals("Data/NPCGiftTastes"))
+			{
+				this.ApplyEdits(asset, this._preferenceReplacements);
+			}
 		}
 
 		public void InvalidateCache()
@@ -178,6 +184,7 @@ namespace Randomizer
 			this._mod.Helper.Content.InvalidateCache("Data/Boots");
 			this._mod.Helper.Content.InvalidateCache("Data/Monsters");
 			this._mod.Helper.Content.InvalidateCache("Data/NPCDispositions");
+			this._mod.Helper.Content.InvalidateCache("Data/NPCGiftTastes");
 		}
 
 		/// <summary>
@@ -219,6 +226,13 @@ namespace Randomizer
 			_recipeReplacements = CraftingRecipeRandomizer.Randomize();
 			_stringReplacements = StringsAdjustments.GetCSFileStringReplacements();
 			_locationStringReplacements = StringsAdjustments.GetLocationStringReplacements();
+			CraftingRecipeAdjustments.FixCookingRecipeDisplayNames();
+			_cookingChannelReplacements = CookingChannel.GetTextEdits();
+
+			// Needs to run after Cooking Recipe fix so that cooked items are properly named,
+			// and needs to run before bundles so that NPC Loved Item bundles are properly generated
+			_preferenceReplacements = PreferenceRandomizer.Randomize();
+
 			_bundleReplacements = BundleRandomizer.Randomize();
 			MusicReplacements = MusicRandomizer.Randomize();
 
@@ -226,8 +240,6 @@ namespace Randomizer
 			_questReplacements = questInfo.QuestReplacements;
 			_mailReplacements = questInfo.MailReplacements;
 
-			CraftingRecipeAdjustments.FixCookingRecipeDisplayNames();
-			_cookingChannelReplacements = CookingChannel.GetTextEdits();
 
 			_weaponReplacements = WeaponRandomizer.Randomize();
 			_bootReplacements = BootRandomizer.Randomize();

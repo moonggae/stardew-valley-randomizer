@@ -97,6 +97,17 @@ namespace Randomizer
 		}
 
 		/// <summary>
+		/// Gets all items which are giftable to NPCs.
+		/// </summary>
+		/// <returns>List&lt;Item&gt; containing all giftable items</returns>
+		public static List<Item> GetGiftables()
+		{
+			return Items.Values.Where(x => x.IsAnimalProduct || x.IsArtifact || x.IsCooked || x.IsCrabPotItem || x.IsCrop || x.IsFish
+										|| x.IsFlower || x.IsForagable || x.IsFruit || x.IsGeodeMineral || x.IsMayonaisse || x.IsMonsterItem
+										|| x.IsResource || x.IsSeed || x.IsSmelted || x.IsTrash).ToList();
+		}
+
+		/// <summary>
 		/// Gets all the seeds
 		/// </summary>
 		/// <returns />
@@ -211,6 +222,30 @@ namespace Randomizer
 		public static List<Item> GetAnimalProducts()
 		{
 			return Items.Values.Where(x => x.IsAnimalProduct).ToList();
+		}
+
+		/// <summary>
+		/// Splits <paramref name="itemString"/> by <paramref name="separator"/> and returns a List&lt;Item&gt;.
+		/// </summary>
+		/// <param name="itemString">String of item IDs separated by a single character.</param>
+		/// <param name="separator">The character to split <c>itemString</c> by.</param>
+		/// <returns></returns>
+		public static List<Item> GetItemListFromString(string itemString, char separator)
+		{
+			List<Item> itemList = new List<Item>();
+
+			string[] items = itemString.Split(separator);
+			foreach (string item in items)
+			{
+				int ID = int.Parse(item);
+				// Negative values represent Item Categories, not Items - ignore
+				if (ID > 0)
+				{
+					itemList.Add(Items[ID]);
+				}
+			}
+
+			return itemList;
 		}
 
 		/// <summary>

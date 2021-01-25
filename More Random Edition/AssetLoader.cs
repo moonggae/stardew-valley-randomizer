@@ -180,7 +180,7 @@ namespace Randomizer
 			}
 
 			// Character swaps
-			if (Globals.Config.RandomizeNPCSkins)
+			if (Globals.Config.NPCs.RandomizeSkins)
 			{
 				// Keep track of all swaps made
 				Dictionary<string, string> currentSwaps = new Dictionary<string, string>();
