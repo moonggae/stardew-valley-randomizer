@@ -27,7 +27,6 @@ namespace Randomizer
 		private Dictionary<int, string> _bootReplacements = new Dictionary<int, string>();
 		private Dictionary<string, string> _monsterReplacements = new Dictionary<string, string>();
 		private Dictionary<string, string> _birthdayReplacements = new Dictionary<string, string>();
-		public Dictionary<string, string> MusicReplacements = new Dictionary<string, string>();
 
 		/// <summary>
 		/// Whether we're currently ignoring replacing object information
@@ -220,7 +219,7 @@ namespace Randomizer
 			_stringReplacements = StringsAdjustments.GetCSFileStringReplacements();
 			_locationStringReplacements = StringsAdjustments.GetLocationStringReplacements();
 			_bundleReplacements = BundleRandomizer.Randomize();
-			MusicReplacements = MusicRandomizer.Randomize();
+			MusicRandomizer.Randomize();
 
 			QuestInformation questInfo = QuestRandomizer.Randomize();
 			_questReplacements = questInfo.QuestReplacements;
