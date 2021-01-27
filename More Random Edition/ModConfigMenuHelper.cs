@@ -60,13 +60,16 @@ namespace Randomizer
 			api.RegisterSimpleOption(ModManifest, "Boots", "Randomize boots stats, names, descriptions.", () => Globals.Config.Boots.Randomize, (bool val) => Globals.Config.Boots.Randomize = val);
 			api.RegisterSimpleOption(ModManifest, "Use Custom Boot Images", "Use custom images for boots.", () => Globals.Config.Boots.UseCustomImages, (bool val) => Globals.Config.Boots.UseCustomImages = val);
 
+			AddLabel("Music Options");
+			api.RegisterSimpleOption(ModManifest, "Music", "Shuffle most songs and ambience.", () => Globals.Config.Music.Randomize, (bool val) => Globals.Config.Music.Randomize = val);
+			api.RegisterSimpleOption(ModManifest, "Random Song on Area Change", "Plays a new song each time the loaded area changes.", () => Globals.Config.Music.RandomSongEachTransition, (bool val) => Globals.Config.Music.RandomSongEachTransition = val);
+
 			AddLabel("Misc Options");
 			api.RegisterSimpleOption(ModManifest, "Building Costs", "Farm buildings that Robin can build for the player choose from a random pool of resources.", () => Globals.Config.RandomizeBuildingCosts, (bool val) => Globals.Config.RandomizeBuildingCosts = val);
 			api.RegisterSimpleOption(ModManifest, "Animal Skins", "You might get a surprise from Marnie.", () => Globals.Config.RandomizeAnimalSkins, (bool val) => Globals.Config.RandomizeAnimalSkins = val);
 			api.RegisterSimpleOption(ModManifest, "Forageables", "Forageables for every season and location are now randomly selected. Every forageable appears at least once per year.", () => Globals.Config.RandomizeForagables, (bool val) => Globals.Config.RandomizeForagables = val);
 			api.RegisterSimpleOption(ModManifest, "Intro Text", "Replace portions of the intro cutscene with Mad Libs style text.", () => Globals.Config.RandomizeIntroStory, (bool val) => Globals.Config.RandomizeIntroStory = val);
 			api.RegisterSimpleOption(ModManifest, "Quests", "Randomly select quest givers, required items, and rewards.", () => Globals.Config.RandomizeQuests, (bool val) => Globals.Config.RandomizeQuests = val);
-			api.RegisterSimpleOption(ModManifest, "Music", "Shuffle most songs and ambience.", () => Globals.Config.RandomizeMusic, (bool val) => Globals.Config.RandomizeMusic = val);
 			api.RegisterSimpleOption(ModManifest, "Rain", "Replace rain with a variant (Skulls/Junimos/Cats and Dogs/etc).", () => Globals.Config.RandomizeRain, (bool val) => Globals.Config.RandomizeRain = val);
 		}
 
