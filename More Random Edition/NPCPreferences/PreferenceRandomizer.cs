@@ -54,12 +54,14 @@ namespace Randomizer
         private const int DislikesIndex = 5;
         private const int HatesIndex = 7;
         private const int NeutralIndex = 9;
+
         private const int IndexOffset = 2;
 
         /// <summary>
         /// Randomize NPC Preferences information.
         /// </summary>
         /// <returns>Dictionary&lt;string, string&gt; which holds the replacement prefstrings for the enabled preferences (NPC/Universal).</returns>
+
         public static Dictionary<string, string> Randomize()
         {
             Dictionary<string, string> replacements = new Dictionary<string, string>();
@@ -82,6 +84,7 @@ namespace Randomizer
             // Generate randomized NPC Preferences strings
             // Same as above - only add if config option is enabled
             bool NPCPrefsEnabled = Globals.Config.NPCs.RandomizePreferences;
+
             foreach (string NPC in NPC.GiftableNPCs)
             {
                 List<int> unusedCategories = new List<int>(GiftableItemCategories.Keys);
@@ -99,6 +102,7 @@ namespace Randomizer
                 {
                     replacements.Add(name, string.Join("/", tokens));
                 }
+
             }
 
             // Update Loves/Hates for Bundle reqs
