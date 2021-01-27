@@ -30,6 +30,7 @@ namespace Randomizer
 		private Dictionary<string, string> _preferenceReplacements = new Dictionary<string, string>();
 		public Dictionary<string, string> MusicReplacements = new Dictionary<string, string>();
 
+
 		/// <summary>
 		/// Whether we're currently ignoring replacing object information
 		/// This is done between day loads to prevent errors with the Special Orders
@@ -234,7 +235,7 @@ namespace Randomizer
 			_preferenceReplacements = PreferenceRandomizer.Randomize();
 
 			_bundleReplacements = BundleRandomizer.Randomize();
-			MusicReplacements = MusicRandomizer.Randomize();
+			MusicRandomizer.Randomize();
 
 			QuestInformation questInfo = QuestRandomizer.Randomize();
 			_questReplacements = questInfo.QuestReplacements;

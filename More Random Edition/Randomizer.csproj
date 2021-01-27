@@ -50,11 +50,13 @@
     <Compile Include="CookingChannel.cs" />
     <Compile Include="CraftingRecipeAdjustments.cs" />
     <Compile Include="Enums\QuestItemTypes.cs" />
+    <Compile Include="APIs\IGenericModConfigMenuAPI.cs" />
     <Compile Include="ImageRandomizers\BundleImageBuilder.cs" />
     <Compile Include="ImageRandomizers\CropGrowthImageBuilder.cs" />
     <Compile Include="ImageRandomizers\ImageBuilder.cs" />
     <Compile Include="ImageRandomizers\SpringObjectsImageBuilder.cs" />
     <Compile Include="ImageRandomizers\WeaponImageBuilder.cs" />
+    <Compile Include="ModConfigMenuHelper.cs" />
     <Compile Include="NPCPreferences\PreferenceRandomizer.cs" />
     <Compile Include="NPCs\BirthdayRandomizer.cs" />
     <Compile Include="BlueprintRandomizer.cs" />
