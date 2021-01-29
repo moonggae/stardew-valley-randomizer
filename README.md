@@ -117,7 +117,7 @@ Note the following:
   
 ## Pending Changes for 0.5.0
 * NPC Preference Randomizer (credit to Vertigon)
-* Reworked the NPC skin randomizer so that most NPCs can be randomized with each other - exceptions (perhaps we can address thsee in the future as well):
+* Reworked the NPC skin randomizer so that most NPCs can be randomized with each other - exceptions (perhaps we can address these in the future as well):
   * Dwarf and Krobus, as they're too small
   * Pam and Willy, as they have fishing animations
   * Henchman and Bouncer, as they don't have that many sprites
