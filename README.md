@@ -114,3 +114,10 @@ Note the following:
   * Randomly generated weapon/crop names are English
   * The mad-lib style crop descriptions are English
   * Everything else has been internationalized
+  
+## Pending Changes for 0.5.0
+* NPC Preference Randomizer (credit to Vertigon)
+* Reworked the NPC skin randomizer so that most NPCs can be randomized with each other - exceptions (perhaps we can address thsee in the future as well):
+  * Dwarf and Krobus, as they're too small
+  * Pam and Willy, as they have fishing animations
+* Fixed the rain, animal skins, and NPC skin randomizer settings potentially affecting the RNG for other things
