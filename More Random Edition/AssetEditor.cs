@@ -28,7 +28,6 @@ namespace Randomizer
 		private Dictionary<string, string> _monsterReplacements = new Dictionary<string, string>();
 		private Dictionary<string, string> _birthdayReplacements = new Dictionary<string, string>();
 		private Dictionary<string, string> _preferenceReplacements = new Dictionary<string, string>();
-		public Dictionary<string, string> MusicReplacements = new Dictionary<string, string>();
 
 
 		/// <summary>

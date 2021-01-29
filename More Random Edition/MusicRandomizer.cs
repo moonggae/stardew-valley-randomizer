@@ -70,7 +70,6 @@ namespace Randomizer
 				"junimoKart_whaleMusic",
 				"junimoStarSong",
 				"kindadumbautumn",
-				"Lava_Ambient",
 				"libraryTheme",
 				"MainTheme",
 				"MarlonsTheme",
@@ -172,7 +171,7 @@ namespace Randomizer
 				_lastCurrentSong = newSongToPlay;
 				Game1.changeMusicTrack(newSongToPlay);
 
-				//Game1.addHUDMessage(new HUDMessage($"Song: {currentSong} | Replaced with: {value}"));
+				//Game1.addHUDMessage(new HUDMessage($"Song: {currentSong} | Replaced with: {newSongToPlay}"));
 			}
 		}
 

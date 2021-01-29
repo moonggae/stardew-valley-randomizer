@@ -17,55 +17,73 @@ namespace Randomizer
 		private readonly Dictionary<string, string> _replacements = new Dictionary<string, string>();
 
 
+		/// <summary>Constructor</summary>
+		/// <param name="mod">A reference to the ModEntry</param>
 		public AssetLoader(ModEntry mod)
 		{
-			this._mod = mod;
+			_mod = mod;
 		}
 
+		/// <summary>
+		/// Whether the asset has a replacement in our dictionary
+		/// </summary>
+		/// <typeparam name="T">The type</typeparam>
+		/// <param name="asset">The asset to check</param>
+		/// <returns />
 		public bool CanLoad<T>(IAssetInfo asset)
 		{
-			// Check if the assets has a replacement in the dictionary
-			foreach (KeyValuePair<string, string> replacement in this._replacements)
-			{
-				if (asset.AssetNameEquals(replacement.Key))
-				{
-					return true;
-				}
-			}
-
-			return false;
+			return _replacements.Any(replacement => asset.AssetNameEquals(replacement.Key));
 		}
 
+		/// <summary>
+		/// Loads the replacement asset from the replacement dictionary
+		/// </summary>
+		/// <typeparam name="T">The type</typeparam>
+		/// <param name="asset">The asset to load</param>
+		/// <returns />
 		public T Load<T>(IAssetInfo asset)
 		{
-			string normalizedAssetName = this._mod.Helper.Content.NormalizeAssetName(asset.AssetName);
-
-			// Try to get the replacement asset from the replacements dictionary
-			if (this._replacements.TryGetValue(normalizedAssetName, out string replacementAsset))
+			string normalizedAssetName = _mod.Helper.Content.NormalizeAssetName(asset.AssetName);
+			if (_replacements.TryGetValue(normalizedAssetName, out string replacementAsset))
 			{
-				return this._mod.Helper.Content.Load<T>(replacementAsset, ContentSource.ModFolder);
+				return _mod.Helper.Content.Load<T>(replacementAsset, ContentSource.ModFolder);
 			}
 
 			throw new InvalidOperationException($"Unknown asset: {asset.AssetName}.");
 		}
 
 
+		/// <summary>
+		/// Adds a replacement to our internal dictionary
+		/// </summary>
+		/// <param name="originalAsset">The original asset</param>
+		/// <param name="replacementAsset">The asset to replace it with</param>
 		private void AddReplacement(string originalAsset, string replacementAsset)
 		{
-			// Normalize the asset name so the keys are consistent
-			string normalizedAssetName = this._mod.Helper.Content.NormalizeAssetName(originalAsset);
-
-			// Add the replacement to the dictionary
-			this._replacements[normalizedAssetName] = replacementAsset;
+			string normalizedAssetName = _mod.Helper.Content.NormalizeAssetName(originalAsset);
+			_replacements[normalizedAssetName] = replacementAsset;
 		}
 
+		/// <summary>
+		/// Adds a set of replacements to our internal dictionary
+		/// </summary>
+		/// <param name="replacements">Key: the original asset; Value: the asset to replace it with</param>
+		private void AddReplacements(Dictionary<string, string> replacements)
+		{
+			foreach (string key in replacements.Keys)
+			{
+				AddReplacement(key, replacements[key]);
+			}
+		}
 
+		/// <summary>
+		/// Invalidate all replaced assets so that the changes are reapplied
+		/// </summary>
 		public void InvalidateCache()
 		{
-			// Invalidate all replaced assets so that the changes are reapplied
-			foreach (string assetName in this._replacements.Keys)
+			foreach (string assetName in _replacements.Keys)
 			{
-				this._mod.Helper.Content.InvalidateCache(assetName);
+				_mod.Helper.Content.InvalidateCache(assetName);
 			}
 		}
 
@@ -123,104 +141,13 @@ namespace Randomizer
 			_mod.CalculateAndInvalidateUIEdits();
 		}
 
-		/// <summary>
-		/// Asset replacements
-		/// TODO: make a class for this so that it's not in one giant file
-		/// </summary>
+		/// <summary>Asset replacements</summary>
 		public void CalculateReplacements()
 		{
-			// Clear any previous replacements
-			this._replacements.Clear();
+			_replacements.Clear();
 
-			if (Globals.Config.Crops.Randomize)
-			{
-				//TODO: probably get rid of this completely or move it somewhere
-				//AddReplacement("Maps/springobjects", "Assets/Maps/springobjects.png");
-			}
-
-			if (Globals.Config.RandomizeAnimalSkins)
-			{
-				// Replace critters
-				switch (Globals.RNG.Next(0, 4))
-				{
-					case 0:
-						this.AddReplacement("TileSheets/critters", "Assets/TileSheets/crittersBears");
-						break;
-					case 1:
-						this.AddReplacement("TileSheets/critters", "Assets/TileSheets/crittersseagullcrow");
-						break;
-					case 2:
-						this.AddReplacement("TileSheets/critters", "Assets/TileSheets/crittersWsquirrelPseagull");
-						break;
-					case 3:
-						this.AddReplacement("TileSheets/critters", "Assets/TileSheets/crittersBlueBunny");
-						break;
-				}
-
-				//Change an animal to bear 
-				int isPet = Globals.RNG.Next(1, 4);
-				string[] Animal = new string[4]; Animal[0] = "Pig"; Animal[1] = "Goat"; Animal[2] = "Brown Cow"; Animal[3] = "White Cow";
-				string[] Pet = new string[2]; Pet[0] = "cat"; Pet[1] = "dog";
-
-				if (isPet == 1)
-				{
-					int petRng = Globals.RNG.Next(0, Pet.Length - 1);
-					this.AddReplacement($"Animals/{Pet[petRng]}", "Assets/Characters/BearDog");
-				}
-				if (isPet == 2)
-				{
-					this.AddReplacement($"Animals/horse", "Assets/Characters/BearHorse");
-				}
-				else
-				{
-					int animalRng = Globals.RNG.Next(0, Animal.Length - 1);
-					this.AddReplacement($"Animals/{Animal[animalRng]}", "Assets/Characters/Bear");
-					this.AddReplacement($"Animals/Baby{Animal[animalRng]}", "Assets/Characters/BabyBear");
-				}
-			}
-
-			// Character swaps
-			if (Globals.Config.NPCs.RandomizeSkins)
-			{
-				// Keep track of all swaps made
-				Dictionary<string, string> currentSwaps = new Dictionary<string, string>();
-
-				// Copy the array of possible swaps to a new list
-				List<PossibleSwap> possibleSwaps = this._mod.PossibleSwaps.ToList();
-
-				// Make swaps until either a random number of swaps are made or we run out of possible swaps to make
-				int swapsRemaining = Globals.RNG.Next(5, 11);
-				while (swapsRemaining > 0 && possibleSwaps.Any())
-				{
-					// Get a random possible swap
-					int index = Globals.RNG.Next(0, possibleSwaps.Count);
-					PossibleSwap swap = possibleSwaps[index];
-
-					// Remove it from the list so it isn't chosen again
-					possibleSwaps.RemoveAt(index);
-
-					// Check if the characters haven't been swapped yet
-					if (currentSwaps.ContainsKey(swap.FirstCharacter) || currentSwaps.ContainsKey(swap.SecondCharacter))
-					{
-						continue;
-					}
-
-					// Add the swap to the dictionary
-					currentSwaps[swap.FirstCharacter] = swap.SecondCharacter;
-					currentSwaps[swap.SecondCharacter] = swap.FirstCharacter;
-					this._mod.Monitor.Log($"Swapping {swap.FirstCharacter} and {swap.SecondCharacter}");
-
-					// Add the replacements
-					this.AddReplacement($"Characters/{swap.FirstCharacter}", $"Assets/Characters/{swap.SecondCharacter}");
-					this.AddReplacement($"Characters/{swap.SecondCharacter}", $"Assets/Characters/{swap.FirstCharacter}");
-					this.AddReplacement($"Portraits/{swap.FirstCharacter}", $"Assets/Portraits/{swap.SecondCharacter}");
-					this.AddReplacement($"Portraits/{swap.SecondCharacter}", $"Assets/Portraits/{swap.FirstCharacter}");
-
-					// Decrement the number of swaps remaining
-					swapsRemaining--;
-				}
-			}
-
+			AddReplacements(AnimalSkinRandomizer.Randomize());
+			AddReplacements(NPCSkinRandomizer.Randomize());
 			ReplaceRain();
 		}
 
@@ -267,16 +194,17 @@ namespace Randomizer
 
 		/// <summary>
 		/// Replaces the rain - intended to be called once per day start
-		/// <param name="sender">The event sender.</param>
-		/// <param name="e">The event arguments.</param>
+		/// <param name="sender">The event sender</param>
+		/// <param name="e">The event arguments</param>
 		/// </summary>
 		public void ReplaceRain(object sender = null, DayEndingEventArgs e = null)
 		{
-			if (!Globals.Config.RandomizeRain) { return; }
 			if (Globals.RNG == null) { return; }
 
 			RainTypes rainType = Globals.RNGGetRandomValueFromList(
 				Enum.GetValues(typeof(RainTypes)).Cast<RainTypes>().ToList());
+
+			if (!Globals.Config.RandomizeRain) { return; }
 
 			AddReplacement("TileSheets/rain", $"Assets/TileSheets/{rainType.ToString()}Rain");
 			_mod.Helper.Content.InvalidateCache("TileSheets/rain");
