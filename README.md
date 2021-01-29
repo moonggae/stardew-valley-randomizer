@@ -120,4 +120,6 @@ Note the following:
 * Reworked the NPC skin randomizer so that most NPCs can be randomized with each other - exceptions (perhaps we can address thsee in the future as well):
   * Dwarf and Krobus, as they're too small
   * Pam and Willy, as they have fishing animations
+  * Henchman and Bouncer, as they don't have that many sprites
 * Fixed the rain, animal skins, and NPC skin randomizer settings potentially affecting the RNG for other things
+* Added animal skins and NPC skin randomizer settings to the spoiler log
