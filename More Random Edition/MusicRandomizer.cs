@@ -170,8 +170,16 @@ namespace Randomizer
 
 			string newSongToPlay = Globals.Config.Music.RandomSongEachTransition ? GetRandomSong() : GetMappedSong(currentSong);
 
-			//TODO: get rid of this in the next major release (includes removing it from MusicList)
+			//TODO: get rid of this set if 3 if-statements in the next major release (includes removing it from MusicList)
 			if (newSongToPlay == "Volcano_Ambient")
+			{
+				newSongToPlay = MusicReplacements["Volcano_Ambient"];
+			}
+			if (newSongToPlay == "Lava_Ambient")
+			{
+				newSongToPlay = MusicReplacements["Lava_Ambient"];
+			}
+			if (newSongToPlay == "Volcano_Ambient") // Hack in case Lava_Ambient was mapped to Volcano_Ambient
 			{
 				newSongToPlay = MusicReplacements["Volcano_Ambient"];
 			}
@@ -207,7 +215,7 @@ namespace Randomizer
 		{
 			//TODO: remove the Volcano_Ambient check in the next major release
 			return Globals.RNGGetRandomValueFromList(
-				MusicList.Where(song => song != "Volcano_Ambient").ToList(), true);
+				MusicList.Where(song => song != "Volcano_Ambient" && song != "Lava_Ambient").ToList(), true);
 		}
 
 		/// <summary>
