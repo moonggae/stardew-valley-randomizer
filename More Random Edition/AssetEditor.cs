@@ -28,6 +28,7 @@ namespace Randomizer
 		private Dictionary<string, string> _monsterReplacements = new Dictionary<string, string>();
 		private Dictionary<string, string> _birthdayReplacements = new Dictionary<string, string>();
 		private Dictionary<string, string> _preferenceReplacements = new Dictionary<string, string>();
+		private Dictionary<int, string> _secretNotesReplacements = new Dictionary<int, string>();
 
 
 		/// <summary>
@@ -61,8 +62,8 @@ namespace Randomizer
 			if (asset.AssetNameEquals("Data/Boots")) { return Globals.Config.Boots.Randomize; }
 			if (asset.AssetNameEquals("Data/Monsters")) { return Globals.Config.Monsters.Randomize; }
 			if (asset.AssetNameEquals("Data/NPCDispositions")) { return Globals.Config.NPCs.RandomizeBirthdays; }
-			if (asset.AssetNameEquals("Data/NPCGiftTastes")) { return Globals.Config.NPCs.RandomizePreferences || Globals.Config.NPCs.RandomizeUniversalPreferences; }
-
+			if (asset.AssetNameEquals("Data/NPCGiftTastes")) { return Globals.Config.NPCs.RandomizeIndividualPreferences || Globals.Config.NPCs.RandomizeUniversalPreferences; }
+			if (asset.AssetNameEquals("Data/SecretNotes")) { return Globals.Config.NPCs.RandomizeIndividualPreferences; }
 			return false;
 		}
 
@@ -161,30 +162,35 @@ namespace Randomizer
 			{
 				this.ApplyEdits(asset, this._preferenceReplacements);
 			}
+			else if (asset.AssetNameEquals("Data/SecretNotes"))
+            {
+				this.ApplyEdits(asset, this._secretNotesReplacements);
+            }
 		}
 
 		public void InvalidateCache()
 		{
-			this._mod.Helper.Content.InvalidateCache("Data/CraftingRecipes");
-			this._mod.Helper.Content.InvalidateCache("Data/Bundles");
-			this._mod.Helper.Content.InvalidateCache("Data/Blueprints");
-			this._mod.Helper.Content.InvalidateCache("Strings/StringsFromCSFiles");
-			this._mod.Helper.Content.InvalidateCache("Strings/UI");
-			this._mod.Helper.Content.InvalidateCache("Data/ObjectInformation");
-			this._mod.Helper.Content.InvalidateCache("Data/Events/Farm");
-			this._mod.Helper.Content.InvalidateCache("Data/Fish");
-			this._mod.Helper.Content.InvalidateCache("Data/Quests");
-			this._mod.Helper.Content.InvalidateCache("Data/mail");
-			this._mod.Helper.Content.InvalidateCache("Data/Locations");
-			this._mod.Helper.Content.InvalidateCache("Strings/Locations");
-			this._mod.Helper.Content.InvalidateCache("Data/fruitTrees");
-			this._mod.Helper.Content.InvalidateCache("Data/Crops");
-			this._mod.Helper.Content.InvalidateCache("Data/TV/CookingChannel");
-			this._mod.Helper.Content.InvalidateCache("Data/weapons");
-			this._mod.Helper.Content.InvalidateCache("Data/Boots");
-			this._mod.Helper.Content.InvalidateCache("Data/Monsters");
-			this._mod.Helper.Content.InvalidateCache("Data/NPCDispositions");
-			this._mod.Helper.Content.InvalidateCache("Data/NPCGiftTastes");
+			_mod.Helper.Content.InvalidateCache("Data/CraftingRecipes");
+			_mod.Helper.Content.InvalidateCache("Data/Bundles");
+			_mod.Helper.Content.InvalidateCache("Data/Blueprints");
+			_mod.Helper.Content.InvalidateCache("Strings/StringsFromCSFiles");
+			_mod.Helper.Content.InvalidateCache("Strings/UI");
+			_mod.Helper.Content.InvalidateCache("Data/ObjectInformation");
+			_mod.Helper.Content.InvalidateCache("Data/Events/Farm");
+			_mod.Helper.Content.InvalidateCache("Data/Fish");
+			_mod.Helper.Content.InvalidateCache("Data/Quests");
+			_mod.Helper.Content.InvalidateCache("Data/mail");
+			_mod.Helper.Content.InvalidateCache("Data/Locations");
+			_mod.Helper.Content.InvalidateCache("Strings/Locations");
+			_mod.Helper.Content.InvalidateCache("Data/fruitTrees");
+			_mod.Helper.Content.InvalidateCache("Data/Crops");
+			_mod.Helper.Content.InvalidateCache("Data/TV/CookingChannel");
+			_mod.Helper.Content.InvalidateCache("Data/weapons");
+			_mod.Helper.Content.InvalidateCache("Data/Boots");
+			_mod.Helper.Content.InvalidateCache("Data/Monsters");
+			_mod.Helper.Content.InvalidateCache("Data/NPCDispositions");
+			_mod.Helper.Content.InvalidateCache("Data/NPCGiftTastes");
+			_mod.Helper.Content.InvalidateCache("Data/SecretNotes");
 		}
 
 		/// <summary>
@@ -232,6 +238,7 @@ namespace Randomizer
 			// Needs to run after Cooking Recipe fix so that cooked items are properly named,
 			// and needs to run before bundles so that NPC Loved Item bundles are properly generated
 			_preferenceReplacements = PreferenceRandomizer.Randomize();
+			_secretNotesReplacements = SecretNotesRandomizer.FixSecretNotes(_preferenceReplacements);
 
 			_bundleReplacements = BundleRandomizer.Randomize();
 			MusicRandomizer.Randomize();

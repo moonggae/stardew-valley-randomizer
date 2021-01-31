@@ -83,7 +83,7 @@ namespace Randomizer
 
             // Generate randomized NPC Preferences strings
             // Same as above - only add if config option is enabled
-            bool NPCPrefsEnabled = Globals.Config.NPCs.RandomizePreferences;
+            bool NPCPrefsEnabled = Globals.Config.NPCs.RandomizeIndividualPreferences;
 
             foreach (string NPC in NPC.GiftableNPCs)
             {
@@ -107,7 +107,6 @@ namespace Randomizer
 
             // Update Loves/Hates for Bundle reqs
             UpdateBundlePrefs(replacements);
-
             WriteToSpoilerLog(replacements);
             return replacements;
         }
@@ -256,7 +255,7 @@ namespace Randomizer
         /// </summary>
         private static void WriteToSpoilerLog(Dictionary<string, string> replacements)
         {
-            if (!Globals.Config.NPCs.RandomizePreferences && !Globals.Config.NPCs.RandomizeUniversalPreferences) { return; }
+            if (!Globals.Config.NPCs.RandomizeIndividualPreferences && !Globals.Config.NPCs.RandomizeUniversalPreferences) { return; }
 
             Globals.SpoilerWrite("===== NPC GIFT TASTES =====");
             foreach (KeyValuePair<string, string> NPCPreferences in replacements)

@@ -37,7 +37,7 @@ namespace Randomizer
 			helper.Content.AssetEditors.Add(this._modAssetEditor);
 
 			this.PreLoadReplacments();
-			helper.Events.GameLoop.GameLaunched += (sender, args) => this.onLaunched();
+			helper.Events.GameLoop.GameLaunched += (sender, args) => this.TryLoadModConfigMenu();
 			helper.Events.GameLoop.SaveLoaded += (sender, args) => this.CalculateAllReplacements();
 			helper.Events.Display.RenderingActiveMenu += (sender, args) => _modAssetLoader.TryReplaceTitleScreen();
 			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetLoader.ReplaceTitleScreenAfterReturning();
@@ -85,7 +85,7 @@ namespace Randomizer
 			}
 		}
 
-		private void onLaunched()
+		private void TryLoadModConfigMenu()
 		{
 			// Check to see if Generic Mod Config Menu is installed
 			if (!Helper.ModRegistry.IsLoaded("spacechase0.GenericModConfigMenu"))

@@ -35,7 +35,7 @@ namespace Randomizer
 			AddLabel("NPC Options");
 			api.RegisterSimpleOption(ModManifest, "Swap NPC Skins", "Switch NPC's skins arounds. Does not change names or schedules.", () => Globals.Config.NPCs.RandomizeSkins, (bool val) => Globals.Config.NPCs.RandomizeSkins = val);
 			api.RegisterSimpleOption(ModManifest, "NPC Birthdays", "Moves each NPC's birthday to a random day in the year.", () => Globals.Config.NPCs.RandomizeBirthdays, (bool val) => Globals.Config.NPCs.RandomizeBirthdays = val);
-			api.RegisterSimpleOption(ModManifest, "Individual Item Preferences", "Generates a new set of loved items, hated items, and so on for each NPC.", () => Globals.Config.NPCs.RandomizePreferences, (bool val) => Globals.Config.NPCs.RandomizePreferences = val);
+			api.RegisterSimpleOption(ModManifest, "Individual Item Preferences", "Generates a new set of loved items, hated items, and so on for each NPC.", () => Globals.Config.NPCs.RandomizeIndividualPreferences, (bool val) => Globals.Config.NPCs.RandomizeIndividualPreferences = val);
 			api.RegisterSimpleOption(ModManifest, "Universal Item Preferences", "Generates new sets of universally loved, liked, disliked, hated, and neutral items.", () => Globals.Config.NPCs.RandomizeUniversalPreferences, (bool val) => Globals.Config.NPCs.RandomizeUniversalPreferences = val);
 
 			AddLabel("Crop Options");
