@@ -19,6 +19,8 @@ namespace Randomizer
 
 		private IModHelper _helper;
 
+		static IGenericModConfigMenuAPI api;
+
 		/// <summary>The mod entry point, called after the mod is first loaded</summary>
 		/// <param name="helper">Provides simplified APIs for writing mods</param>
 		public override void Entry(IModHelper helper)
@@ -35,6 +37,7 @@ namespace Randomizer
 			helper.Content.AssetEditors.Add(this._modAssetEditor);
 
 			this.PreLoadReplacments();
+			helper.Events.GameLoop.GameLaunched += (sender, args) => this.TryLoadModConfigMenu();
 			helper.Events.GameLoop.SaveLoaded += (sender, args) => this.CalculateAllReplacements();
 			helper.Events.Display.RenderingActiveMenu += (sender, args) => _modAssetLoader.TryReplaceTitleScreen();
 			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetLoader.ReplaceTitleScreenAfterReturning();
@@ -80,6 +83,23 @@ namespace Randomizer
 					helper.Events.Display.RenderedActiveMenu += (sender, args) => BundleMenuAdjustments.AddDescriptionsToBundleTooltips();
 				}
 			}
+		}
+
+		private void TryLoadModConfigMenu()
+		{
+			// Check to see if Generic Mod Config Menu is installed
+			if (!Helper.ModRegistry.IsLoaded("spacechase0.GenericModConfigMenu"))
+			{
+				Globals.ConsoleTrace("GenericModConfigMenu not present");
+				return;
+			}
+
+			api = Helper.ModRegistry.GetApi<IGenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
+			api.RegisterModConfig(ModManifest, () => Globals.Config = new ModConfig(), () => Helper.WriteConfig(Globals.Config));
+
+			ModConfigMenuHelper menuHelper = new ModConfigMenuHelper(api, ModManifest);
+			menuHelper.RegisterModOptions();
+
 		}
 
 		/// <summary>

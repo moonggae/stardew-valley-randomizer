@@ -70,7 +70,7 @@
 	{
 		public bool RandomizeSkins { get; set; } = false;
 		public bool RandomizeBirthdays { get; set; } = true;
-		public bool RandomizePreferences { get; set; } = true;
+		public bool RandomizeIndividualPreferences { get; set; } = true;
 		public bool RandomizeUniversalPreferences { get; set; } = true;
 	}
 
