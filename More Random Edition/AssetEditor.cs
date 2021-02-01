@@ -163,9 +163,9 @@ namespace Randomizer
 				this.ApplyEdits(asset, this._preferenceReplacements);
 			}
 			else if (asset.AssetNameEquals("Data/SecretNotes"))
-            {
+			{
 				this.ApplyEdits(asset, this._secretNotesReplacements);
-            }
+			}
 		}
 
 		public void InvalidateCache()

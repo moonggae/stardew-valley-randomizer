@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace Randomizer
 {
-    class ModConfigMenuHelper
-    {
-        public IGenericModConfigMenuAPI api;
+	class ModConfigMenuHelper
+	{
+		public IGenericModConfigMenuAPI api;
 		public IManifest ModManifest;
 
 		public ModConfigMenuHelper(IGenericModConfigMenuAPI api, IManifest ModManifest)
-        {
+		{
 			this.api = api;
 			this.ModManifest = ModManifest;
-        }
+		}
 
-        public void RegisterModOptions()
-        {
+		public void RegisterModOptions()
+		{
 			api.RegisterSimpleOption(ModManifest, "Create Spoiler Log", "Create a text file which contains all of the randomized elements when a new farm is created. Highly recommended to leave on.", () => Globals.Config.CreateSpoilerLog, (bool val) => Globals.Config.CreateSpoilerLog = val);
 
 			AddLabel("---RANDOMIZATION OPTIONS---", "Toggle on or off the various aspects of the game which can be randomized.");

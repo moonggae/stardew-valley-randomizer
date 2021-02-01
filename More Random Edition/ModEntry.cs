@@ -89,10 +89,10 @@ namespace Randomizer
 		{
 			// Check to see if Generic Mod Config Menu is installed
 			if (!Helper.ModRegistry.IsLoaded("spacechase0.GenericModConfigMenu"))
-            {
+			{
 				Globals.ConsoleTrace("GenericModConfigMenu not present");
 				return;
-            }
+			}
 
 			api = Helper.ModRegistry.GetApi<IGenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
 			api.RegisterModConfig(ModManifest, () => Globals.Config = new ModConfig(), () => Helper.WriteConfig(Globals.Config));
