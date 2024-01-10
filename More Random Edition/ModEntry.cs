@@ -19,7 +19,7 @@ namespace Randomizer
 
 		private IModHelper _helper;
 
-		static IGenericModConfigMenuAPI api;
+		static IGenericModConfigMenuApi api;
 
 		/// <summary>The mod entry point, called after the mod is first loaded</summary>
 		/// <param name="helper">Provides simplified APIs for writing mods</param>
@@ -94,10 +94,10 @@ namespace Randomizer
 				return;
 			}
 
-			api = Helper.ModRegistry.GetApi<IGenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
-			api.RegisterModConfig(ModManifest, () => Globals.Config = new ModConfig(), () => Helper.WriteConfig(Globals.Config));
+			api = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+			api.Register(ModManifest, () => Globals.Config = new ModConfig(), () => Helper.WriteConfig(Globals.Config));
 
-			ModConfigMenuHelper menuHelper = new ModConfigMenuHelper(api, ModManifest);
+			ModConfigMenuHelper menuHelper = new(api, ModManifest);
 			menuHelper.RegisterModOptions();
 
 		}
