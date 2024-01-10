@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Locations;
@@ -16,29 +17,25 @@ namespace Randomizer
 	{
 		private AssetLoader _modAssetLoader;
 		private AssetEditor _modAssetEditor;
-
-		private IModHelper _helper;
-
 		static IGenericModConfigMenuApi api;
 
 		/// <summary>The mod entry point, called after the mod is first loaded</summary>
 		/// <param name="helper">Provides simplified APIs for writing mods</param>
 		public override void Entry(IModHelper helper)
 		{
-			_helper = helper;
 			Globals.ModRef = this;
-			Globals.Config = Helper.ReadConfig<ModConfig>();
+			Globals.Config = helper.ReadConfig<ModConfig>();
 
 			ImageBuilder.CleanUpReplacementFiles();
 
-			this._modAssetLoader = new AssetLoader(this);
-			this._modAssetEditor = new AssetEditor(this);
-			helper.Content.AssetLoaders.Add(this._modAssetLoader);
-			helper.Content.AssetEditors.Add(this._modAssetEditor);
+            _modAssetLoader = new AssetLoader(this);
+            _modAssetEditor = new AssetEditor(this);
 
-			this.PreLoadReplacments();
-			helper.Events.GameLoop.GameLaunched += (sender, args) => this.TryLoadModConfigMenu();
-			helper.Events.GameLoop.SaveLoaded += (sender, args) => this.CalculateAllReplacements();
+            helper.Events.Content.AssetRequested += OnAssetRequested;
+
+            PreLoadReplacments();
+			helper.Events.GameLoop.GameLaunched += (sender, args) => TryLoadModConfigMenu();
+			helper.Events.GameLoop.SaveLoaded += (sender, args) => CalculateAllReplacements();
 			helper.Events.Display.RenderingActiveMenu += (sender, args) => _modAssetLoader.TryReplaceTitleScreen();
 			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetLoader.ReplaceTitleScreenAfterReturning();
 
@@ -85,9 +82,23 @@ namespace Randomizer
 			}
 		}
 
-		private void TryLoadModConfigMenu()
+		/// <summary>
+		/// When an asset is requested, attempt to replace it
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
+        {
+            _modAssetLoader.OnAssetRequested(sender, e);
+            _modAssetEditor.OnAssetRequested(sender, e);
+        }
+
+		/// <summary>
+		/// Set up the mod config menu
+		/// Exits early if it is not installed
+		/// </summary>
+        private void TryLoadModConfigMenu()
 		{
-			// Check to see if Generic Mod Config Menu is installed
 			if (!Helper.ModRegistry.IsLoaded("spacechase0.GenericModConfigMenu"))
 			{
 				Globals.ConsoleTrace("GenericModConfigMenu not present");

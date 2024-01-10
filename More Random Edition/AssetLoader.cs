@@ -1,4 +1,5 @@
-﻿using StardewModdingAPI;
+﻿using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
@@ -11,11 +12,10 @@ using static StardewValley.LocalizedContentManager;
 
 namespace Randomizer
 {
-	public class AssetLoader : IAssetLoader
+    public class AssetLoader
 	{
 		private readonly ModEntry _mod;
 		private readonly Dictionary<string, string> _replacements = new Dictionary<string, string>();
-
 
 		/// <summary>Constructor</summary>
 		/// <param name="mod">A reference to the ModEntry</param>
@@ -25,33 +25,19 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Whether the asset has a replacement in our dictionary
+		/// When an asset is requested, load it from the replacements dictionary if
+		/// there is actually an entry in it
 		/// </summary>
-		/// <typeparam name="T">The type</typeparam>
-		/// <param name="asset">The asset to check</param>
-		/// <returns />
-		public bool CanLoad<T>(IAssetInfo asset)
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		/// <exception cref="InvalidOperationException"></exception>
+		public void OnAssetRequested(object sender, AssetRequestedEventArgs e)
 		{
-			return _replacements.Any(replacement => asset.AssetNameEquals(replacement.Key));
-		}
-
-		/// <summary>
-		/// Loads the replacement asset from the replacement dictionary
-		/// </summary>
-		/// <typeparam name="T">The type</typeparam>
-		/// <param name="asset">The asset to load</param>
-		/// <returns />
-		public T Load<T>(IAssetInfo asset)
-		{
-			string normalizedAssetName = _mod.Helper.Content.NormalizeAssetName(asset.AssetName);
-			if (_replacements.TryGetValue(normalizedAssetName, out string replacementAsset))
-			{
-				return _mod.Helper.Content.Load<T>(replacementAsset, ContentSource.ModFolder);
-			}
-
-			throw new InvalidOperationException($"Unknown asset: {asset.AssetName}.");
-		}
-
+            if (_replacements.TryGetValue(e.Name.BaseName, out string replacementAsset))
+            {
+                e.LoadFromModFile<Texture2D>(replacementAsset, AssetLoadPriority.Medium);
+            }
+        }
 
 		/// <summary>
 		/// Adds a replacement to our internal dictionary
@@ -60,8 +46,8 @@ namespace Randomizer
 		/// <param name="replacementAsset">The asset to replace it with</param>
 		private void AddReplacement(string originalAsset, string replacementAsset)
 		{
-			string normalizedAssetName = _mod.Helper.Content.NormalizeAssetName(originalAsset);
-			_replacements[normalizedAssetName] = replacementAsset;
+			IAssetName normalizedAssetName = _mod.Helper.GameContent.ParseAssetName(originalAsset);
+			_replacements[normalizedAssetName.BaseName] = replacementAsset;
 		}
 
 		/// <summary>
@@ -83,7 +69,7 @@ namespace Randomizer
 		{
 			foreach (string assetName in _replacements.Keys)
 			{
-				_mod.Helper.Content.InvalidateCache(assetName);
+				_mod.Helper.GameContent.InvalidateCache(assetName);
 			}
 		}
 
@@ -130,7 +116,7 @@ namespace Randomizer
 		{
 			_currentLocale = _mod.Helper.Translation.Locale;
 			AddReplacement("Minigames/TitleButtons", $"Assets/Minigames/{Globals.GetTranslation("title-graphic")}");
-			_mod.Helper.Content.InvalidateCache("Minigames/TitleButtons");
+			_mod.Helper.GameContent.InvalidateCache("Minigames/TitleButtons");
 
 			if (titleMenu != null)
 			{
@@ -206,8 +192,8 @@ namespace Randomizer
 
 			if (!Globals.Config.RandomizeRain) { return; }
 
-			AddReplacement("TileSheets/rain", $"Assets/TileSheets/{rainType.ToString()}Rain");
-			_mod.Helper.Content.InvalidateCache("TileSheets/rain");
+			AddReplacement("TileSheets/rain", $"Assets/TileSheets/{rainType}Rain");
+			_mod.Helper.GameContent.InvalidateCache("TileSheets/rain");
 		}
 	}
 }
