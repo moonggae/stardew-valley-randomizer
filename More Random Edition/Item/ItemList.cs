@@ -276,12 +276,37 @@ namespace Randomizer
 				);
 		}
 
-		/// <summary>
-		/// Gets a random resource item
-		/// </summary>
-		/// <param name="idsToExclude">Any ids to exclude from the results</param>
-		/// <returns>The resource item</returns>
-		public static Item GetRandomResourceItem(int[] idsToExclude = null)
+        /// <param name="difficulty">See ObtainingDifficulties</param>
+        /// <param name="idsToExclude">List of IDs to exclude</param>
+        /// <returns>The list of items, not including any in idsToExclude</returns>
+        public static List<Item> GetItemsAtDifficulty(ObtainingDifficulties difficulty, List<int> idsToExclude = null)
+        {
+            return Items.Values.Where(
+                    x => x.DifficultyToObtain == difficulty &&
+                    (idsToExclude == null || !idsToExclude.Contains(x.Id))
+                ).ToList();
+        }
+
+        /// <summary>
+        /// Gets all items in given craftable category
+        /// </summary>
+        /// <param name="category">See Enums/CraftableCategories</param>
+        /// <param name="idsToExclude">List of IDs to exclude from results</param>
+        /// <returns>The list of items in the given category</returns>
+        public static List<Item> GetCraftableItems(CraftableCategories category, List<int> idsToExclude = null)
+        {
+            return Items.Values.Where(
+                    x => x.IsCraftable && (x as CraftableItem).Category == category &&
+                    (idsToExclude == null || !idsToExclude.Contains(x.Id))
+                ).ToList();
+        }
+
+        /// <summary>
+        /// Gets a random resource item
+        /// </summary>
+        /// <param name="idsToExclude">Any ids to exclude from the results</param>
+        /// <returns>The resource item</returns>
+        public static Item GetRandomResourceItem(int[] idsToExclude = null)
 		{
 			return Globals.RNGGetRandomValueFromList(
 				Items.Values.Where(x =>

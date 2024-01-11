@@ -14,6 +14,8 @@
 		public BundleConfig Bundles { get; set; } = new BundleConfig();
 		public MusicConfig Music { get; set; } = new MusicConfig();
 
+		public ShopsConfig Shops { get; set; } = new ShopsConfig();
+
 		public bool RandomizeForagables { get; set; } = true;
 		public bool AddRandomArtifactItem { get; set; } = true;
 
@@ -84,6 +86,11 @@
 	{
 		public bool Randomize { get; set; } = true;
 		public bool RandomSongEachTransition { get; set; } = false;
+	}
+
+	public class ShopsConfig // More will come here, but only one value for now
+	{
+		public bool AddSeedShopItemOfTheWeek { get; set; } = true;
 	}
 }
 

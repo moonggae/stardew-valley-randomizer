@@ -60,7 +60,10 @@ namespace Randomizer
 			AddCheckbox("Music", "Shuffle most songs and ambience.", () => Globals.Config.Music.Randomize, (bool val) => Globals.Config.Music.Randomize = val);
 			AddCheckbox("Random Song on Area Change", "Plays a new song each time the loaded area changes.", () => Globals.Config.Music.RandomSongEachTransition, (bool val) => Globals.Config.Music.RandomSongEachTransition = val);
 
-			AddSectionTitle("Misc Options");
+			AddSectionTitle("Shop Option");
+            AddCheckbox("Seed Shop Item of the Week", "Adds an expensive item to Pierre's shop that changes every Monday.", () => Globals.Config.Shops.AddSeedShopItemOfTheWeek, (bool val) => Globals.Config.Shops.AddSeedShopItemOfTheWeek = val);
+
+            AddSectionTitle("Misc Options");
 			AddCheckbox("Building Costs", "Farm buildings that Robin can build for the player choose from a random pool of resources.", () => Globals.Config.RandomizeBuildingCosts, (bool val) => Globals.Config.RandomizeBuildingCosts = val);
 			AddCheckbox("Animal Skins", "You might get a surprise from Marnie.", () => Globals.Config.RandomizeAnimalSkins, (bool val) => Globals.Config.RandomizeAnimalSkins = val);
 			AddCheckbox("Forageables", "Forageables for every season and location are now randomly selected. Every forageable appears at least once per year.", () => Globals.Config.RandomizeForagables, (bool val) => Globals.Config.RandomizeForagables = val);

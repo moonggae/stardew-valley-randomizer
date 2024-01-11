@@ -1,8 +1,5 @@
 ﻿using StardewModdingAPI.Events;
-using StardewValley;
 using StardewValley.Menus;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Randomizer.Adjustments
 {
@@ -25,13 +22,14 @@ namespace Randomizer.Adjustments
             }
 
             // Shops
-            if (e.NewMenu is ShopMenu shopMenu)
+            else if (e.NewMenu is ShopMenu shopMenu)
             {
                 switch (shopMenu.portraitPerson?.Name)
                 {
                     // Seed shop
                     case "Pierre":
                         ShopMenuAdjustments.FixSaplingPrices(shopMenu);
+                        ShopMenuAdjustments.AddSeedShopItemOfTheWeek(shopMenu);
                         break;
                     // Adventure shop (the items can be resold for infinite money sometimes
                     case "Marlon":

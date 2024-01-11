@@ -4,13 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Security.Cryptography;
 
 namespace Randomizer
 {
-	/// <summary>
-	/// Used for any global access - USE SPARINGLY
-	/// </summary>
-	public class Globals
+    /// <summary>
+    /// Used for any global access - USE SPARINGLY
+    /// </summary>
+    public class Globals
 	{
 		public static ModEntry ModRef { get; set; }
 		public static ModConfig Config { get; set; }
@@ -91,11 +92,13 @@ namespace Randomizer
 		/// Gets a random boolean value
 		/// </summary>
 		/// <param name="percentage">The percentage of the boolean being true - 10 would be 10%, etc.</param>
+		/// <param name="rng">The Random object to use - defaults to the global one</param>
 		/// <returns />
-		public static bool RNGGetNextBoolean(int percentage)
+		public static bool RNGGetNextBoolean(int percentage, Random rng = null)
 		{
+			var rngToUse = rng ?? RNG;
 			if (percentage < 0 || percentage > 100) ConsoleWarn("Percentage is invalid (less than 0 or greater than 100)");
-			return RNG.Next(0, 100) < percentage;
+			return rngToUse.Next(0, 100) < percentage;
 		}
 
 		/// <summary>
@@ -181,10 +184,24 @@ namespace Randomizer
 			return randomValues;
 		}
 
-		/// <summary>
-		/// Returns "a" or "an" based on if word begins with vowel
-		/// </summary>
-		public static string GetArticle(string word)
+        /// <summary>
+        /// Gets an RNG value based on the seed and the ingame day
+		/// Essentially, this is a seed that changes once a week (every Monday)
+        /// </summary>
+        /// <returns>The Random object to use</returns>
+        public static Random GetWeeklyRNG()
+        {
+			int time = Game1.Date.TotalDays / 7;
+            byte[] seedvar = (new SHA1Managed()).ComputeHash(System.Text.Encoding.UTF8.GetBytes(Game1.player.farmName.Value));
+            int seed = BitConverter.ToInt32(seedvar, 0) + time;
+
+            return new Random(seed);
+        }
+
+        /// <summary>
+        /// Returns "a" or "an" based on if word begins with vowel
+        /// </summary>
+        public static string GetArticle(string word)
 		{
 			if (string.IsNullOrEmpty(word))
 			{
