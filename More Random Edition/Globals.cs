@@ -101,17 +101,19 @@ namespace Randomizer
 			return rngToUse.Next(0, 100) < percentage;
 		}
 
-		/// <summary>
-		/// Gets a random integer value + or - the given percentage (rounds up)
-		/// ex) value of 10 with percentage of 50 returns a value between 5 and 15
-		/// </summary>
-		/// <param name="value">The base value</param>
-		/// <param name="percentage">The percentage of the base value to use</param>
-		/// <returns>The random value retrieved</returns>
-		public static int RNGGetIntWithinPercentage(int value, int percentage)
+        /// <summary>
+        /// Gets a random integer value + or - the given percentage (rounds up)
+        /// ex) value of 10 with percentage of 50 returns a value between 5 and 15
+        /// </summary>
+        /// <param name="value">The base value</param>
+        /// <param name="percentage">The percentage of the base value to use</param>
+        /// <param name="rng">The Random object to use - defaults to the global one</param>
+        /// <returns>The random value retrieved</returns>
+        public static int RNGGetIntWithinPercentage(int value, int percentage, Random rng = null)
 		{
-			int difference = (int)Math.Ceiling(value * ((double)percentage / 100));
-			return new Range(value - difference, value + difference).GetRandomValue();
+            var rngToUse = rng ?? RNG;
+            var difference = (int)Math.Ceiling(value * ((double)percentage / 100));
+			return new Range(value - difference, value + difference).GetRandomValue(rngToUse);
 		}
 
 		/// <summary>
@@ -188,10 +190,24 @@ namespace Randomizer
         /// Gets an RNG value based on the seed and the ingame day
 		/// Essentially, this is a seed that changes once a week (every Monday)
         /// </summary>
-        /// <returns>The Random object to use</returns>
+        /// <returns>The Random object</returns>
         public static Random GetWeeklyRNG()
         {
 			int time = Game1.Date.TotalDays / 7;
+            byte[] seedvar = (new SHA1Managed()).ComputeHash(System.Text.Encoding.UTF8.GetBytes(Game1.player.farmName.Value));
+            int seed = BitConverter.ToInt32(seedvar, 0) + time;
+
+            return new Random(seed);
+        }
+
+        /// <summary>
+        /// Gets an RNG value based on the seed and the ingame day
+        /// Essentially, this is a seed that changes once every day
+        /// </summary>
+        /// <returns>The Random object</returns>
+        public static Random GetDailyRNG()
+        {
+			int time = Game1.Date.TotalDays;
             byte[] seedvar = (new SHA1Managed()).ComputeHash(System.Text.Encoding.UTF8.GetBytes(Game1.player.farmName.Value));
             int seed = BitConverter.ToInt32(seedvar, 0) + time;
 

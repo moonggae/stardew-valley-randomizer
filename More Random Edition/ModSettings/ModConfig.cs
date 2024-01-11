@@ -88,9 +88,10 @@
 		public bool RandomSongEachTransition { get; set; } = false;
 	}
 
-	public class ShopsConfig // More will come here, but only one value for now
+	public class ShopsConfig
 	{
 		public bool AddSeedShopItemOfTheWeek { get; set; } = true;
+		public bool AddClayToRobinsShop { get; set; } = true;
 	}
 }
 

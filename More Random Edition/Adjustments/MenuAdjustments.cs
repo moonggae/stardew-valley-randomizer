@@ -35,6 +35,10 @@ namespace Randomizer.Adjustments
                     case "Marlon":
                         ShopMenuAdjustments.FixAdventureShopPrices(shopMenu);
                         break;
+                    // Carpenter shop - add clay to prevent long grinds
+                    case "Robin":
+                        ShopMenuAdjustments.AddClayToCarpenterShop(shopMenu);
+                        break;
                 }
             }
         }

@@ -33,6 +33,11 @@ namespace Randomizer.Adjustments
             }
         }
 
+        /// <summary>
+        /// Adds an item of the week to Pierre's shop, refershing every Monday
+        /// Consists of a more expensive than usual item has a small chance of being hard to get
+        /// </summary>
+        /// <param name="menu">The shop menu</param>
         public static void AddSeedShopItemOfTheWeek(ShopMenu menu)
         {
             if (!Globals.Config.Shops.AddSeedShopItemOfTheWeek)
@@ -88,6 +93,27 @@ namespace Randomizer.Adjustments
                 item => item.Key,
                 item => new[] { item.Key.salePrice(), _maxValue }
             );
+        }
+
+        /// <summary>
+        /// Adds Clay to Robin's shop since it's really grindy to get
+        /// Add some randomness to the price each day (between 25-75 coins each)
+        /// </summary>
+        /// <param name="menu">The shop menu</param>
+        public static void AddClayToCarpenterShop(ShopMenu menu)
+        {
+            if (!Globals.Config.Shops.AddClayToRobinsShop)
+            {
+                return;
+            }
+
+            Random ShopRNG = Globals.GetDailyRNG();
+            var basePrice = 50;
+            var clayPrice = Globals.RNGGetIntWithinPercentage(basePrice, 50, ShopRNG);
+
+            SVObject clay = new(Vector2.Zero, (int)ObjectIndexes.Clay, _maxValue);
+            menu.itemPriceAndStock.Add(clay, new[] { clayPrice, _maxValue });
+            menu.forSale.Insert(2, clay);
         }
     }
 }
