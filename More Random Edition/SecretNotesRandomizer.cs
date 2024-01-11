@@ -3,9 +3,8 @@ using System.Linq;
 
 namespace Randomizer
 {
-	class SecretNotesRandomizer
+	public class SecretNotesRandomizer
 	{
-
 		private static Dictionary<string, string> prefs;
 
 		/// <summary>
@@ -95,6 +94,5 @@ namespace Randomizer
 			}
 			Globals.SpoilerWrite("");
 		}
-
 	}
 }

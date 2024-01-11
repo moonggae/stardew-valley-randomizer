@@ -75,6 +75,7 @@ namespace Randomizer
 
 		/// <summary>
 		/// The new method to replace Stardew Valley's Bundle.cs's canAcceptThisItem
+		/// This is necessary because rings are not normally accepted
 		/// </summary>
 		/// <param name="item">The item you are trying to deposit</param>
 		/// <param name="slot">The slot you're trying to deposit to</param>
@@ -101,14 +102,15 @@ namespace Randomizer
 			return false;
 		}
 
-		/// <summary>
-		/// The new method to replace Stardew Valley's Bundle.cs's tryToDepositThisItem
-		/// </summary>
-		/// <param name="item">The item you are trying to deposit</param>
-		/// <param name="slot">The slot you're trying to deposit to</param>
-		/// <param name="noteTextureName">Unsure what this is</param>
-		/// <returns>What item the player should get back after trying to depositing</returns>
-		public SVItem NewTryToDepositItem(SVItem item, ClickableTextureComponent slot, string noteTextureName)
+        /// <summary>
+        /// The new method to replace Stardew Valley's Bundle.cs's tryToDepositThisItem
+        /// This is necessary because rings are not normally accepted
+        /// </summary>
+        /// <param name="item">The item you are trying to deposit</param>
+        /// <param name="slot">The slot you're trying to deposit to</param>
+        /// <param name="noteTextureName">Unsure what this is</param>
+        /// <returns>What item the player should get back after trying to depositing</returns>
+        public SVItem NewTryToDepositItem(SVItem item, ClickableTextureComponent slot, string noteTextureName)
 		{
 			SVBundle bundle =
 				Globals.ModRef.Helper.Reflection
