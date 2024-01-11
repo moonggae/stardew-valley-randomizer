@@ -201,7 +201,7 @@ namespace Randomizer
 		/// Gets all the cooked items
 		/// </summary>
 		/// <returns />
-		public static List<Item> GetCookeditems()
+		public static List<Item> GetCookedItems()
 		{
 			return Items.Values.Where(x => x.IsCooked).ToList();
 		}

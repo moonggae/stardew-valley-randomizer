@@ -4,7 +4,7 @@
 	{
 		public bool CreateSpoilerLog { get; set; } = true;
 
-		public CraftingRecipesConfig CraftingRecipies { get; set; } = new CraftingRecipesConfig();
+		public CraftingRecipesConfig CraftingRecipes { get; set; } = new CraftingRecipesConfig();
 		public WeaponsConfig Weapons { get; set; } = new WeaponsConfig();
 		public BootsConfig Boots { get; set; } = new BootsConfig();
 		public MonstersConfig Monsters { get; set; } = new MonstersConfig();

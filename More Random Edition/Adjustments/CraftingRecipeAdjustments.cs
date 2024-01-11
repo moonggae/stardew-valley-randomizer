@@ -86,7 +86,7 @@ namespace Randomizer
 
 			else if (genericMenu is GameMenu && Game1.player.professions.Contains(TapperProfession))
 			{
-				if (!Globals.Config.CraftingRecipies.Randomize) { return; }
+				if (!Globals.Config.CraftingRecipes.Randomize) { return; }
 				ReduceCrabPotCost((GameMenu)genericMenu);
 			}
 		}

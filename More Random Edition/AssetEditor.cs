@@ -104,7 +104,7 @@ namespace Randomizer
                 return false;
             }
 
-            if (e.Name.IsEquivalentTo("Data/CraftingRecipes")) { return Globals.Config.CraftingRecipies.Randomize; }
+            if (e.Name.IsEquivalentTo("Data/CraftingRecipes")) { return Globals.Config.CraftingRecipes.Randomize; }
             if (e.Name.IsEquivalentTo("Data/Bundles")) { return Globals.Config.Bundles.Randomize; }
             if (e.Name.IsEquivalentTo("Data/Blueprints")) { return Globals.Config.RandomizeBuildingCosts; }
             if (e.Name.IsEquivalentTo("Strings/StringsFromCSFiles")) { return true; }
@@ -240,7 +240,7 @@ namespace Randomizer
 			_stringReplacements = StringsAdjustments.GetCSFileStringReplacements();
 			_locationStringReplacements = StringsAdjustments.GetLocationStringReplacements();
 			CraftingRecipeAdjustments.FixCookingRecipeDisplayNames();
-			_cookingChannelReplacements = CookingChannel.GetTextEdits();
+			_cookingChannelReplacements = CookingChannelAdjustments.GetTextEdits();
 
 			// Needs to run after Cooking Recipe fix so that cooked items are properly named,
 			// and needs to run before bundles so that NPC Loved Item bundles are properly generated
