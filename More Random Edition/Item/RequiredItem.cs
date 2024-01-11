@@ -28,7 +28,6 @@ namespace Randomizer
 
 		/// <summary>
 		/// Constructor
-		/// TODO: no need for the RNG call here - take this out in the next breaking version
 		/// </summary>
 		/// <param name="requiredItem">The item that's required</param>
 		/// <param name="numberOfItems">The number of items required to craft this</param>
@@ -54,7 +53,6 @@ namespace Randomizer
 
 		/// <summary>
 		/// Constructor
-		/// TODO: no need for the RNG call here - take this out in the next breaking version
 		/// </summary>
 		/// <param name="itemId">The item id of the item that's required</param>
 		/// <param name="numberOfItems">The number of items required to craft this</param>

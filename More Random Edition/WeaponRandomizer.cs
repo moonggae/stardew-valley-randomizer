@@ -42,7 +42,8 @@ namespace Randomizer
 			if (weapon.Type == WeaponType.Slingshot)
 			{
 				//TODO: assign the name here after we deal with the slingshot name hardcoding issue
-				// Doing this to advance the RNG - don't actually assign the name
+				// Doing this to advance the RNG so we don't affect seeds when we do actually
+				// assign one for the slingshot - don't actually assign the name yet, though
 				nameRandomizer.GenerateRandomWeaponName(weapon.Type, (WeaponIndexes)weapon.Id);
 				return;
 			}
