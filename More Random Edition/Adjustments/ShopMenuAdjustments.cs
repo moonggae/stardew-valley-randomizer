@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Randomizer.Adjustments
 {
-    public class ShopAdjustments
+    public class ShopMenuAdjustments
     {
         private static readonly int _maxValue = int.MaxValue;
 
@@ -27,6 +27,18 @@ namespace Randomizer.Adjustments
             {
                 menu.itemPriceAndStock[sapling.Key] = new[] { sapling.Key.salePrice(), _maxValue };
             }
+        }
+
+        /// <summary>
+        /// Fixes sale prices for randomized gear so that nothing sells for more than it's worth
+        /// </summary>
+        /// <param name="menu">The shop menu</param>
+        public static void FixAdventureShopPrices(ShopMenu menu)
+        {
+            menu.itemPriceAndStock = menu.itemPriceAndStock.ToDictionary(
+                item => item.Key,
+                item => new[] { item.Key.salePrice(), _maxValue }
+            );
         }
     }
 }
