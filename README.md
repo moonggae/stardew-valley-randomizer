@@ -121,9 +121,13 @@ Note the following:
   
 ## Pending Changes for 0.5.0
 * NPC Preference Randomizer (credit to Vertigon)
+  * Includes randomizing secret notes to give loved item info
+* Support the [GenericModConfigMenuApi]([url](https://www.nexusmods.com/stardewvalley/mods/5098)) mod to more easily manage settings
 * Reworked the NPC skin randomizer so that most NPCs can be randomized with each other - exceptions (perhaps we can address these in the future as well):
   * Dwarf and Krobus, as they're too small
   * Pam and Willy, as they have fishing animations
   * Henchman and Bouncer, as they don't have that many sprites
 * Fixed the rain, animal skins, and NPC skin randomizer settings potentially affecting the RNG for other things
 * Added animal skins and NPC skin randomizer settings to the spoiler log
+* Fixed the name of the "BlueBean" seed/crop image, as it had a casing inconsistency that caused errors
+* Changed the manifest unique name, since others are using Chikakoo/Randomizer now... this one is now Chikakoo/MoreRandomEdition
