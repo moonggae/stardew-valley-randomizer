@@ -17,17 +17,9 @@ namespace Randomizer
 		{
 			get
 			{
-				string roomName = "";
-
-				if (Room == CommunityCenterRooms.Joja)
-				{
-					roomName = "Abandoned Joja Mart";
-				}
-
-				else
-				{
-					roomName = Regex.Replace(Room.ToString(), @"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", " $1");
-				}
+                string roomName = Room == CommunityCenterRooms.Joja
+					? "Abandoned Joja Mart"
+					: Regex.Replace(Room.ToString(), @"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", " $1");
 
 				return $"{roomName}/{Id}";
 			}
@@ -44,11 +36,10 @@ namespace Randomizer
 		{
 			get
 			{
-				return $"{BundleType.ToString()}{ImageNameSuffix}";
+				return $"{BundleType}{ImageNameSuffix}";
 			}
 		}
 
-		private static bool _isInitialized { get; set; }
 		private static List<BundleTypes> _randomBundleTypes { get; set; }
 
 		/// <summary>
@@ -88,8 +79,8 @@ namespace Randomizer
 		/// <param name="id">The id of the bundle</param>
 		public static Bundle Create(CommunityCenterRooms room, int id)
 		{
-			Bundle createdBundle = null;
-			switch (room)
+            Bundle createdBundle;
+            switch (room)
 			{
 				case CommunityCenterRooms.CraftsRoom:
 					createdBundle = new CraftingRoomBundle();
@@ -113,7 +104,7 @@ namespace Randomizer
 					createdBundle = new JojaBundle();
 					break;
 				default:
-					Globals.ConsoleError($"Cannot create bundle for room: {room.ToString()}");
+					Globals.ConsoleError($"Cannot create bundle for room: {room}");
 					return null;
 			}
 

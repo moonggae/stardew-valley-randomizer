@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Randomizer.Adjustments;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
@@ -38,8 +39,9 @@ namespace Randomizer
 			helper.Events.GameLoop.SaveLoaded += (sender, args) => CalculateAllReplacements();
 			helper.Events.Display.RenderingActiveMenu += (sender, args) => _modAssetLoader.TryReplaceTitleScreen();
 			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetLoader.ReplaceTitleScreenAfterReturning();
+            helper.Events.Display.MenuChanged += MenuAdjustments.TryAdjustMenu;
 
-			if (Globals.Config.Music.Randomize) { helper.Events.GameLoop.UpdateTicked += (sender, args) => MusicRandomizer.TryReplaceSong(); }
+            if (Globals.Config.Music.Randomize) { helper.Events.GameLoop.UpdateTicked += (sender, args) => MusicRandomizer.TryReplaceSong(); }
 			if (Globals.Config.RandomizeRain) { helper.Events.GameLoop.DayEnding += _modAssetLoader.ReplaceRain; }
 
 			if (Globals.Config.Crops.Randomize)
@@ -72,8 +74,9 @@ namespace Randomizer
 
 			if (Globals.Config.Bundles.Randomize)
 			{
-				helper.Events.Display.MenuChanged += BundleMenuAdjustments.FixRingSelection;
-				helper.Events.Display.RenderingActiveMenu += (sender, args) => BundleMenuAdjustments.FixRingDeposits();
+				// This is currently only to allow rings to be modified
+                helper.Events.GameLoop.DayStarted += (sender, args) => OverriddenCommunityCenter.UseOverriddenCommunityCenter();
+                helper.Events.GameLoop.DayEnding += (sender, args) => OverriddenCommunityCenter.RestoreCommunityCenter();
 
 				if (Globals.Config.Bundles.ShowDescriptionsInBundleTooltips)
 				{
@@ -151,7 +154,6 @@ namespace Randomizer
 
 			ChangeDayOneForagables();
 			FixParsnipSeedBox();
-			OverriddenSeedShop.ReplaceShopStockMethod();
 			OverriddenAdventureShop.FixAdventureShopBuyAndSellPrices();
 		}
 
