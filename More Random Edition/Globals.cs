@@ -1,5 +1,6 @@
 ﻿using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -116,27 +117,24 @@ namespace Randomizer
 			return new Range(value - difference, value + difference).GetRandomValue(rngToUse);
 		}
 
-		/// <summary>
-		/// Gets a random value out of the given list
-		/// </summary>
-		/// <typeparam name="T">The type of the list</typeparam>
-		/// <param name="list">The list</param>
-		/// <param name="useGame1RNG">Whether to use the Game1 rng's next value</param>
-		/// <returns />
-		public static T RNGGetRandomValueFromList<T>(List<T> list, bool useGame1RNG = false)
+        /// <summary>
+        /// Gets a random value out of the given list
+        /// </summary>
+        /// <typeparam name="T">The type of the list</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="rng">The Random object to use - defaults to the global one</param>
+        /// <returns />
+        public static T RNGGetRandomValueFromList<T>(List<T> list, Random rng = null)
 		{
-			if (list == null || list.Count == 0)
+            var rngToUse = rng ?? RNG;
+
+            if (list == null || list.Count == 0)
 			{
 				ConsoleError("Attempted to get a random value out of an empty list!");
-				return default(T);
+				return default;
 			}
 
-			if (useGame1RNG)
-			{
-				return list[Game1.random.Next(list.Count)];
-			}
-
-			return list[RNG.Next(list.Count)];
+			return list[rngToUse.Next(list.Count)];
 		}
 
         /// <summary>

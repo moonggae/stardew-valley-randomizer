@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using StardewValley;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using SVCrop = StardewValley.Crop;
@@ -40,7 +41,7 @@ namespace Randomizer
 					return (int)ObjectIndexes.WildHorseradish;
 			}
 
-			return Globals.RNGGetRandomValueFromList(wildCropIDs, true);
+			return Globals.RNGGetRandomValueFromList(wildCropIDs, Game1.random);
 		}
 
 		/// <summary>

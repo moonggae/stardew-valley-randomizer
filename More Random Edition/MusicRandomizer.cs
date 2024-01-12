@@ -195,7 +195,7 @@ namespace Randomizer
 		/// <returns />
 		private static string GetRandomSong()
 		{
-			return Globals.RNGGetRandomValueFromList(MusicList, true);
+			return Globals.RNGGetRandomValueFromList(MusicList, Game1.random);
 		}
 
 		/// <summary>

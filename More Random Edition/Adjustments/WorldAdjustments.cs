@@ -74,7 +74,7 @@ namespace Randomizer
 
                     foreach (Vector2 oldForagableKey in tiles)
                     {
-                        RandomizerItem newForagable = Globals.RNGGetRandomValueFromList(newForagables, true);
+                        RandomizerItem newForagable = Globals.RNGGetRandomValueFromList(newForagables, Game1.random);
                         location.Objects[oldForagableKey].ParentSheetIndex = newForagable.Id;
                         location.Objects[oldForagableKey].Name = newForagable.Name;
                     }

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using StardewValley;
+using System;
 using System.Text.RegularExpressions;
+using SVObject = StardewValley.Object;
 
 namespace Randomizer
 {
@@ -207,6 +209,11 @@ namespace Randomizer
 			);
 			return range.GetRandomValue() * 10;
 		}
+
+		public virtual ISalable GetSaliableObject(int initialStack = 1, bool isRecipe = false, int price = -1)
+		{
+			return new SVObject(Id, initialStack, isRecipe, price);
+        }
 
 		/// <summary>
 		/// Not used normally - but when it is, used for the ObjectInformation string

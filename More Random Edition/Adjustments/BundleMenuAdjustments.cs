@@ -1,5 +1,4 @@
 ﻿using Netcode;
-using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;

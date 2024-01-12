@@ -43,15 +43,19 @@ namespace Randomizer.Adjustments
                     case "Gus":
                         ShopMenuAdjustments.AdjustSaloonShopStock(shopMenu);
                         break;
+                    // Oasis shop - sells late game items
+                    case "Sandy":
+                        ShopMenuAdjustments.AdjustOasisShopStock(shopMenu);
+                        break;
 
-                    // Shops TODO
-                    // Wandering Traveler
-                    // Joja Mart
-                    // Sewer Shop
-                    // Desert Outpost
-                    // Qi
-                    // Desert Seed Shop
-                    // Hat Shop?
+                        // Shops TODO
+                        // Wandering Traveler
+                        // Joja Mart
+                        // Sewer Shop
+                        // Desert Outpost
+                        // Qi
+                        // Desert Seed Shop
+                        // Hat Shop?
                 }
             }
         }

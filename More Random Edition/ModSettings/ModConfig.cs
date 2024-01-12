@@ -92,6 +92,7 @@
 		public bool AddSeedShopItemOfTheWeek { get; set; } = true;
 		public bool AddClayToRobinsShop { get; set; } = true;
 		public bool RandomizeSaloonShop { get; set; } = true;
+		public bool RandomizeOasisShop { get; set; } = true;
 	}
 }
 

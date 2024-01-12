@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Randomizer
@@ -170,11 +171,11 @@ namespace Randomizer
 			return Items.Values.Where(x => x.IsFlower).ToList();
 		}
 
-		/// <summary>
-		/// Gets all the fruit
-		/// </summary>
-		/// <returns />
-		public static List<Item> GetFruit()
+        /// <summary>
+        /// Gets all the fruit
+        /// </summary>
+        /// <returns />
+        public static List<Item> GetFruit()
 		{
 			return Items.Values.Where(x => x.IsFruit).ToList();
 		}
@@ -292,12 +293,19 @@ namespace Randomizer
         /// </summary>
         /// <param name="category">See Enums/CraftableCategories</param>
         /// <param name="idsToExclude">List of IDs to exclude from results</param>
+		/// <param name="excludeBigCraftables">Whether to exclude big craftable items from the results</param>
         /// <returns>The list of items in the given category</returns>
-        public static List<Item> GetCraftableItems(CraftableCategories category, List<int> idsToExclude = null)
+        public static List<Item> GetCraftableItems(CraftableCategories category, List<int> idsToExclude = null, bool excludeBigCraftables = false)
         {
+			List<int> excludedIds = idsToExclude ?? new List<int>();
+			if (excludeBigCraftables)
+			{
+				excludedIds.AddRange(Enum.GetValues(typeof(BigCraftableIndexes)).Cast<int>());
+			}
             return Items.Values.Where(
                     x => x.IsCraftable && (x as CraftableItem).Category == category &&
-                    (idsToExclude == null || !idsToExclude.Contains(x.Id))
+						!idsToExclude.Contains(x.Id) &&
+						(!excludeBigCraftables || x.Id > 0)
                 ).ToList();
         }
 
