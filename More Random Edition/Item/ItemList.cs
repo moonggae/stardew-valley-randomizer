@@ -4,6 +4,7 @@ using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SVOBject = StardewValley.Object;
 
 namespace Randomizer
 {
@@ -438,6 +439,25 @@ namespace Randomizer
 
             return Globals.RNGGetRandomValuesFromList(allHatIds, numberToGet, rng)
                 .Select(clothingId => new Hat(clothingId))
+                .Cast<ISalable>()
+                .ToList();
+        }
+
+        /// <summary>
+        /// Gets a list of random big craftables to sell
+        /// </summary>
+        /// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
+        /// <param name="numberToGet">The number of furniture objects to get</param>
+        /// <returns>A list of furniture to sell</returns>
+        public static List<ISalable> GetRandomBigCraftablesToSell(Random rng, int numberToGet, List<int> itemsToExclude = null)
+        {
+            var allBigCraftableIds = Enum.GetValues(typeof(BigCraftableIndexes))
+                .Cast<int>()
+                .Where(id => itemsToExclude == null || !itemsToExclude.Contains(id))
+                .ToList();
+
+            return Globals.RNGGetRandomValuesFromList(allBigCraftableIds, numberToGet, rng)
+                .Select(bigCraftableId => new SVOBject(Vector2.Zero, bigCraftableId))
                 .Cast<ISalable>()
                 .ToList();
         }

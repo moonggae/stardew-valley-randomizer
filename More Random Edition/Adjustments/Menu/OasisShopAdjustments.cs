@@ -9,7 +9,8 @@ namespace Randomizer
     internal class OasisShopAdjustments : ShopMenuAdjustments
     {
         /// <summary>
-        /// Adjust the oasis shop stock to sell late game items, cycling every Monday
+        /// Adjust the oasis shop stock to sell more exotic items, including furnature
+        /// Has some logic based on the day of the week
         /// </summary>
         /// <param name="menu">The shop menu</param>
         public static void AdjustStock(ShopMenu menu)

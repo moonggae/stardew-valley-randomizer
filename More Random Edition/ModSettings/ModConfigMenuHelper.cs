@@ -65,8 +65,9 @@ namespace Randomizer
 			AddCheckbox("Randomize Saloon Shop", "Randomizes cooked food and recipes in Gus' Saloon Shop. Beer and Coffee are always available.", () => Globals.Config.Shops.RandomizeSaloonShop, (bool val) => Globals.Config.Shops.RandomizeSaloonShop = val);
             AddCheckbox("Randomize Oasis Shop", "Randomizes Sandy's shop by replacing the crop/foragable she sometimes sells. Also includes a couple random useful items. The randomization changes every Monday", () => Globals.Config.Shops.RandomizeOasisShop, (bool val) => Globals.Config.Shops.RandomizeOasisShop = val);
             AddCheckbox("Hat of the Week", "Adds a hat of the week to the hat shop (you must have unlocked at least one hat to unlock the shop first).", () => Globals.Config.Shops.AddHatShopHatOfTheWeek, (bool val) => Globals.Config.Shops.AddHatShopHatOfTheWeek = val);
-
-            AddSectionTitle("Misc Options");
+			AddCheckbox("Randomize Sewer Shop", "Randomizes the two decorative items to two random items daily", () => Globals.Config.Shops.RandomizerSewerShop, (bool val) => Globals.Config.Shops.RandomizerSewerShop = val);
+            
+			AddSectionTitle("Misc Options");
 			AddCheckbox("Building Costs", "Farm buildings that Robin can build for the player choose from a random pool of resources.", () => Globals.Config.RandomizeBuildingCosts, (bool val) => Globals.Config.RandomizeBuildingCosts = val);
 			AddCheckbox("Animal Skins", "You might get a surprise from Marnie.", () => Globals.Config.RandomizeAnimalSkins, (bool val) => Globals.Config.RandomizeAnimalSkins = val);
 			AddCheckbox("Forageables", "Forageables for every season and location are now randomly selected. Every forageable appears at least once per year.", () => Globals.Config.RandomizeForagables, (bool val) => Globals.Config.RandomizeForagables = val);

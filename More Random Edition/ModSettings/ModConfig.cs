@@ -94,6 +94,7 @@
 		public bool RandomizeSaloonShop { get; set; } = true;
 		public bool RandomizeOasisShop { get; set; } = true;
 		public bool AddHatShopHatOfTheWeek { get; set; } = true;
-	}
+		public bool RandomizerSewerShop { get; set; } = true;
+    }
 }
 
