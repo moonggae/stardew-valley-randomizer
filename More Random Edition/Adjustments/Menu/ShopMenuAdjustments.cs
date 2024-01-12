@@ -1,6 +1,7 @@
 ﻿using StardewValley;
 using StardewValley.Menus;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using SVObject = StardewValley.Object;
 
@@ -19,12 +20,80 @@ namespace Randomizer
         /// <param name="salePrice">The amount to sell at - defaults to the item's sale price</param>
         internal static void AddStock(
             ShopMenu menu,
+            Item item,
+            int stock = int.MaxValue,
+            int? salePrice = null)
+        {
+            AddStock(menu, item.GetSaliableObject(), stock, salePrice);
+        }
+
+        /// <summary>
+        /// Adds the given items to the given shop menu
+        /// The stock and sale priced passed in will apply to every item in the list
+        /// </summary>
+        /// <param name="menu">The shop menu<param>
+        /// <param name="item">The item to add</param>
+        /// <param name="stock">The amount to sell - defaults to max</param>
+        /// <param name="salePrice">The amount to sell at - defaults to the item's sale price</param>
+        internal static void AddStock(
+            ShopMenu menu,
+            List<Item> items,
+            int stock = int.MaxValue,
+            int? salePrice = null)
+        {
+            items.ForEach(item => AddStock(menu, item, stock, salePrice));
+        }
+
+        /// <summary>
+        /// Adds the given item to the given shop menu
+        /// </summary>
+        /// <param name="menu">The shop menu<param>
+        /// <param name="item">The item to add</param>
+        /// <param name="stock">The amount to sell - defaults to max</param>
+        /// <param name="salePrice">The amount to sell at - defaults to the item's sale price</param>
+        internal static void AddStock(
+            ShopMenu menu,
             ISalable item, 
             int stock = int.MaxValue,
             int? salePrice = null)
         {
             AddToItemPriceAndStock(menu, item, stock, salePrice);
             menu.forSale.Add(item);
+        }
+
+        /// <summary>
+        /// Adds the given items to the given shop menu
+        /// The stock and sale priced passed in will apply to every item in the list
+        /// </summary>
+        /// <param name="menu">The shop menu<param>
+        /// <param name="item">The item to add</param>
+        /// <param name="stock">The amount to sell - defaults to max</param>
+        /// <param name="salePrice">The amount to sell at - defaults to the item's sale price</param>
+        internal static void AddStock(
+            ShopMenu menu,
+            List<ISalable> items,
+            int stock = int.MaxValue,
+            int? salePrice = null)
+        {
+            items.ForEach(item => AddStock(menu, item, stock, salePrice));
+        }
+
+        /// <summary>
+        /// Inserts the given item at the given position - defaults to the first index (0)
+        /// </summary>
+        /// <param name="menu">The shop menu<param>
+        /// <param name="item">The item to add</param>
+        /// <param name="stock">The amount to sell - defaults to max</param>
+        /// <param name="salePrice">The amount to sell at - defaults to the item's sale price</param>
+        /// <param name="index">The index to insert the item to (where it will show up in the shop menu)</param>
+        internal static void InsertStockAt(
+            ShopMenu menu,
+            Item item,
+            int stock = int.MaxValue,
+            int? salePrice = null,
+            int index = 0)
+        {
+            InsertStockAt(menu, item.GetSaliableObject(), stock, salePrice, index);
         }
 
         /// <summary>
@@ -97,6 +166,20 @@ namespace Randomizer
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Gets a new price for the item
+        /// Takes the greater of the item's price and the fallback price and multiplies them by
+        /// the multiplier and the difficulty level
+        /// </summary>
+        /// <param name="item">The item to get the price for</param>
+        /// <param name="fallbackPrice">The price to use if the item costs too little</param>
+        /// <param name="multiplier">The multiplier</param>
+        /// <returns>The new item price</returns>
+        internal static int GetAdjustedItemPrice(Item item, int fallbackPrice, int multiplier)
+        {
+            return GetAdjustedItemPrice(item.GetSaliableObject(), fallbackPrice, multiplier);
         }
 
         /// <summary>

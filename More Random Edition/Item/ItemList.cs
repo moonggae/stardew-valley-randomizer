@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using StardewValley;
+using StardewValley.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -382,8 +385,45 @@ namespace Randomizer
 			return Globals.RNGGetRandomValueFromList(items);
 		}
 
+		/// <summary>
+		/// Gets list of random furniture items to sell
+		/// </summary>
+		/// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
+		/// <param name="numberToGet">The number of furniture objects to get</param>
+		/// <returns>A list of furniture to sell</returns>
+		public static List<ISalable> GetRandomFurnitureToSell(Random rng, int numberToGet, List<int> itemsToExclude = null)
+		{
+			var allFurnitureIds = Enum.GetValues(typeof(FurnitureIndexes))
+				.Cast<int>()
+                .Where(id => itemsToExclude == null || !itemsToExclude.Contains(id))
+                .ToList();
 
-		public static Dictionary<int, Item> Items;
+            return Globals.RNGGetRandomValuesFromList(allFurnitureIds, numberToGet, rng)
+				.Select(furnitureId => new Furniture(furnitureId, Vector2.Zero))
+				.Cast<ISalable>()
+				.ToList();
+		}
+
+        /// <summary>
+        /// Gets list of random clothing items to sell
+        /// </summary>
+        /// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
+        /// <param name="numberToGet">The number of furniture objects to get</param>
+        /// <returns>A list of furniture to sell</returns>
+        public static List<ISalable> GetRandomClothingToSell(Random rng, int numberToGet, List<int> itemsToExclude = null)
+        {
+            var allClothingIds = Enum.GetValues(typeof(ClothingIndexes))
+                .Cast<int>()
+				.Where(id => itemsToExclude == null || !itemsToExclude.Contains(id))
+                .ToList();
+
+            return Globals.RNGGetRandomValuesFromList(allClothingIds, numberToGet, rng)
+                .Select(clothingId => new Clothing(clothingId))
+                .Cast<ISalable>()
+                .ToList();
+        }
+
+        public static Dictionary<int, Item> Items;
 		static ItemList()
 		{
 			Initialize();

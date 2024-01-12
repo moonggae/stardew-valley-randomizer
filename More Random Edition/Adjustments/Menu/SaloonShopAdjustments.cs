@@ -23,7 +23,7 @@ namespace Randomizer
             }
 
             // Stock will change every Monday
-            Random ShopRNG = Globals.GetWeeklyRNG();
+            Random shopRNG = Globals.GetWeeklyRNG();
             EmptyStock(menu);
 
             // Beer and coffee will always be available
@@ -34,15 +34,13 @@ namespace Randomizer
             AddStock(menu, coffee);
 
             // Random Cooked Items - pick 3-5 random dishes each week
-            var numberOfCookedItems = Range.GetRandomValue(3, 5, ShopRNG);
-            List<Item> gusFoodList = Globals.RNGGetRandomValuesFromList(ItemList.GetCookedItems(), numberOfCookedItems, ShopRNG);
-            gusFoodList.ForEach(cookedItem =>
-                AddStock(menu, cookedItem.GetSaliableObject())
-            );
+            var numberOfCookedItems = Range.GetRandomValue(3, 5, shopRNG);
+            List<Item> gusFoodList = Globals.RNGGetRandomValuesFromList(ItemList.GetCookedItems(), numberOfCookedItems, shopRNG);
+            AddStock(menu, gusFoodList);
 
             // Random Cooking Recipes - pick 3-5 random recipes each week
-            var numberOfRecipes = Range.GetRandomValue(3, 5, ShopRNG);
-            List<Item> gusRecipeList = Globals.RNGGetRandomValuesFromList(ItemList.GetCookedItems(), numberOfRecipes, ShopRNG);
+            var numberOfRecipes = Range.GetRandomValue(3, 5, shopRNG);
+            List<Item> gusRecipeList = Globals.RNGGetRandomValuesFromList(ItemList.GetCookedItems(), numberOfRecipes, shopRNG);
             gusRecipeList.ForEach(recipeItem =>
             {
                 ISalable recipe = recipeItem.GetSaliableObject(isRecipe: true);

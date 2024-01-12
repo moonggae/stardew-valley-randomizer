@@ -1,5 +1,4 @@
-﻿using Randomizer.Menu;
-using StardewModdingAPI.Events;
+﻿using StardewModdingAPI.Events;
 using StardewValley.Menus;
 
 namespace Randomizer

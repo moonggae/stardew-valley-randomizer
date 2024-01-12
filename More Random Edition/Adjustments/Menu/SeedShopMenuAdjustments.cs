@@ -41,7 +41,7 @@ namespace Randomizer
                 return;
             }
 
-            Random ShopRNG = Globals.GetWeeklyRNG();
+            Random shopRNG = Globals.GetWeeklyRNG();
 
             // Build list of possible items
             var itemsAlreadyInStock = menu.itemPriceAndStock.Keys
@@ -57,7 +57,7 @@ namespace Randomizer
                 .ToList();
 
             // 1/10 chance of there being a better item in stock
-            if (Globals.RNGGetNextBoolean(10, ShopRNG))
+            if (Globals.RNGGetNextBoolean(10, shopRNG))
             {
                 validItems = ItemList.GetItemsAtDifficulty(ObtainingDifficulties.MediumTimeRequirements)
                     .Concat(ItemList.GetItemsAtDifficulty(ObtainingDifficulties.LargeTimeRequirements))
@@ -68,8 +68,7 @@ namespace Randomizer
 
             // Select an item to be the item of the week
             // Do this here so the next check
-            Item item = validItems[ShopRNG.Next(validItems.Count)];
-            ISalable itemOfTheWeek = item.GetSaliableObject();
+            Item itemOfTheWeek = validItems[shopRNG.Next(validItems.Count)];
 
             // Certain items don't have a salePrice or it is too low
             // Triple that price because there's infinite stock

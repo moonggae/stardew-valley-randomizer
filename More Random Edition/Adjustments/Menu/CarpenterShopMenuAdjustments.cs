@@ -2,7 +2,7 @@
 using System;
 using SVObject = StardewValley.Object;
 
-namespace Randomizer.Menu
+namespace Randomizer
 {
     internal class CarpenterShopMenuAdjustments : ShopMenuAdjustments
     {
@@ -18,9 +18,9 @@ namespace Randomizer.Menu
                 return;
             }
 
-            Random ShopRNG = Globals.GetDailyRNG();
+            Random shopRNG = Globals.GetDailyRNG();
             var basePrice = 50;
-            var clayPrice = Globals.RNGGetIntWithinPercentage(basePrice, 50, ShopRNG);
+            var clayPrice = Globals.RNGGetIntWithinPercentage(basePrice, 50, shopRNG);
 
             SVObject clay = new((int)ObjectIndexes.Clay, 1);
             InsertStockAt(menu, clay, salePrice: clayPrice, index: 2);
