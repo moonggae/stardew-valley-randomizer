@@ -83,7 +83,7 @@ namespace Randomizer
 			{
 				helper.Events.GameLoop.TimeChanged += (sender, args) => WorldAdjustments.TrySpawnGalaxySwordBat();
             }
-		}
+        }
 
 		/// <summary>
 		/// When an asset is requested, attempt to replace it
@@ -136,7 +136,7 @@ namespace Randomizer
 
 			Monitor.Log($"Seed Set: {seed}");
 
-			Globals.RNG = new Random(seed);
+			Globals.RNG = new SaveLoadRNG(seed);
 			Globals.SpoilerLog = new SpoilerLogger(Game1.player.farmName.Value);
 
 			// Make replacements and edits
@@ -154,7 +154,10 @@ namespace Randomizer
 
             WorldAdjustments.ChangeDayOneForagables();
             WorldAdjustments.FixParsnipSeedBox();
-		}
+
+			// We should now be done with Globals.RNG
+            Globals.RNG.IsPostFileLoad = true;
+        }
 
 		/// <summary>
 		/// A passthrough to calculate adn invalidate UI edits

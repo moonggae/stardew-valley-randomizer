@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Randomizer
 {
-	public class ItemList
+    public class ItemList
 	{
 		/// <summary>
 		/// Gets all the resources
@@ -295,7 +295,7 @@ namespace Randomizer
         /// <param name="idsToExclude">List of IDs to exclude from results</param>
 		/// <param name="excludeBigCraftables">Whether to exclude big craftable items from the results</param>
         /// <returns>The list of items in the given category</returns>
-        public static List<Item> GetCraftableItems(CraftableCategories category, List<int> idsToExclude = null, bool excludeBigCraftables = false)
+        public static List<Item> GetCraftableItems(CraftableCategories category, List<int> idsToExclude = null, bool excludeBigCraftables = true)
         {
 			List<int> excludedIds = idsToExclude ?? new List<int>();
 			if (excludeBigCraftables)
@@ -304,7 +304,7 @@ namespace Randomizer
 			}
             return Items.Values.Where(
                     x => x.IsCraftable && (x as CraftableItem).Category == category &&
-						!idsToExclude.Contains(x.Id) &&
+						!excludedIds.Contains(x.Id) &&
 						(!excludeBigCraftables || x.Id > 0)
                 ).ToList();
         }
@@ -313,13 +313,18 @@ namespace Randomizer
         /// Gets a random resource item
         /// </summary>
         /// <param name="idsToExclude">Any ids to exclude from the results</param>
+		/// <param name="rng">The Random object to use - defaults to the global one</param>
         /// <returns>The resource item</returns>
-        public static Item GetRandomResourceItem(int[] idsToExclude = null)
+        public static Item GetRandomResourceItem(int[] idsToExclude = null, Random rng = null)
 		{
-			return Globals.RNGGetRandomValueFromList(
-				Items.Values.Where(x =>
-					x.IsResource &&
-					(idsToExclude == null || !idsToExclude.Contains(x.Id))).ToList()
+            var rngToUse = rng ?? Globals.RNG;
+
+            return Globals.RNGGetRandomValueFromList(
+				Items.Values
+					.Where(x => x.IsResource &&
+						(idsToExclude == null || !idsToExclude.Contains(x.Id)))
+					.ToList(),
+                rngToUse
 			);
 		}
 

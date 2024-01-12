@@ -1,6 +1,5 @@
 ﻿using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +15,7 @@ namespace Randomizer
 	{
 		public static ModEntry ModRef { get; set; }
 		public static ModConfig Config { get; set; }
-		public static Random RNG { get; set; }
+		public static SaveLoadRNG RNG { get; set; }
 		public static SpoilerLogger SpoilerLog { get; set; }
 
 		/// <summary>
@@ -151,7 +150,7 @@ namespace Randomizer
             if (list == null || list.Count == 0)
 			{
 				ConsoleError("Attempted to get a random value out of an empty list!");
-				return default(T);
+				return default;
 			}
 			int selectedIndex = rngToUse.Next(list.Count);
 			T selectedValue = list[selectedIndex];
@@ -173,8 +172,8 @@ namespace Randomizer
 		{
             var rngToUse = rng ?? RNG;
 
-            List<T> listToChooseFrom = new List<T>(inputList); // Don't modify the original list
-			List<T> randomValues = new List<T>();
+            List<T> listToChooseFrom = new(inputList); // Don't modify the original list
+			List<T> randomValues = new();
 			if (listToChooseFrom == null || listToChooseFrom.Count == 0)
 			{
 				ConsoleError("Attempted to get random values out of an empty list!");
@@ -243,7 +242,7 @@ namespace Randomizer
 		/// <returns>The requested length, truncated appropriately</returns>
 		public static string GetStringStart(string input, int length)
 		{
-			return input.Length < length ? input : input.Substring(0, length);
+			return input.Length < length ? input : input[..length];
 		}
 
 		/// <summary>

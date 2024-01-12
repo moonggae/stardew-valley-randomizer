@@ -51,8 +51,8 @@ namespace Randomizer.Adjustments
                 .Select(item => (item as SVObject).ParentSheetIndex)
                 .ToList();
 
-            var validItems = ItemList.GetCraftableItems(CraftableCategories.Easy, excludeBigCraftables: true)
-                .Concat(ItemList.GetCraftableItems(CraftableCategories.EasyAndNeedMany, excludeBigCraftables: true))
+            var validItems = ItemList.GetCraftableItems(CraftableCategories.Easy)
+                .Concat(ItemList.GetCraftableItems(CraftableCategories.EasyAndNeedMany))
                 .Concat(ItemList.GetItemsBelowDifficulty(ObtainingDifficulties.MediumTimeRequirements))
                 .Where(x => !itemsAlreadyInStock.Contains(x.Id))
                 .Distinct()
@@ -207,13 +207,11 @@ namespace Randomizer.Adjustments
                 .Where(item => item is SVObject)
                 .Select(item => (item as SVObject).ParentSheetIndex)
                 .ToList();
-            var craftableItems = ItemList.GetCraftableItems(CraftableCategories.Moderate, existingItems, excludeBigCraftables: true)
+            var craftableItems = ItemList.GetCraftableItems(CraftableCategories.Moderate, existingItems)
                 .ToList();
             var craftableItem = Globals.RNGGetRandomValueFromList(craftableItems, ShopRNG);
             var resourceItem = ItemList.GetRandomResourceItem(
-                existingItems.Concat(craftableItems.Select(item => item.Id)).ToArray());
-
-            craftableItem = ItemList.Items[(int)ObjectIndexes.EmeraldRing]; //TODO: REMOVE ME
+                existingItems.Concat(craftableItems.Select(item => item.Id)).ToArray(), ShopRNG);
 
             ISalable svCraftableItem = craftableItem.GetSaliableObject();
             int craftableSalePrice = GetAdjustedItemPrice(svCraftableItem, fallbackPrice: 50, multiplier: 2);

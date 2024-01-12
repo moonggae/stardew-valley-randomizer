@@ -185,10 +185,9 @@ namespace Randomizer
 		/// </summary>
 		public void ReplaceRain(object sender = null, DayEndingEventArgs e = null)
 		{
-			if (Globals.RNG == null) { return; }
-
 			RainTypes rainType = Globals.RNGGetRandomValueFromList(
-				Enum.GetValues(typeof(RainTypes)).Cast<RainTypes>().ToList());
+				Enum.GetValues(typeof(RainTypes)).Cast<RainTypes>().ToList(),
+				Globals.GetDailyRNG());
 
 			if (!Globals.Config.RandomizeRain) { return; }
 
