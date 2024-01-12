@@ -39,6 +39,19 @@ namespace Randomizer.Adjustments
                     case "Robin":
                         ShopMenuAdjustments.AddClayToCarpenterShop(shopMenu);
                         break;
+                    // Saloon shop - will sell random foods each day
+                    case "Gus":
+                        ShopMenuAdjustments.AdjustSaloonShopStock(shopMenu);
+                        break;
+
+                    // Shops TODO
+                    // Wandering Traveler
+                    // Joja Mart
+                    // Sewer Shop
+                    // Desert Outpost
+                    // Qi
+                    // Desert Seed Shop
+                    // Hat Shop?
                 }
             }
         }

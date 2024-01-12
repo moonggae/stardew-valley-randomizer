@@ -139,37 +139,43 @@ namespace Randomizer
 			return list[RNG.Next(list.Count)];
 		}
 
-		/// <summary>
-		/// Gets a random value out of the given list and removes it
-		/// </summary>
-		/// <typeparam name="T">The type of the list</typeparam>
-		/// <param name="list">The list</param>
-		/// <returns />
-		public static T RNGGetAndRemoveRandomValueFromList<T>(List<T> list)
+        /// <summary>
+        /// Gets a random value out of the given list and removes it
+        /// </summary>
+        /// <typeparam name="T">The type of the list</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="rng">The Random object to use - defaults to the global one</param>
+        /// <returns />
+        public static T RNGGetAndRemoveRandomValueFromList<T>(List<T> list, Random rng = null)
 		{
-			if (list == null || list.Count == 0)
+            var rngToUse = rng ?? RNG;
+
+            if (list == null || list.Count == 0)
 			{
 				ConsoleError("Attempted to get a random value out of an empty list!");
 				return default(T);
 			}
-			int selectedIndex = RNG.Next(list.Count);
+			int selectedIndex = rngToUse.Next(list.Count);
 			T selectedValue = list[selectedIndex];
 			list.RemoveAt(selectedIndex);
 			return selectedValue;
 		}
 
-		/// <summary>
-		/// Gets a random set of values form a list
-		/// </summary>
-		/// <typeparam name="T">The type of the list</typeparam>
-		/// <param name="inputList">The list</param>
-		/// <param name="numberOfvalues">The number of values to return</param>
-		/// <returns>
-		/// The randomly chosen values - might be less than the number of values if the list doesn't contain that many
-		/// </returns>
-		public static List<T> RNGGetRandomValuesFromList<T>(List<T> inputList, int numberOfvalues)
+        /// <summary>
+        /// Gets a random set of values form a list
+        /// </summary>
+        /// <typeparam name="T">The type of the list</typeparam>
+        /// <param name="inputList">The list</param>
+        /// <param name="numberOfvalues">The number of values to return</param>
+        /// <param name="rng">The Random object to use - defaults to the global one</param>
+        /// <returns>
+        /// The randomly chosen values - might be less than the number of values if the list doesn't contain that many
+        /// </returns>
+        public static List<T> RNGGetRandomValuesFromList<T>(List<T> inputList, int numberOfvalues, Random rng = null)
 		{
-			List<T> listToChooseFrom = new List<T>(inputList); // Don't modify the original list
+            var rngToUse = rng ?? RNG;
+
+            List<T> listToChooseFrom = new List<T>(inputList); // Don't modify the original list
 			List<T> randomValues = new List<T>();
 			if (listToChooseFrom == null || listToChooseFrom.Count == 0)
 			{
@@ -180,7 +186,7 @@ namespace Randomizer
 			int numberOfIterations = Math.Min(numberOfvalues, listToChooseFrom.Count);
 			for (int i = 0; i < numberOfIterations; i++)
 			{
-				randomValues.Add(RNGGetAndRemoveRandomValueFromList(listToChooseFrom));
+				randomValues.Add(RNGGetAndRemoveRandomValueFromList(listToChooseFrom, rngToUse));
 			}
 
 			return randomValues;

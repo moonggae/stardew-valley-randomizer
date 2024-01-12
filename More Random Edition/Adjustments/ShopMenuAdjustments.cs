@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using StardewValley;
+﻿using StardewValley;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
@@ -28,7 +27,6 @@ namespace Randomizer.Adjustments
                 .ToList();
             foreach (KeyValuePair<ISalable, int[]> sapling in saplingMenuItems)
             {
-                var test = sapling.Key as SVObject;
                 menu.itemPriceAndStock[sapling.Key] = new[] { sapling.Key.salePrice(), _maxValue };
             }
         }
@@ -78,9 +76,7 @@ namespace Randomizer.Adjustments
             // Certain items don't have a salePrice or it is too low
             // Triple that price because there's infinite stock
             int salePrice = Math.Max(20, (int)(itemOfTheWeek.salePrice() * Game1.MasterPlayer.difficultyModifier)) * 3;
-
-            menu.itemPriceAndStock.Add(itemOfTheWeek, new[] { salePrice, _maxValue });
-            menu.forSale.Insert(0, itemOfTheWeek);
+            InsertStockAt(menu, itemOfTheWeek, salePrice: salePrice);
         }
 
         /// <summary>
@@ -111,9 +107,116 @@ namespace Randomizer.Adjustments
             var basePrice = 50;
             var clayPrice = Globals.RNGGetIntWithinPercentage(basePrice, 50, ShopRNG);
 
-            SVObject clay = new(Vector2.Zero, (int)ObjectIndexes.Clay, _maxValue);
-            menu.itemPriceAndStock.Add(clay, new[] { clayPrice, _maxValue });
-            menu.forSale.Insert(2, clay);
+            SVObject clay = new((int)ObjectIndexes.Clay, 1);
+            InsertStockAt(menu, clay, salePrice: clayPrice, index: 2);
+        }
+
+        public static void AdjustSaloonShopStock(ShopMenu menu)
+        {
+            if (!Globals.Config.Shops.RandomizeSaloonShop)
+            {
+                return;
+            }
+
+            // Stock will change every Monday
+            Random ShopRNG = Globals.GetWeeklyRNG();
+            EmptyStock(menu);
+
+            // Beer and coffee will always be available
+            SVObject beer = new((int)ObjectIndexes.Beer, 1);
+            SVObject coffee = new((int)ObjectIndexes.Coffee, 1);
+
+            AddStock(menu, beer);
+            AddStock(menu, coffee);
+
+            // Random Cooked Items - pick 3-5 random dishes each week
+            var numberOfCookedItems = Range.GetRandomValue(3, 5, ShopRNG);
+            List<Item> gusFoodList = Globals.RNGGetRandomValuesFromList(ItemList.GetCookedItems(), numberOfCookedItems, ShopRNG);
+            gusFoodList.ForEach(cookedItem => 
+                AddStock(menu, new(cookedItem.Id, 1))
+            );
+
+            // Random Cooking Recipes - pick 3-5 random recipes each week
+            var numberOfRecipes = Range.GetRandomValue(3, 5, ShopRNG);
+            List<Item> gusRecipeList = Globals.RNGGetRandomValuesFromList(ItemList.GetCookedItems(), numberOfRecipes, ShopRNG);
+            gusRecipeList.ForEach(recipeItem =>
+            {
+                SVObject recipe = new(recipeItem.Id, 1, isRecipe: true);
+
+                // Don't add if player already knows recipe
+                string recipeName = recipe.Name[..(recipe.Name.IndexOf("Recipe") - 1)];
+                if (!Game1.player.cookingRecipes.ContainsKey(recipeName))
+                {
+                    AddStock(menu, recipe, stock: 1);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Adds the given item to the given shop menu
+        /// </summary>
+        /// <param name="menu">The shop menu<param>
+        /// <param name="item">The item to add</param>
+        /// <param name="stock">The amount to sell - defaults to max</param>
+        /// <param name="salePrice">The amount to sell at - defaults to the item's sale price</param>
+        private static void AddStock(
+            ShopMenu menu,
+            SVObject item, 
+            int stock = int.MaxValue,
+            int? salePrice = null)
+        {
+            AddToItemPriceAndStock(menu, item, stock, salePrice);
+            menu.forSale.Add(item);
+        }
+
+        /// <summary>
+        /// Inserts the given item at the given position - defaults to the first index (0)
+        /// </summary>
+        /// <param name="menu">The shop menu<param>
+        /// <param name="item">The item to add</param>
+        /// <param name="stock">The amount to sell - defaults to max</param>
+        /// <param name="salePrice">The amount to sell at - defaults to the item's sale price</param>
+        /// <param name="index">The index to insert the item to (where it will show up in the shop menu)</param>
+        private static void InsertStockAt(
+            ShopMenu menu, 
+            SVObject item, 
+            int stock = int.MaxValue,
+            int? salePrice = null,
+            int index = 0)
+        {
+            AddToItemPriceAndStock(menu, item, stock, salePrice);
+            menu.forSale.Insert(index, item);
+        }
+
+        /// <summary>
+        /// Adds the item to the menu's itemPriceAndStock dictionary
+        /// </summary>
+        /// <param name="menu">The shop menu<param>
+        /// <param name="item">The item to add</param>
+        /// <param name="stock">The amount to sell - defaults to max</param>
+        /// <param name="salePrice">The amount to sell at - defaults to the item's sale price</param>
+        private static void AddToItemPriceAndStock(
+            ShopMenu menu, 
+            SVObject item, 
+            int stock = int.MaxValue, 
+            int? salePrice = null)
+        {
+            var price = salePrice ?? item.salePrice();
+            menu.itemPriceAndStock.Add(item, new[] { price, stock });
+        }
+
+        /// <summary>
+        /// Empty a given shop's stock
+        /// </summary>
+        /// <param name="menu">The menu of the shop</param>
+        private static void EmptyStock(ShopMenu menu)
+        {
+            while (menu.itemPriceAndStock.Any())
+            {
+                ISalable obj = menu.itemPriceAndStock.Keys.ElementAt(0);
+                menu.itemPriceAndStock.Remove(obj);
+                menu.forSale.Remove(obj);
+            }
         }
     }
 }

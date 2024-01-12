@@ -63,6 +63,7 @@ namespace Randomizer
 			AddSectionTitle("Shop Options");
             AddCheckbox("Seed Shop Item of the Week", "Adds an expensive item to Pierre's shop that changes every Monday.", () => Globals.Config.Shops.AddSeedShopItemOfTheWeek, (bool val) => Globals.Config.Shops.AddSeedShopItemOfTheWeek = val);
             AddCheckbox("Add Clay to Robin's", "Adds clay to Robin's shop, costing between 25-75 coins each day", () => Globals.Config.Shops.AddClayToRobinsShop, (bool val) => Globals.Config.Shops.AddClayToRobinsShop = val);
+			AddCheckbox("Randomize Saloon Shop", "Randomizes cooked food and recipes in Gus' Saloon Shop. Beer and Coffee are always available.", () => Globals.Config.Shops.RandomizeSaloonShop, (bool val) => Globals.Config.Shops.RandomizeSaloonShop = val);
 
             AddSectionTitle("Misc Options");
 			AddCheckbox("Building Costs", "Farm buildings that Robin can build for the player choose from a random pool of resources.", () => Globals.Config.RandomizeBuildingCosts, (bool val) => Globals.Config.RandomizeBuildingCosts = val);
