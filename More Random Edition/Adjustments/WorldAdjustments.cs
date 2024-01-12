@@ -102,9 +102,11 @@ namespace Randomizer
                     Game1.player.hasItemInInventoryNamed(galaxySword.Name))
                 {
                     NetCollection<StardewValleyNpc> characters = currentLocation.characters;
-                    Bat bat = new Bat(Vector2.Zero * 64f, 9999);
-                    bat.focusedOnFarmers = true;
-                    bat.wildernessFarmMonster = true;
+                    Bat bat = new(Vector2.Zero * 64f, 9999)
+                    {
+                        focusedOnFarmers = true,
+                        wildernessFarmMonster = true
+                    };
                     characters.Add(bat);
                 }
             }

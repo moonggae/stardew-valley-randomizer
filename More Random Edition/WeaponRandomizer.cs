@@ -8,7 +8,7 @@ namespace Randomizer
 	/// </summary>
 	public class WeaponRandomizer
 	{
-		public static Dictionary<int, WeaponItem> Weapons = new Dictionary<int, WeaponItem>();
+		public readonly static Dictionary<int, WeaponItem> Weapons = new();
 
 		/// <summary>
 		/// Returns the object use to modify the weapons
@@ -17,10 +17,10 @@ namespace Randomizer
 		public static Dictionary<int, string> Randomize()
 		{
 			Weapons.Clear();
-			WeaponAndArmorNameRandomizer nameRandomizer = new WeaponAndArmorNameRandomizer();
+			WeaponAndArmorNameRandomizer nameRandomizer = new();
 
 			Dictionary<int, WeaponItem> weaponDictionary = WeaponData.Items();
-			Dictionary<int, string> stringReplacements = new Dictionary<int, string>();
+			Dictionary<int, string> stringReplacements = new();
 			foreach (WeaponItem weapon in weaponDictionary.Values)
 			{
 				RandomizeWeapon(weapon, nameRandomizer);
@@ -95,7 +95,7 @@ namespace Randomizer
 
 			int minDamage = weapon.Damage.MinValue;
 			int maxDamage = weapon.Damage.MaxValue;
-			int percentage = 0;
+			int percentage;
 
 			if (maxDamage < 10) { percentage = percentageUnder10; }
 			else if (maxDamage < 50) { percentage = percentageUnder50; }
@@ -314,7 +314,7 @@ namespace Randomizer
 					description = Globals.GetTranslation("weapon-description-crushing");
 					break;
 				default:
-					Globals.ConsoleError($"Assigning description to an invalid weapon type: {weapon.ToString()}");
+					Globals.ConsoleError($"Assigning description to an invalid weapon type: {weapon}");
 					break;
 			}
 
