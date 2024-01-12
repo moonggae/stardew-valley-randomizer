@@ -1,18 +1,20 @@
 ﻿using Microsoft.Xna.Framework;
-using Randomizer;
+using Netcode;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Locations;
+using StardewValley.Monsters;
 using System.Collections.Generic;
 using System.Linq;
 using RandomizerItem = Randomizer.Item;
+using StardewValleyNpc = StardewValley.NPC;
 
 namespace Randomizer
 {
     /// <summary>
-    /// Adjustments that are more meant for the first day of play and aren't actually menus
+    /// Adjustments that are for the state of the game world in general
     /// </summary>
-    public class DayOneAdjustments
+    public class WorldAdjustments
     {
         /// <summary>
         /// Fixes the item name that you get at the start of the game
@@ -76,6 +78,34 @@ namespace Randomizer
                         location.Objects[oldForagableKey].ParentSheetIndex = newForagable.Id;
                         location.Objects[oldForagableKey].Name = newForagable.Name;
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Identical to the logic in Farm.cs (spawnFlyingMonstersOffscreen) for the giant bat spawn, 
+        /// but we check for the randomized weapon instead
+        /// </summary>
+        public static void TrySpawnGalaxySwordBat()
+        {
+            var currentLocation = Game1.currentLocation;
+            if (!Globals.Config.Weapons.Randomize ||
+                currentLocation.Name != "Farm" ||
+                Game1.random.NextDouble() < 0.25)
+            {
+                return;
+            }
+
+            if (WeaponRandomizer.Weapons.TryGetValue((int)WeaponIndexes.GalaxySword, out var galaxySword)) {
+                if (Game1.player.CombatLevel >= 10 &&
+                    Game1.random.NextDouble() < 0.01 &&
+                    Game1.player.hasItemInInventoryNamed(galaxySword.Name))
+                {
+                    NetCollection<StardewValleyNpc> characters = currentLocation.characters;
+                    Bat bat = new Bat(Vector2.Zero * 64f, 9999);
+                    bat.focusedOnFarmers = true;
+                    bat.wildernessFarmMonster = true;
+                    characters.Add(bat);
                 }
             }
         }

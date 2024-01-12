@@ -60,7 +60,7 @@ namespace Randomizer
 			SetWeaponDescription(weapon);
 
 			string weaponName = nameRandomizer.GenerateRandomWeaponName(weapon.Type);
-			if ((Globals.Config.Weapons.Randomize && Globals.Config.Weapons.RandomizeGalaxySwordName) || weapon.Name != "Galaxy Sword")
+			if (Globals.Config.Weapons.Randomize)
 			{
 				weapon.OverrideName = weaponName;
 			}

@@ -41,7 +41,7 @@ namespace Randomizer
 
 			if (Globals.Config.Crops.Randomize)
 			{
-				helper.Events.Multiplayer.PeerContextReceived += (sender, args) => DayOneAdjustments.FixParsnipSeedBox();
+				helper.Events.Multiplayer.PeerContextReceived += (sender, args) => WorldAdjustments.FixParsnipSeedBox();
 			}
 
 			if (Globals.Config.Crops.Randomize || Globals.Config.Fish.Randomize)
@@ -78,6 +78,11 @@ namespace Randomizer
 					helper.Events.Display.RenderedActiveMenu += (sender, args) => BundleMenuAdjustments.AddDescriptionsToBundleTooltips();
 				}
 			}
+
+			if (Globals.Config.Weapons.Randomize)
+			{
+				helper.Events.GameLoop.TimeChanged += (sender, args) => WorldAdjustments.TrySpawnGalaxySwordBat();
+            }
 		}
 
 		/// <summary>
@@ -147,8 +152,8 @@ namespace Randomizer
 			// Ensure that the bundles get changed if they're meant to
 			Game1.GenerateBundles(Game1.bundleType, true);
 
-            DayOneAdjustments.ChangeDayOneForagables();
-            DayOneAdjustments.FixParsnipSeedBox();
+            WorldAdjustments.ChangeDayOneForagables();
+            WorldAdjustments.FixParsnipSeedBox();
 		}
 
 		/// <summary>

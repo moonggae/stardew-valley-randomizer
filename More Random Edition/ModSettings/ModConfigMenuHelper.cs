@@ -50,7 +50,6 @@ namespace Randomizer
 			AddSectionTitle("Weapon Options");
 			AddCheckbox("Weapons", "Randomize weapon stats, types, and drop locations.", () => Globals.Config.Weapons.Randomize, (bool val) => Globals.Config.Weapons.Randomize = val);
 			AddCheckbox("Use Custom Weapon Images", "Use custom images for weapons.", () => Globals.Config.Weapons.UseCustomImages, (bool val) => Globals.Config.Weapons.UseCustomImages = val);
-			AddCheckbox("Galaxy Sword Name", "Disable to have the Galaxy Sword keep its name. There is a hard-coded check to spawn a high level bat on Wilderness Farm at night if the player has a Galaxy Sword in their inventory.", () => Globals.Config.Weapons.RandomizeGalaxySwordName, (bool val) => Globals.Config.Weapons.RandomizeGalaxySwordName = val);
 
 			AddSectionTitle("Boot Options");
 			AddCheckbox("Boots", "Randomize boots stats, names, descriptions.", () => Globals.Config.Boots.Randomize, (bool val) => Globals.Config.Boots.Randomize = val);

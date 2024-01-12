@@ -41,7 +41,6 @@
 	{
 		public bool Randomize { get; set; } = true;
 		public bool UseCustomImages { get; set; } = true;
-		public bool RandomizeGalaxySwordName { get; set; } = true;
 	}
 
 	public class BootsConfig
