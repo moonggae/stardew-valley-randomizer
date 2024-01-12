@@ -6,7 +6,7 @@ namespace Randomizer
     /// An extension of Random to log when it's not actually meant to be called
     /// This is to ensure that players don't get out of sync with one another
     /// </summary>
-    public class SaveLoadRNG: Random
+    public class SaveLoadRNG : Random
     {
         /// <summary>
         /// Whether we should not use the class anymore

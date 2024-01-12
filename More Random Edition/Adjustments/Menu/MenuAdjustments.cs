@@ -1,7 +1,8 @@
-﻿using StardewModdingAPI.Events;
+﻿using Randomizer.Menu;
+using StardewModdingAPI.Events;
 using StardewValley.Menus;
 
-namespace Randomizer.Adjustments
+namespace Randomizer
 {
     /// <summary>
     /// Makes menu adjustments to shops, etc
@@ -28,24 +29,24 @@ namespace Randomizer.Adjustments
                 {
                     // Seed shop
                     case "Pierre":
-                        ShopMenuAdjustments.FixSaplingPrices(shopMenu);
-                        ShopMenuAdjustments.AddSeedShopItemOfTheWeek(shopMenu);
+                        SeedShopMenuAdjustments.FixSaplingPrices(shopMenu);
+                        SeedShopMenuAdjustments.AddItemOfTheWeek(shopMenu);
                         break;
                     // Adventure shop (the items can be resold for infinite money sometimes
                     case "Marlon":
-                        ShopMenuAdjustments.FixAdventureShopPrices(shopMenu);
+                        AdventureShopMenuAdjustments.FixPrices(shopMenu);
                         break;
                     // Carpenter shop - add clay to prevent long grinds
                     case "Robin":
-                        ShopMenuAdjustments.AddClayToCarpenterShop(shopMenu);
+                        CarpenterShopMenuAdjustments.AddClay(shopMenu);
                         break;
-                    // Saloon shop - will sell random foods each day
+                    // Saloon shop - will sell random foods/recipes each day
                     case "Gus":
-                        ShopMenuAdjustments.AdjustSaloonShopStock(shopMenu);
+                        SaloonShopAdjustments.AdjustStock(shopMenu);
                         break;
-                    // Oasis shop - sells late game items
+                    // Oasis shop - randomizes its foragable/crop/furniture stock each week
                     case "Sandy":
-                        ShopMenuAdjustments.AdjustOasisShopStock(shopMenu);
+                        OasisShopAdjustments.AdjustStock(shopMenu);
                         break;
 
                         // Shops TODO
@@ -54,8 +55,8 @@ namespace Randomizer.Adjustments
                         // Sewer Shop
                         // Desert Outpost
                         // Qi
-                        // Desert Seed Shop
                         // Hat Shop?
+                        // Easter egg/h'ween event shops?
                 }
             }
         }
