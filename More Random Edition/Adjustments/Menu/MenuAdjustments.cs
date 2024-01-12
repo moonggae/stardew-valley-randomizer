@@ -1,5 +1,7 @@
 ﻿using StardewModdingAPI.Events;
 using StardewValley.Menus;
+using StardewValley.Objects;
+using System.Linq;
 
 namespace Randomizer
 {
@@ -47,6 +49,14 @@ namespace Randomizer
                     case "Sandy":
                         OasisShopAdjustments.AdjustStock(shopMenu);
                         break;
+                    default:
+                        // The hat shop doesn't have a portrait, so well check it this way!
+                        if (shopMenu.storeContext == "Forest" && shopMenu.itemPriceAndStock.Keys.All(item => item is Hat))
+                        {
+                            // Hat shop - will sell a random hat each week in addition to what you've already unlocked
+                            HatShopAdjustments.AddHatOfTheWeek(shopMenu);
+                        }
+                        break;
 
                         // Shops TODO
                         // Wandering Traveler
@@ -54,7 +64,6 @@ namespace Randomizer
                         // Sewer Shop
                         // Desert Outpost
                         // Qi
-                        // Hat Shop?
                         // Easter egg/h'ween event shops?
                 }
             }

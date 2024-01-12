@@ -386,7 +386,7 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Gets list of random furniture items to sell
+		/// Gets a list of random furniture items to sell
 		/// </summary>
 		/// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
 		/// <param name="numberToGet">The number of furniture objects to get</param>
@@ -405,7 +405,7 @@ namespace Randomizer
 		}
 
         /// <summary>
-        /// Gets list of random clothing items to sell
+        /// Gets a list of random clothing items to sell
         /// </summary>
         /// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
         /// <param name="numberToGet">The number of furniture objects to get</param>
@@ -419,6 +419,25 @@ namespace Randomizer
 
             return Globals.RNGGetRandomValuesFromList(allClothingIds, numberToGet, rng)
                 .Select(clothingId => new Clothing(clothingId))
+                .Cast<ISalable>()
+                .ToList();
+        }
+
+        /// <summary>
+        /// Gets a list of random hats to sell
+        /// </summary>
+        /// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
+        /// <param name="numberToGet">The number of furniture objects to get</param>
+        /// <returns>A list of furniture to sell</returns>
+        public static List<ISalable> GetRandomHatsToSell(Random rng, int numberToGet, List<int> itemsToExclude = null)
+        {
+            var allHatIds = Enum.GetValues(typeof(HatIndexes))
+                .Cast<int>()
+                .Where(id => itemsToExclude == null || !itemsToExclude.Contains(id))
+                .ToList();
+
+            return Globals.RNGGetRandomValuesFromList(allHatIds, numberToGet, rng)
+                .Select(clothingId => new Hat(clothingId))
                 .Cast<ISalable>()
                 .ToList();
         }
