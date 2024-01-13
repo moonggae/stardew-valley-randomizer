@@ -400,7 +400,7 @@ namespace Randomizer
                 .ToList();
 
             return Globals.RNGGetRandomValuesFromList(allFurnitureIds, numberToGet, rng)
-				.Select(furnitureId => new Furniture(furnitureId, Vector2.Zero))
+				.Select(furnitureId => Furniture.GetFurnitureInstance(furnitureId))
 				.Cast<ISalable>()
 				.ToList();
 		}
@@ -409,8 +409,8 @@ namespace Randomizer
         /// Gets a list of random clothing items to sell
         /// </summary>
         /// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
-        /// <param name="numberToGet">The number of furniture objects to get</param>
-        /// <returns>A list of furniture to sell</returns>
+        /// <param name="numberToGet">The number of clothing objects to get</param>
+        /// <returns>A list of clothing objects to sell</returns>
         public static List<ISalable> GetRandomClothingToSell(Random rng, int numberToGet, List<int> itemsToExclude = null)
         {
             var allClothingIds = Enum.GetValues(typeof(ClothingIndexes))
@@ -428,7 +428,7 @@ namespace Randomizer
         /// Gets a list of random hats to sell
         /// </summary>
         /// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
-        /// <param name="numberToGet">The number of furniture objects to get</param>
+        /// <param name="numberToGet">The number of hats to get</param>
         /// <returns>A list of furniture to sell</returns>
         public static List<ISalable> GetRandomHatsToSell(Random rng, int numberToGet, List<int> itemsToExclude = null)
         {
@@ -447,8 +447,8 @@ namespace Randomizer
         /// Gets a list of random big craftables to sell
         /// </summary>
         /// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
-        /// <param name="numberToGet">The number of furniture objects to get</param>
-        /// <returns>A list of furniture to sell</returns>
+        /// <param name="numberToGet">The number of big craftables to get</param>
+        /// <returns>A list of big craftables to sell</returns>
         public static List<ISalable> GetRandomBigCraftablesToSell(Random rng, int numberToGet, List<int> itemsToExclude = null)
         {
             var allBigCraftableIds = Enum.GetValues(typeof(BigCraftableIndexes))

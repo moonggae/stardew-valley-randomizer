@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Randomizer
 {
-    internal class SewerShopAdjustments : ShopMenuAdjustments
+    internal class SewerShopMenuAdjustments : ShopMenuAdjustments
     {
         /// <summary>
         /// Replace the Monster Fireplace and Sign of the Vessel with daily equivalents

@@ -6,7 +6,7 @@ using SVObject = StardewValley.Object;
 
 namespace Randomizer
 {
-    internal class SaloonShopAdjustments : ShopMenuAdjustments
+    internal class SaloonShopMenuAdjustments : ShopMenuAdjustments
     {
         /// <summary>
         /// The saloon shop will be mostly random now - cycling every Monday

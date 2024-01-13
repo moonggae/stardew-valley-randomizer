@@ -40,33 +40,39 @@ namespace Randomizer
                     // Carpenter shop - add clay to prevent long grinds
                     case "Robin":
                         CarpenterShopMenuAdjustments.AddClay(shopMenu);
+                        CarpenterShopMenuAdjustments.AddRandomTapperCraftItem(shopMenu);
                         break;
                     // Saloon shop - will sell random foods/recipes each day
                     case "Gus":
-                        SaloonShopAdjustments.AdjustStock(shopMenu);
+                        SaloonShopMenuAdjustments.AdjustStock(shopMenu);
                         break;
                     // Oasis shop - randomizes its foragable/crop/furniture stock each week
                     case "Sandy":
-                        OasisShopAdjustments.AdjustStock(shopMenu);
+                        OasisShopMenuAdjustments.AdjustStock(shopMenu);
                         break;
                     // Sewer shop - randomizes the furniture and big craftable items daily
                     case "Krobus":
-                        SewerShopAdjustments.AdjustStock(shopMenu);
+                        SewerShopMenuAdjustments.AdjustStock(shopMenu);
                         break;
                     default:
-                        // The hat shop doesn't have a portrait, so well check it this way!
+                        // The hat/club shops don't have portraits
                         if (shopMenu.storeContext == "Forest" && shopMenu.itemPriceAndStock.Keys.All(item => item is Hat))
                         {
                             // Hat shop - will sell a random hat each week in addition to what you've already unlocked
-                            HatShopAdjustments.AddHatOfTheWeek(shopMenu);
+                            HatShopMenuAdjustments.AddHatOfTheWeek(shopMenu);
+                        } 
+                        
+                        else if (shopMenu.storeContext == "Club")
+                        {
+                            // Club shop sells random furniture/clothing items weekly
+                            ClubShopMenuAdjustments.AdjustStock(shopMenu);
                         }
                         break;
 
                         // Shops TODO
-                        // Wandering Traveler
                         // Joja Mart
-                        // Desert Outpost
                         // Qi
+                        // Willy's fishing shop
                         // Easter egg/h'ween event shops?
                 }
             }

@@ -6,7 +6,7 @@ using SVObject = StardewValley.Object;
 
 namespace Randomizer
 {
-    internal class HatShopAdjustments : ShopMenuAdjustments
+    internal class HatShopMenuAdjustments : ShopMenuAdjustments
     {
         /// <summary>
         /// Adds an hat of the week to the shop

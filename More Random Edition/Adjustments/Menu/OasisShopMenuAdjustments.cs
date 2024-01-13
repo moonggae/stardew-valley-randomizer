@@ -6,7 +6,7 @@ using SVObject = StardewValley.Object;
 
 namespace Randomizer
 {
-    internal class OasisShopAdjustments : ShopMenuAdjustments
+    internal class OasisShopMenuAdjustments : ShopMenuAdjustments
     {
         /// <summary>
         /// Adjust the oasis shop stock to sell more exotic items, including furnature

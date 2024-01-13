@@ -246,7 +246,6 @@ namespace Randomizer
 		/// <returns />
 		private List<Item> GetListOfItemsForModerate()
 		{
-			List<Item> possibleItems = ItemList.Items.Values.ToList();
 			Item item1, item2, item3;
 			switch (Globals.RNG.Next(0, 3))
 			{
