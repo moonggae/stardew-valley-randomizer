@@ -1,4 +1,5 @@
-﻿using StardewValley;
+﻿using Microsoft.Xna.Framework;
+using StardewValley;
 using System;
 using System.Text.RegularExpressions;
 using SVObject = StardewValley.Object;
@@ -51,6 +52,14 @@ namespace Randomizer
 
 		public bool IsTrash { get; set; }
 		public bool IsCraftable { get; set; }
+		public bool IsBigCraftable { get; set; }
+
+		/// <summary>
+		/// BigCraftables have no price, so we need to define our own
+		/// Note that this is the price that we want to buy it at, so we need to split it in half when setting it as a value
+		/// </summary>
+		public int BigCraftablePrice { get; set; }
+
 		public bool IsSmelted { get; set; }
 		public bool IsAnimalProduct { get; set; }
 		public bool IsMonsterItem { get; set; }
@@ -170,7 +179,7 @@ namespace Randomizer
 		/// <returns>The computed price</returns>
 		public int GetPriceForObtainingDifficulty(double multiplier)
 		{
-			int basePrice = 0;
+			int basePrice;
 			switch (DifficultyToObtain)
 			{
 				case ObtainingDifficulties.NoRequirements:
@@ -203,7 +212,7 @@ namespace Randomizer
 			}
 
 			int smallerBasePrice = basePrice / 10; // Guarantees that the price will be an even number
-			Range range = new Range(
+			Range range = new(
 				(int)(smallerBasePrice - (smallerBasePrice * multiplier)),
 				(int)(smallerBasePrice * (multiplier + 1))
 			);
@@ -212,7 +221,15 @@ namespace Randomizer
 
 		public virtual ISalable GetSaliableObject(int initialStack = 1, bool isRecipe = false, int price = -1)
 		{
-			return new SVObject(Id, initialStack, isRecipe, price);
+            return IsBigCraftable 
+				? new SVObject(Vector2.Zero, Id, isRecipe)
+					{
+						Stack = initialStack,
+						Price = price == -1 
+							? (BigCraftablePrice / 2) // We want the sell price, not the buy price
+							: price
+					}
+				: new SVObject(Id, initialStack, isRecipe, price);
         }
 
 		/// <summary>

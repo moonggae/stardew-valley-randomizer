@@ -43,12 +43,26 @@ namespace Randomizer
             if (wasOpened)
             {
                 Adjust(menu);
+                RebuildItemPriceAndStockDictionary(menu);
             }
 
             else
             {
                 SaveShopState(menu);
             }
+        }
+
+        /// <summary>
+        /// The InsertAt functions will result in the order of the dictionary being different from the list order
+        /// Of course - using a Dictionary to order something is unreliable, but that's how the game works!
+        /// This will rebuild the dictionary to be in the same order as the list
+        /// </summary>
+        /// <param name="menu"></param>
+        private static void RebuildItemPriceAndStockDictionary(ShopMenu menu)
+        {
+            Dictionary<ISalable, int[]> fixedDictionary = new();
+            menu.forSale.ForEach(item => fixedDictionary[item] = menu.itemPriceAndStock[item]);
+            menu.itemPriceAndStock = fixedDictionary;
         }
 
         /// <summary>
@@ -207,6 +221,10 @@ namespace Randomizer
             int? salePrice = null)
         {
             var price = salePrice ?? item.salePrice();
+            if (price <= 0)
+            {
+                price = 25; // Put a default on this just in case
+            }
             menu.itemPriceAndStock.Add(item, new[] { price, stock });
         }
 

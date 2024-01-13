@@ -31,7 +31,7 @@ namespace Randomizer
         /// <param name="menu">The shop menu</param>
         private static void AdjustStock(ShopMenu menu)
         {
-            Random shopRNG = Globals.GetDailyRNG();
+            Random shopRNG = Globals.GetDailyRNG(nameof(SewerShopMenuAdjustments));
 
             RemoveFromStock(menu, (int)FurnitureIndexes.MonsterFireplace);
             RemoveFromStock(menu, (int)BigCraftableIndexes.SignOfTheVessel);

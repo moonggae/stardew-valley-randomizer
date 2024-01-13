@@ -36,7 +36,7 @@ namespace Randomizer
         private static void AdjustStock(ShopMenu menu)
         {
             // Stock will change every Monday
-            Random shopRNG = Globals.GetWeeklyRNG();
+            Random shopRNG = Globals.GetWeeklyRNG(nameof(SaloonShopMenuAdjustments));
             EmptyStock(menu);
 
             // Beer and coffee will always be available

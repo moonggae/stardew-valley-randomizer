@@ -297,19 +297,14 @@ namespace Randomizer
         /// </summary>
         /// <param name="category">See Enums/CraftableCategories</param>
         /// <param name="idsToExclude">List of IDs to exclude from results</param>
-		/// <param name="excludeBigCraftables">Whether to exclude big craftable items from the results</param>
         /// <returns>The list of items in the given category</returns>
-        public static List<Item> GetCraftableItems(CraftableCategories category, List<int> idsToExclude = null, bool excludeBigCraftables = true)
+        public static List<Item> GetCraftableItems(CraftableCategories category, List<int> idsToExclude = null)
         {
 			List<int> excludedIds = idsToExclude ?? new List<int>();
-			if (excludeBigCraftables)
-			{
-				excludedIds.AddRange(Enum.GetValues(typeof(BigCraftableIndexes)).Cast<int>());
-			}
             return Items.Values.Where(
                     x => x.IsCraftable && (x as CraftableItem).Category == category &&
 						!excludedIds.Contains(x.Id) &&
-						(!excludeBigCraftables || x.Id > 0)
+						x.Id > 0
                 ).ToList();
         }
 
@@ -482,7 +477,7 @@ namespace Randomizer
 				{ (int)ObjectIndexes.Torch, new CraftableItem((int)ObjectIndexes.Torch, "/Field/93/false/l 0", CraftableCategories.Easy) { DifficultyToObtain = ObtainingDifficulties.SmallTimeRequirements } }, // You can find it in the mines
 				{ (int)ObjectIndexes.Scarecrow, new CraftableItem((int)ObjectIndexes.Scarecrow, "/Home/8/true/", CraftableCategories.Moderate, "Farming", 1) },
 				{ (int)ObjectIndexes.BeeHouse, new CraftableItem((int)ObjectIndexes.BeeHouse, "/Home/10/true/", CraftableCategories.Moderate, "Farming", 3) },
-				{ (int)ObjectIndexes.Keg, new CraftableItem((int)ObjectIndexes.Keg, "/Home/12/true/", CraftableCategories.Moderate, "Farming", 8) },
+				{ (int)ObjectIndexes.Keg, new CraftableItem((int)ObjectIndexes.Keg, "/Home/12/true/", CraftableCategories.Moderate, "Farming", 8, isBigCraftable: true) },
 				{ (int)ObjectIndexes.Cask, new CraftableItem((int)ObjectIndexes.Cask, "/Home/163/true/null", CraftableCategories.Moderate) },
 				{ (int)ObjectIndexes.Furnace, new CraftableItem((int)ObjectIndexes.Furnace, "/Home/13/true/l 2", CraftableCategories.Moderate) },
 				{ (int)ObjectIndexes.GardenPot, new CraftableItem((int)ObjectIndexes.GardenPot, "/Home/62/true/null", CraftableCategories.Easy) },

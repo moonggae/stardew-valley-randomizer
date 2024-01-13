@@ -60,7 +60,8 @@ namespace Randomizer
 			AddCheckbox("Random Song on Area Change", "Plays a new song each time the loaded area changes.", () => Globals.Config.Music.RandomSongEachTransition, (bool val) => Globals.Config.Music.RandomSongEachTransition = val);
 
 			AddSectionTitle("Shop Options");
-            AddCheckbox("Seed Shop Item of the Week", "Adds an expensive item to Pierre's shop that changes every Monday.", () => Globals.Config.Shops.AddSeedShopItemOfTheWeek, (bool val) => Globals.Config.Shops.AddSeedShopItemOfTheWeek = val);
+            AddCheckbox("Seed Shop Item of the Week", "Adds an item to Pierre's shop that changes every Monday.", () => Globals.Config.Shops.AddSeedShopItemOfTheWeek, (bool val) => Globals.Config.Shops.AddSeedShopItemOfTheWeek = val);
+            AddCheckbox("Joja Mart Item of the week", "Adds an item to the Joja Mart that changes every Monday.", () => Globals.Config.Shops.AddJojaMartItemOfTheWeek, (bool val) => Globals.Config.Shops.AddJojaMartItemOfTheWeek = val);
             AddCheckbox("Add Clay to Robin's", "Adds clay to Robin's shop, costing between 25-75 coins each day.", () => Globals.Config.Shops.AddClayToRobinsShop, (bool val) => Globals.Config.Shops.AddClayToRobinsShop = val);
             AddCheckbox("Add Tapper Materials to Robin's", "Adds a random tapper material item to Robin's shop each day at an inflated price. This is to make crafting a tapper easier.", () => Globals.Config.Shops.AddTapperCraftItemsToRobinsShop, (bool val) => Globals.Config.Shops.AddTapperCraftItemsToRobinsShop = val);
             AddCheckbox("Randomize Saloon Shop", "Randomizes cooked food and recipes in Gus' Saloon Shop. Beer and Coffee are always available.", () => Globals.Config.Shops.RandomizeSaloonShop, (bool val) => Globals.Config.Shops.RandomizeSaloonShop = val);

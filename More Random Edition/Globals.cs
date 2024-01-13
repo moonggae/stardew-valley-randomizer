@@ -192,29 +192,33 @@ namespace Randomizer
         /// <summary>
         /// Gets an RNG value based on the seed and the ingame day
 		/// Essentially, this is a seed that changes once a week (every Monday)
+		/// Seeded on the given string, the farm name, and the days played
         /// </summary>
+		/// <param name="seed">The seed to use</param>
         /// <returns>The Random object</returns>
-        public static Random GetWeeklyRNG()
+        public static Random GetWeeklyRNG(string seed)
         {
 			int time = Game1.Date.TotalDays / 7;
-            byte[] seedvar = (new SHA1Managed()).ComputeHash(System.Text.Encoding.UTF8.GetBytes(Game1.player.farmName.Value));
-            int seed = BitConverter.ToInt32(seedvar, 0) + time;
+            byte[] seedvar = (new SHA1Managed()).ComputeHash(System.Text.Encoding.UTF8.GetBytes(Game1.player.farmName.Value + seed));
+            int fullSeed = BitConverter.ToInt32(seedvar, 0) + time;
 
-            return new Random(seed);
+            return new Random(fullSeed);
         }
 
         /// <summary>
         /// Gets an RNG value based on the seed and the ingame day
         /// Essentially, this is a seed that changes once every day
+        /// Seeded on the given string, the farm name, and the days played
+        /// <param name="seed">The seed to use</param>
         /// </summary>
         /// <returns>The Random object</returns>
-        public static Random GetDailyRNG()
+        public static Random GetDailyRNG(string seed)
         {
 			int time = Game1.Date.TotalDays;
-            byte[] seedvar = (new SHA1Managed()).ComputeHash(System.Text.Encoding.UTF8.GetBytes(Game1.player.farmName.Value));
-            int seed = BitConverter.ToInt32(seedvar, 0) + time;
+            byte[] seedvar = (new SHA1Managed()).ComputeHash(System.Text.Encoding.UTF8.GetBytes(Game1.player.farmName.Value + seed));
+            int fullSeed = BitConverter.ToInt32(seedvar, 0) + time;
 
-            return new Random(seed);
+            return new Random(fullSeed);
         }
 
         /// <summary>

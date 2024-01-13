@@ -37,7 +37,7 @@ namespace Randomizer
         /// <param name="menu">The shop menu</param>
         private static void AdjustStock(ShopMenu menu)
         {
-            Random shopRNG = Globals.GetWeeklyRNG();
+            Random shopRNG = Globals.GetWeeklyRNG(nameof(ClubShopMenuAdjustments));
             EmptyStock(menu);
 
             AddFurniture(menu, shopRNG);

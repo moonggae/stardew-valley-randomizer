@@ -16,22 +16,35 @@ namespace Randomizer
 		public CraftableCategories Category { get; set; }
 		public Dictionary<int, int> LastRecipeGenerated { get; set; } = new Dictionary<int, int>(); // item id to amount needed
 
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="id">The id of the item</param>
-		/// <param name="path">The hard-coded path for this craftable item</param>
-		/// <param name="skillString">The name of the skill you need to level up to learn the recipe</param>
-		/// <param name="baseLevelLearnedAt">The base level you can learn this recipe at</param>
-		public CraftableItem(int id, string path, CraftableCategories category, string skillString = "", int baseLevelLearnedAt = 0, int overrideBaseLevelLearnedAt = -1) : base(id)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="id">The id of the item</param>
+        /// <param name="path">The hard-coded path for this craftable item</param>
+        /// <param name="skillString">The name of the skill you need to level up to learn the recipe</param>
+        /// <param name="baseLevelLearnedAt">The base level you can learn this recipe at</param>
+        /// <param name="overrideBaseLevelLearnedAt">Will override the base level learned at with this value - set to -1 to not use it</param>
+		/// <param name="isBigCraftable">Whether this is a BigCraftable object</param>
+		/// <param name="bigCraftablePrice">The price to use for BigCrafables - 1000 is default</param>
+        public CraftableItem(
+			int id,
+			string path, 
+			CraftableCategories category, 
+			string skillString = "", 
+			int baseLevelLearnedAt = 0, 
+			int overrideBaseLevelLearnedAt = -1,
+			bool isBigCraftable = false,
+			int bigCraftablePrice = 1000) : base(id)
 		{
 			IsCraftable = true;
+			IsBigCraftable = isBigCraftable;
+			BigCraftablePrice = bigCraftablePrice;
 			Path = path;
 			Category = category;
 			SkillString = skillString;
 			BaseLevelLearnedAt = baseLevelLearnedAt;
 			DifficultyToObtain = ObtainingDifficulties.NonCraftingItem; // By default, craftable items won't be materials for other craftable items
-
+			
 			if (overrideBaseLevelLearnedAt == -1)
 			{
 				OverrideBaseLevelLearnedAt = baseLevelLearnedAt;

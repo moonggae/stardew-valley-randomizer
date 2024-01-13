@@ -32,7 +32,7 @@ namespace Randomizer
         private static void AddHatOfTheWeek(ShopMenu menu)
         {
             // Stock will change every Monday
-            Random shopRNG = Globals.GetWeeklyRNG();
+            Random shopRNG = Globals.GetWeeklyRNG(nameof(HatShopMenuAdjustments));
 
             var existingHatIds = menu.itemPriceAndStock.Keys
                 .Where(item => item is Hat)

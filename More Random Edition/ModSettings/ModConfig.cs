@@ -90,7 +90,8 @@
 	public class ShopsConfig
 	{
 		public bool AddSeedShopItemOfTheWeek { get; set; } = true;
-		public bool AddClayToRobinsShop { get; set; } = true;
+        public bool AddJojaMartItemOfTheWeek { get; set; } = true;
+        public bool AddClayToRobinsShop { get; set; } = true;
 		public bool AddTapperCraftItemsToRobinsShop { get; set; } = true;
         public bool RandomizeSaloonShop { get; set; } = true;
 		public bool RandomizeOasisShop { get; set; } = true;

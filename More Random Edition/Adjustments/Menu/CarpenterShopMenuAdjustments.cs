@@ -37,12 +37,13 @@ namespace Randomizer
         /// <param name="menu">The shop menu</param>
         private static void AddClay(ShopMenu menu)
         {
-            Random shopRNG = Globals.GetDailyRNG();
+            Random shopRNG = Globals.GetDailyRNG(nameof(CarpenterShopMenuAdjustments));
             var basePrice = 50;
+            var clayStock = Range.GetRandomValue(20, 50);
             var clayPrice = Globals.RNGGetIntWithinPercentage(basePrice, 50, shopRNG);
 
-            SVObject clay = new((int)ObjectIndexes.Clay, 1);
-            InsertStockAt(menu, clay, salePrice: clayPrice, index: 2);
+            SVObject clay = new((int)ObjectIndexes.Clay, clayStock);
+            InsertStockAt(menu, clay, stock: clayStock, salePrice: clayPrice, index: 2);
         }
 
         /// <summary>
@@ -56,9 +57,9 @@ namespace Randomizer
                 .Select(item => (item as SVObject).ParentSheetIndex)
                 .ToList();
 
-            Random shopRNG = Globals.GetDailyRNG();
-            var tapperItemIds = ((CraftableItem)ItemList.Items[(int)ObjectIndexes.Tapper]).LastRecipeGenerated.Keys;
-            var tapperItems = tapperItemIds
+            Random shopRNG = Globals.GetDailyRNG(nameof(CarpenterShopMenuAdjustments));
+            var tapperItemIdsAndStock = ((CraftableItem)ItemList.Items[(int)ObjectIndexes.Tapper]).LastRecipeGenerated;
+            var tapperItems = tapperItemIdsAndStock.Keys
                 .Select(id => ItemList.Items[id])
                 .Where(item => !exitingStockIds.Contains(item.Id))
                 .ToList();
@@ -66,8 +67,9 @@ namespace Randomizer
             if (tapperItems.Any())
             {
                 var tapperItemToSell = Globals.RNGGetRandomValueFromList(tapperItems, shopRNG);
+                var stock = tapperItemIdsAndStock[tapperItemToSell.Id];
                 var price = GetAdjustedItemPrice(tapperItemToSell, 50, 5);
-                InsertStockAt(menu, tapperItemToSell, salePrice: price, index: 2);
+                InsertStockAt(menu, tapperItemToSell.GetSaliableObject(stock), stock: stock, salePrice: price, index: 2);
             }
         }
     }

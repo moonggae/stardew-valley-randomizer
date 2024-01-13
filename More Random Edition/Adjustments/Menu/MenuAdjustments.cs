@@ -18,6 +18,7 @@ namespace Randomizer
         private static SewerShopMenuAdjustments SewerShop { get; } = new();
         private static HatShopMenuAdjustments HatShop { get; } = new();
         private static ClubShopMenuAdjustments ClubShop { get; } = new();
+        private static JojaMartMenuAdjustments JojaMart { get; } = new();
 
         /// <summary>
         /// Reset all the shop states
@@ -33,6 +34,7 @@ namespace Randomizer
             SewerShop.ResetShopState();
             // Hat shop is skipped as there's nothing to restore
             // Club shop is skipped as there's nothing to restore
+            JojaMart.ResetShopState();
         }
 
         /// <summary>
@@ -97,24 +99,25 @@ namespace Randomizer
                     SewerShop.OnChange(shopMenu, wasShopOpened);
                     break;
                 default:
-                    // The hat/club shops don't have portraits
-                    if (shopMenu.storeContext == "Forest" && shopMenu.itemPriceAndStock.Keys.All(item => item is Hat))
+                    switch(shopMenu.storeContext)
                     {
                         // Hat shop - will sell a random hat each week in addition to what you've already unlocked
-                        HatShop.OnChange(shopMenu, wasShopOpened);
-                    }
-
-                    else if (shopMenu.storeContext == "Club")
-                    {
+                        case "Forest":
+                            HatShop.OnChange(shopMenu, wasShopOpened);
+                            break;
                         // Club shop sells random furniture/clothing items weekly
-                        ClubShop.OnChange(shopMenu, wasShopOpened);
+                        case "Club":
+                            ClubShop.OnChange(shopMenu, wasShopOpened);
+                            break;
+                        case "JojaMart":
+                            JojaMart.OnChange(shopMenu, wasShopOpened);
+                            break;
+
                     }
                     break;
 
                     // Shops TODO
-                    // Joja Mart
                     // Willy's fishing shop
-                    // Easter egg/h'ween event shops?
             }
         }
     }

@@ -187,7 +187,7 @@ namespace Randomizer
 		{
 			RainTypes rainType = Globals.RNGGetRandomValueFromList(
 				Enum.GetValues(typeof(RainTypes)).Cast<RainTypes>().ToList(),
-				Globals.GetDailyRNG());
+				Globals.GetDailyRNG("rain"));
 
 			if (!Globals.Config.RandomizeRain) { return; }
 
