@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using StardewValley;
+﻿using StardewValley;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
@@ -11,16 +10,33 @@ namespace Randomizer
     internal class SeedShopMenuAdjustments : ShopMenuAdjustments
     {
         /// <summary>
-        /// Fix the sapling prices to reflect the actual fruit tree prices
+        /// Adjusts fruit tree prices and adds the item of the week
         /// </summary>
         /// <param name="menu">The shop menu</param>
-        public static void FixSaplingPrices(ShopMenu menu)
+        public override void Adjust(ShopMenu menu)
         {
-            if (!Globals.Config.RandomizeFruitTrees)
-            {
+            if (!ShouldChangeShop) { 
+                RestoreShopState(menu); 
                 return;
             }
 
+            if (Globals.Config.RandomizeFruitTrees)
+            {
+                FixSaplingPrices(menu);
+            }
+
+            if (Globals.Config.Shops.AddSeedShopItemOfTheWeek)
+            {
+                AddItemOfTheWeek(menu);
+            }
+        }
+
+        /// <summary>
+        /// Fix the sapling prices to reflect the actual fruit tree prices
+        /// </summary>
+        /// <param name="menu">The shop menu</param>
+        private static void FixSaplingPrices(ShopMenu menu)
+        {
             var saplingMenuItems = menu.itemPriceAndStock
                 .Where(keyValuePair => keyValuePair.Key.Name.Contains("Sapling"))
                 .ToList();
@@ -35,13 +51,8 @@ namespace Randomizer
         /// Consists of a more expensive than usual item has a small chance of being hard to get
         /// </summary>
         /// <param name="menu">The shop menu</param>
-        public static void AddItemOfTheWeek(ShopMenu menu)
+        private static void AddItemOfTheWeek(ShopMenu menu)
         {
-            if (!Globals.Config.Shops.AddSeedShopItemOfTheWeek)
-            {
-                return;
-            }
-
             Random shopRNG = Globals.GetWeeklyRNG();
 
             // Build list of possible items

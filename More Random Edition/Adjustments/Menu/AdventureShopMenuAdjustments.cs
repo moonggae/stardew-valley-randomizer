@@ -6,10 +6,20 @@ namespace Randomizer
     internal class AdventureShopMenuAdjustments : ShopMenuAdjustments
     {
         /// <summary>
+        /// Callthrough to FixPrices
+        /// This shop doesn't need to be restored or anything, as we're only modifying prices and nothing else
+        /// </summary>
+        /// <param name="menu">The shop menu</param>
+        public override void Adjust(ShopMenu menu)
+        {
+            FixPrices(menu);
+        }
+
+        /// <summary>
         /// Fixes sale prices for randomized gear so that nothing sells for more than it's worth
         /// </summary>
         /// <param name="menu">The shop menu</param>
-        public static void FixPrices(ShopMenu menu)
+        private static void FixPrices(ShopMenu menu)
         {
             menu.itemPriceAndStock = menu.itemPriceAndStock.ToDictionary(
                 item => item.Key,

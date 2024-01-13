@@ -9,17 +9,30 @@ namespace Randomizer
     internal class OasisShopMenuAdjustments : ShopMenuAdjustments
     {
         /// <summary>
+        /// Randomizes most of the shop
+        /// </summary>
+        /// <param name="menu">The shop menu</param>
+        public override void Adjust(ShopMenu menu)
+        {
+            if (!ShouldChangeShop)
+            {
+                RestoreShopState(menu);
+                return;
+            }
+
+            if (Globals.Config.Shops.RandomizeOasisShop)
+            {
+                AdjustStock(menu);
+            }
+        }
+
+        /// <summary>
         /// Adjust the oasis shop stock to sell more exotic items, including furnature
         /// Has some logic based on the day of the week
         /// </summary>
         /// <param name="menu">The shop menu</param>
-        public static void AdjustStock(ShopMenu menu)
+        private static void AdjustStock(ShopMenu menu)
         {
-            if (!Globals.Config.Shops.RandomizeOasisShop)
-            {
-                return;
-            }
-
             // Track the seeds so we can add them back and add the matching crop every Tuesday
             var desertShopSeeds = menu.itemPriceAndStock.Keys
                 .Where(item =>

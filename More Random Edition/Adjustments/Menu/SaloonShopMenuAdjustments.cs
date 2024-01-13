@@ -9,19 +9,32 @@ namespace Randomizer
     internal class SaloonShopMenuAdjustments : ShopMenuAdjustments
     {
         /// <summary>
+        /// randomizes many aspects of the shop
+        /// </summary>
+        /// <param name="menu">The shop menu</param>
+        public override void Adjust(ShopMenu menu)
+        {
+            if (!ShouldChangeShop)
+            {
+                RestoreShopState(menu);
+                return;
+            }
+
+            if (Globals.Config.Shops.RandomizeSaloonShop)
+            {
+                AdjustStock(menu);
+            }
+        }
+
+        /// <summary>
         /// The saloon shop will be mostly random now - cycling every Monday
         /// - Beer and Coffee will still be available
         /// - 3-5 random cooked foods will be sold
         /// - 3-5 random recipes will be sold (not shown if the player has them)
         /// </summary>
         /// <param name="menu">The shop menu</param>
-        public static void AdjustStock(ShopMenu menu)
+        private static void AdjustStock(ShopMenu menu)
         {
-            if (!Globals.Config.Shops.RandomizeSaloonShop)
-            {
-                return;
-            }
-
             // Stock will change every Monday
             Random shopRNG = Globals.GetWeeklyRNG();
             EmptyStock(menu);

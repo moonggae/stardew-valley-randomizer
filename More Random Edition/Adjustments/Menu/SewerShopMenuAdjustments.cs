@@ -7,17 +7,30 @@ namespace Randomizer
     internal class SewerShopMenuAdjustments : ShopMenuAdjustments
     {
         /// <summary>
+        /// Replaces a couple items in the shop
+        /// </summary>
+        /// <param name="menu">The shop menu</param>
+        public override void Adjust(ShopMenu menu)
+        {
+            if (!ShouldChangeShop)
+            {
+                RestoreShopState(menu);
+                return;
+            }
+
+            if (Globals.Config.Shops.RandomizerSewerShop)
+            {
+                AdjustStock(menu);
+            }
+        }
+
+        /// <summary>
         /// Replace the Monster Fireplace and Sign of the Vessel with daily equivalents
         /// Means a random BigCraftable and a random Furniture
         /// </summary>
         /// <param name="menu">The shop menu</param>
-        public static void AdjustStock(ShopMenu menu)
+        private static void AdjustStock(ShopMenu menu)
         {
-            if (!Globals.Config.Shops.RandomizerSewerShop)
-            {
-                return;
-            }
-
             Random shopRNG = Globals.GetDailyRNG();
 
             RemoveFromStock(menu, (int)FurnitureIndexes.MonsterFireplace);

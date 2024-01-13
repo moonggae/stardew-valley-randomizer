@@ -10,6 +10,19 @@ namespace Randomizer
     internal class ClubShopMenuAdjustments : ShopMenuAdjustments
     {
         /// <summary>
+        /// Callthrough to AdjustStock, if the setting is on
+        /// This shop doesn't need to be restored or anything, as this shop will never have limited stock
+        /// </summary>
+        /// <param name="menu">The shop menu</param>
+        public override void Adjust(ShopMenu menu)
+        {
+            if (Globals.Config.Shops.RandomizeClubShop)
+            {
+                AdjustStock(menu);
+            }
+        }
+
+        /// <summary>
         /// Sell the following:
         /// - 3-5 furniture
         /// - 1 hat or clothing item
@@ -17,13 +30,8 @@ namespace Randomizer
         /// - 1 totem type
         /// </summary>
         /// <param name="menu">The shop menu</param>
-        public static void AdjustStock(ShopMenu menu)
+        private static void AdjustStock(ShopMenu menu)
         {
-            if (!Globals.Config.Shops.RandomizeClubShop)
-            {
-                return;
-            }
-
             Random shopRNG = Globals.GetWeeklyRNG();
             EmptyStock(menu);
 

@@ -12,6 +12,56 @@ namespace Randomizer
         internal static readonly int _maxValue = int.MaxValue;
 
         /// <summary>
+        /// These two values track the state of the shop
+        /// </summary>
+        protected Dictionary<ISalable, int[]> currentItemPriceAndStock;
+        protected List<ISalable> currentForSale;
+
+        /// <summary>
+        /// Whether we should change the shop
+        /// That is - it's the first time we've opened the menu today
+        /// </summary>
+        public virtual bool ShouldChangeShop 
+        { 
+            get { return currentItemPriceAndStock == null; } 
+        }
+
+        /// <summary>
+        /// All shops will use this as the entry point for their adjustments
+        /// </summary>
+        /// <param name="menu">The shop menu</param>
+        public abstract void Adjust(ShopMenu menu);
+
+        /// <summary>
+        /// Saves the state of the shop
+        /// </summary>
+        /// <param name="menu">The shop menu</param>
+        public virtual void SaveShopState(ShopMenu menu)
+        {
+            currentItemPriceAndStock = menu.itemPriceAndStock;
+            currentForSale = menu.forSale;
+        }
+
+        /// <summary>
+        /// Restores the state of the shop - this will keep track of limited stock
+        /// </summary>
+        /// <param name="menu">The shop menu</param>
+        public virtual void RestoreShopState(ShopMenu menu)
+        {
+            menu.itemPriceAndStock = currentItemPriceAndStock;
+            menu.forSale = currentForSale;
+        }
+
+        /// <summary>
+        /// Clear out the values - should be called on day end so reset for the next day
+        /// </summary>
+        public virtual void ResetShopState()
+        {
+            currentItemPriceAndStock = null;
+            currentForSale = null;
+        }
+
+        /// <summary>
         /// Adds the given item to the given shop menu
         /// </summary>
         /// <param name="menu">The shop menu<param>
