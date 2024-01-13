@@ -11,7 +11,7 @@ namespace Randomizer
         /// Adds clay and tapper craft items
         /// </summary>
         /// <param name="menu">The shop menu</param>
-        public override void Adjust(ShopMenu menu)
+        protected override void Adjust(ShopMenu menu)
         {
             if (!ShouldChangeShop)
             {

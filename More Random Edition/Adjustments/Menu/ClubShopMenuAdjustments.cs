@@ -9,12 +9,17 @@ namespace Randomizer
 {
     internal class ClubShopMenuAdjustments : ShopMenuAdjustments
     {
+        public ClubShopMenuAdjustments() : base()
+        {
+            SkipShopSave = true;
+        }
+
         /// <summary>
         /// Callthrough to AdjustStock, if the setting is on
         /// This shop doesn't need to be restored or anything, as this shop will never have limited stock
         /// </summary>
         /// <param name="menu">The shop menu</param>
-        public override void Adjust(ShopMenu menu)
+        protected override void Adjust(ShopMenu menu)
         {
             if (Globals.Config.Shops.RandomizeClubShop)
             {

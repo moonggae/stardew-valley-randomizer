@@ -13,7 +13,7 @@ namespace Randomizer
         /// Adjusts fruit tree prices and adds the item of the week
         /// </summary>
         /// <param name="menu">The shop menu</param>
-        public override void Adjust(ShopMenu menu)
+        protected override void Adjust(ShopMenu menu)
         {
             if (!ShouldChangeShop) { 
                 RestoreShopState(menu); 

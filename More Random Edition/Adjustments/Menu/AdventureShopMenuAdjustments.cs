@@ -5,12 +5,17 @@ namespace Randomizer
 {
     internal class AdventureShopMenuAdjustments : ShopMenuAdjustments
     {
+        public AdventureShopMenuAdjustments() : base()
+        {
+            SkipShopSave = true;
+        }
+
         /// <summary>
         /// Callthrough to FixPrices
         /// This shop doesn't need to be restored or anything, as we're only modifying prices and nothing else
         /// </summary>
         /// <param name="menu">The shop menu</param>
-        public override void Adjust(ShopMenu menu)
+        protected override void Adjust(ShopMenu menu)
         {
             FixPrices(menu);
         }

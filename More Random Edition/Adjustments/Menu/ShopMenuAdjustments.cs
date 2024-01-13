@@ -18,6 +18,11 @@ namespace Randomizer
         protected List<ISalable> currentForSale;
 
         /// <summary>
+        /// Certain shops don't need to be saved
+        /// </summary>
+        protected bool SkipShopSave;
+
+        /// <summary>
         /// Whether we should change the shop
         /// That is - it's the first time we've opened the menu today
         /// </summary>
@@ -27,10 +32,30 @@ namespace Randomizer
         }
 
         /// <summary>
+        /// Called when the shop menu was opened or closed
+        /// On opened, adjusts the menu to display the changes
+        /// On closed, saves the state so it can be reloaded next time it's opened
+        /// </summary>
+        /// <param name="menu">The shop menu</param>
+        /// <param name="wasOpened">Whether the menu was opened or closed</param>
+        public void OnChange(ShopMenu menu, bool wasOpened)
+        {
+            if (wasOpened)
+            {
+                Adjust(menu);
+            }
+
+            else
+            {
+                SaveShopState(menu);
+            }
+        }
+
+        /// <summary>
         /// All shops will use this as the entry point for their adjustments
         /// </summary>
         /// <param name="menu">The shop menu</param>
-        public abstract void Adjust(ShopMenu menu);
+        protected abstract void Adjust(ShopMenu menu);
 
         /// <summary>
         /// Saves the state of the shop
@@ -38,8 +63,11 @@ namespace Randomizer
         /// <param name="menu">The shop menu</param>
         public virtual void SaveShopState(ShopMenu menu)
         {
-            currentItemPriceAndStock = menu.itemPriceAndStock;
-            currentForSale = menu.forSale;
+            if (!SkipShopSave)
+            {
+                currentItemPriceAndStock = menu.itemPriceAndStock;
+                currentForSale = menu.forSale;
+            }
         }
 
         /// <summary>

@@ -7,12 +7,17 @@ namespace Randomizer
 {
     internal class HatShopMenuAdjustments : ShopMenuAdjustments
     {
+        public HatShopMenuAdjustments() : base()
+        {
+            SkipShopSave = true;
+        }
+
         /// <summary>
         /// Callthrough to AddHatOfTheWeek, if the setting is on
         /// This shop doesn't need to be restored or anything, as there will never be limited stock
         /// </summary>
         /// <param name="menu">The shop menu</param>
-        public override void Adjust(ShopMenu menu)
+        protected override void Adjust(ShopMenu menu)
         {
             if (Globals.Config.Shops.AddHatShopHatOfTheWeek)
             {

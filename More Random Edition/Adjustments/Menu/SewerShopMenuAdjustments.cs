@@ -10,7 +10,7 @@ namespace Randomizer
         /// Replaces a couple items in the shop
         /// </summary>
         /// <param name="menu">The shop menu</param>
-        public override void Adjust(ShopMenu menu)
+        protected override void Adjust(ShopMenu menu)
         {
             if (!ShouldChangeShop)
             {

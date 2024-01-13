@@ -51,13 +51,13 @@ namespace Randomizer
             // Shops - adjust on open
             else if (e.NewMenu is ShopMenu openedShopMenu)
             {
-                AdjustOpenedShopMenus(openedShopMenu);
+                AdjustShopMenus(openedShopMenu, wasShopOpened: true);
             }
 
             // Shops - adjust on close
             else if (e.OldMenu is ShopMenu closedShopMenu)
             {
-                AdjustClosedShopMenus(closedShopMenu);
+                AdjustShopMenus(closedShopMenu, wasShopOpened: false);
             }
         }
 
@@ -67,46 +67,47 @@ namespace Randomizer
         /// it was at when it was last closed
         /// </summary>
         /// <param name="shopMenu"></param>
-        private static void AdjustOpenedShopMenus(ShopMenu shopMenu)
+        /// <param name="wasShopOpen">True if the shop was just opened, false if it was closed</param>
+        private static void AdjustShopMenus(ShopMenu shopMenu, bool wasShopOpened)
         {
             switch (shopMenu.portraitPerson?.Name)
             {
                 // Seed shop
                 case "Pierre":
-                    SeedShop.Adjust(shopMenu);
+                    SeedShop.OnChange(shopMenu, wasShopOpened);
                     break;
                 // Adventure shop - fix weapon prices so infinite money can't be made
                 case "Marlon":
-                    AdventureShop.Adjust(shopMenu);
+                    AdventureShop.OnChange(shopMenu, wasShopOpened);
                     break;
                 // Carpenter shop - add clay to prevent long grinds
                 case "Robin":
-                    CarpenterShop.Adjust(shopMenu);
+                    CarpenterShop.OnChange(shopMenu, wasShopOpened);
                     break;
                 // Saloon shop - will sell random foods/recipes each day
                 case "Gus":
-                    SaloonShop.Adjust(shopMenu);
+                    SaloonShop.OnChange(shopMenu, wasShopOpened);
                     break;
                 // Oasis shop - randomizes its foragable/crop/furniture stock each week
                 case "Sandy":
-                    OasisShop.Adjust(shopMenu);
+                    OasisShop.OnChange(shopMenu, wasShopOpened);
                     break;
                 // Sewer shop - randomizes the furniture and big craftable items daily
                 case "Krobus":
-                    SewerShop.Adjust(shopMenu);
+                    SewerShop.OnChange(shopMenu, wasShopOpened);
                     break;
                 default:
                     // The hat/club shops don't have portraits
                     if (shopMenu.storeContext == "Forest" && shopMenu.itemPriceAndStock.Keys.All(item => item is Hat))
                     {
                         // Hat shop - will sell a random hat each week in addition to what you've already unlocked
-                        HatShop.Adjust(shopMenu);
+                        HatShop.OnChange(shopMenu, wasShopOpened);
                     }
 
                     else if (shopMenu.storeContext == "Club")
                     {
                         // Club shop sells random furniture/clothing items weekly
-                        ClubShop.Adjust(shopMenu);
+                        ClubShop.OnChange(shopMenu, wasShopOpened);
                     }
                     break;
 
@@ -114,34 +115,6 @@ namespace Randomizer
                     // Joja Mart
                     // Willy's fishing shop
                     // Easter egg/h'ween event shops?
-            }
-        }
-
-        /// <summary>
-        /// Adjust shops on menu closed
-        /// This will save the state of the shop so it can be restored it if opened again
-        /// Note that we intentially skip the adventure shop, hat shop, and club shop since we don't need to save their states
-        /// </summary>
-        /// <param name="shopMenu"></param>
-        private static void AdjustClosedShopMenus(ShopMenu shopMenu)
-        {
-            switch (shopMenu.portraitPerson?.Name)
-            {
-                case "Pierre":
-                    SeedShop.SaveShopState(shopMenu);
-                    break;
-                case "Robin":
-                    CarpenterShop.SaveShopState(shopMenu);
-                    break;
-                case "Gus":
-                    SaloonShop.SaveShopState(shopMenu);
-                    break;
-                case "Sandy":
-                    OasisShop.SaveShopState(shopMenu);
-                    break;
-                case "Krobus":
-                    SewerShop.SaveShopState(shopMenu);
-                    break;
             }
         }
     }
