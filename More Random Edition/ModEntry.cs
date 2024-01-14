@@ -21,8 +21,6 @@ namespace Randomizer
 			Globals.ModRef = this;
 			Globals.Config = helper.ReadConfig<ModConfig>();
 
-			ImageBuilder.CleanUpReplacementFiles();
-
             _modAssetLoader = new AssetLoader(this);
             _modAssetEditor = new AssetEditor(this);
 
@@ -139,8 +137,9 @@ namespace Randomizer
 			Globals.RNG = new SaveLoadRNG(seed);
 			Globals.SpoilerLog = new SpoilerLogger(Game1.player.farmName.Value);
 
-			// Make replacements and edits
-			_modAssetLoader.CalculateReplacements();
+            // Make replacements and edits
+            ImageBuilder.CleanUpReplacementFiles();
+            _modAssetLoader.CalculateReplacements();
 			_modAssetEditor.CalculateEdits();
 			_modAssetLoader.RandomizeImages();
 			Globals.SpoilerLog.WriteFile();
