@@ -13,6 +13,7 @@ namespace Randomizer
 
 		/// <summary>
 		/// A mapping of cooking recipes that include crop names to the id of that crop
+		/// These ARE needed because the cooking recipe is slightly different than the item name in some cases
 		/// </summary>
 		private readonly static Dictionary<string, int> CropDishesMap = new()
 		{
@@ -37,6 +38,7 @@ namespace Randomizer
 
         /// <summary>
         /// A mapping of cooking recipes that include fish names to the id of that fish
+		/// These ARE needed because the cooking recipe is slightly different than the item name in some cases
         /// </summary>
         private readonly static Dictionary<string, int> FishDishesMap = new()
 		{
@@ -208,9 +210,8 @@ namespace Randomizer
 		/// <param name="id"></param>
 		private static string GetDishName(int id)
 		{
-			CookedItem item = (CookedItem)ItemList.Items[id];
-			string nameAndDescription = Globals.GetTranslation($"item-{id}-name-and-description", new { itemName = item.IngredientName });
-			return nameAndDescription.Split('/')[0];
+			CookedItem item = ItemList.Items[id] as CookedItem;
+			return item.DisplayName;
 		}
 
 		/// <summary>

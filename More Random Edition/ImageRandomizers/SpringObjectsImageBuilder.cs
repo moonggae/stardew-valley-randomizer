@@ -7,9 +7,6 @@ namespace Randomizer
 {
 	public class SpringObjectsImageBuilder : ImageBuilder
 	{
-		private const string CropsDirectory = "Crops";
-		private const string FlowersDirectory = "Flowers";
-		private const string SeedsDirectory = "Seeds";
 		private const string FishDirectory = "Fish";
 		private const string BootsDirectory = "Boots";
 
