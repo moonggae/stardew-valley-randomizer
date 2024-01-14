@@ -73,19 +73,26 @@ namespace Randomizer
             // Perform these first so the seed doesn't change on different days of the week
             var desertForagable = Globals.RNGGetRandomValueFromList(ItemList.GetUniqueDesertForagables(), weeklyShopRNG);
             var desertCrop = Globals.RNGGetRandomValueFromList(desertShopCrops, weeklyShopRNG);
-            var cookedItem = Globals.RNGGetRandomValuesFromList(ItemList.GetCookedItems(), 1, weeklyShopRNG);
+            var cookedItem = Globals.RNGGetRandomValueFromList(ItemList.GetCookedItems(), weeklyShopRNG);
 
             var gameDay = DayFunctions.GetCurrentDay();
-            if (DayFunctions.IsWeekday(gameDay)) {
-                
-                int foragablePrice = GetAdjustedItemPrice(desertForagable, fallbackPrice: 50, multiplier: 4);
-                AddStock(menu, desertForagable, salePrice: foragablePrice);
+            if (DayFunctions.IsWeekday(gameDay)) 
+            {
+                int foragablePrice = GetAdjustedItemPrice(desertForagable, fallbackPrice: 50, multiplier: 2);
+                int foragableStock = Range.GetRandomValue(1, 5, weeklyShopRNG);
+                AddStock(
+                    menu, 
+                    desertForagable.GetSaliableObject(foragableStock), 
+                    stock: foragableStock, 
+                    salePrice: foragablePrice
+                );
             }
 
             if (gameDay == Days.Tuesday)
             {
-                int salePrice = GetAdjustedItemPrice(desertCrop, fallbackPrice: 50, multiplier: 4);
-                AddStock(menu, desertCrop, salePrice: salePrice);
+                int desertCropPrice = GetAdjustedItemPrice(desertCrop, fallbackPrice: 50, multiplier: 2);
+                int desertCropStock = Range.GetRandomValue(3, 8, weeklyShopRNG);
+                AddStock(menu, desertCrop, stock: desertCropStock, salePrice: desertCropPrice);
             }
 
             if (DayFunctions.IsWeekend(gameDay))

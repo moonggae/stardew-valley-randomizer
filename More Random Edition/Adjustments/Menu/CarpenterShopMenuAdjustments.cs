@@ -39,7 +39,7 @@ namespace Randomizer
         {
             Random shopRNG = Globals.GetDailyRNG(nameof(CarpenterShopMenuAdjustments));
             var basePrice = 50;
-            var clayStock = Range.GetRandomValue(20, 50);
+            var clayStock = Range.GetRandomValue(20, 40, shopRNG);
             var clayPrice = Globals.RNGGetIntWithinPercentage(basePrice, 50, shopRNG);
 
             SVObject clay = new((int)ObjectIndexes.Clay, clayStock);

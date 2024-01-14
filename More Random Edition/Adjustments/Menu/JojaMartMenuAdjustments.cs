@@ -7,6 +7,10 @@ namespace Randomizer
 {
     internal class JojaMartMenuAdjustments : ShopMenuAdjustments
     {
+        /// <summary>
+        /// Adds the item of the week
+        /// </summary>
+        /// <param name="menu">The shop menu</param>
         protected override void Adjust(ShopMenu menu)
         {
             if (!ShouldChangeShop)
@@ -21,6 +25,11 @@ namespace Randomizer
             }
         }
 
+        /// <summary>
+        /// Adds a random item for item of the week
+        /// Better chance of a better item - and cheaper than the seed shop - the Joja spirit!
+        /// </summary>
+        /// <param name="menu">The shop menu</param>
         private static void AddItemOfTheWeek(ShopMenu menu)
         {
             Random shopRNG = Globals.GetWeeklyRNG(nameof(JojaMartMenuAdjustments));
@@ -31,8 +40,8 @@ namespace Randomizer
                 .Select(item => (item as SVObject).ParentSheetIndex)
                 .ToList();
 
-            // 1/10 chance of there being a better item in stock
-            var validItems = Globals.RNGGetNextBoolean(10, shopRNG)
+            // 15% chance of there being a better item in stock
+            var validItems = Globals.RNGGetNextBoolean(15, shopRNG)
                 ? ItemList.GetItemsAtDifficulty(ObtainingDifficulties.MediumTimeRequirements)
                     .Concat(ItemList.GetItemsAtDifficulty(ObtainingDifficulties.LargeTimeRequirements))
                     .Where(x => !itemsAlreadyInStock.Contains(x.Id))

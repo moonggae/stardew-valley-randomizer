@@ -6,7 +6,7 @@
 	public class CookedItem : Item
 	{
 		/// <summary>
-		/// The speicial ingredient used to cook this item
+		/// The special ingredient used to cook this item
 		/// </summary>
 		public string IngredientName { get; set; }
 

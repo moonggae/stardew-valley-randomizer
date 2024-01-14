@@ -1,4 +1,5 @@
 ﻿using StardewModdingAPI.Events;
+using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace Randomizer
         private static HatShopMenuAdjustments HatShop { get; } = new();
         private static ClubShopMenuAdjustments ClubShop { get; } = new();
         private static JojaMartMenuAdjustments JojaMart { get; } = new();
+        private static FishingShopMenuAdjustments FishingShop { get; } = new();
 
         /// <summary>
         /// Reset all the shop states
@@ -69,55 +71,53 @@ namespace Randomizer
         /// it was at when it was last closed
         /// </summary>
         /// <param name="shopMenu"></param>
-        /// <param name="wasShopOpen">True if the shop was just opened, false if it was closed</param>
+        /// <param name="wasShopOpened">True if the shop was just opened, false if it was closed</param>
         private static void AdjustShopMenus(ShopMenu shopMenu, bool wasShopOpened)
         {
-            switch (shopMenu.portraitPerson?.Name)
+            switch (shopMenu.storeContext)
             {
-                // Seed shop
-                case "Pierre":
+                // Seed shop and Joja Mart - adds item of the week
+                case "SeedShop":
                     SeedShop.OnChange(shopMenu, wasShopOpened);
                     break;
+                case "JojaMart":
+                    JojaMart.OnChange(shopMenu, wasShopOpened);
+                    break;
                 // Adventure shop - fix weapon prices so infinite money can't be made
-                case "Marlon":
+                case "AdventureGuild":
                     AdventureShop.OnChange(shopMenu, wasShopOpened);
                     break;
                 // Carpenter shop - add clay to prevent long grinds
-                case "Robin":
+                case "ScienceHouse":
                     CarpenterShop.OnChange(shopMenu, wasShopOpened);
                     break;
                 // Saloon shop - will sell random foods/recipes each day
-                case "Gus":
+                case "Saloon":
                     SaloonShop.OnChange(shopMenu, wasShopOpened);
                     break;
                 // Oasis shop - randomizes its foragable/crop/furniture stock each week
-                case "Sandy":
+                case "SandyHouse":
                     OasisShop.OnChange(shopMenu, wasShopOpened);
                     break;
                 // Sewer shop - randomizes the furniture and big craftable items daily
-                case "Krobus":
+                case "Sewer":
                     SewerShop.OnChange(shopMenu, wasShopOpened);
                     break;
-                default:
-                    switch(shopMenu.storeContext)
-                    {
-                        // Hat shop - will sell a random hat each week in addition to what you've already unlocked
-                        case "Forest":
-                            HatShop.OnChange(shopMenu, wasShopOpened);
-                            break;
-                        // Club shop sells random furniture/clothing items weekly
-                        case "Club":
-                            ClubShop.OnChange(shopMenu, wasShopOpened);
-                            break;
-                        case "JojaMart":
-                            JojaMart.OnChange(shopMenu, wasShopOpened);
-                            break;
-
-                    }
+                // Fishing shop - adds a catch of the day
+                case "FishShop":
+                    FishingShop.OnChange(shopMenu, wasShopOpened);
+                    break;
+                // Hat shop - will sell a random hat each week in addition to what you've already unlocked
+                case "Forest":
+                    HatShop.OnChange(shopMenu, wasShopOpened);
+                    break;
+                // Club shop sells random furniture/clothing items weekly
+                case "Club":
+                    ClubShop.OnChange(shopMenu, wasShopOpened);
                     break;
 
-                    // Shops TODO
-                    // Willy's fishing shop
+                // Shops TODO:
+                // Blacksmith! storeContext is Blacksmith too
             }
         }
     }

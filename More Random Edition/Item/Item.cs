@@ -3,6 +3,7 @@ using StardewValley;
 using System;
 using System.Text.RegularExpressions;
 using SVObject = StardewValley.Object;
+using SVRing = StardewValley.Objects.Ring;
 
 namespace Randomizer
 {
@@ -221,6 +222,14 @@ namespace Randomizer
 
 		public virtual ISalable GetSaliableObject(int initialStack = 1, bool isRecipe = false, int price = -1)
 		{
+			if (IsRing)
+			{
+                return new SVRing(Id)
+                {
+                    Stack = initialStack
+                };
+            }
+
             return IsBigCraftable 
 				? new SVObject(Vector2.Zero, Id, isRecipe)
 					{

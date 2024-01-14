@@ -56,6 +56,7 @@ namespace Randomizer
         /// The InsertAt functions will result in the order of the dictionary being different from the list order
         /// Of course - using a Dictionary to order something is unreliable, but that's how the game works!
         /// This will rebuild the dictionary to be in the same order as the list
+        /// This is necessary to fix items jumping to the bottom when something is sold to the shop
         /// </summary>
         /// <param name="menu"></param>
         private static void RebuildItemPriceAndStockDictionary(ShopMenu menu)
