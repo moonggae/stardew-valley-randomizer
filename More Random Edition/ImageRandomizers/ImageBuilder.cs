@@ -220,6 +220,7 @@ namespace Randomizer
             File.Delete(Globals.GetFilePath("Assets/CustomImages/Weapons/randomizedImage.png"));
             File.Delete(Globals.GetFilePath("Assets/CustomImages/SpringObjects/randomizedImage.png"));
             File.Delete(Globals.GetFilePath("Assets/CustomImages/CropGrowth/randomizedImage.png"));
+            File.Delete(Globals.GetFilePath("Assets/CustomImages/Animals/randomizedImage.png"));
         }
     }
 }

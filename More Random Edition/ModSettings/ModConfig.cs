@@ -15,6 +15,7 @@
 		public MusicConfig Music { get; set; } = new MusicConfig();
 
 		public ShopsConfig Shops { get; set; } = new ShopsConfig();
+		public AnimalsConfig Animals { get; set; } = new AnimalsConfig();
 
 		public bool RandomizeForagables { get; set; } = true;
 		public bool AddRandomArtifactItem { get; set; } = true;
@@ -100,5 +101,10 @@
 		public bool RandomizerSewerShop { get; set; } = true;
 		public bool RandomizeClubShop { get; set; } = true;
     }
+
+	public class AnimalsConfig
+	{
+		public bool RandomizeHorses { get; set; } = true;
+	}
 }
 

@@ -158,7 +158,11 @@ namespace Randomizer
 			BundleImageBuilder bundleImageBuilder = new BundleImageBuilder();
 			bundleImageBuilder.BuildImage();
 			HandleImageReplacement(bundleImageBuilder, "LooseSprites/JunimoNote");
-		}
+
+            HorseRandomizer horseImageBuilder = new HorseRandomizer();
+            horseImageBuilder.BuildImage();
+            HandleImageReplacement(horseImageBuilder, "Animals/horse");
+        }
 
 		/// <summary>
 		/// Handles actually adding the image replacement

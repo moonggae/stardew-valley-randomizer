@@ -15,9 +15,15 @@ namespace Randomizer
 			Horse,
 			Animal
 		}
+        private readonly static List<string> HorseTypeList = new()
+        {
+            "PinkHorse",
+			"GreenHorse",
+			"BlueHorse"
+        };
 
-		private static Dictionary<string, string> _replacements;
-		private readonly static List<string> PossibleCritterReplacements = new List<string>()
+        private static Dictionary<string, string> _replacements;
+		private readonly static List<string> PossibleCritterReplacements = new()
 		{
 			"crittersBears",
 			"crittersseagullcrow",
@@ -65,9 +71,6 @@ namespace Randomizer
 
 					AddAnimalReplacement(pet, "BearDog");
 					break;
-				case AnimalReplacementType.Horse:
-					AddAnimalReplacement("horse", "BearHorse");
-					break;
 				default:
 					List<string> animals = new List<string> { "Pig", "Goat", "Brown Cow", "White Cow" };
 					string animal = Globals.RNGGetRandomValueFromList(animals);
@@ -76,13 +79,14 @@ namespace Randomizer
 					AddAnimalReplacement($"Baby{animal}", "BabyBear");
 					break;
 			}
+
 		}
 
-		/// <summary>
-		/// Adds the critter replacement to the dictionary
-		/// </summary>
-		/// <param name="critterName">The critter asset name</param>
-		private static void AddCritterReplacement(string critterName)
+        /// <summary>
+        /// Adds the critter replacement to the dictionary
+        /// </summary>
+        /// <param name="critterName">The critter asset name</param>
+        private static void AddCritterReplacement(string critterName)
 		{
 			_critterSpoilerString = $"Critter sheet replaced with {critterName}";
 			_replacements.Add("TileSheets/critters", $"Assets/TileSheets/{critterName}");

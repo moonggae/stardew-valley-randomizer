@@ -174,7 +174,7 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Whether the settings premit random crop images
+		/// Whether the settings permit random crop images
 		/// </summary>
 		/// <returns>True if so, false otherwise</returns>
 		public override bool ShouldSaveImage()
