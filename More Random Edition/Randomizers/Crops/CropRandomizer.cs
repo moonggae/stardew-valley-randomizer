@@ -302,33 +302,33 @@ namespace Randomizer
 
 			var cropItemReplacements = new Dictionary<int, string>
 			{
-				{ (int)ObjectIndexes.CheeseCauliflower, $"Cheese {cauliflower}/300/55/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.CheeseCauliflower, cauliflower)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
-				{ (int)ObjectIndexes.ParsnipSoup, $"{parsnip} Soup/120/34/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.ParsnipSoup, parsnip)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
-				{ (int)ObjectIndexes.BeanHotpot, $"{greenbean} Hotpot/100/50/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.BeanHotpot, greenbean)}/food/0 0 0 0 0 0 2 0 0 0 0/600" },
-				{ (int)ObjectIndexes.GlazedYams, $"Glazed {yam} Platter/200/80/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.GlazedYams, yam)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
-				{ (int)ObjectIndexes.PepperPoppers, $"{hotpepper} Poppers/200/52/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.PepperPoppers, hotpepper)}/food/2 0 0 0 0 0 0 0 0 1 0/600" },
-				{ (int)ObjectIndexes.RhubarbPie, $"{rhubarb} Pie/400/86/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.RhubarbPie, rhubarb)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
-				{ (int)ObjectIndexes.EggplantParmesan, $"{eggplant} Parmesan/200/70/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.EggplantParmesan, eggplant)}/food/0 0 1 0 0 0 0 0 0 0 3/400" },
-				{ (int)ObjectIndexes.RicePudding, $"{rice} Pudding/260/46/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.RicePudding, rice)}/food/0 0 0 0 0 0 0 0 0 0 0/0"},
-				{ (int)ObjectIndexes.BlueberryTart, $"{blueberry} Tart/150/50/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.BlueberryTart, blueberry)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
-				{ (int)ObjectIndexes.PumpkinSoup, $"{pumpkin} Soup/300/80/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.PumpkinSoup, pumpkin)}/food/0 0 0 0 2 0 0 0 0 0 2/660" },
-				{ (int)ObjectIndexes.CranberrySauce, $"{cranberry} Sauce/120/50/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.CranberrySauce, cranberry)}/food/0 0 2 0 0 0 0 0 0 0 0/300" },
-				{ (int)ObjectIndexes.ArtichokeDip, $"{artichoke} Dip/210/40/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.ArtichokeDip, artichoke)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
-				{ (int)ObjectIndexes.PumpkinPie, $"{pumpkin} Pie/385/90/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.PumpkinPie, pumpkin)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
-				{ (int)ObjectIndexes.RadishSalad, $"{radish} Salad/300/80/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.RadishSalad, radish)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
-				{ (int)ObjectIndexes.CranberryCandy, $"{cranberry} Candy/175/50/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.CranberryCandy, cranberry)}/drink/0 0 0 0 0 0 0 0 0 0 0/0" },
-				{ (int)ObjectIndexes.PoppyseedMuffin, $"{poppyseed} Muffin/250/60/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.PoppyseedMuffin, poppyseed)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
+				{ (int)ObjectIndexes.CheeseCauliflower, $"Cheese Cauli./300/55/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.CheeseCauliflower, cauliflower)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
+				{ (int)ObjectIndexes.ParsnipSoup, $"Parsnip Soup/120/34/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.ParsnipSoup, parsnip)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
+				{ (int)ObjectIndexes.BeanHotpot, $"Bean Hotpot/100/50/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.BeanHotpot, greenbean)}/food/0 0 0 0 0 0 2 0 0 0 0/600" },
+				{ (int)ObjectIndexes.GlazedYams, $"Glazed Yams/200/80/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.GlazedYams, yam)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
+				{ (int)ObjectIndexes.PepperPoppers, $"Pepper Poppers/200/52/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.PepperPoppers, hotpepper)}/food/2 0 0 0 0 0 0 0 0 1 0/600" },
+				{ (int)ObjectIndexes.RhubarbPie, $"Rhubarb Pie/400/86/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.RhubarbPie, rhubarb)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
+				{ (int)ObjectIndexes.EggplantParmesan, $"Eggplant Parm./200/70/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.EggplantParmesan, eggplant)}/food/0 0 1 0 0 0 0 0 0 0 3/400" },
+				{ (int)ObjectIndexes.RicePudding, $"Rice Pudding/260/46/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.RicePudding, rice)}/food/0 0 0 0 0 0 0 0 0 0 0/0"},
+				{ (int)ObjectIndexes.BlueberryTart, $"Blueberry Tart/150/50/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.BlueberryTart, blueberry)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
+				{ (int)ObjectIndexes.PumpkinSoup, $"Pumpkin Soup/300/80/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.PumpkinSoup, pumpkin)}/food/0 0 0 0 2 0 0 0 0 0 2/660" },
+				{ (int)ObjectIndexes.CranberrySauce, $"Cran. Sauce/120/50/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.CranberrySauce, cranberry)}/food/0 0 2 0 0 0 0 0 0 0 0/300" },
+				{ (int)ObjectIndexes.ArtichokeDip, $"Artichoke Dip/210/40/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.ArtichokeDip, artichoke)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
+				{ (int)ObjectIndexes.PumpkinPie, $"Pumpkin Pie/385/90/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.PumpkinPie, pumpkin)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
+				{ (int)ObjectIndexes.RadishSalad, $"Radish Salad/300/80/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.RadishSalad, radish)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
+				{ (int)ObjectIndexes.CranberryCandy, $"Cranberry Candy/175/50/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.CranberryCandy, cranberry)}/drink/0 0 0 0 0 0 0 0 0 0 0/0" },
+				{ (int)ObjectIndexes.PoppyseedMuffin, $"Poppyseed Muffin/250/60/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.PoppyseedMuffin, poppyseed)}/food/0 0 0 0 0 0 0 0 0 0 0/0" },
 				{ (int)ObjectIndexes.FruitSalad, $"Harvest Salad/450/105/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.FruitSalad, "")}/food/0 0 0 0 0 0 0 0 0 0 0/0" }
 			};
 
 			var fishItemReplacements = new Dictionary<int, string>
 			{
-				{ (int)ObjectIndexes.CarpSurprise, $"{carp} Surprise/150/36/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.CarpSurprise, carp)}/food/0 0 0 0 0 0 0 0 0 0 0/0"},
-				{ (int)ObjectIndexes.SalmonDinner, $"{salmon} Dinner/300/50/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.SalmonDinner, salmon)}/food/0 0 0 0 0 0 0 0 0 0 0/0"},
-				{ (int)ObjectIndexes.CrispyBass, $"Crispy {bass}/150/36/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.CrispyBass, bass)}/food/0 0 0 0 0 0 0 0 64 0 0/600"},
-				{ (int)ObjectIndexes.TroutSoup, $"{trout} Soup/100/40/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.TroutSoup, trout)}/food/0 1 0 0 0 0 0 0 0 0 0/400"},
-				{ (int)ObjectIndexes.FriedEel, $"Fried {eel}/120/30/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.FriedEel, eel)}/food/0 0 0 0 1 0 0 0 0 0 0/600"},
-				{ (int)ObjectIndexes.SpicyEel, $"Spicy {eel}/175/46/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.SpicyEel, eel)}/food/0 0 0 0 1 0 0 0 0 1 0/600"}
+				{ (int)ObjectIndexes.CarpSurprise, $"Carp Surprise/150/36/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.CarpSurprise, carp)}/food/0 0 0 0 0 0 0 0 0 0 0/0"},
+				{ (int)ObjectIndexes.SalmonDinner, $"Salmon Dinner/300/50/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.SalmonDinner, salmon)}/food/0 0 0 0 0 0 0 0 0 0 0/0"},
+				{ (int)ObjectIndexes.CrispyBass, $"Crispy Bass/150/36/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.CrispyBass, bass)}/food/0 0 0 0 0 0 0 0 64 0 0/600"},
+				{ (int)ObjectIndexes.TroutSoup, $"Trout Soup/100/40/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.TroutSoup, trout)}/food/0 1 0 0 0 0 0 0 0 0 0/400"},
+				{ (int)ObjectIndexes.FriedEel, $"Fried Eel/120/30/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.FriedEel, eel)}/food/0 0 0 0 1 0 0 0 0 0 0/600"},
+				{ (int)ObjectIndexes.SpicyEel, $"Spicy Eel/175/46/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.SpicyEel, eel)}/food/0 0 0 0 1 0 0 0 0 1 0/600"}
 			};
 
 			if (Globals.Config.Crops.Randomize)

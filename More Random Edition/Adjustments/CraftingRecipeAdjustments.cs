@@ -7,14 +7,14 @@ using System.Reflection;
 
 namespace Randomizer
 {
-	public class CraftingRecipeAdjustments
+    public class CraftingRecipeAdjustments
 	{
 		private const int TapperProfession = 7;
 
 		/// <summary>
 		/// A mapping of cooking recipes that include crop names to the id of that crop
 		/// </summary>
-		private static Dictionary<string, int> CropDishesMap = new Dictionary<string, int>
+		private readonly static Dictionary<string, int> CropDishesMap = new()
 		{
 			{ "Cheese Cauli.", (int)ObjectIndexes.CheeseCauliflower },
 			{ "Parsnip Soup", (int)ObjectIndexes.ParsnipSoup },
@@ -35,10 +35,10 @@ namespace Randomizer
 			{ "Poppyseed Muffin", (int)ObjectIndexes.PoppyseedMuffin }
 		};
 
-		/// <summary>
-		/// A mapping of cooking recipes that include fish names to the id of that fish
-		/// </summary>
-		private static Dictionary<string, int> FishDishesMap = new Dictionary<string, int>
+        /// <summary>
+        /// A mapping of cooking recipes that include fish names to the id of that fish
+        /// </summary>
+        private readonly static Dictionary<string, int> FishDishesMap = new()
 		{
 			{ "Carp Surprise", (int)ObjectIndexes.CarpSurprise },
 			{ "Salmon Dinner", (int)ObjectIndexes.SalmonDinner },
@@ -48,11 +48,11 @@ namespace Randomizer
 			{ "Spicy Eel", (int)ObjectIndexes.SpicyEel }
 		};
 
-		/// <summary>
-		/// Fix the cooking recipe display names so that the queen of sauce shows
-		/// can actually display the correct thing
-		/// </summary>
-		public static void FixCookingRecipeDisplayNames()
+        /// <summary>
+        /// Fix the cooking recipe display names so that the queen of sauce shows
+        /// can actually display the correct thing
+        /// </summary>
+        public static void FixCookingRecipeDisplayNames()
 		{
 			foreach (KeyValuePair<string, int> entry in CropDishesMap)
 			{
@@ -78,16 +78,16 @@ namespace Randomizer
 			IClickableMenu genericMenu = Game1.activeClickableMenu;
 			if (genericMenu is null) { return; }
 
-			if (genericMenu is CraftingPage)
+			if (genericMenu is CraftingPage craftingPage)
 			{
 				if (!Globals.Config.Fish.Randomize && !Globals.Config.Crops.Randomize) { return; }
-				FixCookingRecipeHoverText((CraftingPage)genericMenu);
+				FixCookingRecipeHoverText(craftingPage);
 			}
 
-			else if (genericMenu is GameMenu && Game1.player.professions.Contains(TapperProfession))
+			else if (genericMenu is GameMenu gameMenu && Game1.player.professions.Contains(TapperProfession))
 			{
 				if (!Globals.Config.CraftingRecipes.Randomize) { return; }
-				ReduceCrabPotCost((GameMenu)genericMenu);
+				ReduceCrabPotCost(gameMenu);
 			}
 		}
 
