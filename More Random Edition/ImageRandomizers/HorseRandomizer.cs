@@ -17,17 +17,27 @@ namespace Randomizer
 
         public HorseRandomizer()
         {
-            SubDirectory = "Animals";
-            BaseFileName = "horse.png";
+            SubDirectory = "Animals/Horses";
 
+            var HorseImages = Directory.GetFiles($"{ImageDirectory}")
+            .Where(x => x.EndsWith(".png"))
+            .Select(x => Path.GetFileName(x))
+            .OrderBy(x => x).ToList();
+
+            BaseFileName = Globals.RNGGetRandomValueFromList( HorseImages );
         }
 
         new public void BuildImage()
         {
             Texture2D horseImage = Texture2D.FromFile(Game1.graphics.GraphicsDevice, BaseFileFullPath);
+            Texture2D finalImage;
 
-            Color shiftedPaleColor = HueShifter.IncreaseHueBy(PaleColor, Range.GetRandomValue(0, 359));
-            Texture2D finalImage = HueShifter.MultiplyImageByColor(horseImage, shiftedPaleColor);
+            if (BaseFileName == "horse.png")
+            {
+                Color shiftedPaleColor = HueShifter.IncreaseHueBy(PaleColor, Range.GetRandomValue(0, 359));
+                finalImage = HueShifter.MultiplyImageByColor(horseImage, shiftedPaleColor);
+            }
+            else finalImage = horseImage;
 
             if (ShouldSaveImage())
             {

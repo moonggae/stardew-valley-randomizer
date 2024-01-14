@@ -37,7 +37,7 @@ namespace Randomizer
         /// <summary>
         /// The name of the output file
         /// </summary>
-        private const string OutputFileName = "randomizedImage.png";
+        protected const string OutputFileName = "randomizedImage.png";
 
         /// <summary>
         /// The path for all the custom images
