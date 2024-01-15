@@ -49,6 +49,7 @@ namespace Randomizer
             else
             {
                 SaveShopState(menu);
+                RebuildItemPriceAndStockDictionary(menu);
             }
         }
 
@@ -57,10 +58,15 @@ namespace Randomizer
         /// Of course - using a Dictionary to order something is unreliable, but that's how the game works!
         /// This will rebuild the dictionary to be in the same order as the list
         /// This is necessary to fix items jumping to the bottom when something is sold to the shop
+        /// 
+        /// Finally - we need to skip over buyback items because they are never reloaded after the shop is closed
         /// </summary>
         /// <param name="menu"></param>
         private static void RebuildItemPriceAndStockDictionary(ShopMenu menu)
         {
+            var buyBackItemsCount = menu.buyBackItems.Count;
+            menu.forSale.RemoveRange(menu.forSale.Count - buyBackItemsCount, buyBackItemsCount);
+
             Dictionary<ISalable, int[]> fixedDictionary = new();
             menu.forSale.ForEach(item => fixedDictionary[item] = menu.itemPriceAndStock[item]);
             menu.itemPriceAndStock = fixedDictionary;
