@@ -38,7 +38,7 @@ namespace Randomizer
         /// </summary>
         /// <param name="menu">The shop menu</param>
         /// <param name="wasOpened">Whether the menu was opened or closed</param>
-        public void OnChange(ShopMenu menu, bool wasOpened)
+        public virtual void OnChange(ShopMenu menu, bool wasOpened)
         {
             if (wasOpened)
             {

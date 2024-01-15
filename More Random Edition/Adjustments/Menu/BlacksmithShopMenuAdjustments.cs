@@ -2,13 +2,31 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SVObject = StardewValley.Object;
 
 namespace Randomizer
 {
     internal class BlacksmithShopMenuAdjustments : ShopMenuAdjustments
-    {
+    { 
         /// <summary>
-        /// Adds a chance at some rare items to show up (TODO, what?)
+        /// The blacksmith context has two shops... unsure how else to detect which shop is
+        /// being opened besides checking whether this one contians a certain item
+        /// For now, we will check that it contains coal
+        /// </summary>
+        /// <param name="menu">The shop menu</param>
+        /// <param name="wasOpened">Whether the shop was opened</param>
+        public override void OnChange(ShopMenu menu, bool wasOpened)
+        {
+            if (menu.forSale.Any(item => 
+                    item is SVObject objItem && 
+                    objItem.ParentSheetIndex == (int)ObjectIndexes.Coal))
+            {
+                base.OnChange(menu, wasOpened);
+            }
+        }
+
+        /// <summary>
+        /// Adds a chance at a discount, or mining-related items to show up
         /// </summary>
         /// <param name="menu">The shop menu</param>
         protected override void Adjust(ShopMenu menu)
