@@ -21,6 +21,7 @@ namespace Randomizer
         private static ClubShopMenuAdjustments ClubShop { get; } = new();
         private static JojaMartMenuAdjustments JojaMart { get; } = new();
         private static FishingShopMenuAdjustments FishingShop { get; } = new();
+        private static BlacksmithShopMenuAdjustments BlacksmithShop { get; } = new();
 
         /// <summary>
         /// Reset all the shop states
@@ -37,6 +38,8 @@ namespace Randomizer
             // Hat shop is skipped as there's nothing to restore
             // Club shop is skipped as there's nothing to restore
             JojaMart.ResetShopState();
+            FishingShop.ResetShopState();
+            BlacksmithShop.ResetShopState();
         }
 
         /// <summary>
@@ -83,6 +86,10 @@ namespace Randomizer
                 case "JojaMart":
                     JojaMart.OnChange(shopMenu, wasShopOpened);
                     break;
+                // Blacksmith shop - chance of mining-related random items/discounts
+                case "Blacksmith":
+                    BlacksmithShop.OnChange(shopMenu, wasShopOpened);
+                    break;
                 // Adventure shop - fix weapon prices so infinite money can't be made
                 case "AdventureGuild":
                     AdventureShop.OnChange(shopMenu, wasShopOpened);
@@ -115,9 +122,6 @@ namespace Randomizer
                 case "Club":
                     ClubShop.OnChange(shopMenu, wasShopOpened);
                     break;
-
-                // Shops TODO:
-                // Blacksmith! storeContext is Blacksmith too
             }
         }
     }

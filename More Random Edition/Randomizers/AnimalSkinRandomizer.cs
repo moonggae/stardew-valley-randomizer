@@ -15,12 +15,6 @@ namespace Randomizer
 			Horse,
 			Animal
 		}
-        private readonly static List<string> HorseTypeList = new()
-        {
-            "PinkHorse",
-			"GreenHorse",
-			"BlueHorse"
-        };
 
         private static Dictionary<string, string> _replacements;
 		private readonly static List<string> PossibleCritterReplacements = new()
