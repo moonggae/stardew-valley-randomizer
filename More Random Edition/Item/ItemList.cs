@@ -1,10 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewValley;
+using StardewValley.Menus;
 using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SVOBject = StardewValley.Object;
+using SVObject = StardewValley.Object;
 
 namespace Randomizer
 {
@@ -389,22 +390,38 @@ namespace Randomizer
 		/// <returns>A list of furniture to sell</returns>
 		public static List<ISalable> GetRandomFurnitureToSell(Random rng, int numberToGet, List<int> itemsToExclude = null)
 		{
-			var allFurnitureIds = Enum.GetValues(typeof(FurnitureIndexes))
-				.Cast<int>()
+			return GetRandomFurniture(numberToGet, itemsToExclude, rng)
+				.Cast<ISalable>()
+				.ToList();
+        }
+
+        /// <summary>
+        /// Gets a list of random furniture items
+        /// </summary>
+        /// <param name="numberToGet">The number of furniture objects to get</param>
+		/// <param name="itemsToExclude">Item ids to not include</param>
+        /// <param name="rng">The RNG to use</param>
+        /// <returns>A list of furniture to sell</returns>
+        public static List<Furniture> GetRandomFurniture(int numberToGet, List<int> itemsToExclude = null, Random rng = null)
+        {
+            var rngToUse = rng ?? Globals.RNG;
+
+            var allFurnitureIds = Enum.GetValues(typeof(FurnitureIndexes))
+                .Cast<int>()
                 .Where(id => itemsToExclude == null || !itemsToExclude.Contains(id))
                 .ToList();
 
-            return Globals.RNGGetRandomValuesFromList(allFurnitureIds, numberToGet, rng)
-				.Select(furnitureId => Furniture.GetFurnitureInstance(furnitureId))
-				.Cast<ISalable>()
-				.ToList();
-		}
+            return Globals.RNGGetRandomValuesFromList(allFurnitureIds, numberToGet, rngToUse)
+                .Select(furnitureId => Furniture.GetFurnitureInstance(furnitureId))
+                .ToList();
+        }
 
         /// <summary>
         /// Gets a list of random clothing items to sell
         /// </summary>
         /// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
         /// <param name="numberToGet">The number of clothing objects to get</param>
+		/// <param name="itemsToExclude">Item ids to not include</param>
         /// <returns>A list of clothing objects to sell</returns>
         public static List<ISalable> GetRandomClothingToSell(Random rng, int numberToGet, List<int> itemsToExclude = null)
         {
@@ -424,6 +441,7 @@ namespace Randomizer
         /// </summary>
         /// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
         /// <param name="numberToGet">The number of hats to get</param>
+		/// <param name="itemsToExclude">Item ids to not include</param>
         /// <returns>A list of furniture to sell</returns>
         public static List<ISalable> GetRandomHatsToSell(Random rng, int numberToGet, List<int> itemsToExclude = null)
         {
@@ -443,18 +461,55 @@ namespace Randomizer
         /// </summary>
         /// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
         /// <param name="numberToGet">The number of big craftables to get</param>
+		/// <param name="itemsToExclude">Item ids to not include</param>
         /// <returns>A list of big craftables to sell</returns>
         public static List<ISalable> GetRandomBigCraftablesToSell(Random rng, int numberToGet, List<int> itemsToExclude = null)
         {
+            return GetRandomBigCraftables(numberToGet, itemsToExclude, rng)
+				.Cast<ISalable>()
+				.ToList();
+        }
+
+        /// <summary>
+        /// Gets a list of random big craftables
+        /// </summary>
+        /// <param name="numberToGet">The number of big craftables to get</param>
+		/// <param name="itemsToExclude">Item ids to not include</param>
+        /// <param name="rng">The RNG to use</param>
+        /// <returns>A list of big craftables to sell</returns>
+        public static List<SVObject> GetRandomBigCraftables(int numberToGet, List<int> itemsToExclude = null, Random rng = null)
+        {
+            var rngToUse = rng ?? Globals.RNG;
+
             var allBigCraftableIds = Enum.GetValues(typeof(BigCraftableIndexes))
                 .Cast<int>()
                 .Where(id => itemsToExclude == null || !itemsToExclude.Contains(id))
                 .ToList();
 
             return Globals.RNGGetRandomValuesFromList(allBigCraftableIds, numberToGet, rng)
-                .Select(bigCraftableId => new SVOBject(Vector2.Zero, bigCraftableId))
-                .Cast<ISalable>()
+                .Select(bigCraftableId => new SVObject(Vector2.Zero, bigCraftableId))
                 .ToList();
+        }
+
+        /// <summary>
+        /// Adds a random totem type, alwas costing 500 Qi Coins
+        /// </summary>
+        /// <param name="menu"></param>
+        /// <param name="shopRNG"></param>
+        public static Item GetRandomTotem(Random rng = null)
+        {
+            var rngToUse = rng ?? Globals.RNG;
+
+            var totemList = new List<int>()
+            {
+                (int)ObjectIndexes.WarpTotemFarm,
+                (int)ObjectIndexes.WarpTotemBeach,
+                (int)ObjectIndexes.WarpTotemMountains,
+                (int)ObjectIndexes.WarpTotemDesert,
+                (int)ObjectIndexes.RainTotem
+            };
+            var totemId = Globals.RNGGetRandomValueFromList(totemList, rng);
+			return Items[totemId];
         }
 
         public static Dictionary<int, Item> Items;
@@ -1048,7 +1103,8 @@ namespace Randomizer
 
 				{ (int)ObjectIndexes.AlgaeSoup, new CookedItem((int)ObjectIndexes.AlgaeSoup) },
 				{ (int)ObjectIndexes.PaleBroth, new CookedItem((int)ObjectIndexes.PaleBroth) },
-				{ (int)ObjectIndexes.PlumPudding, new CookedItem((int)ObjectIndexes.PlumPudding) },
+                { (int)ObjectIndexes.TripleShotEspresso, new CookedItem((int)ObjectIndexes.TripleShotEspresso) },
+                { (int)ObjectIndexes.PlumPudding, new CookedItem((int)ObjectIndexes.PlumPudding) },
 				{ (int)ObjectIndexes.ArtichokeDip, new CookedItem((int)ObjectIndexes.ArtichokeDip, (int)ObjectIndexes.Artichoke, "210/40/Cooking -7", "food/0 0 0 0 0 0 0 0 0 0 0/0") },
 				{ (int)ObjectIndexes.StirFry, new CookedItem((int)ObjectIndexes.StirFry) },
 				{ (int)ObjectIndexes.RoastedHazelnuts, new CookedItem((int)ObjectIndexes.RoastedHazelnuts) },
@@ -1069,6 +1125,10 @@ namespace Randomizer
 				{ (int)ObjectIndexes.MapleBar, new CookedItem((int)ObjectIndexes.MapleBar) },
 
 				{ (int)ObjectIndexes.CrabCakes, new CookedItem((int)ObjectIndexes.CrabCakes) },
+
+				// Internally, this IS a cooked item, but functionally - it actually has no matching recipe, so we won't define it that way
+				// You can buy it for 3 prismatic shards, so it is very much an endgame item!
+                { (int)ObjectIndexes.MagicRockCandy, new Item((int)ObjectIndexes.MagicRockCandy, ObtainingDifficulties.EndgameItem) },
 			
 				// ------ All Foragables - ObtainingDifficulties.LargeTimeRequirements -------
 				// Spring Foragables

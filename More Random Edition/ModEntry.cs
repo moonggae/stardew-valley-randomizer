@@ -142,7 +142,7 @@ namespace Randomizer
             _modAssetLoader.CalculateReplacements();
 			_modAssetEditor.CalculateEdits();
 			_modAssetLoader.RandomizeImages();
-			Globals.SpoilerLog.WriteFile();
+            MuseumRewardMenuAdjustments.PopulateRewardMap();
 
 			// Invalidate all replaced and edited assets so they are reloaded
 			_modAssetLoader.InvalidateCache();
@@ -156,6 +156,7 @@ namespace Randomizer
 
 			// We should now be done with Globals.RNG
             Globals.RNG.IsPostFileLoad = true;
+            Globals.SpoilerLog.WriteFile();
         }
 
 		/// <summary>

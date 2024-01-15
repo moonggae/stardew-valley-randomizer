@@ -107,15 +107,7 @@ namespace Randomizer
         /// <param name="shopRNG"></param>
         private static void AddTotem(ShopMenu menu, Random shopRNG)
         {
-            var totemList = new List<int>()
-            {
-                (int)ObjectIndexes.WarpTotemFarm,
-                (int)ObjectIndexes.WarpTotemBeach,
-                (int)ObjectIndexes.WarpTotemMountains,
-                (int)ObjectIndexes.WarpTotemDesert,
-                (int)ObjectIndexes.RainTotem
-            };
-            var totemToSell = new SVObject(Globals.RNGGetRandomValueFromList(totemList, shopRNG), 1);
+            var totemToSell = new SVObject(ItemList.GetRandomTotem(shopRNG).Id, 1);
             AddStock(menu, totemToSell, salePrice: 500);
         }
 

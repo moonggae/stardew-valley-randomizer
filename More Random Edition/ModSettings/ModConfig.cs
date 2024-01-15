@@ -13,19 +13,15 @@
 		public NPCsConfig NPCs { get; set; } = new NPCsConfig();
 		public BundleConfig Bundles { get; set; } = new BundleConfig();
 		public MusicConfig Music { get; set; } = new MusicConfig();
-
 		public ShopsConfig Shops { get; set; } = new ShopsConfig();
 		public AnimalsConfig Animals { get; set; } = new AnimalsConfig();
 
 		public bool RandomizeForagables { get; set; } = true;
 		public bool AddRandomArtifactItem { get; set; } = true;
-
 		public bool RandomizeBuildingCosts { get; set; } = true;
-
 		public bool RandomizeFruitTrees { get; set; } = true;
-
 		public bool RandomizeAnimalSkins { get; set; } = true;
-
+		public bool RandomizeMuseumRewards { get; set; } = true;
 		public bool RandomizeIntroStory { get; set; } = true;
 		public bool RandomizeQuests { get; set; } = true;
 		public bool RandomizeRain { get; set; } = true;
