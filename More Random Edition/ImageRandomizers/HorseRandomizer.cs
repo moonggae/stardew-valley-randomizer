@@ -34,8 +34,8 @@ namespace Randomizer
 
             if (BaseFileName == "horse.png")
             {
-                Color shiftedPaleColor = HueShifter.IncreaseHueBy(PaleColor, Range.GetRandomValue(0, 359));
-                finalImage = HueShifter.MultiplyImageByColor(horseImage, shiftedPaleColor);
+                Color shiftedPaleColor = ImageManipulator.IncreaseHueBy(PaleColor, Range.GetRandomValue(0, 359));
+                finalImage = ImageManipulator.MultiplyImageByColor(horseImage, shiftedPaleColor);
             }
             else finalImage = horseImage;
 
