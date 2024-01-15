@@ -1,8 +1,7 @@
 ﻿using StardewModdingAPI.Events;
+using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
-using StardewValley.Objects;
-using System.Linq;
 
 namespace Randomizer
 {
@@ -66,7 +65,15 @@ namespace Randomizer
             {
                 AdjustShopMenus(closedShopMenu, wasShopOpened: false);
             }
+
+            // Museum - TODO: can check if there's a better way to verify this
+            //else if (e.NewMenu is ItemGrabMenu itemGrabMenu && Game1.currentLocation is LibraryMuseum)
+            //{
+            //    MuseumRewardMenuAdjustments.AdjustMenu(itemGrabMenu);
+            //}
         }
+
+
 
         /// <summary>
         /// Adjust shops on menu open
@@ -116,7 +123,11 @@ namespace Randomizer
                     break;
                 // Hat shop - will sell a random hat each week in addition to what you've already unlocked
                 case "Forest":
-                    HatShop.OnChange(shopMenu, wasShopOpened);
+                    // The hat shop is located further down than the Traveling Merchant
+                    if (Game1.player.getTileLocation().Y > 90)
+                    {
+                        HatShop.OnChange(shopMenu, wasShopOpened);
+                    }
                     break;
                 // Club shop sells random furniture/clothing items weekly
                 case "Club":

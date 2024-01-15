@@ -8,6 +8,23 @@ namespace Randomizer
     internal class CarpenterShopMenuAdjustments : ShopMenuAdjustments
     {
         /// <summary>
+        /// The carpenter shop has a rennovations menu
+        /// We'll check that the shop contains wood before modifying it so we're sure we're
+        /// not changing the wrong shop
+        /// </summary>
+        /// <param name="menu">The shop menu</param>
+        /// <param name="wasOpened">Whether the shop was opened</param>
+        public override void OnChange(ShopMenu menu, bool wasOpened)
+        {
+            if (menu.forSale.Any(item =>
+                    item is SVObject objItem &&
+                    objItem.ParentSheetIndex == (int)ObjectIndexes.Wood))
+            {
+                base.OnChange(menu, wasOpened);
+            }
+        }
+
+        /// <summary>
         /// Adds clay and tapper craft items
         /// </summary>
         /// <param name="menu">The shop menu</param>
