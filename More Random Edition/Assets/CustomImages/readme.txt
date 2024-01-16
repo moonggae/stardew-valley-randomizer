@@ -15,10 +15,16 @@ The image randomizer works by randomly choosing images in specific directories, 
 - DO NOT delete any image in the directory that is a spritesheet - this is likely the base file that's used; deleting these will cause errors
 - Most issues will be detected by the randomizer when first loading your farm, so it's a good idea to scroll through the console output to locate any errors if you make any changes
 - Most errors would result in default graphics being used instead of the custom ones
-- The randomizer will create a "randomizedImage.png" in these directories; if you're not running the game, it's safe to delete these, but they're cleared when the game is started anyway, so it doesn't do much
+- The randomizer will create a "randomizedImage.png" in these directories; if you're not running the game, it's safe to delete these, but they're cleared and recreated when a farm is loaded, so it doesn't do much
 
 The following sections are about each folder located in the CustomImages directory, and specifics about them.
 
+Animals
+-------
+- This consists of several sub-directories with sprite sheets of animals
+- Be sure to be consistent with the size and sprite placements of the animals you wish to make sheets for here
+- If you want random colors to be applied to your image, end your file name with "hue-shift.png"
+  - These images do not need to be grayscale
 
 Bundles
 -------
@@ -100,12 +106,22 @@ Flowers:
 
 
 Seeds:
+- These image should consist of only the image of the seed that would be on a packet - the rest of it should be transparent
 - Each image must be 16 x 16px
 - For each crop growth in the following folders, there has to be one crop image with the same name:
  - CustomImages/CropGrowth/NormalCrops (without the -4 or -5 in the name)
  - CustomImages/CropGrowth/RegrowingCrops
  - CustomImages/CropGrowth/TrellisCrops
  - CustomImages/CropGrowth/Flowers
+
+ SeedPackets:
+ - Greyscale images of seed packets that the seeds will be recolored and combined with a seed image
+ - Each image must be 16 x 16px
+ 
+ SeedPackets/TrellisPackets:
+  - Greyscale images of seed packets that the seeds will be recolored and combined with a trellis seed image
+  - Eachimage must be 16 x 16px
+  - Ensure that the seed in the corresponding seed image lines up with the standard location of all the Trellis Packets, or the image will look strange
 
 
 Weapons:
