@@ -143,30 +143,29 @@ namespace Randomizer
 		/// </summary>
 		public void RandomizeImages()
 		{
-			WeaponImageBuilder weaponImageBuilder = new WeaponImageBuilder();
+			WeaponImageBuilder weaponImageBuilder = new();
 			weaponImageBuilder.BuildImage();
 			HandleImageReplacement(weaponImageBuilder, "TileSheets/weapons");
 
-			CropGrowthImageBuilder cropGrowthImageBuilder = new CropGrowthImageBuilder();
+			CropGrowthImageBuilder cropGrowthImageBuilder = new();
 			cropGrowthImageBuilder.BuildImage();
 			HandleImageReplacement(cropGrowthImageBuilder, "TileSheets/crops");
 
-			SpringObjectsImageBuilder springObjectsImageBuilder = new SpringObjectsImageBuilder(cropGrowthImageBuilder.CropIdsToImageNames);
+			SpringObjectsImageBuilder springObjectsImageBuilder = new(cropGrowthImageBuilder.CropIdsToLinkingData);
 			springObjectsImageBuilder.BuildImage();
 			HandleImageReplacement(springObjectsImageBuilder, "Maps/springobjects");
 
-			BundleImageBuilder bundleImageBuilder = new BundleImageBuilder();
+			BundleImageBuilder bundleImageBuilder = new();
 			bundleImageBuilder.BuildImage();
 			HandleImageReplacement(bundleImageBuilder, "LooseSprites/JunimoNote");
 
-            AnimalRandomizer horseImageBuilder = new AnimalRandomizer(AnimalTypes.Horses);
+            AnimalRandomizer horseImageBuilder = new(AnimalTypes.Horses);
             horseImageBuilder.BuildImage();
             HandleImageReplacement(horseImageBuilder, "Animals/horse");
 
-            AnimalRandomizer petImageBuilder = new AnimalRandomizer(AnimalTypes.Pets);
+            AnimalRandomizer petImageBuilder = new(AnimalTypes.Pets);
             petImageBuilder.BuildImage();
             HandleImageReplacement(petImageBuilder, "Animals/cat");
-
         }
 
 		/// <summary>

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+using System;
 
-namespace More_Random_Edition.ImageRandomizers
+namespace Randomizer
 {
     public class ImageManipulator
     {
@@ -16,24 +12,20 @@ namespace More_Random_Edition.ImageRandomizers
         /// </summary>
         public static Texture2D ShiftImageHue(Texture2D image, float amountToShift)
         {
-
             Color[] imageColors = GetImageColorData(image);
             Color[] alteredImageColors = new Color[image.Width * image.Height];
 
-
             for (int i = 0; i < imageColors.Length; i++)
             {
-
                 alteredImageColors[i] = IncreaseHueBy(imageColors[i], amountToShift);
-
             }
 
-            Texture2D newImage = new Texture2D(Game1.graphics.GraphicsDevice, image.Width, image.Height);
+            Texture2D newImage = new(Game1.graphics.GraphicsDevice, image.Width, image.Height);
             newImage.SetData(alteredImageColors);
 
             return newImage;
-
         }
+
         /// <summary>
         /// 
         /// Shifts any color within the inputted range by more or less than colors not in the range,

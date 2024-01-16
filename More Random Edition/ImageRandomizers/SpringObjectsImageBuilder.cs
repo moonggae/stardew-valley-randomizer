@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework;
 using System.IO;
 using System.Linq;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace Randomizer
 {
@@ -26,17 +28,23 @@ namespace Randomizer
 		/// <summary>
 		/// Keeps track of crop ids mapped to image names so that all the crop images can be linked
 		/// </summary>
-		private readonly Dictionary<int, string> CropIdsToImageNames;
+		private readonly Dictionary<int, ImageLinkingData> CropIdsToLinkingData;
 
-		/// <summary>
-		/// The constructor
-		/// </summary>
-		/// <param name="customFolderName">The folder name of the image type being built</param>
-		public SpringObjectsImageBuilder(Dictionary<int, string> itemIdsToImageNames) : base()
+        /// <summary>
+        /// A reverse lookup since we have the image name when we need to find the crop id
+        /// </summary>
+        private readonly Dictionary<string, int> ImageNameToCropIds;
+
+        /// <summary>
+        /// The constructor
+        /// </summary>
+        /// <param name="customFolderName">The folder name of the image type being built</param>
+        public SpringObjectsImageBuilder(Dictionary<int, ImageLinkingData> itemIdsToImageNames) : base()
 		{
-			CropIdsToImageNames = itemIdsToImageNames;
+			CropIdsToLinkingData = itemIdsToImageNames;
+			ImageNameToCropIds = new();
 
-			BaseFileName = "springobjects.png";
+            BaseFileName = "springobjects.png";
 			SubDirectory = "SpringObjects";
 
 			SetAllItemMappings();
@@ -85,7 +93,7 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="id">The id</param>
 		/// <returns />
-		protected Point GetPointFromId(int id)
+		protected static Point GetPointFromId(int id)
 		{
 			return new Point(id % ItemsPerRow, id / ItemsPerRow);
 		}
@@ -161,20 +169,69 @@ namespace Randomizer
 				}
 			}
 
-			if (!CropIdsToImageNames.TryGetValue(cropId, out fileName))
+			if (!CropIdsToLinkingData.TryGetValue(cropId, out ImageLinkingData linkingData))
 			{
 				Globals.ConsoleWarn($"Could not find the matching image for {item.Name}; using default image instead.");
 				return null;
 			}
 
-			return $"{ImageDirectory}{subDirectory}/{fileName}";
+			string fullImagePath = $"{ImageDirectory}{subDirectory}/{linkingData.ImageName}";
+            ImageNameToCropIds[fullImagePath] = cropId; // Use this path because it's what we have in MainipulateImage
+            return fullImagePath;
 		}
 
 		/// <summary>
-		/// Whether the settings permit random crop images
+		/// Hue-shift the image to paste onto SpringObjects, if applicable
 		/// </summary>
-		/// <returns>True if so, false otherwise</returns>
-		public override bool ShouldSaveImage()
+		/// <param name="image">The image to potentially hue shift</param>
+		/// <param name="fileName">The full path of the image - needed so we can check the sub-directory</param>
+		/// <returns>The manipulated image (or the input, if nothing is done)</returns>
+        protected override Texture2D MainipulateImage(Texture2D image, string fileName)
+        {
+            string endingFileName = fileName.Split("CustomImages/SpringObjects/")[1];
+
+			// Use the LinkingData to grab the hue shift value for crops and seeds
+			if (endingFileName.StartsWith("Crops") || endingFileName.StartsWith("Seeds"))
+			{
+				return ManipulateLinkedCropImage(image, fileName);
+			}
+
+			// Fish, boots, and saplings are three more candidates for hue-shifts
+            if (endingFileName.StartsWith("Fish") || 
+				endingFileName.StartsWith("Boots") || 
+				endingFileName.StartsWith("fruitTreeSprites"))
+            {
+                int hueShiftAmount = Range.GetRandomValue(0, 120);
+                return ImageManipulator.ShiftImageHue(image, hueShiftAmount);
+            }
+
+            return image;
+        }
+
+        /// <summary>
+        /// Crops and seeds are linked together with the LinkingData, so we'll check this to 
+        /// get their hue shift values
+        /// </summary>
+        /// <param name="image">The image to manipulate</param>
+        /// <param name="fileName">The partial location of the image to use to look up the cropId</param>
+        /// <returns>The manipulated image</returns>
+        private Texture2D ManipulateLinkedCropImage(Texture2D image, string fileName)
+		{
+            if (ImageNameToCropIds.TryGetValue(fileName, out int cropId) &&
+                CropIdsToLinkingData.TryGetValue(cropId, out ImageLinkingData linkingData))
+            {
+                return ImageManipulator.ShiftImageHue(image, linkingData.HueShiftValue);
+            }
+
+			Globals.ConsoleError($"SpringObjectBuilder: Could not get linking data when manipulating image: {fileName}");
+			return image;
+        }
+
+        /// <summary>
+        /// Whether the settings permit random crop images
+        /// </summary>
+        /// <returns>True if so, false otherwise</returns>
+        public override bool ShouldSaveImage()
 		{
 			bool randomizeCrops = Globals.Config.Crops.Randomize && Globals.Config.Crops.UseCustomImages;
 			bool randomizeFish = Globals.Config.Fish.Randomize;
@@ -208,5 +265,5 @@ namespace Randomizer
 
 			return false;
 		}
-	}
+    }
 }

@@ -111,7 +111,7 @@ namespace Randomizer
         /// <summary>
         /// Builds the image and saves the result into randomizedImage.png
         /// </summary>
-        public void BuildImage()
+        public virtual void BuildImage()
         {
             using Texture2D finalImage = Texture2D.FromFile(Game1.graphics.GraphicsDevice, BaseFileFullPath);
             FilesToPullFrom = GetAllCustomImages();
@@ -129,7 +129,8 @@ namespace Randomizer
                     continue;
                 }
 
-                using Texture2D randomImage = Texture2D.FromFile(Game1.graphics.GraphicsDevice, randomFileName);
+                using Texture2D randomImage = 
+                    MainipulateImage(Texture2D.FromFile(Game1.graphics.GraphicsDevice, randomFileName), randomFileName);
                 CropAndOverlayImage(position, randomImage, finalImage);
             }
 
@@ -139,6 +140,17 @@ namespace Randomizer
                 finalImage.SaveAsPng(stream, finalImage.Width, finalImage.Height);
             }
         }
+
+        /// <summary>
+        /// Manipulate the image in some way - will be left to the parent classes to decide
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns>The manipulated image (the input, in this case)</returns>
+        protected virtual Texture2D MainipulateImage(Texture2D image, string fileName)
+        {
+            return image;
+        }
+
         /// <summary>
         /// Crops out an image from the position and the random image given to us and places it
         /// onto a final image that we will use as the output
