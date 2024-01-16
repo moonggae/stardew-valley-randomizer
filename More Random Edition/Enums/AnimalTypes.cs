@@ -1,7 +1,7 @@
 ﻿namespace Randomizer
 {
     /// <summary>
-    /// The buildings that Robin can build for you
+    /// The animal types that can be randomized
     /// </summary>
     public enum AnimalTypes
     {

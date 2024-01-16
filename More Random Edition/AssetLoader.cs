@@ -159,6 +159,8 @@ namespace Randomizer
 			bundleImageBuilder.BuildImage();
 			HandleImageReplacement(bundleImageBuilder, "LooseSprites/JunimoNote");
 
+            Globals.SpoilerWrite("==== ANIMALS ====");
+
             AnimalRandomizer horseImageBuilder = new(AnimalTypes.Horses);
             horseImageBuilder.BuildImage();
             HandleImageReplacement(horseImageBuilder, "Animals/horse");
@@ -166,6 +168,8 @@ namespace Randomizer
             AnimalRandomizer petImageBuilder = new(AnimalTypes.Pets);
             petImageBuilder.BuildImage();
             HandleImageReplacement(petImageBuilder, "Animals/cat");
+
+            Globals.SpoilerWrite("");
         }
 
 		/// <summary>

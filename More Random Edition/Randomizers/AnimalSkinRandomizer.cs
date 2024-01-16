@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace Randomizer
 {
+	// TODO: this class needs to be removed - just need to fix critter replacements
 	public class AnimalSkinRandomizer
 	{
 		/// <summary>
@@ -38,7 +39,7 @@ namespace Randomizer
 			_replacements = new Dictionary<string, string>();
 
 			AddCritterReplacement(Globals.RNGGetRandomValueFromList(PossibleCritterReplacements));
-			DoAnimalReplacements();
+			//DoAnimalReplacements(); // Already covered by the AnimalRandomizer
 
 			if (!Globals.Config.RandomizeAnimalSkins)
 			{
@@ -102,9 +103,9 @@ namespace Randomizer
 		/// </summary>
 		private static void WriteToSpoilerLog()
 		{
-			Globals.SpoilerWrite("==== ANIMAL SKINS ====");
+			Globals.SpoilerWrite("==== CRITTERS ====");
 			Globals.SpoilerWrite(_critterSpoilerString);
-			Globals.SpoilerWrite(_animalSpoilerString);
+			//Globals.SpoilerWrite(_animalSpoilerString);
 			Globals.SpoilerWrite("");
 		}
 	}

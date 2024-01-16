@@ -60,6 +60,8 @@ namespace Randomizer
             {
                 using FileStream stream = File.OpenWrite(OutputFileFullPath);
                 finalImage.SaveAsPng(stream, finalImage.Width, finalImage.Height);
+
+                Globals.SpoilerWrite($"{AnimalTypeToRandomize} replaced with {BaseFileName[..^4]}");
             }
 
             finalImage.Dispose();
