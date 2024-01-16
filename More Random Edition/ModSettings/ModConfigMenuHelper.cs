@@ -38,12 +38,14 @@ namespace Randomizer
 			AddCheckbox("Crops", "Randomize crop names, growing schedules, and attributes (trellis, scythe needed, etc.).", () => Globals.Config.Crops.Randomize, (bool val) => Globals.Config.Crops.Randomize = val);
 			AddCheckbox("Use Custom Crop Images", "Use custom images for seeds and crops at each growth stage.", () => Globals.Config.Crops.UseCustomImages, (bool val) => Globals.Config.Crops.UseCustomImages = val);
 			AddCheckbox("Fruit Trees", "Generates Item saplings that grow a random item. Prices are loosely balanced based on the item grown.", () => Globals.Config.RandomizeFruitTrees, (bool val) => Globals.Config.RandomizeFruitTrees = val);
-
-			AddSectionTitle("Fish Options");
+			AddHueShiftOption("Hue Shift Max", "The maxmium value that crop images will be hue-shifted. Set to 0 for no effect.", () => Globals.Config.Crops.HueShiftMax, (int val) => Globals.Config.Crops.HueShiftMax = val);
+           
+            AddSectionTitle("Fish Options");
 			AddCheckbox("Fish", "Randomize fish names, difficulty and behaviors, as well as locations, times of days and seasons.", () => Globals.Config.Fish.Randomize, (bool val) => Globals.Config.Fish.Randomize = val);
 			AddCheckbox("Use Custom Fish Images", "Use custom images for the fish.", () => Globals.Config.Fish.UseCustomImages, (bool val) => Globals.Config.Fish.UseCustomImages = val);
+            AddHueShiftOption("Hue Shift Max", "The maxmium value that fish images will be hue-shifted. Set to 0 for no effect.", () => Globals.Config.Fish.HueShiftMax, (int val) => Globals.Config.Fish.HueShiftMax = val);
 
-			AddSectionTitle("Monster Options");
+            AddSectionTitle("Monster Options");
 			AddCheckbox("Monster Stats", "Randomize monster stats, behaviors, and non-unique item drops.", () => Globals.Config.Monsters.Randomize, (bool val) => Globals.Config.Monsters.Randomize = val);
 			AddCheckbox("Shuffle Monster Drops", "Shuffle unique monster drops between all monsters.", () => Globals.Config.Monsters.SwapUniqueDrops, (bool val) => Globals.Config.Monsters.SwapUniqueDrops = val);
 
@@ -54,6 +56,7 @@ namespace Randomizer
 			AddSectionTitle("Boot Options");
 			AddCheckbox("Boots", "Randomize boots stats, names, descriptions.", () => Globals.Config.Boots.Randomize, (bool val) => Globals.Config.Boots.Randomize = val);
 			AddCheckbox("Use Custom Boot Images", "Use custom images for boots.", () => Globals.Config.Boots.UseCustomImages, (bool val) => Globals.Config.Boots.UseCustomImages = val);
+            AddHueShiftOption("Hue Shift Max", "The maxmium value that boot images will be hue-shifted. Set to 0 for no effect.", () => Globals.Config.Boots.HueShiftMax, (int val) => Globals.Config.Boots.HueShiftMax = val);
 
             AddSectionTitle("Animal Options");
             AddCheckbox("Randomize Horse Images", "Use custom images for horses.", () => Globals.Config.Animals.RandomizeHorses, (bool val) => Globals.Config.Animals.RandomizeHorses = val);
@@ -89,7 +92,6 @@ namespace Randomizer
         /// <summary>
         /// A wrapper for the AddBoolOption functionality for readability
         /// </summary>
-        /// <param name="mod"></param>
         /// <param name="optionName"></param>
         /// <param name="optionTooltip"></param>
         /// <param name="optionGet"></param>
@@ -109,7 +111,35 @@ namespace Randomizer
             );
         }
 
-		private void AddSectionTitle(string text, string tooltip = "")
+		/// <summary>
+		/// A wrapper for AddNumberOption catered toward hue-shift ranges
+		/// </summary>
+		/// <param name="labelText"></param>
+		/// <param name="tooltip"></param>
+		/// <param name="getValue"></param>
+		/// <param name="setValue"></param>
+        private void AddHueShiftOption(
+            string labelText,
+            string tooltip,
+            Func<int> getValue, 
+			Action<int> setValue)
+		{
+			api.AddNumberOption(
+				mod: ModManifest,
+				getValue: getValue,
+				setValue: setValue,
+				name: () => labelText,
+				tooltip: () => tooltip,
+				min: 0,
+				max: 359);
+		}
+
+		/// <summary>
+		/// A wrapper for AddSectionTitle
+		/// </summary>
+		/// <param name="text"></param>
+		/// <param name="tooltip"></param>
+        private void AddSectionTitle(string text, string tooltip = "")
 		{
             api.AddSectionTitle(ModManifest, () => text, () => tooltip);
 		}

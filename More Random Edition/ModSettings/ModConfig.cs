@@ -44,7 +44,8 @@
 	{
 		public bool Randomize { get; set; } = true;
 		public bool UseCustomImages { get; set; } = true;
-	}
+        public int HueShiftMax { get; set; } = 120;
+    }
 
 	public class MonstersConfig
 	{
@@ -56,13 +57,15 @@
 	{
 		public bool Randomize { get; set; } = true;
 		public bool UseCustomImages { get; set; } = true;
+		public int HueShiftMax { get; set; } = 120;
 	}
 
 	public class FishConfig
 	{
 		public bool Randomize { get; set; } = true;
 		public bool UseCustomImages { get; set; } = true;
-	}
+        public int HueShiftMax { get; set; } = 120;
+    }
 
 	public class NPCsConfig
 	{

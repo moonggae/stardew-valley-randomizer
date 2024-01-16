@@ -184,7 +184,7 @@ namespace Randomizer
             if (ImageNameToCropIds.TryGetValue(fileName, out int cropId) &&
 				CropIdsToLinkingData.TryGetValue(cropId, out ImageLinkingData linkingData))
             {
-				linkingData.HueShiftValue = Range.GetRandomValue(0, 120);
+				linkingData.HueShiftValue = Range.GetRandomValue(0, Globals.Config.Crops.HueShiftMax);
                 return ImageManipulator.ShiftImageHue(image, linkingData.HueShiftValue);
             }
 

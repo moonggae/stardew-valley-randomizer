@@ -201,7 +201,17 @@ namespace Randomizer
 				endingFileName.StartsWith("Boots") || 
 				endingFileName.StartsWith("fruitTreeSprites"))
             {
-                int hueShiftAmount = Range.GetRandomValue(0, 120);
+				var hueShiftMax = Globals.Config.Fish.HueShiftMax;
+				if (endingFileName.StartsWith("Boots")) 
+				{ 
+					hueShiftMax = Globals.Config.Boots.HueShiftMax;
+				}
+                else if (endingFileName.StartsWith("fruitTreeSprites")) 
+				{ 
+					hueShiftMax = Globals.Config.Crops.HueShiftMax; 
+				}
+
+                int hueShiftAmount = Range.GetRandomValue(0, hueShiftMax);
                 return ImageManipulator.ShiftImageHue(image, hueShiftAmount);
             }
 
