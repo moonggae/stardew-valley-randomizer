@@ -102,6 +102,7 @@
 	public class AnimalsConfig
 	{
 		public bool RandomizeHorses { get; set; } = true;
+		public bool RandomizePets { get; set; } = true;
 	}
 }
 

@@ -57,6 +57,7 @@ namespace Randomizer
 
             AddSectionTitle("Animal Options");
             AddCheckbox("Randomize Horse Images", "Use custom images for horses.", () => Globals.Config.Animals.RandomizeHorses, (bool val) => Globals.Config.Animals.RandomizeHorses = val);
+            AddCheckbox("Randomize Pet Images", "Use custom images for pet - you must choose the first pet option for this to work.", () => Globals.Config.Animals.RandomizePets, (bool val) => Globals.Config.Animals.RandomizePets = val);
 
             AddSectionTitle("Music Options");
 			AddCheckbox("Music", "Shuffle most songs and ambience.", () => Globals.Config.Music.Randomize, (bool val) => Globals.Config.Music.Randomize = val);

@@ -10,4 +10,8 @@
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Assets\CustomImages\Animals\Pets\" />
+  </ItemGroup>
+
 </Project>

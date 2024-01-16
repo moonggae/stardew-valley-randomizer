@@ -159,9 +159,14 @@ namespace Randomizer
 			bundleImageBuilder.BuildImage();
 			HandleImageReplacement(bundleImageBuilder, "LooseSprites/JunimoNote");
 
-            HorseRandomizer horseImageBuilder = new HorseRandomizer();
+            AnimalRandomizer horseImageBuilder = new AnimalRandomizer(AnimalTypes.Horses);
             horseImageBuilder.BuildImage();
             HandleImageReplacement(horseImageBuilder, "Animals/horse");
+
+            AnimalRandomizer petImageBuilder = new AnimalRandomizer(AnimalTypes.Pets);
+            petImageBuilder.BuildImage();
+            HandleImageReplacement(petImageBuilder, "Animals/cat");
+
         }
 
 		/// <summary>
