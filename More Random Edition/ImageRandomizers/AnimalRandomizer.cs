@@ -12,12 +12,6 @@ namespace Randomizer
     public class AnimalRandomizer : ImageBuilder
     {
         /// <summary>
-        /// The base color to use - this value hue-shifted doesn't result in really
-        /// weird looking images when multiplied onto images
-        /// </summary>
-        private readonly Color PaleColor = new(138, 255 ,217);
-
-        /// <summary>
         /// The type of animal this is randomizing
         /// </summary>
         private AnimalTypes AnimalTypeToRandomize { get; set; }
@@ -47,7 +41,7 @@ namespace Randomizer
             if (BaseFileName[..^4].EndsWith("-hue-shift"))
             {
                 int hueShiftValue = Range.GetRandomValue(0, 359);
-                Color shiftedPaleColor = ImageManipulator.IncreaseHueBy(PaleColor, hueShiftValue);
+                Color shiftedPaleColor = ImageManipulator.IncreaseHueBy(ImageManipulator.PaleColor, hueShiftValue);
                 finalImage = ImageManipulator.MultiplyImageByColor(replacingImage, shiftedPaleColor);
             }
             else

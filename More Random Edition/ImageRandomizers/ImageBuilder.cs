@@ -129,8 +129,8 @@ namespace Randomizer
                     continue;
                 }
 
-                using Texture2D randomImage = 
-                    MainipulateImage(Texture2D.FromFile(Game1.graphics.GraphicsDevice, randomFileName), randomFileName);
+                using Texture2D originalRandomImage = Texture2D.FromFile(Game1.graphics.GraphicsDevice, randomFileName);
+                using Texture2D randomImage = MainipulateImage(originalRandomImage, randomFileName);
                 CropAndOverlayImage(position, randomImage, finalImage);
             }
 

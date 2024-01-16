@@ -21,7 +21,7 @@ namespace Randomizer
 		/// <summary>
 		/// Keeps track of crop ids mapped to image names so that all the crop images can be linked
 		/// </summary>
-		public Dictionary<int, ImageLinkingData> CropIdsToLinkingData;
+		public Dictionary<int, CropImageLinkingData> CropIdsToLinkingData;
 
 		/// <summary>
 		/// Keeps track of crop growth images to crop ids
@@ -35,7 +35,7 @@ namespace Randomizer
 
         public CropGrowthImageBuilder()
 		{
-			CropIdsToLinkingData = new Dictionary<int, ImageLinkingData>();
+			CropIdsToLinkingData = new Dictionary<int, CropImageLinkingData>();
             ImageNameToCropIds = new();
 
             BaseFileName = "Crops.png";
@@ -160,7 +160,7 @@ namespace Randomizer
 				.Replace("-4.png", ".png")
 				.Replace("-5.png", ".png")
 				.Replace("-NoHue.png", ".png");
-            CropIdsToLinkingData[cropId] = new ImageLinkingData(linkingFileName);
+            CropIdsToLinkingData[cropId] = new CropImageLinkingData(linkingFileName, seedItem);
             ImageNameToCropIds[fileName] = cropId; // Pass in this file name since it's the one we have in MainipulateImage
             return fileName;
 		}
@@ -182,7 +182,7 @@ namespace Randomizer
             }
 
             if (ImageNameToCropIds.TryGetValue(fileName, out int cropId) &&
-				CropIdsToLinkingData.TryGetValue(cropId, out ImageLinkingData linkingData))
+				CropIdsToLinkingData.TryGetValue(cropId, out CropImageLinkingData linkingData))
             {
 				linkingData.HueShiftValue = Range.GetRandomValue(0, Globals.Config.Crops.HueShiftMax);
                 return ImageManipulator.ShiftImageHue(image, linkingData.HueShiftValue);
@@ -322,6 +322,20 @@ namespace Randomizer
 					Globals.ConsoleWarn($"{flowerImageName}-NoHue.png not found at: {ImageDirectory}/{FlowersDirectory}");
 				}
 			}
-		}
+
+			// Check that there's at least one seed packet template for trellis and non-trellis seeds
+			string seedPacketDirectory = $"{CustomImagesPath}/SpringObjects/{SpringObjectsImageBuilder.SeedPacketDirectory}";
+			string tellisPacketDirectory = $"{seedPacketDirectory}/{SpringObjectsImageBuilder.TrellisPacketSubDirectory}";
+
+			if (!Directory.GetFiles(seedPacketDirectory).Where(x => x.EndsWith(".png")).Any()) 
+			{
+                Globals.ConsoleWarn($"No seed packet images found at: {seedPacketDirectory}");
+            }
+
+            if (!Directory.GetFiles(seedPacketDirectory).Where(x => x.EndsWith(".png")).Any())
+            {
+                Globals.ConsoleWarn($"No trellis packet images found at: {tellisPacketDirectory}");
+            }
+        }
 	}
 }
