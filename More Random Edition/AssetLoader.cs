@@ -15,7 +15,7 @@ namespace Randomizer
     public class AssetLoader
 	{
 		private readonly ModEntry _mod;
-		private readonly Dictionary<string, string> _replacements = new Dictionary<string, string>();
+		private readonly Dictionary<string, string> _replacements = new();
 
 		/// <summary>Constructor</summary>
 		/// <param name="mod">A reference to the ModEntry</param>
@@ -97,8 +97,13 @@ namespace Randomizer
 			if (_currentLocale != _mod.Helper.Translation.Locale)
 			{
 				ReplaceTitleScreen((TitleMenu)genericMenu);
-			}
-		}
+
+                LooseSpritesImageBuilder looseSpritesImageBuilder = new();
+                looseSpritesImageBuilder.BuildImage();
+                HandleImageReplacement(looseSpritesImageBuilder, "LooseSprites/Cursors");
+                _mod.Helper.GameContent.InvalidateCache("LooseSprites/Cursors");
+            }
+        }
 
 		/// <summary>
 		/// Replaces the title screen after returning from a game - called by the appropriate event handler

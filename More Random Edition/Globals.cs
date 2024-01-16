@@ -66,7 +66,7 @@ namespace Randomizer
 			{
 				return ModRef.Helper.Translation.Get(key);
 			}
-			return ModRef.Helper.Translation.Get(key, tokens);
+            return ModRef.Helper.Translation.Get(key, tokens);
 		}
 
 		/// <summary>

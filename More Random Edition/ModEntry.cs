@@ -28,7 +28,8 @@ namespace Randomizer
 
             PreLoadReplacments();
 			helper.Events.GameLoop.GameLaunched += (sender, args) => TryLoadModConfigMenu();
-			helper.Events.GameLoop.SaveLoaded += (sender, args) => CalculateAllReplacements();
+			helper.Events.GameLoop.GameLaunched += (sender, args) => ImageBuilder.CleanUpReplacementFiles();
+            helper.Events.GameLoop.SaveLoaded += (sender, args) => CalculateAllReplacements();
 			helper.Events.Display.RenderingActiveMenu += (sender, args) => _modAssetLoader.TryReplaceTitleScreen();
 			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetLoader.ReplaceTitleScreenAfterReturning();
             helper.Events.Display.MenuChanged += MenuAdjustments.AdjustMenus;

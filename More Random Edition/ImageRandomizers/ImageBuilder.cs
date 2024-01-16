@@ -130,7 +130,7 @@ namespace Randomizer
                 }
 
                 using Texture2D originalRandomImage = Texture2D.FromFile(Game1.graphics.GraphicsDevice, randomFileName);
-                using Texture2D randomImage = MainipulateImage(originalRandomImage, randomFileName);
+                using Texture2D randomImage = ManipulateImage(originalRandomImage, randomFileName);
                 CropAndOverlayImage(position, randomImage, finalImage);
             }
 
@@ -146,7 +146,7 @@ namespace Randomizer
         /// </summary>
         /// <param name="image"></param>
         /// <returns>The manipulated image (the input, in this case)</returns>
-        protected virtual Texture2D MainipulateImage(Texture2D image, string fileName)
+        protected virtual Texture2D ManipulateImage(Texture2D image, string fileName)
         {
             return image;
         }
@@ -224,7 +224,7 @@ namespace Randomizer
 
         /// <summary>
         /// Cleans up all replacement files
-        /// Called whenever a farm is loaded
+        /// Called whenever a farm or the game is loaded
         /// </summary>
         public static void CleanUpReplacementFiles()
         {
@@ -234,6 +234,8 @@ namespace Randomizer
             File.Delete(Globals.GetFilePath("Assets/CustomImages/CropGrowth/randomizedImage.png"));
             File.Delete(Globals.GetFilePath("Assets/CustomImages/Animals/Horses/randomizedImage.png"));
             File.Delete(Globals.GetFilePath("Assets/CustomImages/Animals/Pets/randomizedImage.png"));
+
+            File.Delete(Globals.GetFilePath("Assets/CustomImages/LooseSprites/randomizedImage.png"));
         }
     }
 }

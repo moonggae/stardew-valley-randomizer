@@ -171,7 +171,7 @@ namespace Randomizer
         /// <param name="image">The image to potentially hue shift</param>
         /// <param name="fileName">The full path of the image - needed so we can check the sub-directory</param>
         /// <returns>The manipulated image (or the input, if nothing is done)</returns>
-        protected override Texture2D MainipulateImage(Texture2D image, string fileName)
+        protected override Texture2D ManipulateImage(Texture2D image, string fileName)
         {
 			string endingFileName = fileName.Split("CustomImages/CropGrowth/")[1];
 
