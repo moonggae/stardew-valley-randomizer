@@ -116,7 +116,7 @@ namespace Randomizer.OverriddenFiles
                     {
                         if (ingredientSlots[index].containsPoint(x, y))
                         {
-                            if (CurrentPageBundle.canAcceptThisItem(ringAsSVObject, ingredientSlots[index]) || true)
+                            if (CurrentPageBundle.canAcceptThisItem(ringAsSVObject, ingredientSlots[index]))
                             {
                                 // This returns back a StardewValley.Object, but that is NOT a ring, so do NOT change HeldItem to it
                                 if (CurrentPageBundle.tryToDepositThisItem(ringAsSVObject, ingredientSlots[index], "LooseSprites\\JunimoNote") == null)
