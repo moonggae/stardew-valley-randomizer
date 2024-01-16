@@ -27,28 +27,27 @@ namespace Randomizer
             AnimalTypeToRandomize = animalTypeToRandomize;
             SubDirectory = $"Animals/{animalTypeToRandomize}";
 
-            var AnimalImages = Directory.GetFiles($"{ImageDirectory}")
+            var animalImages = Directory.GetFiles($"{ImageDirectory}")
                 .Where(x => x.EndsWith(".png"))
                 .Select(x => Path.GetFileName(x))
                 .OrderBy(x => x)
                 .ToList();
 
-            BaseFileName = Globals.RNGGetRandomValueFromList(AnimalImages);
+            BaseFileName = Globals.RNGGetRandomValueFromList(animalImages);
         }
 
         /// <summary>
-        /// Build the image
-        /// If the image is "horse.png", we'll shift its hue
-        /// TODO: change this logic to be cleaner - probably based on where images are in directories
+        /// Build the image - hue shift it if the base file name ends with "-hue-shift"
         /// </summary>
         public override void BuildImage()
         {
             using Texture2D replacingImage = Texture2D.FromFile(Game1.graphics.GraphicsDevice, BaseFileFullPath);
             Texture2D finalImage;
 
-            if (BaseFileName == "horse.png")
+            if (BaseFileName[..^4].EndsWith("-hue-shift"))
             {
-                Color shiftedPaleColor = ImageManipulator.IncreaseHueBy(PaleColor, Range.GetRandomValue(0, 359));
+                int hueShiftValue = Range.GetRandomValue(0, 359);
+                Color shiftedPaleColor = ImageManipulator.IncreaseHueBy(PaleColor, hueShiftValue);
                 finalImage = ImageManipulator.MultiplyImageByColor(replacingImage, shiftedPaleColor);
             }
             else
@@ -65,7 +64,6 @@ namespace Randomizer
             }
 
             finalImage.Dispose();
-
         }
 
         /// <summary>

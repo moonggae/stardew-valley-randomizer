@@ -224,7 +224,7 @@ namespace Randomizer
 
         /// <summary>
         /// Cleans up all replacement files
-        /// Should be called when the game is first loaded
+        /// Called whenever a farm is loaded
         /// </summary>
         public static void CleanUpReplacementFiles()
         {
@@ -233,6 +233,7 @@ namespace Randomizer
             File.Delete(Globals.GetFilePath("Assets/CustomImages/SpringObjects/randomizedImage.png"));
             File.Delete(Globals.GetFilePath("Assets/CustomImages/CropGrowth/randomizedImage.png"));
             File.Delete(Globals.GetFilePath("Assets/CustomImages/Animals/Horses/randomizedImage.png"));
+            File.Delete(Globals.GetFilePath("Assets/CustomImages/Animals/Pets/randomizedImage.png"));
         }
     }
 }

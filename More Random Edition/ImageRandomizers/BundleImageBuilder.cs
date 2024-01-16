@@ -55,7 +55,7 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Gets a random file name that matches the weapon type at the given position
+		/// Gets a random file name that matches the bundle type at the given position
 		/// Will remove the name found from the list
 		/// </summary>
 		/// <param name="position">The position</param>
@@ -67,7 +67,7 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Whether the settings premit random weapon images
+		/// Whether the settings premit random bundle images
 		/// </summary>
 		/// <returns>True if so, false otherwise</returns>
 		public override bool ShouldSaveImage()
@@ -76,7 +76,7 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Whether the settings premit random weapon images
+		/// Whether the settings premit random bundle images
 		/// </summary>
 		/// <returns>True if so, false otherwise</returns>
 		protected override bool ShouldSaveImage(Point position)
