@@ -14,7 +14,7 @@ namespace Randomizer
 		/// <returns />
 		public static Dictionary<string, string> GetCSFileStringReplacements()
 		{
-			Dictionary<string, string> stringReplacements = new Dictionary<string, string>();
+			Dictionary<string, string> stringReplacements = new();
 
 			// Fix the "Parsnip" string at the start of the game
 			string parsnipSeedName = ItemList.Items[(int)ObjectIndexes.ParsnipSeeds].Name;
@@ -55,13 +55,12 @@ namespace Randomizer
 		/// </summary>
 		public static Dictionary<string, string> ModifyRemixedBundleUI()
 		{
-			Dictionary<string, string> stringReplacements = new Dictionary<string, string>();
-
-			stringReplacements["AGO_CCB"] = Globals.GetTranslation("ui-remixed-bundle-title");
-			stringReplacements["AGO_CCB_Tooltip"] = Globals.GetTranslation("ui-remixed-bundle-tooltip");
-			stringReplacements["AGO_Year1Completable_Tooltip"] = Globals.GetTranslation("ui-year1-completable-tooltip");
-
-			return stringReplacements;
+			return new()
+            {
+                ["AGO_CCB"] = Globals.GetTranslation("ui-remixed-bundle-title"),
+                ["AGO_CCB_Tooltip"] = Globals.GetTranslation("ui-remixed-bundle-tooltip"),
+                ["AGO_Year1Completable_Tooltip"] = Globals.GetTranslation("ui-year1-completable-tooltip")
+            };
 		}
 
 		/// <summary>

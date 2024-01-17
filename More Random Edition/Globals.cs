@@ -70,6 +70,32 @@ namespace Randomizer
 		}
 
 		/// <summary>
+		/// Gets the language-specific file name given the file name and extension
+		/// Modified from Stardew's code in LocalizedContentManager
+		/// </summary>
+		/// <returns></returns>
+		public static string GetLocalizedFileName(string fileName, string extension)
+		{
+            string localeCode = ModRef.Helper.Translation.LocaleEnum switch
+            {
+                LocalizedContentManager.LanguageCode.ja => ".ja-JP",
+                LocalizedContentManager.LanguageCode.ru => ".ru-RU",
+                LocalizedContentManager.LanguageCode.zh => ".zh-CN",
+                LocalizedContentManager.LanguageCode.pt => ".pt-BR",
+                LocalizedContentManager.LanguageCode.es => ".es-ES",
+                LocalizedContentManager.LanguageCode.de => ".de-DE",
+                LocalizedContentManager.LanguageCode.th => ".th-TH",
+                LocalizedContentManager.LanguageCode.fr => ".fr-FR",
+                LocalizedContentManager.LanguageCode.ko => ".ko-KR",
+                LocalizedContentManager.LanguageCode.it => ".it-IT",
+                LocalizedContentManager.LanguageCode.tr => ".tr-TR",
+                LocalizedContentManager.LanguageCode.hu => ".hu-HU",
+                _ => "",
+            };
+            return $"{fileName}{localeCode}.{extension}";
+        }
+
+		/// <summary>
 		/// Gets the file path given the path from the mod directory
 		/// </summary>
 		/// <param name="pathFromModFolder">The path to the file from the mod folder</param>

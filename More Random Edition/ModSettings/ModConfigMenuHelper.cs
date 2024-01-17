@@ -16,7 +16,7 @@ namespace Randomizer
 
 		public void RegisterModOptions()
 		{
-            AddCheckbox("Create Spoiler Log", "Create a text file which contains all of the randomized elements when a new farm is created. Highly recommended to leave on.", () => Globals.Config.CreateSpoilerLog, (bool val) => Globals.Config.CreateSpoilerLog = val);
+			AddCheckbox("Create Spoiler Log", "Create a text file which contains all of the randomized elements when a new farm is created. Highly recommended to leave on.", () => Globals.Config.CreateSpoilerLog, (bool val) => Globals.Config.CreateSpoilerLog = val);
 
 			AddSectionTitle("---RANDOMIZATION OPTIONS---", "Toggle on or off the various aspects of the game which can be randomized.");
 
@@ -39,13 +39,13 @@ namespace Randomizer
 			AddCheckbox("Use Custom Crop Images", "Use custom images for seeds and crops at each growth stage.", () => Globals.Config.Crops.UseCustomImages, (bool val) => Globals.Config.Crops.UseCustomImages = val);
 			AddCheckbox("Fruit Trees", "Generates Item saplings that grow a random item. Prices are loosely balanced based on the item grown.", () => Globals.Config.RandomizeFruitTrees, (bool val) => Globals.Config.RandomizeFruitTrees = val);
 			AddHueShiftOption("Hue Shift Max", "The maxmium value that crop images will be hue-shifted. Set to 0 for no effect.", () => Globals.Config.Crops.HueShiftMax, (int val) => Globals.Config.Crops.HueShiftMax = val);
-           
-            AddSectionTitle("Fish Options");
+
+			AddSectionTitle("Fish Options");
 			AddCheckbox("Fish", "Randomize fish names, difficulty and behaviors, as well as locations, times of days and seasons.", () => Globals.Config.Fish.Randomize, (bool val) => Globals.Config.Fish.Randomize = val);
 			AddCheckbox("Use Custom Fish Images", "Use custom images for the fish.", () => Globals.Config.Fish.UseCustomImages, (bool val) => Globals.Config.Fish.UseCustomImages = val);
-            AddHueShiftOption("Hue Shift Max", "The maxmium value that fish images will be hue-shifted. Set to 0 for no effect.", () => Globals.Config.Fish.HueShiftMax, (int val) => Globals.Config.Fish.HueShiftMax = val);
+			AddHueShiftOption("Hue Shift Max", "The maxmium value that fish images will be hue-shifted. Set to 0 for no effect.", () => Globals.Config.Fish.HueShiftMax, (int val) => Globals.Config.Fish.HueShiftMax = val);
 
-            AddSectionTitle("Monster Options");
+			AddSectionTitle("Monster Options");
 			AddCheckbox("Monster Stats", "Randomize monster stats, behaviors, and non-unique item drops.", () => Globals.Config.Monsters.Randomize, (bool val) => Globals.Config.Monsters.Randomize = val);
 			AddCheckbox("Shuffle Monster Drops", "Shuffle unique monster drops between all monsters.", () => Globals.Config.Monsters.SwapUniqueDrops, (bool val) => Globals.Config.Monsters.SwapUniqueDrops = val);
 
@@ -56,11 +56,18 @@ namespace Randomizer
 			AddSectionTitle("Boot Options");
 			AddCheckbox("Boots", "Randomize boots stats, names, descriptions.", () => Globals.Config.Boots.Randomize, (bool val) => Globals.Config.Boots.Randomize = val);
 			AddCheckbox("Use Custom Boot Images", "Use custom images for boots.", () => Globals.Config.Boots.UseCustomImages, (bool val) => Globals.Config.Boots.UseCustomImages = val);
-            AddHueShiftOption("Hue Shift Max", "The maxmium value that boot images will be hue-shifted. Set to 0 for no effect.", () => Globals.Config.Boots.HueShiftMax, (int val) => Globals.Config.Boots.HueShiftMax = val);
+			AddHueShiftOption("Hue Shift Max", "The maxmium value that boot images will be hue-shifted. Set to 0 for no effect.", () => Globals.Config.Boots.HueShiftMax, (int val) => Globals.Config.Boots.HueShiftMax = val);
 
-            AddSectionTitle("Animal Options");
-            AddCheckbox("Randomize Horse Images", "Use custom images for horses.", () => Globals.Config.Animals.RandomizeHorses, (bool val) => Globals.Config.Animals.RandomizeHorses = val);
-            AddCheckbox("Randomize Pet Images", "Use custom images for pet - you must choose the first pet option for this to work.", () => Globals.Config.Animals.RandomizePets, (bool val) => Globals.Config.Animals.RandomizePets = val);
+			AddSectionTitle("Animal Options");
+			AddCheckbox("Randomize Horse Images", "Use custom images for horses.", () => Globals.Config.Animals.RandomizeHorses, (bool val) => Globals.Config.Animals.RandomizeHorses = val);
+			AddCheckbox("Randomize Pet Images",
+				"Use custom images for pet - you must choose the first pet option for this to work.",
+				() => Globals.Config.Animals.RandomizePets,
+				(bool val) =>
+				{ 
+					Globals.Config.Animals.RandomizePets = val;
+					Globals.ModRef.OnPetSettingChanged();
+                });
 
             AddSectionTitle("Music Options");
 			AddCheckbox("Music", "Shuffle most songs and ambience.", () => Globals.Config.Music.Randomize, (bool val) => Globals.Config.Music.Randomize = val);

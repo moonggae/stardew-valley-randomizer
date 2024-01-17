@@ -27,11 +27,12 @@ namespace Randomizer
             helper.Events.Content.AssetRequested += OnAssetRequested;
 
             PreLoadReplacments();
-			helper.Events.GameLoop.GameLaunched += (sender, args) => TryLoadModConfigMenu();
+            helper.Events.GameLoop.GameLaunched += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
+            helper.Events.GameLoop.GameLaunched += (sender, args) => TryLoadModConfigMenu();
 			helper.Events.GameLoop.GameLaunched += (sender, args) => ImageBuilder.CleanUpReplacementFiles();
+            helper.Events.Content.LocaleChanged += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
+            helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
             helper.Events.GameLoop.SaveLoaded += (sender, args) => CalculateAllReplacements();
-			helper.Events.Display.RenderingActiveMenu += (sender, args) => _modAssetLoader.TryReplaceTitleScreen();
-			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetLoader.ReplaceTitleScreenAfterReturning();
             helper.Events.Display.MenuChanged += MenuAdjustments.AdjustMenus;
 			helper.Events.GameLoop.DayEnding += (sender, args) => MenuAdjustments.ResetShopStates();
 
@@ -85,6 +86,15 @@ namespace Randomizer
         }
 
 		/// <summary>
+		/// Called by the ModConfiguMenuHelper when the pet setting changes
+		/// We need accss to the AssetLoader so we can invalidate the title screen in this case
+		/// </summary>
+		public void OnPetSettingChanged()
+		{
+			_modAssetLoader.ReplaceTitleScreenAssets();
+		}
+
+		/// <summary>
 		/// When an asset is requested, attempt to replace it
 		/// </summary>
 		/// <param name="sender"></param>
@@ -120,7 +130,6 @@ namespace Randomizer
 		/// </summary>
 		public void PreLoadReplacments()
 		{
-			_modAssetLoader.CalculateReplacementsBeforeLoad();
 			_modAssetEditor.CalculateEditsBeforeLoad();
 		}
 
@@ -161,7 +170,7 @@ namespace Randomizer
         }
 
 		/// <summary>
-		/// A passthrough to calculate adn invalidate UI edits
+		/// A passthrough to calculate amd invalidate UI edits
 		/// Used when the lanauage is changed
 		/// </summary>
 		public void CalculateAndInvalidateUIEdits()

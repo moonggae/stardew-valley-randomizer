@@ -9,24 +9,22 @@ namespace Randomizer
     /// </summary>
     public class LooseSpritesImageBuilder : ImageBuilder
     {
+        /// <summary>
+        /// Get the SMAPI original asset path so that we can restore the
+        /// pet image if the setting changes
+        /// </summary>
+        public string SMAPIOriginalAssetPath 
+        { 
+            get { return $"Assets/CustomImages/{SubDirectory}/{BaseFileName}"; } 
+        }
+        
         public LooseSpritesImageBuilder()
         {
-            SubDirectory = $"LooseSprites";
-
-            var localeSuffix = "";
-            var localeString = Globals.ModRef.Helper.Translation.Locale;
-            if (localeString != string.Empty)
-            {
-                localeSuffix = $".{localeString}";
-            }
-            BaseFileName = $"Cursors{localeSuffix}.png";
-
-            PositionsToOverlay = new List<Point>() {
-                new(1, 1)
-            };
-
+            SubDirectory = "LooseSprites";
+            BaseFileName = Globals.GetLocalizedFileName("Cursors", "png");
             OffsetWidthInPx = 160;
             OffsetHeightInPx = 208;
+            PositionsToOverlay = new List<Point>() { new(1, 1) };
         }
 
         /// <summary>

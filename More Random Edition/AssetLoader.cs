@@ -1,14 +1,11 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewValley;
-using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using static StardewValley.LocalizedContentManager;
 
 namespace Randomizer
 {
@@ -73,63 +70,46 @@ namespace Randomizer
 			}
 		}
 
-		/// <summary>
-		/// Nothing to do here at the moment
-		/// </summary>
-		public void CalculateReplacementsBeforeLoad()
+        /// <summary>
+        /// Replace the assets on the title screen - includes the title screen menu
+        /// and the new game menu
+        /// </summary>
+        public void ReplaceTitleScreenAssets()
 		{
-		}
-
-		/// <summary>
-		/// The current locale
-		/// </summary>
-		private string _currentLocale = "default";
-
-		/// <summary>
-		/// Replaces the title scrren graphics - done whenever the locale is changed or the game is first loaded
-		/// Won't actually replace it if it already did
-		/// </summary>
-		public void TryReplaceTitleScreen()
-		{
-			IClickableMenu genericMenu = Game1.activeClickableMenu;
-			if (genericMenu is null || !(genericMenu is TitleMenu)) { return; }
-
-			if (_currentLocale != _mod.Helper.Translation.Locale)
-			{
-				ReplaceTitleScreen((TitleMenu)genericMenu);
-
-                LooseSpritesImageBuilder looseSpritesImageBuilder = new();
-                looseSpritesImageBuilder.BuildImage();
-                HandleImageReplacement(looseSpritesImageBuilder, "LooseSprites/Cursors");
-                _mod.Helper.GameContent.InvalidateCache("LooseSprites/Cursors");
-            }
+			ReplaceTitleScreen();
+			ReplaceNewGameCatIcon();
+            _mod.CalculateAndInvalidateUIEdits();
         }
 
 		/// <summary>
-		/// Replaces the title screen after returning from a game - called by the appropriate event handler
+		/// Replaces the cat icon on the new game menu if pets are randomized
+		/// Otherwise, restore the icon
 		/// </summary>
-		public void ReplaceTitleScreenAfterReturning()
+		private void ReplaceNewGameCatIcon()
 		{
-			ReplaceTitleScreen();
-		}
+			var xnbLocation = "LooseSprites/Cursors";
+
+            LooseSpritesImageBuilder looseSpritesImageBuilder = new();
+            if (Globals.Config.Animals.RandomizePets)
+			{
+                looseSpritesImageBuilder.BuildImage();
+                HandleImageReplacement(looseSpritesImageBuilder, xnbLocation);
+            }
+			else
+			{
+				AddReplacement(xnbLocation, looseSpritesImageBuilder.SMAPIOriginalAssetPath);
+			}
+
+            _mod.Helper.GameContent.InvalidateCache(xnbLocation);
+        }
 
 		/// <summary>
 		/// Replaces the title screen graphics and refreshes the settings UI page
 		/// </summary>
-		/// <param name="titleMenu">The title menu - passed if we're already on the title screen</param>
-		private void ReplaceTitleScreen(TitleMenu titleMenu = null)
+		private void ReplaceTitleScreen()
 		{
-			_currentLocale = _mod.Helper.Translation.Locale;
 			AddReplacement("Minigames/TitleButtons", $"Assets/Minigames/{Globals.GetTranslation("title-graphic")}");
 			_mod.Helper.GameContent.InvalidateCache("Minigames/TitleButtons");
-
-			if (titleMenu != null)
-			{
-				LanguageCode code = _mod.Helper.Translation.LocaleEnum;
-				_mod.Helper.Reflection.GetMethod(titleMenu, "OnLanguageChange", true).Invoke(code);
-			}
-
-			_mod.CalculateAndInvalidateUIEdits();
 		}
 
 		/// <summary>Asset replacements</summary>
