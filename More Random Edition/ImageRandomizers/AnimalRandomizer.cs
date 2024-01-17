@@ -26,7 +26,7 @@ namespace Randomizer
         /// <summary>
         /// Build the image - hue shift it if the base file name ends with "-hue-shift"
         /// </summary>
-        public override void BuildImage()
+        protected override Texture2D BuildImage()
         {
             string randomAnimalFileName = GetRandomAnimalFileName();
             string imageLocation = $"{ImageDirectory}/{randomAnimalFileName}";
@@ -44,7 +44,7 @@ namespace Randomizer
                 finalImage = replacingImage;
             }
 
-            if (ShouldSaveImage())
+            if (ShouldSaveImage() && Globals.Config.SaveRandomizedImages)
             {
                 using FileStream stream = File.OpenWrite(OutputFileFullPath);
                 finalImage.SaveAsPng(stream, finalImage.Width, finalImage.Height);
@@ -52,7 +52,7 @@ namespace Randomizer
                 Globals.SpoilerWrite($"{AnimalTypeToRandomize} replaced with {randomAnimalFileName[..^4]}");
             }
 
-            finalImage.Dispose();
+            return finalImage;
         }
 
         /// <summary>

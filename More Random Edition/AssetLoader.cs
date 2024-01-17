@@ -3,8 +3,6 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Threading;
 
 namespace Randomizer
 {
@@ -161,7 +159,7 @@ namespace Randomizer
         {
             if (Globals.Config.RandomizeRain)
             {
-                _mod.Helper.GameContent.InvalidateCache("TileSheets/rain");
+                _mod.Helper.GameContent.InvalidateCache(RainPatcher.StardewAssetPath);
             }
         }
 
@@ -177,54 +175,34 @@ namespace Randomizer
 		/// <summary>
 		/// Randomizes the images - depending on what settings are on
 		/// It's still important to build the images to make sure seeds are consistent
+        /// 
+        /// Note that the cache is invalidated already when the save file is loaded
+        /// See ModEntry.CalculateAllReplacements
 		/// </summary>
 		public void RandomizeImages()
 		{
-			WeaponImageBuilder weaponImageBuilder = new();
-			weaponImageBuilder.BuildImage();
-			HandleImageReplacement(weaponImageBuilder, "TileSheets/weapons");
+            _editedAssetReplacements.Clear();
 
-			CropGrowthImageBuilder cropGrowthImageBuilder = new();
-			cropGrowthImageBuilder.BuildImage();
-			HandleImageReplacement(cropGrowthImageBuilder, "TileSheets/crops");
+            CropGrowthImageBuilder cropGrowthImageBuilder = new();
 
-			SpringObjectsImageBuilder springObjectsImageBuilder = new(cropGrowthImageBuilder.CropIdsToLinkingData);
-			springObjectsImageBuilder.BuildImage();
-			HandleImageReplacement(springObjectsImageBuilder, "Maps/springobjects");
-
-			BundleImageBuilder bundleImageBuilder = new();
-			bundleImageBuilder.BuildImage();
-			HandleImageReplacement(bundleImageBuilder, "LooseSprites/JunimoNote");
+            HandleImageReplacement(new WeaponImageBuilder());
+            HandleImageReplacement(cropGrowthImageBuilder);
+            HandleImageReplacement(new SpringObjectsImageBuilder(cropGrowthImageBuilder.CropIdsToLinkingData));
+            HandleImageReplacement(new BundleImageBuilder());
 
             Globals.SpoilerWrite("==== ANIMALS ====");
-
-            AnimalRandomizer horseImageBuilder = new(AnimalTypes.Horses);
-            horseImageBuilder.BuildImage();
-            HandleImageReplacement(horseImageBuilder, "Animals/horse");
-
-            AnimalRandomizer petImageBuilder = new(AnimalTypes.Pets);
-            petImageBuilder.BuildImage();
-            HandleImageReplacement(petImageBuilder, "Animals/cat");
-
+            HandleImageReplacement(new AnimalRandomizer(AnimalTypes.Horses));
+            HandleImageReplacement(new AnimalRandomizer(AnimalTypes.Pets));
             Globals.SpoilerWrite("");
         }
 
 		/// <summary>
-		/// Handles actually adding the image replacement
-		/// If the image doesn't exist, sleep for 0.1 second increments until it does
+		/// Adds the image builder's modified asset to the dictionary
 		/// </summary>
 		/// <param name="imageBuilder">The image builder</param>
-		/// <param name="xnbPath">The path to the xnb image to replace</param>
-		private void HandleImageReplacement(ImageBuilder imageBuilder, string xnbPath)
+		private void HandleImageReplacement(ImageBuilder imageBuilder)
 		{
-			if (imageBuilder.ShouldSaveImage())
-			{
-				while (!File.Exists(imageBuilder.OutputFileFullPath))
-				{
-					Thread.Sleep(100);
-				}
-				AddReplacement(xnbPath, imageBuilder.SMAPIOutputFilePath);
-			}
+            AddReplacement(imageBuilder.StardewAssetPath, imageBuilder.GenerateModifiedAsset());
 		}
 	}
 }

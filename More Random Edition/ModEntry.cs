@@ -1,7 +1,6 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Monsters;
 using System;
 using System.Security.Cryptography;
 using System.Text;
@@ -27,7 +26,6 @@ namespace Randomizer
 
             helper.Events.Content.AssetRequested += OnAssetRequested;
 
-            ImageBuilder.CleanUpReplacementFiles();
             PreLoadReplacments();
             helper.Events.GameLoop.GameLaunched += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
             helper.Events.GameLoop.GameLaunched += (sender, args) => TryLoadModConfigMenu();
@@ -143,7 +141,6 @@ namespace Randomizer
 			Globals.SpoilerLog = new SpoilerLogger(Game1.player.farmName.Value);
 
             // Make replacements and edits
-            ImageBuilder.CleanUpReplacementFiles();
             _modAssetLoader.CalculateReplacements();
 			_modAssetEditor.CalculateEdits();
 			_modAssetLoader.RandomizeImages();

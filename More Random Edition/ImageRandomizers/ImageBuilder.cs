@@ -95,13 +95,32 @@ namespace Randomizer
         /// <summary>
         /// The path for the asset that we will be modifying
         /// </summary>
-        protected string StardewAssetPath { get; set; }
+        public string StardewAssetPath { get; set; }
+
+        /// <summary>
+        /// The public API to use to get the modified asset of the image builder
+        /// </summary>
+        /// <returns></returns>
+        public Texture2D GenerateModifiedAsset()
+        {
+            var modifiedImage = BuildImage();
+
+            File.Delete(Globals.GetFilePath(OutputFileFullPath));
+            if (ShouldSaveImage() && Globals.Config.SaveRandomizedImages)
+            {
+                using FileStream stream = File.OpenWrite(OutputFileFullPath);
+                modifiedImage.SaveAsPng(stream, modifiedImage.Width, modifiedImage.Height);
+            }
+
+            return modifiedImage;
+        }
 
         /// <summary>
         /// Builds the image and saves the result into randomizedImage.png
         /// </summary>
-        public virtual void BuildImage()
+        protected virtual Texture2D BuildImage()
         {
+            // Do NOT dispose of this here, as it is the actual Stardew asset!
             Texture2D stardewAssetToModify = Globals.ModRef.Helper.GameContent
                 .Load<Texture2D>(StardewAssetPath);
 
@@ -125,11 +144,7 @@ namespace Randomizer
                 CropAndOverlayImage(position, randomImage, stardewAssetToModify);
             }
 
-            if (ShouldSaveImage())
-            {
-                using FileStream stream = File.OpenWrite(OutputFileFullPath);
-                stardewAssetToModify.SaveAsPng(stream, stardewAssetToModify.Width, stardewAssetToModify.Height);
-            }
+            return stardewAssetToModify;
         }
 
         /// <summary>
@@ -209,20 +224,6 @@ namespace Randomizer
         protected virtual bool ShouldSaveImage(Point point)
         {
             return ShouldSaveImage();
-        }
-
-        /// <summary>
-        /// Cleans up all replacement files
-        /// Called whenever a farm or the game is loaded
-        /// </summary>
-        public static void CleanUpReplacementFiles()
-        {
-            File.Delete(Globals.GetFilePath("Assets/CustomImages/Bundles/randomizedImage.png"));
-            File.Delete(Globals.GetFilePath("Assets/CustomImages/Weapons/randomizedImage.png"));
-            File.Delete(Globals.GetFilePath("Assets/CustomImages/SpringObjects/randomizedImage.png"));
-            File.Delete(Globals.GetFilePath("Assets/CustomImages/CropGrowth/randomizedImage.png"));
-            File.Delete(Globals.GetFilePath("Assets/CustomImages/Animals/Horses/randomizedImage.png"));
-            File.Delete(Globals.GetFilePath("Assets/CustomImages/Animals/Pets/randomizedImage.png"));
         }
     }
 }
