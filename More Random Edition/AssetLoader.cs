@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using System;
@@ -30,11 +31,15 @@ namespace Randomizer
         /// <exception cref="InvalidOperationException"></exception>
         public void OnAssetRequested(object sender, AssetRequestedEventArgs e)
 		{
-            if (_replacements.TryGetValue(e.Name.BaseName, out string replacementAsset))
+            if (e.NameWithoutLocale.IsEquivalentTo("LooseSprites/Cursors"))
+            {
+                e.Edit(new LooseSpritesImagePatcher().OnAssetRequested);
+            }
+            else if (_replacements.TryGetValue(e.Name.BaseName, out string replacementAsset))
             {
                 e.LoadFromModFile<Texture2D>(replacementAsset, AssetLoadPriority.Medium);
 				_replacements.Remove(e.Name.BaseName);
-            }
+            } 
         }
 
 		/// <summary>
@@ -87,12 +92,7 @@ namespace Randomizer
 		/// </summary>
 		private void ReplaceNewGameCatIcon()
 		{
-			var xnbLocation = Globals.GetLocalizedFileName("LooseSprites/Cursors");
-
-            LooseSpritesImageBuilder looseSpritesImageBuilder = new();
-            looseSpritesImageBuilder.BuildImage();
-            HandleImageReplacement(looseSpritesImageBuilder, xnbLocation);
-
+			var xnbLocation = "LooseSprites/Cursors";
             _mod.Helper.GameContent.InvalidateCache(xnbLocation);
         }
 

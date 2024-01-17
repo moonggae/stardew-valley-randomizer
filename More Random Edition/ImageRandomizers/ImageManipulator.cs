@@ -187,11 +187,11 @@ namespace Randomizer
             int randomH = hueRangeToUse.GetRandomValue();
 
             // Saturation - the default won't look look too white or bright
-            Range saturationRangeToUse = saturationRange ?? new Range(10, 70);
+            Range saturationRangeToUse = saturationRange ?? new Range(60, 85);
             int randomS = saturationRangeToUse.GetRandomValue();
 
             // Value - we don't want to it to look too black
-            Range valueRangeToUse = valueRange ?? new Range(90, 100);
+            Range valueRangeToUse = valueRange ?? new Range(60, 85);
             int randomV = valueRangeToUse.GetRandomValue();
 
             Color randomColor = HsvToColor(randomH, randomS, randomV);

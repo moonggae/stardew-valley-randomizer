@@ -43,7 +43,7 @@ namespace Randomizer
         /// <returns>The chosen color</returns>
         public static Color GetRandomColorForSeason(Seasons season)
         {
-            Range SpringHueRange = new(100, 140);
+            Range SpringHueRange = new(100, 155);
             Range SummerHueRange = new(50, 65);
             Range FallHueRange = new(10, 40);
             Range WinterHueRange = new(180, 260);
