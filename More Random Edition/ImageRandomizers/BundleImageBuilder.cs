@@ -20,7 +20,7 @@ namespace Randomizer
 
 		public BundleImageBuilder() : base()
 		{
-			BaseFileName = Globals.GetTranslation("junimo-note-graphic");
+			BaseFileName = Globals.GetLocalizedFileName("JunimoNote", "png");
 			SubDirectory = "Bundles";
 			SetUpPointsToBundlesMap();
 			PositionsToOverlay = PointsToBundlesMap.Keys.ToList();

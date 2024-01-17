@@ -74,8 +74,15 @@ namespace Randomizer
 		/// Modified from Stardew's code in LocalizedContentManager
 		/// </summary>
 		/// <returns></returns>
-		public static string GetLocalizedFileName(string fileName, string extension)
+		public static string GetLocalizedFileName(string fileName, string extension = "")
 		{
+			// If extension is given, include the period before the extension
+			// Otherwise we do want to support getting the name without an extension
+            if (extension != "")
+			{
+				extension = $".{extension}";
+			}
+
             string localeCode = ModRef.Helper.Translation.LocaleEnum switch
             {
                 LocalizedContentManager.LanguageCode.ja => ".ja-JP",
@@ -92,7 +99,7 @@ namespace Randomizer
                 LocalizedContentManager.LanguageCode.hu => ".hu-HU",
                 _ => "",
             };
-            return $"{fileName}{localeCode}.{extension}";
+            return $"{fileName}{localeCode}{extension}";
         }
 
 		/// <summary>

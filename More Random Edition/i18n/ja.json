@@ -1,7 +1,4 @@
 {
-	"title-graphic": "TitleButtons.ja-JP.png",
-	"junimo-note-graphic": "JunimoNote.ja-JP.png",
-
 	"ui-remixed-bundle-title": "バンドル (ツールチップを読む):",
 	"ui-remixed-bundle-tooltip": "ランダマイザーのバンドル機能を使用する場合は、これをノーマルに保持します。",
 	"ui-year1-completable-tooltip": "ランダマイザーのバンドルまたはクロップ機能を使用する場合、あまり保証されません。",

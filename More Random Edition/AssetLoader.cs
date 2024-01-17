@@ -108,9 +108,11 @@ namespace Randomizer
 		/// </summary>
 		private void ReplaceTitleScreen()
 		{
-			AddReplacement("Minigames/TitleButtons", $"Assets/Minigames/{Globals.GetTranslation("title-graphic")}");
-			_mod.Helper.GameContent.InvalidateCache("Minigames/TitleButtons");
-		}
+			string moddedAssetName = "TitleButtons";
+			string stardewAssetName = "Minigames/TitleButtons";
+            AddReplacement(stardewAssetName, $"Assets/Minigames/{Globals.GetLocalizedFileName(moddedAssetName, "png")}");
+			_mod.Helper.GameContent.InvalidateCache(stardewAssetName);
+        }
 
 		/// <summary>Asset replacements</summary>
 		public void CalculateReplacements()

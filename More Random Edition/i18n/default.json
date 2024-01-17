@@ -1,7 +1,4 @@
 {
-	"title-graphic": "TitleButtons.png",
-	"junimo-note-graphic": "JunimoNote.png",
-
 	"ui-remixed-bundle-title": "Bundles (Read the Tooltips):",
 	"ui-remixed-bundle-tooltip": "Keep this on Normal if using the randomizer's bundle feature.",
 	"ui-year1-completable-tooltip": "Doesn't guarantee much if using the randomizer's bundle or crop features.",
