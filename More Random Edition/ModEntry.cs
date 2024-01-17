@@ -1,6 +1,7 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Monsters;
 using System;
 using System.Security.Cryptography;
 using System.Text;
@@ -37,7 +38,10 @@ namespace Randomizer
 			helper.Events.GameLoop.DayEnding += (sender, args) => MenuAdjustments.ResetShopStates();
 
             if (Globals.Config.Music.Randomize) { helper.Events.GameLoop.UpdateTicked += (sender, args) => MusicRandomizer.TryReplaceSong(); }
-			if (Globals.Config.RandomizeRain) { helper.Events.GameLoop.DayEnding += _modAssetLoader.ReplaceRain; }
+			if (Globals.Config.RandomizeRain) 
+			{ 
+                helper.Events.GameLoop.DayStarted += (sender, args) => _modAssetLoader.ReplaceRain();
+            }
 
 			if (Globals.Config.Crops.Randomize)
 			{

@@ -1,4 +1,8 @@
-﻿using StardewModdingAPI;
+﻿using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Randomizer
 {
@@ -13,6 +17,22 @@ namespace Randomizer
         /// The image height in px - used when determining whether to crop and when drawing the image itself
         /// </summary>
         protected int ImageHeightInPx = 16;
+
+        /// <summary>
+        /// The name of the output file, should the setting save them for debugging purposes
+        /// </summary>
+        protected const string OutputFileName = "randomizedImage.png";
+
+        /// <summary>
+        /// The path to the output file
+        /// </summary>
+        public string OutputFileFullPath
+        {
+            get
+            {
+                return Globals.GetFilePath($"{PatcherImageFolder}/{OutputFileName}");
+            }
+        }
 
         /// <summary>
         /// The assets folder name
@@ -30,6 +50,43 @@ namespace Randomizer
         /// </summary>
         protected string PatcherImageFolder => $"{AssetsFolder}/{SubFolder}";
 
+        /// <summary>
+        /// Called when the asset is requested
+        /// This is where the work should be done to modify the image
+        /// </summary>
+        /// <param name="asset">Stardew's asset to be replaced</param>
         abstract public void OnAssetRequested(IAssetData asset);
+
+        /// <summary>
+        /// Wrties the randomized image to the filesystem if the setting permits
+        /// </summary>
+        protected void TryWriteRandomizedImage(Texture2D image)
+        {
+            if (Globals.Config.SaveRandomizedImages)
+            {
+                using FileStream fileStream = File.OpenWrite(OutputFileFullPath);
+                image.SaveAsPng(fileStream, image.Width, image.Height);
+            }
+        }
+
+        /// <summary>
+        /// Gets a list of file names in the patcher's folder
+        /// Igmores the output file name
+        /// </summary>
+        /// <param name="subfolder">Any subfolder you with to search through instead - set to nothing by default</param>
+        /// <param name="getFullPath">Whether to get the full path of the filename - false by default</param>
+        /// <returns>The list of file names</returns>
+        protected List<string> GetAllFileNamesInFolder(string subfolder = "", bool getFullPath = false)
+        {
+            var pathToSearch = subfolder == ""
+                ? PatcherImageFolder
+                : $"{PatcherImageFolder}/{subfolder}";
+
+            return Directory.GetFiles(Globals.GetFilePath(pathToSearch))
+                .Where(x => x.EndsWith(".png") && !x.EndsWith(OutputFileName))
+                .Select(x => getFullPath ? x : Path.GetFileName(x))
+                .OrderBy(x => x)
+                .ToList();
+        }
     }
 }

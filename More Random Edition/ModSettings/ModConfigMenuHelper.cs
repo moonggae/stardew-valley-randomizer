@@ -17,6 +17,7 @@ namespace Randomizer
 		public void RegisterModOptions()
 		{
 			AddCheckbox("Create Spoiler Log", "Create a text file which contains all of the randomized elements when a new farm is created. Highly recommended to leave on.", () => Globals.Config.CreateSpoilerLog, (bool val) => Globals.Config.CreateSpoilerLog = val);
+			AddCheckbox("Save Randomized Images", "Saves most of the randomized images under a file called \"randomizedImages.png\". Used for debugging purposes - will slow down load times if on.", () => Globals.Config.SaveRandomizedImages, (bool val) => Globals.Config.SaveRandomizedImages = val);
 
 			AddSectionTitle("---RANDOMIZATION OPTIONS---", "Toggle on or off the various aspects of the game which can be randomized.");
 

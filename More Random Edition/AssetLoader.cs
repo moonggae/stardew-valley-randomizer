@@ -4,7 +4,6 @@ using StardewModdingAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
 
 namespace Randomizer
@@ -22,15 +21,19 @@ namespace Randomizer
 		}
 
         /// <summary>
-        /// When an asset is requested, load it from the replacements dictionary if
-        /// there is actually an entry in it
+        /// When an asset is requested, execute the approriate patcher's code, or replace
+		/// the value from our dictionary
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <exception cref="InvalidOperationException"></exception>
         public void OnAssetRequested(object sender, AssetRequestedEventArgs e)
 		{
-            if (e.Name.IsEquivalentTo(PetIconPatcher.StardewAssetPath))
+            if (e.NameWithoutLocale.IsEquivalentTo(RainPatcher.StardewAssetPath))
+            {
+                e.Edit(new RainPatcher().OnAssetRequested);
+            }
+            else if (e.Name.IsEquivalentTo(PetIconPatcher.StardewAssetPath))
             {
                 e.Edit(new PetIconPatcher().OnAssetRequested);
             }
@@ -106,14 +109,26 @@ namespace Randomizer
             _mod.Helper.GameContent.InvalidateCache(TitleScreenPatcher.StardewAssetPath);
         }
 
-		/// <summary>Asset replacements</summary>
-		public void CalculateReplacements()
+        /// <summary>
+        /// Replaces the rain - intended to be called once per day start
+        /// <param name="sender">The event sender</param>
+        /// <param name="e">The event arguments</param>
+        /// </summary>
+        public void ReplaceRain()
+        {
+            if (Globals.Config.RandomizeRain)
+            {
+                _mod.Helper.GameContent.InvalidateCache("TileSheets/rain");
+            }
+        }
+
+        /// <summary>Asset replacements to load when the farm is loaded</summary>
+        public void CalculateReplacements()
 		{
 			_replacements.Clear();
 
 			AddReplacements(AnimalSkinRandomizer.Randomize());
 			AddReplacements(NPCSkinRandomizer.Randomize());
-			ReplaceRain();
 		}
 
 		/// <summary>
@@ -167,23 +182,6 @@ namespace Randomizer
 				}
 				AddReplacement(xnbPath, imageBuilder.SMAPIOutputFilePath);
 			}
-		}
-
-		/// <summary>
-		/// Replaces the rain - intended to be called once per day start
-		/// <param name="sender">The event sender</param>
-		/// <param name="e">The event arguments</param>
-		/// </summary>
-		public void ReplaceRain(object sender = null, DayEndingEventArgs e = null)
-		{
-			RainTypes rainType = Globals.RNGGetRandomValueFromList(
-				Enum.GetValues(typeof(RainTypes)).Cast<RainTypes>().ToList(),
-				Globals.GetDailyRNG("rain"));
-
-			if (!Globals.Config.RandomizeRain) { return; }
-
-			AddReplacement("TileSheets/rain", $"Assets/TileSheets/{rainType}Rain");
-			_mod.Helper.GameContent.InvalidateCache("TileSheets/rain");
 		}
 	}
 }
