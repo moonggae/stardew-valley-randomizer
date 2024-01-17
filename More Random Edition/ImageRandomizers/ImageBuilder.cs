@@ -109,11 +109,29 @@ namespace Randomizer
         protected List<string> FilesToPullFrom { get; set; }
 
         /// <summary>
+        /// ONLY set this if your base image is coming directly from an XNB file,
+        /// in which case, set it to that path
+        /// </summary>
+        protected string StardewAssetPath { get; set; }
+
+        /// <summary>
+        /// Returns true if we're loading the base image from Stardew rather than
+        /// providing our own
+        /// </summary>
+        private bool IsLoadingBaseImageFromXNB
+        {
+            get { return !string.IsNullOrWhiteSpace(StardewAssetPath); }
+        }
+
+        /// <summary>
         /// Builds the image and saves the result into randomizedImage.png
         /// </summary>
         public virtual void BuildImage()
         {
-            using Texture2D finalImage = Texture2D.FromFile(Game1.graphics.GraphicsDevice, BaseFileFullPath);
+            Texture2D finalImage = IsLoadingBaseImageFromXNB
+                ? Globals.ModRef.Helper.GameContent.Load<Texture2D>(StardewAssetPath)
+                : Texture2D.FromFile(Game1.graphics.GraphicsDevice, BaseFileFullPath);
+
             FilesToPullFrom = GetAllCustomImages();
             foreach (Point position in PositionsToOverlay)
             {
@@ -138,6 +156,13 @@ namespace Randomizer
             {
                 using FileStream stream = File.OpenWrite(OutputFileFullPath);
                 finalImage.SaveAsPng(stream, finalImage.Width, finalImage.Height);
+            }
+
+            // Do NOT dispose of an in game image, unless you want NullReferenceExceptions
+            // when the game tries to use the image again!
+            if (!IsLoadingBaseImageFromXNB)
+            {
+                finalImage.Dispose();
             }
         }
 
@@ -164,7 +189,6 @@ namespace Randomizer
             int xOffset = position.X * OffsetWidthInPx;
             int yOffset = position.Y * OffsetHeightInPx + InitialHeightOffetInPx;
 
-            
             Rectangle sourceRect = new Rectangle(0, 0, ImageWidthInPx, ImageHeightInPx);
             Color[] data = new Color[sourceRect.Width * sourceRect.Height];
             randomImage.GetData(0, sourceRect, data, 0, sourceRect.Width * sourceRect.Height);
@@ -182,7 +206,7 @@ namespace Randomizer
             List<string> files = Directory.GetFiles(ImageDirectory).ToList();
             return files.Where(x =>
                 !x.EndsWith(OutputFileName) &&
-                !x.EndsWith(BaseFileName) &&
+                (IsLoadingBaseImageFromXNB || !x.EndsWith(BaseFileName)) &&
                 x.EndsWith(".png"))
             .ToList();
         }
@@ -234,7 +258,6 @@ namespace Randomizer
             File.Delete(Globals.GetFilePath("Assets/CustomImages/CropGrowth/randomizedImage.png"));
             File.Delete(Globals.GetFilePath("Assets/CustomImages/Animals/Horses/randomizedImage.png"));
             File.Delete(Globals.GetFilePath("Assets/CustomImages/Animals/Pets/randomizedImage.png"));
-
             File.Delete(Globals.GetFilePath("Assets/CustomImages/LooseSprites/randomizedImage.png"));
         }
     }

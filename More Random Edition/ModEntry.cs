@@ -26,10 +26,10 @@ namespace Randomizer
 
             helper.Events.Content.AssetRequested += OnAssetRequested;
 
+            ImageBuilder.CleanUpReplacementFiles();
             PreLoadReplacments();
             helper.Events.GameLoop.GameLaunched += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
             helper.Events.GameLoop.GameLaunched += (sender, args) => TryLoadModConfigMenu();
-			helper.Events.GameLoop.GameLaunched += (sender, args) => ImageBuilder.CleanUpReplacementFiles();
             helper.Events.Content.LocaleChanged += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
             helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
             helper.Events.GameLoop.SaveLoaded += (sender, args) => CalculateAllReplacements();

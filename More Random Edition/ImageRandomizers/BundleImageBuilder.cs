@@ -20,8 +20,8 @@ namespace Randomizer
 
 		public BundleImageBuilder() : base()
 		{
-			BaseFileName = Globals.GetLocalizedFileName("JunimoNote", "png");
-			SubDirectory = "Bundles";
+            StardewAssetPath = $"LooseSprites/{Globals.GetLocalizedFileName("JunimoNote")}";
+            SubDirectory = "Bundles";
 			SetUpPointsToBundlesMap();
 			PositionsToOverlay = PointsToBundlesMap.Keys.ToList();
 

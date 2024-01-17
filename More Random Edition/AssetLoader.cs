@@ -21,18 +21,19 @@ namespace Randomizer
 			_mod = mod;
 		}
 
-		/// <summary>
-		/// When an asset is requested, load it from the replacements dictionary if
-		/// there is actually an entry in it
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		/// <exception cref="InvalidOperationException"></exception>
-		public void OnAssetRequested(object sender, AssetRequestedEventArgs e)
+        /// <summary>
+        /// When an asset is requested, load it from the replacements dictionary if
+        /// there is actually an entry in it
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <exception cref="InvalidOperationException"></exception>
+        public void OnAssetRequested(object sender, AssetRequestedEventArgs e)
 		{
             if (_replacements.TryGetValue(e.Name.BaseName, out string replacementAsset))
             {
                 e.LoadFromModFile<Texture2D>(replacementAsset, AssetLoadPriority.Medium);
+				_replacements.Remove(e.Name.BaseName);
             }
         }
 
@@ -78,7 +79,6 @@ namespace Randomizer
 		{
 			ReplaceTitleScreen();
 			ReplaceNewGameCatIcon();
-            _mod.CalculateAndInvalidateUIEdits();
         }
 
 		/// <summary>
@@ -87,18 +87,11 @@ namespace Randomizer
 		/// </summary>
 		private void ReplaceNewGameCatIcon()
 		{
-			var xnbLocation = "LooseSprites/Cursors";
+			var xnbLocation = Globals.GetLocalizedFileName("LooseSprites/Cursors");
 
             LooseSpritesImageBuilder looseSpritesImageBuilder = new();
-            if (Globals.Config.Animals.RandomizePets)
-			{
-                looseSpritesImageBuilder.BuildImage();
-                HandleImageReplacement(looseSpritesImageBuilder, xnbLocation);
-            }
-			else
-			{
-				AddReplacement(xnbLocation, looseSpritesImageBuilder.SMAPIOriginalAssetPath);
-			}
+            looseSpritesImageBuilder.BuildImage();
+            HandleImageReplacement(looseSpritesImageBuilder, xnbLocation);
 
             _mod.Helper.GameContent.InvalidateCache(xnbLocation);
         }
