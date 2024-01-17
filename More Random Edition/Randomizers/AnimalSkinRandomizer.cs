@@ -1,22 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace Randomizer
 {
-	// TODO: this class needs to be removed - just need to fix critter replacements
-	public class AnimalSkinRandomizer
+    // TODO: this class needs to be removed - just need to fix critter replacements
+    public class AnimalSkinRandomizer
 	{
-		/// <summary>
-		/// Represents the type of animal replacement we'll be doing
-		/// </summary>
-		private enum AnimalReplacementType
-		{
-			Pet,
-			Horse,
-			Animal
-		}
-
         private static Dictionary<string, string> _replacements;
 		private readonly static List<string> PossibleCritterReplacements = new()
 		{
@@ -27,7 +15,6 @@ namespace Randomizer
 		};
 
 		private static string _critterSpoilerString;
-		private static string _animalSpoilerString;
 
 		/// <summary>
 		/// Randomizes animal skins
@@ -39,7 +26,6 @@ namespace Randomizer
 			_replacements = new Dictionary<string, string>();
 
 			AddCritterReplacement(Globals.RNGGetRandomValueFromList(PossibleCritterReplacements));
-			//DoAnimalReplacements(); // Already covered by the AnimalRandomizer
 
 			if (!Globals.Config.RandomizeAnimalSkins)
 			{
@@ -48,33 +34,6 @@ namespace Randomizer
 
 			WriteToSpoilerLog();
 			return _replacements;
-		}
-
-		/// <summary>
-		/// Adds an entry to the replacements to replace a random animal with a bear
-		/// </summary>
-		private static void DoAnimalReplacements()
-		{
-			AnimalReplacementType replacementType = Globals.RNGGetRandomValueFromList(
-				Enum.GetValues(typeof(AnimalReplacementType)).Cast<AnimalReplacementType>().ToList());
-
-			switch (replacementType)
-			{
-				case AnimalReplacementType.Pet:
-					List<string> pets = new List<string> { "cat", "dog" };
-					string pet = Globals.RNGGetRandomValueFromList(pets);
-
-					AddAnimalReplacement(pet, "BearDog");
-					break;
-				default:
-					List<string> animals = new List<string> { "Pig", "Goat", "Brown Cow", "White Cow" };
-					string animal = Globals.RNGGetRandomValueFromList(animals);
-
-					AddAnimalReplacement(animal, "Bear");
-					AddAnimalReplacement($"Baby{animal}", "BabyBear");
-					break;
-			}
-
 		}
 
         /// <summary>
@@ -88,24 +47,12 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Adds the animal replacement to the dictionary
-		/// </summary>
-		/// <param name="oldAnimal">The old animal asset name</param>
-		/// <param name="newAnimal">The new animal asset name</param>
-		private static void AddAnimalReplacement(string oldAnimal, string newAnimal)
-		{
-			_animalSpoilerString = $"{oldAnimal} replaced with {newAnimal}";
-			_replacements.Add($"Animals/{oldAnimal}", $"Assets/Characters/{newAnimal}");
-		}
-
-		/// <summary>
 		/// Writes the NPC replacements to the spoiler log
 		/// </summary>
 		private static void WriteToSpoilerLog()
 		{
 			Globals.SpoilerWrite("==== CRITTERS ====");
 			Globals.SpoilerWrite(_critterSpoilerString);
-			//Globals.SpoilerWrite(_animalSpoilerString);
 			Globals.SpoilerWrite("");
 		}
 	}

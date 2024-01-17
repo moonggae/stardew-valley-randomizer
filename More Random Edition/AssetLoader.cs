@@ -11,7 +11,9 @@ namespace Randomizer
     public class AssetLoader
 	{
 		private readonly ModEntry _mod;
-		private readonly Dictionary<string, string> _replacements = new();
+
+		private readonly Dictionary<string, string> _customAssetReplacements = new();
+        private readonly Dictionary<string, Texture2D> _editedAssetReplacements = new();
 
         /// <summary>Constructor</summary>
         /// <param name="mod">A reference to the ModEntry</param>
@@ -41,11 +43,24 @@ namespace Randomizer
             {
                 e.Edit(new TitleScreenPatcher().OnAssetRequested);
             }
-            else if (_replacements.TryGetValue(e.Name.BaseName, out string replacementAsset))
+
+			// Files that come from our own images: we're replacing an xnb asset with one on our filesystem
+            else if (_customAssetReplacements.TryGetValue(e.Name.BaseName, out string customAsset))
             {
-                e.LoadFromModFile<Texture2D>(replacementAsset, AssetLoadPriority.Medium);
-				_replacements.Remove(e.Name.BaseName);
+                e.LoadFromModFile<Texture2D>(customAsset, AssetLoadPriority.Medium);
+				_customAssetReplacements.Remove(e.Name.BaseName);
             } 
+
+			// Files that we have in memory: we're replacing an xnb asset with a Texture2D object
+			else if (_editedAssetReplacements.TryGetValue(e.Name.BaseName, out Texture2D editedAsset))
+			{
+				e.Edit(asset =>
+				{
+					var editor = asset.AsImage();
+					editor.PatchImage(editedAsset);
+					_editedAssetReplacements.Remove(e.Name.BaseName);
+                });
+            }
         }
 
 		/// <summary>
@@ -56,14 +71,25 @@ namespace Randomizer
 		private void AddReplacement(string originalAsset, string replacementAsset)
 		{
 			IAssetName normalizedAssetName = _mod.Helper.GameContent.ParseAssetName(originalAsset);
-			_replacements[normalizedAssetName.BaseName] = replacementAsset;
+			_customAssetReplacements[normalizedAssetName.BaseName] = replacementAsset;
 		}
 
-		/// <summary>
-		/// Adds a set of replacements to our internal dictionary
-		/// </summary>
-		/// <param name="replacements">Key: the original asset; Value: the asset to replace it with</param>
-		private void AddReplacements(Dictionary<string, string> replacements)
+        /// <summary>
+        /// Adds a replacement to our internal dictionary
+        /// </summary>
+        /// <param name="originalAsset">The original asset</param>
+        /// <param name="replacementAsset">The asset to replace it with</param>
+        private void AddReplacement(string originalAsset, Texture2D replacementAsset)
+        {
+            IAssetName normalizedAssetName = _mod.Helper.GameContent.ParseAssetName(originalAsset);
+            _editedAssetReplacements[normalizedAssetName.BaseName] = replacementAsset;
+        }
+
+        /// <summary>
+        /// Adds a set of replacements to our internal dictionary for assets coming from our own files
+        /// </summary>
+        /// <param name="replacements">Key: the original asset; Value: the asset to replace it with</param>
+        private void AddCustomAssetReplacements(Dictionary<string, string> replacements)
 		{
 			foreach (string key in replacements.Keys)
 			{
@@ -71,16 +97,33 @@ namespace Randomizer
 			}
 		}
 
-		/// <summary>
-		/// Invalidate all replaced assets so that the changes are reapplied
-		/// </summary>
-		public void InvalidateCache()
+        /// <summary>
+        /// Adds a set of replacements to our internal dictionary for assets that we have texture data for
+        /// </summary>
+        /// <param name="replacements">Key: the original asset; Value: the asset to replace it with</param>
+        private void AddEditedAssetReplacements(Dictionary<string, Texture2D> replacements)
+        {
+            foreach (string key in replacements.Keys)
+            {
+                AddReplacement(key, replacements[key]);
+            }
+        }
+
+        /// <summary>
+        /// Invalidate all replaced assets so that the changes are reapplied
+        /// </summary>
+        public void InvalidateCache()
 		{
-			foreach (string assetName in _replacements.Keys)
+			foreach (string assetName in _customAssetReplacements.Keys)
 			{
 				_mod.Helper.GameContent.InvalidateCache(assetName);
 			}
-		}
+
+            foreach (string assetName in _editedAssetReplacements.Keys)
+            {
+                _mod.Helper.GameContent.InvalidateCache(assetName);
+            }
+        }
 
         /// <summary>
         /// Replace the assets on the title screen - includes the title screen menu
@@ -125,10 +168,10 @@ namespace Randomizer
         /// <summary>Asset replacements to load when the farm is loaded</summary>
         public void CalculateReplacements()
 		{
-			_replacements.Clear();
+			_customAssetReplacements.Clear();
 
-			AddReplacements(AnimalSkinRandomizer.Randomize());
-			AddReplacements(NPCSkinRandomizer.Randomize());
+			AddCustomAssetReplacements(AnimalSkinRandomizer.Randomize());
+
 		}
 
 		/// <summary>
