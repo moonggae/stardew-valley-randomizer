@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using System;
@@ -15,9 +14,9 @@ namespace Randomizer
 		private readonly ModEntry _mod;
 		private readonly Dictionary<string, string> _replacements = new();
 
-		/// <summary>Constructor</summary>
-		/// <param name="mod">A reference to the ModEntry</param>
-		public AssetLoader(ModEntry mod)
+        /// <summary>Constructor</summary>
+        /// <param name="mod">A reference to the ModEntry</param>
+        public AssetLoader(ModEntry mod)
 		{
 			_mod = mod;
 		}
@@ -31,9 +30,13 @@ namespace Randomizer
         /// <exception cref="InvalidOperationException"></exception>
         public void OnAssetRequested(object sender, AssetRequestedEventArgs e)
 		{
-            if (e.NameWithoutLocale.IsEquivalentTo("LooseSprites/Cursors"))
+            if (e.Name.IsEquivalentTo(PetIconPatcher.StardewAssetPath))
             {
-                e.Edit(new LooseSpritesImagePatcher().OnAssetRequested);
+                e.Edit(new PetIconPatcher().OnAssetRequested);
+            }
+            else if (e.NameWithoutLocale.IsEquivalentTo(TitleScreenPatcher.StardewAssetPath))
+            {
+                e.Edit(new TitleScreenPatcher().OnAssetRequested);
             }
             else if (_replacements.TryGetValue(e.Name.BaseName, out string replacementAsset))
             {
@@ -92,8 +95,7 @@ namespace Randomizer
 		/// </summary>
 		private void ReplaceNewGameCatIcon()
 		{
-			var xnbLocation = "LooseSprites/Cursors";
-            _mod.Helper.GameContent.InvalidateCache(xnbLocation);
+            _mod.Helper.GameContent.InvalidateCache(PetIconPatcher.StardewAssetPath);
         }
 
 		/// <summary>
@@ -101,10 +103,7 @@ namespace Randomizer
 		/// </summary>
 		private void ReplaceTitleScreen()
 		{
-			string moddedAssetName = "TitleButtons";
-			string stardewAssetName = "Minigames/TitleButtons";
-            AddReplacement(stardewAssetName, $"Assets/Minigames/{Globals.GetLocalizedFileName(moddedAssetName, "png")}");
-			_mod.Helper.GameContent.InvalidateCache(stardewAssetName);
+            _mod.Helper.GameContent.InvalidateCache(TitleScreenPatcher.StardewAssetPath);
         }
 
 		/// <summary>Asset replacements</summary>

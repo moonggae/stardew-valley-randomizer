@@ -66,7 +66,7 @@ namespace Randomizer
 				(bool val) =>
 				{ 
 					Globals.Config.Animals.RandomizePets = val;
-					Globals.ModRef.OnPetSettingChanged();
+                    Globals.ModRef.Helper.GameContent.InvalidateCache(PetIconPatcher.StardewAssetPath);
                 });
 
             AddSectionTitle("Music Options");

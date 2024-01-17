@@ -86,15 +86,6 @@ namespace Randomizer
         }
 
 		/// <summary>
-		/// Called by the ModConfiguMenuHelper when the pet setting changes
-		/// We need accss to the AssetLoader so we can invalidate the title screen in this case
-		/// </summary>
-		public void OnPetSettingChanged()
-		{
-			_modAssetLoader.ReplaceTitleScreenAssets();
-		}
-
-		/// <summary>
 		/// When an asset is requested, attempt to replace it
 		/// </summary>
 		/// <param name="sender"></param>

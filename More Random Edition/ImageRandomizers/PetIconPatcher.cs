@@ -1,10 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.IO;
 
 namespace Randomizer
 {
@@ -14,14 +9,20 @@ namespace Randomizer
     /// 
     /// Handles restoring the original image should the setting change
     /// </summary>
-    public class LooseSpritesImagePatcher : ImagePatcher
+    public class PetIconPatcher : ImagePatcher
     {
-        public LooseSpritesImagePatcher()
+        public static string StardewAssetPath => Globals.GetLocalizedFileName("LooseSprites/Cursors");
+
+        public PetIconPatcher()
         {
-            StardewAssetPath = "LooseSprites/Cursors";
             SubFolder = "LooseSprites";
         }
 
+        /// <summary>
+        /// Called when the asset is requested
+        /// Patches the image into the game
+        /// </summary>
+        /// <param name="asset">The equivalent asset from Stardew to modify</param>
         public override void OnAssetRequested(IAssetData asset)
         {
             var editor = asset.AsImage();
@@ -31,6 +32,10 @@ namespace Randomizer
             editor.PatchImage(overlay, targetArea: new Rectangle(160, 208, ImageWidthInPx, ImageHeightInPx));
         }
 
+        /// <summary>
+        /// Gets the pet icon to replace
+        /// </summary>
+        /// <returns>The full path of the icon, starting at the root of the mod</returns>
         public string GetCustomAssetPath()
         {
             var petSpriteImage = Globals.Config.Animals.RandomizePets
