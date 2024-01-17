@@ -38,7 +38,7 @@ namespace Randomizer
 			CropIdsToLinkingData = new Dictionary<int, CropImageLinkingData>();
             ImageNameToCropIds = new();
 
-            BaseFileName = "Crops.png";
+            StardewAssetPath = $"TileSheets/crops";
 			SubDirectory = "CropGrowth";
 			SetUpCropGrowthImagePointsToIds();
 			PositionsToOverlay = CropGrowthImagePointsToIds.Keys.ToList();

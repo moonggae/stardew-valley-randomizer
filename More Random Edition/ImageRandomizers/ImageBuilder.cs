@@ -58,17 +58,6 @@ namespace Randomizer
         /// <summary>
         /// The path to the custom images
         /// </summary>
-        public string BaseFileFullPath
-        {
-            get
-            {
-                return $"{ImageDirectory}/{BaseFileName}";
-            }
-        }
-
-        /// <summary>
-        /// The path to the custom images
-        /// </summary>
         public string OutputFileFullPath
         {
             get
@@ -89,11 +78,6 @@ namespace Randomizer
         }
 
         /// <summary>
-        /// The name of the base file
-        /// </summary>
-        protected string BaseFileName { get; set; }
-
-        /// <summary>
         /// The subdirectory where the base file and replacements are located
         /// </summary>
         protected string SubDirectory { get; set; }
@@ -109,28 +93,17 @@ namespace Randomizer
         protected List<string> FilesToPullFrom { get; set; }
 
         /// <summary>
-        /// ONLY set this if your base image is coming directly from an XNB file,
-        /// in which case, set it to that path
+        /// The path for the asset that we will be modifying
         /// </summary>
         protected string StardewAssetPath { get; set; }
-
-        /// <summary>
-        /// Returns true if we're loading the base image from Stardew rather than
-        /// providing our own
-        /// </summary>
-        private bool IsLoadingBaseImageFromXNB
-        {
-            get { return !string.IsNullOrWhiteSpace(StardewAssetPath); }
-        }
 
         /// <summary>
         /// Builds the image and saves the result into randomizedImage.png
         /// </summary>
         public virtual void BuildImage()
         {
-            Texture2D finalImage = IsLoadingBaseImageFromXNB
-                ? Globals.ModRef.Helper.GameContent.Load<Texture2D>(StardewAssetPath)
-                : Texture2D.FromFile(Game1.graphics.GraphicsDevice, BaseFileFullPath);
+            Texture2D stardewAssetToModify = Globals.ModRef.Helper.GameContent
+                .Load<Texture2D>(StardewAssetPath);
 
             FilesToPullFrom = GetAllCustomImages();
             foreach (Point position in PositionsToOverlay)
@@ -149,20 +122,13 @@ namespace Randomizer
 
                 using Texture2D originalRandomImage = Texture2D.FromFile(Game1.graphics.GraphicsDevice, randomFileName);
                 using Texture2D randomImage = ManipulateImage(originalRandomImage, randomFileName);
-                CropAndOverlayImage(position, randomImage, finalImage);
+                CropAndOverlayImage(position, randomImage, stardewAssetToModify);
             }
 
             if (ShouldSaveImage())
             {
                 using FileStream stream = File.OpenWrite(OutputFileFullPath);
-                finalImage.SaveAsPng(stream, finalImage.Width, finalImage.Height);
-            }
-
-            // Do NOT dispose of an in game image, unless you want NullReferenceExceptions
-            // when the game tries to use the image again!
-            if (!IsLoadingBaseImageFromXNB)
-            {
-                finalImage.Dispose();
+                stardewAssetToModify.SaveAsPng(stream, stardewAssetToModify.Width, stardewAssetToModify.Height);
             }
         }
 
@@ -198,7 +164,7 @@ namespace Randomizer
         }
 
         /// <summary>
-        /// Gets all the custom images from the given directory excluding the base file name
+        /// Gets all the custom images from the given director
         /// </summary>
         /// <returns></returns>
         private List<string> GetAllCustomImages()
@@ -206,7 +172,6 @@ namespace Randomizer
             List<string> files = Directory.GetFiles(ImageDirectory).ToList();
             return files.Where(x =>
                 !x.EndsWith(OutputFileName) &&
-                (IsLoadingBaseImageFromXNB || !x.EndsWith(BaseFileName)) &&
                 x.EndsWith(".png"))
             .ToList();
         }

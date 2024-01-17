@@ -50,8 +50,8 @@ namespace Randomizer
 			CropIdsToLinkingData = itemIdsToImageNames;
 			ImageNameToCropIds = new();
 
-            BaseFileName = "springobjects.png";
-			SubDirectory = "SpringObjects";
+			StardewAssetPath = "Maps/springobjects";
+            SubDirectory = "SpringObjects";
 
 			SetAllItemMappings();
 			PositionsToOverlay = PointsToItemIds.Keys.ToList();

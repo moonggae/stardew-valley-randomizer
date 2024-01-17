@@ -20,14 +20,7 @@ namespace Randomizer
         {
             AnimalTypeToRandomize = animalTypeToRandomize;
             SubDirectory = $"Animals/{animalTypeToRandomize}";
-
-            var animalImages = Directory.GetFiles($"{ImageDirectory}")
-                .Where(x => x.EndsWith(".png"))
-                .Select(x => Path.GetFileName(x))
-                .OrderBy(x => x)
-                .ToList();
-
-            BaseFileName = Globals.RNGGetRandomValueFromList(animalImages);
+            StardewAssetPath = $"Animals/{animalTypeToRandomize}"; ;
         }
 
         /// <summary>
@@ -35,10 +28,12 @@ namespace Randomizer
         /// </summary>
         public override void BuildImage()
         {
-            using Texture2D replacingImage = Texture2D.FromFile(Game1.graphics.GraphicsDevice, BaseFileFullPath);
+            string randomAnimalFileName = GetRandomAnimalFileName();
+            string imageLocation = $"{ImageDirectory}/{randomAnimalFileName}";
+            using Texture2D replacingImage = Texture2D.FromFile(Game1.graphics.GraphicsDevice, imageLocation);
             Texture2D finalImage;
 
-            if (BaseFileName[..^4].EndsWith("-hue-shift"))
+            if (randomAnimalFileName[..^4].EndsWith("-hue-shift"))
             {
                 int hueShiftValue = Range.GetRandomValue(0, 359);
                 Color shiftedPaleColor = ImageManipulator.IncreaseHueBy(ImageManipulator.PaleColor, hueShiftValue);
@@ -54,10 +49,26 @@ namespace Randomizer
                 using FileStream stream = File.OpenWrite(OutputFileFullPath);
                 finalImage.SaveAsPng(stream, finalImage.Width, finalImage.Height);
 
-                Globals.SpoilerWrite($"{AnimalTypeToRandomize} replaced with {BaseFileName[..^4]}");
+                Globals.SpoilerWrite($"{AnimalTypeToRandomize} replaced with {randomAnimalFileName[..^4]}");
             }
 
             finalImage.Dispose();
+        }
+
+        /// <summary>
+        /// Gets a random animal file name from the randomizers current directory
+        /// </summary>
+        /// <returns></returns>
+        private string GetRandomAnimalFileName()
+        {
+            var animalImages = Directory.GetFiles($"{ImageDirectory}")
+                .Where(x => x.EndsWith(".png"))
+                .Select(x => Path.GetFileName(x))
+                .OrderBy(x => x)
+                .ToList();
+
+            return Globals.RNGGetRandomValueFromList(animalImages);
+
         }
 
         /// <summary>

@@ -29,8 +29,8 @@ namespace Randomizer
 
 		public WeaponImageBuilder() : base()
 		{
-			BaseFileName = "weapons.png";
-			SubDirectory = "Weapons";
+			StardewAssetPath = "TileSheets/weapons";
+            SubDirectory = "Weapons";
 			SetUpWeaponPositionToIDMap();
 			PositionsToOverlay = WeaponPositionToIDMap.Keys.ToList();
 
