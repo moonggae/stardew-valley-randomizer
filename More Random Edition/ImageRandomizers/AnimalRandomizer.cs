@@ -1,8 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+using System;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Security.Cryptography;
 
 namespace Randomizer
 {
@@ -20,7 +24,25 @@ namespace Randomizer
         {
             AnimalTypeToRandomize = animalTypeToRandomize;
             SubDirectory = $"Animals/{animalTypeToRandomize}";
-            StardewAssetPath = $"Animals/{animalTypeToRandomize}"; ;
+            StardewAssetPath = GetStardewAssetPath();
+        }
+
+        /// <summary>
+        /// Get the path to the Stardew-equivalent asset based on the animal type
+        /// </summary>
+        /// <returns>The path of the xnb file to replace</returns>
+        private string GetStardewAssetPath()
+        {
+            switch(AnimalTypeToRandomize)
+            {
+                case AnimalTypes.Horses:
+                    return "Animals/horse";
+                case AnimalTypes.Pets:
+                    return "Animals/cat";
+                default:
+                    Globals.ConsoleWarn($"Stardew asset path undefined for animal type: {AnimalTypeToRandomize}");
+                    return "";
+            }
         }
 
         /// <summary>
@@ -30,45 +52,54 @@ namespace Randomizer
         {
             string randomAnimalFileName = GetRandomAnimalFileName();
             string imageLocation = $"{ImageDirectory}/{randomAnimalFileName}";
-            using Texture2D replacingImage = Texture2D.FromFile(Game1.graphics.GraphicsDevice, imageLocation);
-            Texture2D finalImage;
+            Texture2D animalImage = Texture2D.FromFile(Game1.graphics.GraphicsDevice, imageLocation);
 
             if (randomAnimalFileName[..^4].EndsWith("-hue-shift"))
             {
                 int hueShiftValue = Range.GetRandomValue(0, 359);
                 Color shiftedPaleColor = ImageManipulator.IncreaseHueBy(ImageManipulator.PaleColor, hueShiftValue);
-                finalImage = ImageManipulator.MultiplyImageByColor(replacingImage, shiftedPaleColor);
-            }
-            else
-            {
-                finalImage = replacingImage;
+                animalImage = ImageManipulator.MultiplyImageByColor(animalImage, shiftedPaleColor);
             }
 
             if (ShouldSaveImage() && Globals.Config.SaveRandomizedImages)
             {
                 using FileStream stream = File.OpenWrite(OutputFileFullPath);
-                finalImage.SaveAsPng(stream, finalImage.Width, finalImage.Height);
+                animalImage.SaveAsPng(stream, animalImage.Width, animalImage.Height);
 
                 Globals.SpoilerWrite($"{AnimalTypeToRandomize} replaced with {randomAnimalFileName[..^4]}");
             }
 
-            return finalImage;
+            return animalImage;
         }
 
         /// <summary>
         /// Gets a random animal file name from the randomizers current directory
+        /// This will use a new RNG seed so that we can get the pet name out of order
         /// </summary>
         /// <returns></returns>
         private string GetRandomAnimalFileName()
         {
+            byte[] seedvar = new SHA1Managed().ComputeHash(Encoding.UTF8.GetBytes(Game1.player.farmName.Value));
+            int seed = BitConverter.ToInt32(seedvar, 0);
+            Random rng = new(seed);
+
             var animalImages = Directory.GetFiles($"{ImageDirectory}")
                 .Where(x => x.EndsWith(".png"))
                 .Select(x => Path.GetFileName(x))
                 .OrderBy(x => x)
                 .ToList();
 
-            return Globals.RNGGetRandomValueFromList(animalImages);
+            return Globals.RNGGetRandomValueFromList(animalImages, rng);
+        }
 
+        /// <summary>
+        /// Gets the random pet name generated for the farm
+        /// This should always be the same value since the seed should start in the same spot
+        /// </summary>
+        /// <returns></returns>
+        public static string GetRandomPetName()
+        {
+            return new AnimalRandomizer(AnimalTypes.Pets).GetRandomAnimalFileName();
         }
 
         /// <summary>
