@@ -103,9 +103,10 @@ namespace Randomizer
         /// <returns></returns>
         public Texture2D GenerateModifiedAsset()
         {
+            // Deleting this first just in case randomizedImage.png does weird things
+            File.Delete(Globals.GetFilePath(OutputFileFullPath));
             var modifiedImage = BuildImage();
 
-            File.Delete(Globals.GetFilePath(OutputFileFullPath));
             if (ShouldSaveImage() && Globals.Config.SaveRandomizedImages)
             {
                 using FileStream stream = File.OpenWrite(OutputFileFullPath);

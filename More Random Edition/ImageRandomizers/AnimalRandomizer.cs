@@ -4,9 +4,8 @@ using StardewValley;
 using System;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace Randomizer
 {
@@ -84,7 +83,7 @@ namespace Randomizer
             Random rng = new(seed);
 
             var animalImages = Directory.GetFiles($"{ImageDirectory}")
-                .Where(x => x.EndsWith(".png"))
+                .Where(x => x.EndsWith(".png") && !x.EndsWith(OutputFileName))
                 .Select(x => Path.GetFileName(x))
                 .OrderBy(x => x)
                 .ToList();
@@ -93,13 +92,16 @@ namespace Randomizer
         }
 
         /// <summary>
-        /// Gets the random pet name generated for the farm
+        /// Gets the random pet type for the farm
+        /// Returns it without the file extension, and all lowercase
         /// This should always be the same value since the seed should start in the same spot
         /// </summary>
         /// <returns></returns>
         public static string GetRandomPetName()
         {
-            return new AnimalRandomizer(AnimalTypes.Pets).GetRandomAnimalFileName();
+            return new AnimalRandomizer(AnimalTypes.Pets)
+                .GetRandomAnimalFileName()[..^4]
+                .ToLower();
         }
 
         /// <summary>

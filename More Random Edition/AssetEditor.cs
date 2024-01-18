@@ -9,28 +9,28 @@ namespace Randomizer
 	public class AssetEditor
 	{
 		private readonly ModEntry _mod;
-		private Dictionary<string, string> _recipeReplacements = new Dictionary<string, string>();
-		private Dictionary<string, string> _bundleReplacements = new Dictionary<string, string>();
-		private Dictionary<string, string> _blueprintReplacements = new Dictionary<string, string>();
-		private Dictionary<string, string> _uiStringReplacements = new Dictionary<string, string>();
-		private Dictionary<string, string> _grandpaStringReplacements = new Dictionary<string, string>();
-		private Dictionary<string, string> _stringReplacements = new Dictionary<string, string>();
-		private Dictionary<string, string> _locationStringReplacements = new Dictionary<string, string>();
-		private Dictionary<int, string> _fishReplacements = new Dictionary<int, string>();
-		private Dictionary<int, string> _questReplacements = new Dictionary<int, string>();
-		private Dictionary<string, string> _mailReplacements = new Dictionary<string, string>();
-		private Dictionary<string, string> _locationsReplacements = new Dictionary<string, string>();
-		private Dictionary<int, string> _objectInformationReplacements = new Dictionary<int, string>();
-		private Dictionary<int, string> _fruitTreeReplacements = new Dictionary<int, string>();
-		private Dictionary<int, string> _cropReplacements = new Dictionary<int, string>();
-		private Dictionary<string, string> _cookingChannelReplacements = new Dictionary<string, string>();
-		private Dictionary<int, string> _weaponReplacements = new Dictionary<int, string>();
-		private Dictionary<int, string> _bootReplacements = new Dictionary<int, string>();
-		private Dictionary<string, string> _monsterReplacements = new Dictionary<string, string>();
-		private Dictionary<string, string> _birthdayReplacements = new Dictionary<string, string>();
-		private Dictionary<string, string> _preferenceReplacements = new Dictionary<string, string>();
-		private Dictionary<int, string> _secretNotesReplacements = new Dictionary<int, string>();
-
+		private Dictionary<string, string> _recipeReplacements = new();
+		private Dictionary<string, string> _bundleReplacements = new();
+		private Dictionary<string, string> _blueprintReplacements = new();
+		private Dictionary<string, string> _uiStringReplacements = new();
+		private Dictionary<string, string> _grandpaStringReplacements = new();
+		private Dictionary<string, string> _stringReplacements = new();
+        private Dictionary<string, string> _farmEventsReplacements = new();
+        private Dictionary<string, string> _locationStringReplacements = new();
+		private Dictionary<int, string> _fishReplacements = new();
+		private Dictionary<int, string> _questReplacements = new();
+		private Dictionary<string, string> _mailReplacements = new();
+		private Dictionary<string, string> _locationsReplacements = new();
+		private Dictionary<int, string> _objectInformationReplacements = new();
+		private Dictionary<int, string> _fruitTreeReplacements = new();
+		private Dictionary<int, string> _cropReplacements = new();
+		private Dictionary<string, string> _cookingChannelReplacements = new();
+		private Dictionary<int, string> _weaponReplacements = new();
+		private Dictionary<int, string> _bootReplacements = new();
+		private Dictionary<string, string> _monsterReplacements = new();
+		private Dictionary<string, string> _birthdayReplacements = new();
+		private Dictionary<string, string> _preferenceReplacements = new();
+		private Dictionary<int, string> _secretNotesReplacements = new();
 
 		/// <summary>
 		/// Whether we're currently ignoring replacing object information
@@ -55,6 +55,7 @@ namespace Randomizer
                 TryReplaceAsset(e, "Data/Bundles", _bundleReplacements) ||
                 TryReplaceAsset(e, "Data/Blueprints", _blueprintReplacements) ||
                 TryReplaceAsset(e, "Strings/UI", _uiStringReplacements) ||
+				TryReplaceAsset(e, "Data/Events/Farm", _farmEventsReplacements) ||
                 TryReplaceAsset(e, "Data/Fish", _fishReplacements) ||
                 TryReplaceAsset(e, "Data/Quests", _questReplacements) ||
                 TryReplaceAsset(e, "Data/mail", _mailReplacements) ||
@@ -97,7 +98,7 @@ namespace Randomizer
         /// <param name="e">The requested asset, so we can grab the name off of it</param>
         /// <param name="assetName">The name that were currently checking - if they don't match, exit early</param>
         /// <returns>True if we should replace it; false otherwise</returns>
-        private bool ShouldReplaceAsset(AssetRequestedEventArgs e, string assetName)
+        private static bool ShouldReplaceAsset(AssetRequestedEventArgs e, string assetName)
         {
             if (!e.Name.IsEquivalentTo(assetName))
             {
@@ -109,6 +110,7 @@ namespace Randomizer
             if (e.Name.IsEquivalentTo("Data/Blueprints")) { return Globals.Config.RandomizeBuildingCosts; }
             if (e.Name.IsEquivalentTo("Strings/StringsFromCSFiles")) { return true; }
             if (e.Name.IsEquivalentTo("Strings/UI")) { return true; }
+			if (e.Name.IsEquivalentTo("Data/Events/Farm")) { return Globals.Config.Animals.RandomizePets; }
             if (e.Name.IsEquivalentTo("Data/ObjectInformation")) { return true; }
             if (e.Name.IsEquivalentTo("Data/Fish")) { return Globals.Config.Fish.Randomize; }
             if (e.Name.IsEquivalentTo("Data/Quests") || e.Name.IsEquivalentTo("Data/mail")) { return Globals.Config.RandomizeQuests; }
@@ -133,7 +135,7 @@ namespace Randomizer
 		/// <param name="assetName"></param>
 		/// <param name="replacement"></param>
 		/// <returns>True if successful, false otherwise</returns>
-        private bool TryReplaceAsset(AssetRequestedEventArgs e, string assetName, Dictionary<string, string> replacement)
+        private static bool TryReplaceAsset(AssetRequestedEventArgs e, string assetName, Dictionary<string, string> replacement)
         {
             if (ShouldReplaceAsset(e, assetName))
             {
@@ -150,7 +152,7 @@ namespace Randomizer
         /// <param name="assetName"></param>
         /// <param name="replacement"></param>
         /// <returns>True if successful, false otherwise</returns>
-        private bool TryReplaceAsset(AssetRequestedEventArgs e, string assetName, Dictionary<int, string> replacement)
+        private static bool TryReplaceAsset(AssetRequestedEventArgs e, string assetName, Dictionary<int, string> replacement)
         {
             if (ShouldReplaceAsset(e, assetName))
             {
@@ -224,7 +226,7 @@ namespace Randomizer
 			ItemList.Initialize();
 			ValidateItemList();
 
-			EditedObjectInformation editedObjectInfo = new EditedObjectInformation();
+			EditedObjectInformation editedObjectInfo = new();
 			FishRandomizer.Randomize(editedObjectInfo);
 			_fishReplacements = editedObjectInfo.FishReplacements;
 
@@ -238,6 +240,7 @@ namespace Randomizer
 			_locationsReplacements = LocationRandomizer.Randomize(); // Must be done before recipes because of wild seeds
 			_recipeReplacements = CraftingRecipeRandomizer.Randomize();
 			_stringReplacements = StringsAdjustments.GetCSFileStringReplacements();
+			_farmEventsReplacements = StringsAdjustments.GetFarmEventsReplacements();
 			_locationStringReplacements = StringsAdjustments.GetLocationStringReplacements();
 			CraftingRecipeAdjustments.FixCookingRecipeDisplayNames();
 			_cookingChannelReplacements = CookingChannelAdjustments.GetTextEdits();

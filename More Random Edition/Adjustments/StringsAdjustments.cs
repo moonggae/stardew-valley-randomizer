@@ -27,6 +27,12 @@ namespace Randomizer
 				stringReplacements["TV.cs.13153"] = Globals.GetTranslation("TV.cs.13153");
 			}
 
+			// Fix the pet cutscene to have the random pet name
+			if (Globals.Config.Animals.RandomizePets)
+			{
+				stringReplacements["Event.cs.1242"] = AnimalRandomizer.GetRandomPetName();
+            }
+
 			return stringReplacements;
 		}
 
@@ -36,7 +42,7 @@ namespace Randomizer
 		/// <returns>The dictionary of replacements</returns>
 		public static Dictionary<string, string> GetLocationStringReplacements()
 		{
-			Dictionary<string, string> stringReplacements = new Dictionary<string, string>();
+			Dictionary<string, string> stringReplacements = new();
 
 			if (Globals.Config.Crops.Randomize)
 			{
@@ -52,6 +58,7 @@ namespace Randomizer
 
 		/// <summary>
 		/// Changes the UI to be clear about what settings to use if using random bundles
+		/// This is form Strings/UI.xnb
 		/// </summary>
 		public static Dictionary<string, string> ModifyRemixedBundleUI()
 		{
@@ -69,7 +76,7 @@ namespace Randomizer
 		/// </summary>
 		public static Dictionary<string, string> RandomizeGrandpasStory()
 		{
-			Dictionary<string, string> stringReplacements = new Dictionary<string, string>();
+			Dictionary<string, string> stringReplacements = new();
 			if (!Globals.Config.RandomizeIntroStory) { return stringReplacements; }
 
 			string[] Adjective = new string[30];
@@ -98,7 +105,7 @@ namespace Randomizer
 			string farmerNameTemp = "{0}";
 			string farmNameTemp = "{1}";
 
-			Random rng = new Random();
+			Random rng = new();
 			stringReplacements["GrandpaStory.cs.12026"] = $"...and for my very {Adjective[rng.Next(0, 30)]} grandson:";
 			stringReplacements["GrandpaStory.cs.12028"] = $"...and for my very {Adjective[rng.Next(0, 30)]} granddaughter:";
 			stringReplacements["GrandpaStory.cs.12029"] = $"I want you to have this {PastVerb[rng.Next(0, 20)]} envelope.";
@@ -113,5 +120,29 @@ namespace Randomizer
 
 			return stringReplacements;
 		}
-	}
+
+		/// <summary>
+		/// Gets event string replacements for Events/Farm.xnb
+		/// Currently just sets the animal name during the adoption cutscene
+		/// 
+		/// Only done in English for now
+		/// </summary>
+		/// <returns></returns>
+		public static Dictionary<string, string> GetFarmEventsReplacements()
+		{
+			if (!Globals.Config.Animals.RandomizePets ||
+				Globals.ModRef.Helper.Translation.LocaleEnum != StardewValley.LocalizedContentManager.LanguageCode.en)
+			{
+				return new Dictionary<string, string>();
+			}
+
+			string petName = AnimalRandomizer.GetRandomPetName();
+            string catCutsceneKey = "1590166/m 1000/t 600 930/d Mon Tue Thu Sat Sun/w sunny/h cat/H";
+			string catCutsceneTemplate = "continue/64 15/farmer 64 15 2 Marnie 65 16 0 cat 63 16 2/faceDirection Cat 2/pause 500/animate Cat false false 120 16 17 18 18/pause 480/animate Cat false true 120 18/pause 2000/speak Marnie \"Hello @!$h#$b#You see this {cat} here?\"/faceDirection Marnie 3/pause 400/showFrame Cat 18/playSound cat/pause 1200/faceDirection Marnie 0/speak Marnie \"I found it sitting outside the entrance to your farm! I think it's a stray... poor little thing.$s\"/showFrame Cat 19/pause 500/showFrame Cat 18/playSound cat/shake Cat 150/pause 1500/speak Marnie \"I think it likes this place! Hey, um.... Don't you think this farm could use a good {cat}?$h\"/catQuestion/pause 1000/faceDirection Marnie 3/speak Marnie \"Well, little %pet... You be a good {cat} now... okay?\"/pause 500/showFrame Cat 19/shake Cat 100/playSound cat/pause 800/animate Cat false false 120 20 21 22 23 21 22 23 21 22 23 21 22 23 21 22 23 21 22 23 21 22 23/pause 200/globalFade/viewport -1000 -1000/end";
+            return new Dictionary<string, string>()
+			{
+				[catCutsceneKey] = catCutsceneTemplate.Replace("{cat}", petName)
+			};
+		}
+    }
 }

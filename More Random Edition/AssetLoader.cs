@@ -167,9 +167,7 @@ namespace Randomizer
         public void CalculateReplacements()
 		{
 			_customAssetReplacements.Clear();
-
 			AddCustomAssetReplacements(AnimalSkinRandomizer.Randomize());
-
 		}
 
 		/// <summary>
