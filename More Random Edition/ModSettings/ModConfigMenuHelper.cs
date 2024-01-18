@@ -48,8 +48,9 @@ namespace Randomizer
 			AddSectionTitle("Monster Options");
 			AddCheckbox("Monster Stats", "Randomize monster stats, behaviors, and non-unique item drops.", () => Globals.Config.Monsters.Randomize, (bool val) => Globals.Config.Monsters.Randomize = val);
 			AddCheckbox("Shuffle Monster Drops", "Shuffle unique monster drops between all monsters.", () => Globals.Config.Monsters.SwapUniqueDrops, (bool val) => Globals.Config.Monsters.SwapUniqueDrops = val);
+            AddHueShiftOption("Hue Shift Max", "The maxmium value that monster images will be hue shifted by (excludes slimes). Set to 0 for no effect.", () => Globals.Config.Monsters.HueShiftMax, (int val) => Globals.Config.Monsters.HueShiftMax = val);
 
-			AddSectionTitle("Weapon Options");
+            AddSectionTitle("Weapon Options");
 			AddCheckbox("Weapons", "Randomize weapon stats, types, and drop locations.", () => Globals.Config.Weapons.Randomize, (bool val) => Globals.Config.Weapons.Randomize = val);
 			AddCheckbox("Use Custom Weapon Images", "Use custom images for weapons.", () => Globals.Config.Weapons.UseCustomImages, (bool val) => Globals.Config.Weapons.UseCustomImages = val);
 

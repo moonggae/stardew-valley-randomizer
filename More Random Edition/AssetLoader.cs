@@ -96,18 +96,6 @@ namespace Randomizer
 		}
 
         /// <summary>
-        /// Adds a set of replacements to our internal dictionary for assets that we have texture data for
-        /// </summary>
-        /// <param name="replacements">Key: the original asset; Value: the asset to replace it with</param>
-        private void AddEditedAssetReplacements(Dictionary<string, Texture2D> replacements)
-        {
-            foreach (string key in replacements.Keys)
-            {
-                AddReplacement(key, replacements[key]);
-            }
-        }
-
-        /// <summary>
         /// Invalidate all replaced assets so that the changes are reapplied
         /// </summary>
         public void InvalidateCache()
@@ -192,6 +180,9 @@ namespace Randomizer
             HandleImageReplacement(new AnimalRandomizer(AnimalTypes.Horses));
             HandleImageReplacement(new AnimalRandomizer(AnimalTypes.Pets));
             Globals.SpoilerWrite("");
+
+            MonsterHueShifter.GetHueShiftedMonsterAssets().ForEach(monsterData =>
+                AddReplacement(monsterData.StardewAssetPath, monsterData.MonsterImage));
         }
 
 		/// <summary>

@@ -52,7 +52,8 @@
 	{
 		public bool Randomize { get; set; } = true;
 		public bool SwapUniqueDrops { get; set; } = true;
-	}
+        public int HueShiftMax { get; set; } = 359;
+    }
 
 	public class CropsConfig
 	{

@@ -24,6 +24,7 @@ Animals
 - Be sure to be consistent with the size and sprite placements of the animals you wish to make sheets for here
 - If you want random colors to be applied to your image, end your file name with "hue-shift.png"
   - These images do not need to be grayscale
+- If you want to force a certain pet to be used, delete all images out of the desired directory except the one you want
 
 
 Bundles
@@ -127,3 +128,8 @@ The weapons are divided among four different folders, to represent the different
 
 - Each image must be 16 x 16px
 - Having less than 60 images could result in default images being used
+
+
+HueShiftedMonsters
+------------------
+If you have the setting on to save randomized images, this directory will be filled with the images of the generated monsters. Other than that, this directory does not do anything.
