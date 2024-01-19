@@ -13,24 +13,28 @@ namespace Randomizer
 		/// <returns><c>Dictionary&lt;int, string&gt;</c> containing the secret note IDs and strings to replace.</returns>
 		public static Dictionary<int, string> FixSecretNotes(Dictionary<string, string> preferenceReplacements)
 		{
-			// Only use generated notes if config option is enabled
 			if (!Globals.Config.NPCs.RandomizeIndividualPreferences)
 			{
 				return new Dictionary<int, string>();
 			}
 
 			prefs = preferenceReplacements;
-			Dictionary<int, string> _replacements = new Dictionary<int, string>();
+			Dictionary<int, string> _replacements = new();
+			Dictionary<int, string> secretNoteData = Globals.ModRef.Helper.GameContent
+                .Load<Dictionary<int, string>>("Data/SecretNotes");
 
-			for (int noteIndex = 1; noteIndex < 9; noteIndex++)
+			// The data dictionary has more entries than we want to change - we do only want indexes 1-9
+            for (int noteIndex = 1; noteIndex < 9; noteIndex++)
 			{
-				int characterNum = Range.GetRandomValue(1, 4);              // Pick anywhere from 1 to 3 characters to reveal loved items for
-				int itemNum = Range.GetRandomValue(5, 7) - characterNum;    // Reveal more items if there are fewer characters selected
+				// Pick from 1-3 random items to reveal loved items for, choosing more items for fewer characters
+				int characterNum = Range.GetRandomValue(1, 3);
+				int itemNum = Range.GetRandomValue(5, 6) - characterNum;
 
 				List<string> NoteNPCs = Globals.RNGGetRandomValuesFromList(NPC.GiftableNPCs, characterNum);
 				string NPCLovesString = FormatRevealString(NoteNPCs, itemNum);
 
-				string noteText = Globals.GetTranslation($"secret-note-{noteIndex}") + NPCLovesString;
+				string dataWithoutReveal = secretNoteData[noteIndex].Split("%revealtaste")[0];
+                string noteText = $"{dataWithoutReveal}{NPCLovesString}";
 				_replacements.Add(noteIndex, noteText);
 			}
 
@@ -52,10 +56,9 @@ namespace Randomizer
 			foreach (string NPC in NPCs)
 			{
 				string[] tokens = prefs[NPC].Split('/');
-				List<string> items = tokens[1].Split(' ')                               // Split into individual item and category numbers
-											  .ToList()                                 // Convert to List
-											  .Where(x => int.Parse(x) > 0)             // Filter out negative numbers - these represent categories
-											  .ToList();                                // And send back the results as a List
+				List<string> items = tokens[1].Split(' ') 
+					.Where(x => int.Parse(x) > 0)            
+					.ToList();                               
 
 				for (int num = itemNum; num > 0; num--)
 				{
@@ -73,16 +76,15 @@ namespace Randomizer
 		/// <returns>String representing item reveal command.</returns>
 		private static string GetItemRevealString(string name, List<string> items)
 		{
-			if (items.Any())
-			{
-				return "%revealtaste" + name + Globals.RNGGetAndRemoveRandomValueFromList(items);
-			}
-			else
-			{
-				return "";
-			}
+			return items.Any()
+				? "%revealtaste" + name + Globals.RNGGetAndRemoveRandomValueFromList(items)
+				: "";
 		}
 
+		/// <summary>
+		/// Log the results
+		/// </summary>
+		/// <param name="replacements">The results</param>
 		private static void WriteToSpoilerLog(Dictionary<int, string> replacements)
 		{
 			if (!Globals.Config.NPCs.RandomizeIndividualPreferences || !Globals.Config.CreateSpoilerLog) { return; }
