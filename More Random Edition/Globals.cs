@@ -208,10 +208,18 @@ namespace Randomizer
         /// <param name="inputList">The list</param>
         /// <param name="numberOfvalues">The number of values to return</param>
         /// <param name="rng">The Random object to use - defaults to the global one</param>
+		/// <param name="forceNumberOfValuesRNGCalls">
+		/// Forces this to advance the RNG even if number of values is less than the list length
+		/// This is for situations where different settings result in different lengths of lists
+		/// </param>
         /// <returns>
         /// The randomly chosen values - might be less than the number of values if the list doesn't contain that many
         /// </returns>
-        public static List<T> RNGGetRandomValuesFromList<T>(List<T> inputList, int numberOfvalues, Random rng = null)
+        public static List<T> RNGGetRandomValuesFromList<T>(
+			List<T> inputList, 
+			int numberOfvalues, 
+			Random rng = null,
+			bool forceNumberOfValuesRNGCalls = false)
 		{
             var rngToUse = rng ?? RNG;
 
@@ -224,10 +232,20 @@ namespace Randomizer
 			}
 
 			int numberOfIterations = Math.Min(numberOfvalues, listToChooseFrom.Count);
-			for (int i = 0; i < numberOfIterations; i++)
+			int i;
+			for (i = 0; i < numberOfIterations; i++)
 			{
 				randomValues.Add(RNGGetAndRemoveRandomValueFromList(listToChooseFrom, rngToUse));
 			}
+
+			// If we're forcing RNG to advance, we must call it for each item that's left
+			if (forceNumberOfValuesRNGCalls)
+			{
+                for (; i < inputList.Count - 1; i++)
+                {
+                    rngToUse.Next();
+                }
+            }
 
 			return randomValues;
 		}

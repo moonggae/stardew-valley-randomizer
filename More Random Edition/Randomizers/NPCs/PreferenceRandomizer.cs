@@ -296,7 +296,11 @@ namespace Randomizer
 		/// </summary>
 		private static void WriteToSpoilerLog()
 		{
-			if (!Globals.Config.NPCs.RandomizeIndividualPreferences && !Globals.Config.NPCs.RandomizeUniversalPreferences) { return; }
+			if (!Globals.Config.NPCs.RandomizeIndividualPreferences && 
+				!Globals.Config.NPCs.RandomizeUniversalPreferences) 
+			{ 
+				return; 
+			}
 
 			Globals.SpoilerWrite("===== NPC GIFT TASTES =====");
 			foreach (KeyValuePair<string, string> NPCPreferences in NewGiftTasteData)

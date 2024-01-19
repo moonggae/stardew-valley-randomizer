@@ -13,11 +13,6 @@ namespace Randomizer
 		/// <returns><c>Dictionary&lt;int, string&gt;</c> containing the secret note IDs and strings to replace.</returns>
 		public static Dictionary<int, string> FixSecretNotes(Dictionary<string, string> preferenceReplacements)
 		{
-			if (!Globals.Config.NPCs.RandomizeIndividualPreferences)
-			{
-				return new Dictionary<int, string>();
-			}
-
 			prefs = preferenceReplacements;
 			Dictionary<int, string> _replacements = new();
 			Dictionary<int, string> secretNoteData = Globals.ModRef.Helper.GameContent
@@ -88,7 +83,10 @@ namespace Randomizer
 		/// <param name="replacements">The results</param>
 		private static void WriteToSpoilerLog(Dictionary<int, string> replacements)
 		{
-			if (!Globals.Config.NPCs.RandomizeIndividualPreferences || !Globals.Config.CreateSpoilerLog) { return; }
+			if (!Globals.Config.NPCs.RandomizeIndividualPreferences) 
+			{ 
+				return; 
+			}
 
 			Globals.SpoilerWrite("===== SECRET NOTES =====");
 			foreach (KeyValuePair<int, string> pair in replacements)
