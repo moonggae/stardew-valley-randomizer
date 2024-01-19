@@ -199,16 +199,54 @@ namespace Randomizer
             InvalidateCacheForDefaultAndCurrentLocales("Data/SecretNotes");
 		}
 
+        /// <summary>
+        /// Invalidates the cache for default and current locales
+        /// done to avoid annoying caching issues when not playing in English
+        /// we do both because some assets don't have every locale defined
+        /// </summary>
+        /// <param name="assetName">The asset to invalidate</param>
 		public void InvalidateCacheForDefaultAndCurrentLocales(string assetName)
 		{
             _mod.Helper.GameContent.InvalidateCache(assetName);
             _mod.Helper.GameContent.InvalidateCache(Globals.GetLocalizedFileName(assetName));
         }
 
-		/// <summary>
-		/// Calculates edits that need to happen before a save file is loaded
-		/// </summary>
-		public void CalculateEditsBeforeLoad()
+        /// <summary>
+        /// To be called when returning to the the title screen
+        /// This will help localized resources be reloaded properly
+        /// </summary>
+        public void ResetValuesAndInvalidateCache()
+        {
+            _recipeReplacements.Clear();
+            _bundleReplacements.Clear();
+            _blueprintReplacements.Clear();
+            _uiStringReplacements.Clear();
+            _grandpaStringReplacements.Clear();
+            _stringReplacements.Clear();
+            _farmEventsReplacements.Clear();
+            _locationStringReplacements.Clear();
+            _fishReplacements.Clear();
+            _questReplacements.Clear();
+            _mailReplacements.Clear();
+            _locationsReplacements.Clear();
+            _objectInformationReplacements.Clear();
+            _fruitTreeReplacements.Clear();
+            _cropReplacements.Clear();
+            _cookingChannelReplacements.Clear();
+            _weaponReplacements.Clear();
+            _bootReplacements.Clear();
+            _monsterReplacements.Clear();
+            _birthdayReplacements.Clear();
+            _preferenceReplacements.Clear();
+            _secretNotesReplacements.Clear();
+
+            InvalidateCache();
+        }
+
+        /// <summary>
+        /// Calculates edits that need to happen before a save file is loaded
+        /// </summary>
+        public void CalculateEditsBeforeLoad()
 		{
 			CalculateAndInvalidateUIEdits();
 			_grandpaStringReplacements = StringsAdjustments.RandomizeGrandpasStory();

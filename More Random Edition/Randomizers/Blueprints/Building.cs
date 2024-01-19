@@ -11,37 +11,19 @@ namespace Randomizer
 		public string Name { get; set; }
 		public List<RequiredItem> RequiredItems { get; set; } = new List<RequiredItem>();
 		public int Price { get; set; }
-		public double MoneyVariablePercentage { get; set; } = 0.25;
 
-		/// <summary>
-		/// The center text in the blueprint string - between the items required and the price
-		/// </summary>
-		public string CenterText { get; set; }
-
-		/// <summary>
-		/// The end text in the blueprint string - after the price
-		/// </summary>
-		public string EndText { get; set; }
-
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="name">The name of the building - used for the key in the objects to replace</param>
-		/// <param name="itemsRequired">The items required and their multipliers</param>
-		/// <param name="baseMoneyRequired">The base money required to build this</param>
-		/// <param name="centerText">The center text in the blueprint string - between the items required and the price</param>
-		/// <param name="endText">The end text in the blueprint string - after the price</param>
-		public Building(
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="name">The name of the building - used for the key in the objects to replace</param>
+        /// <param name="itemsRequired">The items required and their multipliers</param>
+        /// <param name="baseMoneyRequired">The base money required to build this</param>
+        public Building(
 			string name,
 			List<ItemAndMultiplier> itemsRequired,
-			int baseMoneyRequired,
-			string centerText,
-			string endText = "false")
+			int baseMoneyRequired)
 		{
 			Name = name;
-			CenterText = centerText;
-			EndText = endText;
-
 			PopulateRequiredItems(itemsRequired);
 			ComputePrice(baseMoneyRequired);
 		}
@@ -56,7 +38,7 @@ namespace Randomizer
 			Dictionary<int, RequiredItem> requiredItemsDict = new Dictionary<int, RequiredItem>();
 			foreach (ItemAndMultiplier itemAndMultiplier in itemsRequired)
 			{
-				RequiredItem requiredItem = new RequiredItem(itemAndMultiplier.Item, itemAndMultiplier.Amount);
+				RequiredItem requiredItem = new(itemAndMultiplier.Item, itemAndMultiplier.Amount);
 				int reqiredItemId = requiredItem.Item.Id;
 				if (requiredItemsDict.ContainsKey(reqiredItemId))
 				{
@@ -78,6 +60,7 @@ namespace Randomizer
 		/// <param name="baseMoneyRequired">The amount the building normally costs</param>
 		private void ComputePrice(int baseMoneyRequired)
 		{
+            const double MoneyVariablePercentage = 0.25;
 			int variableAmount = (int)(baseMoneyRequired * MoneyVariablePercentage);
 			Price = Range.GetRandomValue(baseMoneyRequired - variableAmount, baseMoneyRequired + variableAmount);
 		}
@@ -88,11 +71,15 @@ namespace Randomizer
 		/// <returns />
 		public override string ToString()
 		{
-			string requiredItemsString = string.Join(" ", RequiredItems.Select(x => x.GetStringForBuildings()));
-			return $"{requiredItemsString}/{CenterText}/{Price}/{EndText}";
+            string requiredItemsString = string.Join(" ", RequiredItems.Select(x => x.GetStringForBuildings()));
+
+			string[] originalData = BlueprintRandomizer.BuildingData[Name].Split("/");
+			originalData[(int)BlueprintIndexes.RequiredItems] = requiredItemsString;
+            originalData[(int)BlueprintIndexes.MoneyRequired] = Price.ToString();
+
+			return string.Join("/", originalData);
 		}
 	}
-
 
 	/// <summary>
 	/// An item and how much to multiply the amount required by

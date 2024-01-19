@@ -30,6 +30,7 @@ namespace Randomizer
             helper.Events.GameLoop.GameLaunched += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
             helper.Events.GameLoop.GameLaunched += (sender, args) => TryLoadModConfigMenu();
             helper.Events.Content.LocaleChanged += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
+			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetEditor.ResetValuesAndInvalidateCache();
             helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
             helper.Events.GameLoop.SaveLoaded += (sender, args) => CalculateAllReplacements();
             helper.Events.Display.MenuChanged += MenuAdjustments.AdjustMenus;
