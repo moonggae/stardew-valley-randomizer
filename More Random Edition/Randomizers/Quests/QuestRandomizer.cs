@@ -14,6 +14,39 @@ namespace Randomizer
 		private static int ParsnipCropId { get; set; }
 		private static Dictionary<int, string> DefaultQuestData { get; set; }
 
+		private readonly static List<string> QuestableNPCsList = new()
+		{ // Kent is not included because of him not appearing for awhile
+        	"Alex",
+			"Elliot",
+			"Harvey",
+			"Sam",
+			"Sebastian",
+			"Shane",
+			"Abigail",
+			"Emily",
+			"Haley",
+			"Leah",
+			"Maru",
+			"Penny",
+			"Caroline",
+			"Clint",
+			"Demetrius",
+			"Evelyn",
+			"George",
+			"Gus",
+			"Jas",
+			"Jodi",
+			"Lewis",
+			"Linus",
+			"Marnie",
+			"Pam",
+			"Pierre",
+			"Robin",
+			"Vincent",
+			"Willy",
+			"Wizard"
+		};
+
 		/// <summary>
 		/// Maps the quest to what type of item it gives
 		/// </summary>
@@ -88,7 +121,7 @@ namespace Randomizer
 		/// <returns>The quest information to modify</returns>
 		public static QuestInformation Randomize()
 		{
-			People = NPC.QuestableNPCsList;
+			People = QuestableNPCsList;
 			Crops = ItemList.GetCrops(true).ToList();
 			Dishes = ItemList.GetCookedItems().ToList();
 			FishList = FishItem.Get().ToList();
@@ -97,8 +130,8 @@ namespace Randomizer
 			PopulateQuestDictionary();
 			PopulateMailDictionary();
 
-			Dictionary<int, string> questReplacements = new Dictionary<int, string>();
-			Dictionary<string, string> mailReplacements = new Dictionary<string, string>();
+			Dictionary<int, string> questReplacements = new();
+			Dictionary<string, string> mailReplacements = new();
 			RandomizeQuestsAndMailStrings(questReplacements, mailReplacements);
 
 			WriteToSpoilerLog(questReplacements);
@@ -119,7 +152,7 @@ namespace Randomizer
 				{ 22, Globals.GetTranslation("quest-22", new { fish = ItemList.GetItemName((int)ObjectIndexes.LargemouthBass) }) },
 			};
 
-			List<int> nonStaticQuestIds = new List<int>
+			List<int> nonStaticQuestIds = new()
 			{
 				101, 103, 104, 105, 106, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125
 			};
@@ -134,7 +167,7 @@ namespace Randomizer
 		/// </summary>
 		private static void PopulateMailDictionary()
 		{
-			List<string> mailKeys = new List<string>
+			List<string> mailKeys = new()
 			{
 				"spring_19_1",
 				"summer_14_1",
@@ -181,8 +214,7 @@ namespace Randomizer
 			{
 				object tokenObject = GetTokenObject(questId);
 
-				string questString = DefaultQuestData[questId];
-				questString = Globals.GetTranslation($"quest-{questId}", tokenObject);
+				string questString = Globals.GetTranslation($"quest-{questId}", tokenObject);
 				questReplacements.Add(questId, questString);
 
 				if (QuestToMailMap.ContainsKey(questId) && DefaultMailData.ContainsKey(QuestToMailMap[questId]))

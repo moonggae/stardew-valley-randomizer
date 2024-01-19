@@ -294,6 +294,7 @@ namespace Randomizer
 			_preferenceReplacements = PreferenceRandomizer.Randomize();
 			_secretNotesReplacements = SecretNotesRandomizer.FixSecretNotes(_preferenceReplacements);
 
+            // Bundles need to be ran after preverences so modified NPC values are correct
 			_bundleReplacements = BundleRandomizer.Randomize();
             MusicRandomizer.Randomize();
 

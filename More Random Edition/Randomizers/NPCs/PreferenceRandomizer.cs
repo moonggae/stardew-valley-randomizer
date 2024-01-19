@@ -11,21 +11,65 @@ namespace Randomizer
 	{
 		/// <summary>
 		/// Default data for universal preferences - these can be overridden by an NPC's individual preference
+		/// DO NOT reorder this without updating NPCIndexes as well!
 		/// </summary>
-		private readonly static List<string> UniversalPreferenceKeys = new()
+		private readonly static Dictionary<UniversalPreferencesIndexes, string> 
+			UniversalPreferenceIndexes = new()
 		{
-			"Universal_Love",
-			"Universal_Like",
-			"Universal_Neutral",
-			"Universal_Dislike",
-			"Universal_Hate"
-		};
+			[UniversalPreferencesIndexes.Loved] = "Universal_Love",
+            [UniversalPreferencesIndexes.Liked] = "Universal_Like",
+            [UniversalPreferencesIndexes.Neutral] = "Universal_Neutral",
+            [UniversalPreferencesIndexes.Disliked] = "Universal_Dislike",
+            [UniversalPreferencesIndexes.Hated] = "Universal_Hate"
+        };
 
 		/// <summary>
-		/// Item Category indexes - only includes categories which are giftable
-		/// https://stardewcommunitywiki.com/Modding:Object_data#Categories
+		/// A dictionary of all the giftable NPC values so that hard-coded strings
+		/// so that values can be accessed via the enum
 		/// </summary>
-		private readonly static Dictionary<int, string> GiftableItemCategories = new()
+		public readonly static Dictionary<GiftableNPCIndexes, string> GiftableNPCs = new()
+		{
+			[GiftableNPCIndexes.Robin] = "Robin",
+            [GiftableNPCIndexes.Demetrius] = "Demetrius",
+            [GiftableNPCIndexes.Maru] = "Maru",
+            [GiftableNPCIndexes.Sebastian] = "Sebastian",
+            [GiftableNPCIndexes.Linus] = "Linus",
+            [GiftableNPCIndexes.Pierre] = "Pierre",
+            [GiftableNPCIndexes.Caroline] = "Caroline",
+            [GiftableNPCIndexes.Abigail] = "Abigail",
+            [GiftableNPCIndexes.Alex] = "Alex",
+            [GiftableNPCIndexes.George] = "George",
+            [GiftableNPCIndexes.Evelyn] = "Evelyn",
+            [GiftableNPCIndexes.Lewis] = "Lewis",
+            [GiftableNPCIndexes.Clint] = "Clint",
+            [GiftableNPCIndexes.Penny] = "Penny",
+            [GiftableNPCIndexes.Pam] = "Pam",
+            [GiftableNPCIndexes.Emily] = "Emily",
+            [GiftableNPCIndexes.Haley] = "Haley",
+            [GiftableNPCIndexes.Jas] = "Jas",
+            [GiftableNPCIndexes.Vincent] = "Vincent",
+            [GiftableNPCIndexes.Jodi] = "Jodi",
+            [GiftableNPCIndexes.Kent] = "Kent",
+            [GiftableNPCIndexes.Sam] = "Sam",
+            [GiftableNPCIndexes.Leah] = "Leah",
+            [GiftableNPCIndexes.Shane] = "Shane",
+            [GiftableNPCIndexes.Marnie] = "Marnie",
+            [GiftableNPCIndexes.Elliott] = "Elliott",
+            [GiftableNPCIndexes.Gus] = "Gus",
+            [GiftableNPCIndexes.Dwarf] = "Dwarf",
+            [GiftableNPCIndexes.Wizard] = "Wizard",
+            [GiftableNPCIndexes.Harvey] = "Harvey",
+            [GiftableNPCIndexes.Sandy] = "Sandy",
+            [GiftableNPCIndexes.Willy] = "Willy",
+            [GiftableNPCIndexes.Krobus] = "Krobus",
+            [GiftableNPCIndexes.Leo] = "Leo"
+        };
+
+        /// <summary>
+        /// Item Category indexes - only includes categories which are giftable
+        /// https://stardewcommunitywiki.com/Modding:Object_data#Categories
+        /// </summary>
+        private readonly static Dictionary<int, string> GiftableItemCategories = new()
 		{
 			[-2] = "Gems",
 			[-4] = "Fish",
@@ -55,6 +99,55 @@ namespace Randomizer
         /// </summary>
         public static Dictionary<string, string> GiftTasteData { get; private set; }
 
+		/// <summary>
+		/// The modified data from Data/NPCGiftTastes.xnb
+		/// </summary>
+		private static Dictionary<string, string> NewGiftTasteData { get; set; }
+
+		/// <summary>
+		/// Gets the item list equivalent of the given universal preference type
+		/// </summary>
+		/// <param name="pref">The preference type to get</param>
+		/// <param name="forceOriginalData">Whether we need to get the original value</param>
+		/// <returns>The list of items</returns>
+		public static List<Item> GetUniversalPreferences(
+			UniversalPreferencesIndexes pref, bool forceOriginalData = false)
+		{
+            string universalLoveKey = UniversalPreferenceIndexes[pref];
+            string itemListString = Globals.Config.NPCs.RandomizeUniversalPreferences && !forceOriginalData
+                ? NewGiftTasteData[universalLoveKey]
+                : GiftTasteData[universalLoveKey];
+
+            return ItemList.GetItemListFromString(itemListString);
+        }
+
+        /// <summary>
+        /// Gets the item list equivalent of the given npc's loved items
+        /// </summary>
+        /// <param name="npc">The npc to get the list for</param>
+        /// <returns>The list of items</returns>
+        public static List<Item> GetLovedItems(GiftableNPCIndexes npc)
+        {
+			return GetIndividualPreferences(npc, NPCGiftTasteIndexes.Loves);
+        }
+
+        /// <summary>
+        /// Gets the item list equivalent of the given npc
+        /// </summary>
+        /// <param name="npc">The npc to get the list for</param>
+        /// <param name="pref">The preference type to get</param>
+        /// <returns>The list of items</returns>
+        public static List<Item> GetIndividualPreferences(GiftableNPCIndexes npc, NPCGiftTasteIndexes prefType)
+		{
+			string npcKey = GiftableNPCs[npc];
+            string npcDatastring = Globals.Config.NPCs.RandomizeUniversalPreferences
+                ? NewGiftTasteData[npcKey]
+                : GiftTasteData[npcKey];
+			string itemListString = npcDatastring.Split("/")[(int)prefType];
+
+            return ItemList.GetItemListFromString(itemListString);
+        }
+
         /// <summary>
         /// Randomize NPC Preferences information.
         /// </summary>
@@ -63,21 +156,21 @@ namespace Randomizer
         {   // Initialize gift taste data here so that it's reloaded in case of a locale change
             GiftTasteData = Globals.ModRef.Helper.GameContent
                 .Load<Dictionary<string, string>>("Data/NPCGiftTastes");
-            Dictionary<string, string> replacements = new();
+			NewGiftTasteData = new();
 
 			List<int> universalUnusedCategories = new(GiftableItemCategories.Keys);
 			List<Item> universalUnusedItems = ItemList.GetGiftables();
 
 			// Generate the universal preferences
-			foreach (string key in UniversalPreferenceKeys)
+			foreach (string key in UniversalPreferenceIndexes.Values)
 			{
-				replacements.Add(
+				NewGiftTasteData.Add(
                     key, 
 					GetUniversalPreferenceString(universalUnusedCategories, universalUnusedItems));
 			}
 
 			// Generate randomized NPC Preferences strings
-			foreach (string npcName in NPC.GiftableNPCs)
+			foreach (string npcName in GiftableNPCs.Values)
 			{
 				List<int> unusedCategories = new(GiftableItemCategories.Keys);
 				List<Item> unusedItems = ItemList.GetGiftables();
@@ -88,14 +181,11 @@ namespace Randomizer
                     giftTasteData[(int)index] = GetPreferenceString(index, unusedCategories, unusedItems);
 				}
 
-				replacements.Add(npcName, string.Join("/", giftTasteData));
+				NewGiftTasteData.Add(npcName, string.Join("/", giftTasteData));
 			}
 
-			// Update Loves/Hates for Bundle reqs
-			UpdateBundlePrefs(replacements);
-
-			WriteToSpoilerLog(replacements);
-			return replacements;
+			WriteToSpoilerLog();
+			return NewGiftTasteData;
 		}
 
 		/// <summary>
@@ -174,7 +264,7 @@ namespace Randomizer
 		/// <returns>A string of Item IDs with no leading/trailing whitespace.</returns>
 		private static string GetRandomItemString(List<Item> unusedItems, int quantity)
 		{
-			List<Item> giftableItems = new List<Item>(unusedItems);
+			List<Item> giftableItems = new(unusedItems);
 			string itemString = "";
 
 			for (int itemQuantity = quantity; itemQuantity > 0; itemQuantity--)
@@ -202,37 +292,16 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Updates Universal Loves, Universal Hates, and all NPC Loves for Bundles.
-		/// </summary>
-		private static void UpdateBundlePrefs(Dictionary<string, string> replacements)
-		{
-			List<Item> newLovesList = ItemList.GetItemListFromString(replacements["Universal_Love"], ' ');
-			List<Item> newHatesList = ItemList.GetItemListFromString(replacements["Universal_Hate"], ' ');
-
-			NPC.UpdateUniversalLoves(newLovesList);
-			NPC.UpdateUniversalHates(newHatesList);
-
-			foreach (KeyValuePair<string, string> NPCPreferences in replacements)
-			{
-				// If Universal Preference, skip
-				if (UniversalPreferenceKeys.Contains(NPCPreferences.Key)) { continue; }
-
-				string NPCLoves = NPCPreferences.Value.Split('/')[(int)NPCGiftTasteIndexes.Loves];
-				NPC.UpdateNPCLoves(NPCPreferences.Key, ItemList.GetItemListFromString(NPCLoves, ' '));
-			}
-		}
-
-		/// <summary>
 		/// Write to the spoiler log.
 		/// </summary>
-		private static void WriteToSpoilerLog(Dictionary<string, string> replacements)
+		private static void WriteToSpoilerLog()
 		{
 			if (!Globals.Config.NPCs.RandomizeIndividualPreferences && !Globals.Config.NPCs.RandomizeUniversalPreferences) { return; }
 
 			Globals.SpoilerWrite("===== NPC GIFT TASTES =====");
-			foreach (KeyValuePair<string, string> NPCPreferences in replacements)
+			foreach (KeyValuePair<string, string> NPCPreferences in NewGiftTasteData)
 			{
-				if (UniversalPreferenceKeys.Contains(NPCPreferences.Key))
+				if (UniversalPreferenceIndexes.ContainsValue(NPCPreferences.Key))
 				{
 					Globals.SpoilerWrite($"{NPCPreferences.Key.Replace('_', ' ')}: {TranslateIDs(NPCPreferences.Value)}");
 					Globals.SpoilerWrite("");

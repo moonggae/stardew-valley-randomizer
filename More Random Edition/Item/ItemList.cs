@@ -248,20 +248,23 @@ namespace Randomizer
 		/// Splits <paramref name="itemString"/> by <paramref name="separator"/> and returns a List&lt;Item&gt;.
 		/// </summary>
 		/// <param name="itemString">String of item IDs separated by a single character.</param>
-		/// <param name="separator">The character to split <c>itemString</c> by.</param>
-		/// <returns></returns>
-		public static List<Item> GetItemListFromString(string itemString, char separator)
+		/// <param name="separator">The character to split <c>itemString</c> by - defaults to space</param>
+		/// <returns />
+		public static List<Item> GetItemListFromString(string itemString, char separator = ' ')
 		{
 			List<Item> itemList = new();
 
 			string[] items = itemString.Trim().Split(separator);
 			foreach (string item in items)
 			{
-				int ID = int.Parse(item);
+				int itemId = int.Parse(item);
 				// Negative values represent Item Categories, not Items - ignore
-				if (ID > 0)
+				if (itemId > 0)
 				{
-					itemList.Add(Items[ID]);
+					// It's okay if the item doesn't exist, just skip it
+					if (Items.TryGetValue(itemId, out var retrievedItem)) {
+						itemList.Add(retrievedItem);
+					} 
 				}
 			}
 

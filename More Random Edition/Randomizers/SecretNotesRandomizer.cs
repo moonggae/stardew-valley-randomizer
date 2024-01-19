@@ -30,7 +30,8 @@ namespace Randomizer
 				int characterNum = Range.GetRandomValue(1, 3);
 				int itemNum = Range.GetRandomValue(5, 6) - characterNum;
 
-				List<string> NoteNPCs = Globals.RNGGetRandomValuesFromList(NPC.GiftableNPCs, characterNum);
+				List<string> NoteNPCs = Globals.RNGGetRandomValuesFromList(
+					PreferenceRandomizer.GiftableNPCs.Values.ToList(), characterNum);
 				string NPCLovesString = FormatRevealString(NoteNPCs, itemNum);
 
 				string dataWithoutReveal = secretNoteData[noteIndex].Split("%revealtaste")[0];
