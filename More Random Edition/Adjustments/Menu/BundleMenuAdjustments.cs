@@ -41,9 +41,29 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Adds tooltips for the bundle items so that you can see where to get fish
+		/// Replaces the bundle names with our custom ones
+		/// Only really necessary for non-English locales
 		/// </summary>
-		public static void AddDescriptionsToBundleTooltips()
+		/// <param name="menu">The menu to adjust</param>
+		public static void InsertCustomBundleNames(JunimoNoteMenu menu)
+		{
+            if (!Globals.Config.Bundles.Randomize)
+            {
+                return;
+            }
+
+            foreach (StardewValley.Menus.Bundle bundle in menu.bundles)
+            {
+                bundle.label = BundleRandomizer.BundleToName[bundle.bundleIndex];
+            }
+        }
+
+        /// <summary>
+        /// Adds tooltips for the bundle items so that you can see where to get fish
+        /// </summary>
+        /// 
+        //TODO: change the name of this to reflect the bundlefixes as well
+        public static void AddDescriptionsToBundleTooltips()
 		{
 			if (Game1.activeClickableMenu is not JunimoNoteMenu menu || 
 				!Globals.Config.Bundles.Randomize || 

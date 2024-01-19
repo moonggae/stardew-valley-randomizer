@@ -27,7 +27,7 @@ namespace Randomizer
             ShouldBeForagable = false;
 
             OverrideName = name;
-            Description = Globals.GetTranslation($"boots-{id}-description"); ;
+            Description = Globals.GetTranslation($"boots-{id}-description");
             NotActuallyPrice = notActuallyPrice;
             Defense = defense;
             Immunity = immunity;

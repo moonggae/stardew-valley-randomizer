@@ -6,12 +6,12 @@ using System.Linq;
 
 namespace Randomizer
 {
-	public class AssetEditor
+    public class AssetEditor
 	{
 		private readonly ModEntry _mod;
 		private Dictionary<string, string> _recipeReplacements = new();
 		private Dictionary<string, string> _bundleReplacements = new();
-		private Dictionary<string, string> _blueprintReplacements = new();
+        private Dictionary<string, string> _blueprintReplacements = new();
 		private Dictionary<string, string> _uiStringReplacements = new();
 		private Dictionary<string, string> _grandpaStringReplacements = new();
 		private Dictionary<string, string> _stringReplacements = new();
@@ -89,7 +89,7 @@ namespace Randomizer
                 {
                     e.Edit((asset) => ApplyEdits(asset, _objectInformationReplacements));
                 }
-            }
+            } 
         }
 
         /// <summary>
@@ -100,31 +100,31 @@ namespace Randomizer
         /// <returns>True if we should replace it; false otherwise</returns>
         private static bool ShouldReplaceAsset(AssetRequestedEventArgs e, string assetName)
         {
-            if (!e.Name.IsEquivalentTo(assetName))
+			if (!e.NameWithoutLocale.IsEquivalentTo(assetName))
             {
                 return false;
             }
 
-            if (e.Name.IsEquivalentTo("Data/CraftingRecipes")) { return Globals.Config.CraftingRecipes.Randomize; }
-            if (e.Name.IsEquivalentTo("Data/Bundles")) { return Globals.Config.Bundles.Randomize; }
-            if (e.Name.IsEquivalentTo("Data/Blueprints")) { return Globals.Config.RandomizeBuildingCosts; }
-            if (e.Name.IsEquivalentTo("Strings/StringsFromCSFiles")) { return true; }
-            if (e.Name.IsEquivalentTo("Strings/UI")) { return true; }
-			if (e.Name.IsEquivalentTo("Data/Events/Farm")) { return Globals.Config.Animals.RandomizePets; }
-            if (e.Name.IsEquivalentTo("Data/ObjectInformation")) { return true; }
-            if (e.Name.IsEquivalentTo("Data/Fish")) { return Globals.Config.Fish.Randomize; }
-            if (e.Name.IsEquivalentTo("Data/Quests") || e.Name.IsEquivalentTo("Data/mail")) { return Globals.Config.RandomizeQuests; }
-            if (e.Name.IsEquivalentTo("Data/Locations")) { return Globals.Config.Fish.Randomize || Globals.Config.RandomizeForagables || Globals.Config.AddRandomArtifactItem; }
-            if (e.Name.IsEquivalentTo("Strings/Locations")) { return Globals.Config.Crops.Randomize; } // For now, as the only thing is the sweet gem berry text
-            if (e.Name.IsEquivalentTo("Data/fruitTrees")) { return Globals.Config.RandomizeFruitTrees; }
-            if (e.Name.IsEquivalentTo("Data/Crops")) { return Globals.Config.Crops.Randomize; }
-            if (e.Name.IsEquivalentTo("Data/TV/CookingChannel")) { return Globals.Config.Crops.Randomize || Globals.Config.Fish.Randomize; }
-            if (e.Name.IsEquivalentTo("Data/weapons")) { return Globals.Config.Weapons.Randomize; }
-            if (e.Name.IsEquivalentTo("Data/Boots")) { return Globals.Config.Boots.Randomize; }
-            if (e.Name.IsEquivalentTo("Data/Monsters")) { return Globals.Config.Monsters.Randomize; }
-            if (e.Name.IsEquivalentTo("Data/NPCDispositions")) { return Globals.Config.NPCs.RandomizeBirthdays; }
-            if (e.Name.IsEquivalentTo("Data/NPCGiftTastes")) { return Globals.Config.NPCs.RandomizeIndividualPreferences || Globals.Config.NPCs.RandomizeUniversalPreferences; }
-            if (e.Name.IsEquivalentTo("Data/SecretNotes")) { return Globals.Config.NPCs.RandomizeIndividualPreferences; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/CraftingRecipes")) { return Globals.Config.CraftingRecipes.Randomize; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Bundles")) { return Globals.Config.Bundles.Randomize; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Blueprints")) { return Globals.Config.RandomizeBuildingCosts; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Strings/StringsFromCSFiles")) { return true; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Strings/UI")) { return true; }
+			if (e.NameWithoutLocale.IsEquivalentTo("Data/Events/Farm")) { return Globals.Config.Animals.RandomizePets; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/ObjectInformation")) { return true; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Fish")) { return Globals.Config.Fish.Randomize; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Quests") || e.Name.IsEquivalentTo("Data/mail")) { return Globals.Config.RandomizeQuests; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Locations")) { return Globals.Config.Fish.Randomize || Globals.Config.RandomizeForagables || Globals.Config.AddRandomArtifactItem; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Strings/Locations")) { return Globals.Config.Crops.Randomize; } // For now, as the only thing is the sweet gem berry text
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/fruitTrees")) { return Globals.Config.RandomizeFruitTrees; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Crops")) { return Globals.Config.Crops.Randomize; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/TV/CookingChannel")) { return Globals.Config.Crops.Randomize || Globals.Config.Fish.Randomize; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/weapons")) { return Globals.Config.Weapons.Randomize; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Boots")) { return Globals.Config.Boots.Randomize; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Monsters")) { return Globals.Config.Monsters.Randomize; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/NPCDispositions")) { return Globals.Config.NPCs.RandomizeBirthdays; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/NPCGiftTastes")) { return Globals.Config.NPCs.RandomizeIndividualPreferences || Globals.Config.NPCs.RandomizeUniversalPreferences; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/SecretNotes")) { return Globals.Config.NPCs.RandomizeIndividualPreferences; }
             return false;
         }
 
@@ -176,28 +176,34 @@ namespace Randomizer
         /// </summary>
         public void InvalidateCache()
 		{
-			_mod.Helper.GameContent.InvalidateCache("Data/CraftingRecipes");
-			_mod.Helper.GameContent.InvalidateCache("Data/Bundles");
-			_mod.Helper.GameContent.InvalidateCache("Data/Blueprints");
-			_mod.Helper.GameContent.InvalidateCache("Strings/StringsFromCSFiles");
-			_mod.Helper.GameContent.InvalidateCache("Strings/UI");
-			_mod.Helper.GameContent.InvalidateCache("Data/ObjectInformation");
-			_mod.Helper.GameContent.InvalidateCache("Data/Events/Farm");
-			_mod.Helper.GameContent.InvalidateCache("Data/Fish");
-			_mod.Helper.GameContent.InvalidateCache("Data/Quests");
-			_mod.Helper.GameContent.InvalidateCache("Data/mail");
-			_mod.Helper.GameContent.InvalidateCache("Data/Locations");
-			_mod.Helper.GameContent.InvalidateCache("Strings/Locations");
-			_mod.Helper.GameContent.InvalidateCache("Data/fruitTrees");
-			_mod.Helper.GameContent.InvalidateCache("Data/Crops");
-			_mod.Helper.GameContent.InvalidateCache("Data/TV/CookingChannel");
-			_mod.Helper.GameContent.InvalidateCache("Data/weapons");
-			_mod.Helper.GameContent.InvalidateCache("Data/Boots");
-			_mod.Helper.GameContent.InvalidateCache("Data/Monsters");
-			_mod.Helper.GameContent.InvalidateCache("Data/NPCDispositions");
-			_mod.Helper.GameContent.InvalidateCache("Data/NPCGiftTastes");
-            _mod.Helper.GameContent.InvalidateCache("Data/SecretNotes");
+            InvalidateCacheForDefaultAndCurrentLocales("Data/CraftingRecipes");
+            InvalidateCacheForDefaultAndCurrentLocales("Data/Bundles");
+            InvalidateCacheForDefaultAndCurrentLocales("Data/Blueprints");
+			InvalidateCacheForDefaultAndCurrentLocales("Strings/StringsFromCSFiles");
+			InvalidateCacheForDefaultAndCurrentLocales("Strings/UI");
+			InvalidateCacheForDefaultAndCurrentLocales("Data/ObjectInformation");
+			InvalidateCacheForDefaultAndCurrentLocales("Data/Events/Farm");
+			InvalidateCacheForDefaultAndCurrentLocales("Data/Fish");
+			InvalidateCacheForDefaultAndCurrentLocales("Data/Quests");
+			InvalidateCacheForDefaultAndCurrentLocales("Data/mail");
+			InvalidateCacheForDefaultAndCurrentLocales("Data/Locations");
+			InvalidateCacheForDefaultAndCurrentLocales("Strings/Locations");
+			InvalidateCacheForDefaultAndCurrentLocales("Data/fruitTrees");
+			InvalidateCacheForDefaultAndCurrentLocales("Data/Crops");
+			InvalidateCacheForDefaultAndCurrentLocales("Data/TV/CookingChannel");
+			InvalidateCacheForDefaultAndCurrentLocales("Data/weapons");
+			InvalidateCacheForDefaultAndCurrentLocales("Data/Boots");
+			InvalidateCacheForDefaultAndCurrentLocales("Data/Monsters");
+            InvalidateCacheForDefaultAndCurrentLocales("Data/NPCDispositions");
+            InvalidateCacheForDefaultAndCurrentLocales("Data/NPCGiftTastes");
+            InvalidateCacheForDefaultAndCurrentLocales("Data/SecretNotes");
 		}
+
+		public void InvalidateCacheForDefaultAndCurrentLocales(string assetName)
+		{
+            _mod.Helper.GameContent.InvalidateCache(assetName);
+            _mod.Helper.GameContent.InvalidateCache(Globals.GetLocalizedFileName(assetName));
+        }
 
 		/// <summary>
 		/// Calculates edits that need to happen before a save file is loaded
@@ -206,13 +212,13 @@ namespace Randomizer
 		{
 			CalculateAndInvalidateUIEdits();
 			_grandpaStringReplacements = StringsAdjustments.RandomizeGrandpasStory();
-		}
+        }
 
-		/// <summary>
-		/// Calculates the UI string replacements and invalidates the cache so it can be updated
-		/// Should be called on game load and after a language change
-		/// </summary>
-		public void CalculateAndInvalidateUIEdits()
+        /// <summary>
+        /// Calculates the UI string replacements and invalidates the cache so it can be updated
+        /// Should be called on game load and after a language change
+        /// </summary>
+        public void CalculateAndInvalidateUIEdits()
 		{
 			_uiStringReplacements = StringsAdjustments.ModifyRemixedBundleUI();
 			_mod.Helper.GameContent.InvalidateCache("Strings/UI");
@@ -251,7 +257,7 @@ namespace Randomizer
 			_secretNotesReplacements = SecretNotesRandomizer.FixSecretNotes(_preferenceReplacements);
 
 			_bundleReplacements = BundleRandomizer.Randomize();
-			MusicRandomizer.Randomize();
+            MusicRandomizer.Randomize();
 
 			QuestInformation questInfo = QuestRandomizer.Randomize();
 			_questReplacements = questInfo.QuestReplacements;
@@ -269,8 +275,8 @@ namespace Randomizer
 		public void UndoObjectInformationReplacements()
 		{
 			IgnoreObjectInformationReplacements = true;
-			_mod.Helper.GameContent.InvalidateCache("Data/ObjectInformation");
-		}
+            InvalidateCacheForDefaultAndCurrentLocales("Data/ObjectInformation");
+        }
 
 		/// <summary>
 		/// Turns off the flag to ignore object information replacements and invalidates the cache
@@ -279,8 +285,8 @@ namespace Randomizer
 		public void RedoObjectInformationReplacements()
 		{
 			IgnoreObjectInformationReplacements = false;
-			_mod.Helper.GameContent.InvalidateCache("Data/ObjectInformation");
-		}
+            InvalidateCacheForDefaultAndCurrentLocales("Data/ObjectInformation");
+        }
 
 		/// <summary>
 		/// Validates that all the items in the ObjectIndexes exist in the main item list

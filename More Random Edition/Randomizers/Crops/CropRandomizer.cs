@@ -3,10 +3,10 @@ using System.Linq;
 
 namespace Randomizer
 {
-	/// <summary>
-	/// Randomizes fruit trees
-	/// </summary>
-	public class CropRandomizer
+    /// <summary>
+    /// Randomizes fruit trees
+    /// </summary>
+    public class CropRandomizer
 	{
 		public static void Randomize(EditedObjectInformation editedObjectInfo)
 		{
@@ -45,29 +45,34 @@ namespace Randomizer
 			// Fruit tree asset replacements
 			var fruitTreeReplacements = new Dictionary<int, string>();
 
-			// The Trees are incremented starting with cherry
+			// The trees are incremented starting with cherry
+			// Note that "treeItems" refers to the item the fruit tree will grow
 			for (int i = 0; i < treeItems.Count; i++)
 			{
 				int price = prices[i];
-				string season = seasons[i];
+                int fruitTreeId = fruitTreesIds[i];
+                string season = seasons[i];
 				string seasonDisplay = Globals.GetTranslation($"seasons-{season}");
 				Item treeItem = treeItems[i];
-				string treeItemName = treeItem.DisplayName;
-				string fruitTreeName = treeItem.Id == fruitTreesIds[i] ?
+
+				string newDispName = treeItem.Id == fruitTreesIds[i] ?
 					Globals.GetTranslation("item-recursion-sapling-name") :
-					Globals.GetTranslation("sapling-text", new { itemName = treeItemName });
-				string fruitTreeEnglishName = treeItem.Id == fruitTreesIds[i] ?
-					"Recursion Sapling" :
-					$"{treeItem.Name} Sapling";
+					Globals.GetTranslation("sapling-text", new { itemName = treeItem.DisplayName });
 
-				int fruitTreeId = fruitTreesIds[i];
-
-				string fruitTreeValue = $"{i}/{season}/{treeItem.Id}/{price}";
+				// Make the fruit tree grow the correct item
+                string fruitTreeValue = $"{i}/{season}/{treeItem.Id}/{price}";
 				editedObjectInfo.FruitTreeReplacements[fruitTreeId] = fruitTreeValue;
 
-				ItemList.Items[fruitTreeId].OverrideName = fruitTreeEnglishName;
-				string fruitTreeObjectValue = $"{fruitTreeName}/{price / 2}/-300/Basic -74/{fruitTreeName}/{Globals.GetTranslation("sapling-description", new { itemName = treeItemName, season = seasonDisplay })}";
-				editedObjectInfo.ObjectInformationReplacements[fruitTreeId] = fruitTreeObjectValue;
+				// Replace the fruit tree name/price/description
+                string[] fruitTreeData = ItemList.OriginalItemList[fruitTreeId].Split("/");
+				fruitTreeData[(int)ObjectInformationIndexes.Price] = $"{ price / 2 }";
+                fruitTreeData[(int)ObjectInformationIndexes.DisplayName] = newDispName;
+				fruitTreeData[(int)ObjectInformationIndexes.Description] = 
+					Globals.GetTranslation(
+						"sapling-description", 
+						new { itemName = newDispName, season = seasonDisplay });
+
+				editedObjectInfo.ObjectInformationReplacements[fruitTreeId] = string.Join("/", fruitTreeData);
 			}
 		}
 
@@ -243,7 +248,7 @@ namespace Randomizer
 			Item rice = ItemList.Items[(int)ObjectIndexes.Rice];
 			rice.OverrideName = riceName;
 			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.Rice] =
-				$"{riceName}/100/5/Basic/{riceName}/{Globals.GetTranslation("item-rice-description")}";
+				$"{ItemList.OriginalItemList[rice.Id]}/100/5/Basic/{riceName}/{Globals.GetTranslation("item-rice-description")}";
 		}
 
 		/// <summary>

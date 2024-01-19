@@ -512,15 +512,14 @@ namespace Randomizer
 			return Items[totemId];
         }
 
-        public static Dictionary<int, Item> Items;
-		static ItemList()
-		{
-			Initialize();
-		}
+		public static Dictionary<int, string> OriginalItemList { get; private set; }
+        public static Dictionary<int, Item> Items { get; private set; }
 
 		public static void Initialize()
 		{
-			Items = new Dictionary<int, Item>
+			OriginalItemList = Globals.ModRef.Helper.GameContent
+				.Load<Dictionary<int, string>>("Data/ObjectInformation");
+            Items = new Dictionary<int, Item>
 			{ 
 				// Craftable items - Impossible by default
 				{ (int)ObjectIndexes.WoodFence, new CraftableItem((int)ObjectIndexes.WoodFence, "/Field/322/false/l 0", CraftableCategories.EasyAndNeedMany) },
@@ -1330,7 +1329,19 @@ namespace Randomizer
 			{(int)ObjectIndexes.PinkyLemon, 161},
 			{(int)ObjectIndexes.Foroguemon, 162},
 			{(int)ObjectIndexes.SolidGoldLewis, 164},
-			{(int)ObjectIndexes.StardewHeroTrophy, 116}
-		};
-	}
+			{(int)ObjectIndexes.StardewHeroTrophy, 116},
+            {(int)ObjectIndexes.Keg, 12}
+        };
+
+        /// <summary>
+        /// Gets the value currently in the ObjectInformation asset
+        /// </summary>
+        /// <param name="dataToGet">The index of the data to retrieve</param>
+        /// <returns>The data</returns>
+        public static string GetOriginalItemData(int itemId, ObjectInformationIndexes dataToGet)
+        {
+			if (itemId < 0) { return ""; }
+            return OriginalItemList[itemId].Split("/")[(int)dataToGet];
+        }
+    }
 }

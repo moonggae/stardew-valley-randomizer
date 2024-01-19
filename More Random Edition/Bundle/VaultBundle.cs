@@ -41,10 +41,7 @@ namespace Randomizer
 			}
 
 			RequiredItems = new List<RequiredItem> { new RequiredItem() { MoneyAmount = moneyAmount } };
-
-			string moneyString = moneyAmount.ToString("N0", new CultureInfo(Globals.ModRef.Helper.Translation.Locale));
-			string bundleNameFlavor = Globals.GetTranslation($"{BundleType.ToString()}-{bundleNameFlavorID}");
-			Name = $"{Globals.GetTranslation("vault-money-format", new { moneyString })}: {bundleNameFlavor}";
+            SetVaultBundleName(moneyAmount, bundleNameFlavorID);
 			ImageNameSuffix = $"-{bundleNameFlavorID}";
 
 			Color = Globals.RNGGetRandomValueFromList(

@@ -39,11 +39,21 @@ namespace Randomizer
 					return OverrideDisplayName;
 				}
 
-				return Globals.GetTranslation($"item-{Id}-display-name");
-			}
+                return ItemList.GetOriginalItemData(Id, ObjectInformationIndexes.DisplayName);
+            }
 		}
 		public string OverrideName { get; set; }
 		public string OverrideDisplayName { get; set; } // Used in the xnb string if it is populated
+		/// <summary>
+		/// This is the first field in the XNB file - always contains the English name
+		/// </summary>
+		public string EnglishName
+		{
+			get
+			{
+				return ItemList.GetOriginalItemData(Id, ObjectInformationIndexes.Name);
+            }
+		}
 		public LocationData ForagableLocationData { get; } = new LocationData();
 		public bool ShouldBeForagable { get; set; }
 		public bool IsForagable

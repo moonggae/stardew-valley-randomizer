@@ -46,7 +46,6 @@ namespace Randomizer
             else if (_customAssetReplacements.TryGetValue(e.Name.BaseName, out string customAsset))
             {
                 e.LoadFromModFile<Texture2D>(customAsset, AssetLoadPriority.Medium);
-				_customAssetReplacements.Remove(e.Name.BaseName);
             } 
 
 			// Files that we have in memory: we're replacing an xnb asset with a Texture2D object
@@ -56,7 +55,6 @@ namespace Randomizer
 				{
 					var editor = asset.AsImage();
 					editor.PatchImage(editedAsset);
-					_editedAssetReplacements.Remove(e.Name.BaseName);
                 });
             }
         }
@@ -104,11 +102,6 @@ namespace Randomizer
 			{
 				_mod.Helper.GameContent.InvalidateCache(assetName);
 			}
-
-            foreach (string assetName in _editedAssetReplacements.Keys)
-            {
-                _mod.Helper.GameContent.InvalidateCache(assetName);
-            }
         }
 
         /// <summary>
@@ -187,11 +180,21 @@ namespace Randomizer
 
 		/// <summary>
 		/// Adds the image builder's modified asset to the dictionary
+        /// Replace the localized version - our cache invalidator will invalidate it and the base one
 		/// </summary>
 		/// <param name="imageBuilder">The image builder</param>
 		private void HandleImageReplacement(ImageBuilder imageBuilder)
 		{
-            AddReplacement(imageBuilder.StardewAssetPath, imageBuilder.GenerateModifiedAsset());
-		}
+            AddReplacement(
+                Globals.GetLocalizedFileName(imageBuilder.StardewAssetPath), 
+                imageBuilder.GenerateModifiedAsset());
+
+            // Unclear on the best way to do this - but invalidate the cache both for
+            // The current locale, and the localized one, since not all assets
+            // have translations for all locales
+            _mod.Helper.GameContent.InvalidateCache
+                (Globals.GetLocalizedFileName(imageBuilder.StardewAssetPath));
+            _mod.Helper.GameContent.InvalidateCache(imageBuilder.StardewAssetPath);
+        }
 	}
 }

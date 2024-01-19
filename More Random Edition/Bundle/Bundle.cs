@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using static StardewValley.LocalizedContentManager;
@@ -24,7 +25,49 @@ namespace Randomizer
 				return $"{roomName}/{Id}";
 			}
 		}
-		public string Name { get; set; }
+		/// <summary>
+		/// The name to display to users
+		/// It is important for this to NEVER be set outside of SetBundleName
+		/// </summary>
+		public string DisplayName { get; private set; }
+
+        /// <summary>
+        /// The english name - this is the one we will use as the English display name,
+        /// as well as to save the data (so other locales don't crash)
+        /// It is important for this to NEVER be set outside of SetBundleName
+        /// </summary>
+        private string EnglishName { get; set; }
+
+		/// <summary>
+		/// Sets the bundle display and english names by looking up the translation
+		/// </summary>
+		/// <param name="translationKey">The key that's in the i18n files</param>
+		/// <param name="obj">The  anonymouse oobject used in the translation</param>
+		public void SetBundleName(string translationKey, dynamic obj = null)
+		{
+            DisplayName = Globals.GetTranslation(translationKey, obj);
+            EnglishName = Globals.GetEnglishTranslation(translationKey, obj);
+        }
+
+		/// <summary>
+		/// Sets the display and english names for the vault
+		/// </summary>
+		/// <param name="moneyAmount">The amount of mone the bundle is worth</param>
+		/// <param name="bundleFlavorId">The ID of the flavor text</param>
+		public void SetVaultBundleName(int moneyAmount, int bundleFlavorId)
+		{
+			string moneyFormatKey = "vault-money-format";
+            string moneyAmountStringLocalized = moneyAmount.ToString("N0", new CultureInfo(Globals.ModRef.Helper.Translation.Locale));
+            string bundleNameFlavorLocalized = Globals.GetTranslation($"{BundleType}-{bundleFlavorId}");
+            string moneyStringLocalized = Globals.GetTranslation(moneyFormatKey, new { moneyString = moneyAmountStringLocalized });
+            DisplayName = $"{moneyStringLocalized}: {bundleNameFlavorLocalized}";
+
+            string moneyAmountStringEnglish = moneyAmount.ToString("N0", new CultureInfo("en-US"));
+            string bundleNameFlavorEnglish = Globals.GetEnglishTranslation($"{BundleType}-{bundleFlavorId}");
+            string moneyStringEnglish = Globals.GetTranslation(moneyFormatKey, new { moneyString = moneyAmountStringEnglish });
+            EnglishName = $"{moneyStringEnglish}: {bundleNameFlavorEnglish}";
+        }
+
 		public RequiredItem Reward { get; set; }
 		public List<RequiredItem> RequiredItems { get; set; }
 		public BundleColors Color { get; set; }
@@ -155,11 +198,10 @@ namespace Randomizer
 			string minRequiredItemsString = "";
 			if (Room != CommunityCenterRooms.Vault && MinimumRequiredItems != null && MinimumRequiredItems > 0)
 			{
-				minRequiredItemsString = $"/{MinimumRequiredItems.ToString()}";
+				minRequiredItemsString = $"/{MinimumRequiredItems}";
 			}
 
-			string displayNameString = Globals.ModRef.Helper.Translation.LocaleEnum == LanguageCode.en ? "" : $"/{Name}";
-			return $"{Name}/{rewardString}/{GetRewardStringForRequiredItems()}/{Color:D}{minRequiredItemsString}{displayNameString}";
+            return $"{EnglishName}/{rewardString}/{GetRewardStringForRequiredItems()}/{Color:D}{minRequiredItemsString}";
 		}
 
 		/// <summary>
@@ -170,7 +212,7 @@ namespace Randomizer
 		{
 			if (Reward?.Item == null)
 			{
-				Globals.ConsoleError($"No reward item defined for bundle: {Name}");
+				Globals.ConsoleError($"No reward item defined for bundle: {DisplayName}");
 				return "O 388 1";
 			}
 
@@ -195,7 +237,7 @@ namespace Randomizer
 		{
 			if (RequiredItems.Count == 0)
 			{
-				Globals.ConsoleError($"No items defined for bundle {Name}");
+				Globals.ConsoleError($"No items defined for bundle {DisplayName}");
 				return "";
 			}
 
@@ -262,7 +304,7 @@ namespace Randomizer
 			switch (BundleType)
 			{
 				case BundleTypes.AllRandom:
-					Name = Globals.GetTranslation("bundle-random-all");
+					SetBundleName("bundle-random-all");
 					potentialItems = RequiredItem.CreateList(ItemList.Items.Values.Where(x =>
 						x.DifficultyToObtain < ObtainingDifficulties.Impossible &&
 						x.Id > -4)
@@ -276,18 +318,15 @@ namespace Randomizer
 					do
 					{
 						randomLetter = letters[Range.GetRandomValue(0, letters.Length - 1)].ToString();
-						letters.Replace(randomLetter, "");
+                        letters = letters.Replace(randomLetter, "");
 						potentialItems = RequiredItem.CreateList(
 							ItemList.Items.Values.Where(x =>
-								(
-									(x.OverrideDisplayName == null && x.Name.StartsWith(randomLetter, StringComparison.InvariantCultureIgnoreCase)) ||
-									(x.OverrideDisplayName != null && x.OverrideDisplayName.StartsWith(randomLetter, StringComparison.InvariantCultureIgnoreCase))
-								) &&
-								x.Id > -4
+								x.EnglishName.StartsWith(randomLetter, StringComparison.InvariantCultureIgnoreCase) &&
+								x.Id >= 0
 							).ToList()
 						);
 					} while (potentialItems.Count < 4);
-					Name = Globals.GetTranslation("bundle-random-letter", new { letter = randomLetter });
+					SetBundleName("bundle-random-letter", new { letter = randomLetter });
 					ImageNameSuffix = randomLetter;
 					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
 					MinimumRequiredItems = 3;

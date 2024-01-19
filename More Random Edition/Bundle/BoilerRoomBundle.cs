@@ -18,7 +18,7 @@ namespace Randomizer
 			switch (BundleType)
 			{
 				case BundleTypes.BoilerArtifacts:
-					Name = Globals.GetTranslation("bundle-boiler-artifacts");
+					SetBundleName("bundle-boiler-artifacts");
 					potentialItems = RequiredItem.CreateList(
 						ItemList.GetArtifacts().Where(x => x.DifficultyToObtain < ObtainingDifficulties.RareItem).ToList()
 					);
@@ -27,14 +27,14 @@ namespace Randomizer
 					Color = BundleColors.Orange;
 					break;
 				case BundleTypes.BoilerMinerals:
-					Name = Globals.GetTranslation("bundle-boiler-minerals");
+					SetBundleName("bundle-boiler-minerals");
 					potentialItems = RequiredItem.CreateList(ItemList.GetGeodeMinerals());
 					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
 					MinimumRequiredItems = Range.GetRandomValue(4, 6);
 					Color = BundleColors.Purple;
 					break;
 				case BundleTypes.BoilerGeode:
-					Name = Globals.GetTranslation("bundle-boiler-geode");
+					SetBundleName("bundle-boiler-geode");
 					RequiredItems = new List<RequiredItem>
 					{
 						new RequiredItem((int)ObjectIndexes.Geode, 1, 10),
@@ -45,7 +45,7 @@ namespace Randomizer
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.BoilerGemstone:
-					Name = Globals.GetTranslation("bundle-boiler-gemstone");
+					SetBundleName("bundle-boiler-gemstone");
 					potentialItems = RequiredItem.CreateList(new List<int>
 					{
 						(int)ObjectIndexes.Quartz,
@@ -65,7 +65,7 @@ namespace Randomizer
 					Color = BundleColors.Blue;
 					break;
 				case BundleTypes.BoilerMetal:
-					Name = Globals.GetTranslation("bundle-boiler-metal");
+					SetBundleName("bundle-boiler-metal");
 					potentialItems = new List<RequiredItem>
 					{
 						new RequiredItem((int)ObjectIndexes.CopperOre, 5, 10),
@@ -82,7 +82,7 @@ namespace Randomizer
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.BoilerExplosive:
-					Name = Globals.GetTranslation("bundle-boiler-explosive");
+					SetBundleName("bundle-boiler-explosive");
 					RequiredItems = new List<RequiredItem>
 					{
 						new RequiredItem((int)ObjectIndexes.CherryBomb, 1, 5),
@@ -92,7 +92,7 @@ namespace Randomizer
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.BoilerRing:
-					Name = Globals.GetTranslation("bundle-boiler-ring");
+					SetBundleName("bundle-boiler-ring");
 					RequiredItems = RequiredItem.CreateList(
 						Globals.RNGGetRandomValuesFromList(ItemList.GetRings(), 8)
 					);
@@ -100,7 +100,7 @@ namespace Randomizer
 					Color = BundleColors.Yellow;
 					break;
 				case BundleTypes.BoilerSpoopy:
-					Name = Globals.GetTranslation("bundle-boiler-spoopy");
+					SetBundleName("bundle-boiler-spoopy");
 					potentialItems = new List<RequiredItem>
 					{
 						new RequiredItem((int)ObjectIndexes.Pumpkin, 6),
@@ -118,7 +118,7 @@ namespace Randomizer
 					Color = BundleColors.Purple;
 					break;
 				case BundleTypes.BoilerMonster:
-					Name = Globals.GetTranslation("bundle-boiler-monster");
+					SetBundleName("bundle-boiler-monster");
 					RequiredItems = new List<RequiredItem>()
 					{
 						new RequiredItem((int)ObjectIndexes.BugMeat, 10, 50),
@@ -130,7 +130,7 @@ namespace Randomizer
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.BoilerColorBlack:
-					Name = Globals.GetTranslation("bundle-boiler-black");
+					SetBundleName("bundle-boiler-black");
 					potentialItems = RequiredItem.CreateList(new List<int>
 					{
 						(int)ObjectIndexes.RareDisc,
@@ -151,7 +151,7 @@ namespace Randomizer
 					Color = BundleColors.Purple;
 					break;
 				case BundleTypes.BoilerColorRed:
-					Name = Globals.GetTranslation("bundle-boiler-red");
+					SetBundleName("bundle-boiler-red");
 					potentialItems = RequiredItem.CreateList(new List<int>
 					{
 						(int)ObjectIndexes.Ruby,
@@ -188,7 +188,7 @@ namespace Randomizer
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.BoilerColorGray:
-					Name = Globals.GetTranslation("bundle-boiler-gray");
+					SetBundleName("bundle-boiler-gray");
 					potentialItems = RequiredItem.CreateList(new List<int>
 					{
 						(int)ObjectIndexes.Stone,

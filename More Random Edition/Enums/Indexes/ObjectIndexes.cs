@@ -3,7 +3,6 @@
 	public enum ObjectIndexes
 	{
         AnyFish = -4,
-        Keg = 12, // This is actually a BigCraftable...
         WildHorseradish = 16,
         Daffodil = 18,
         Leek = 20,
@@ -583,6 +582,7 @@
         Foroguemon = -149,
         SolidGoldLewis = -150,
         StardewHeroTrophy = -151,
-        MiniJukebox = -152
+        MiniJukebox = -152,
+        Keg = -153
     };
 }

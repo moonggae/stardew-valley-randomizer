@@ -62,11 +62,21 @@ namespace Randomizer
 		/// <returns>The retrieved translation</returns>
 		public static string GetTranslation(string key, object tokens = null)
 		{
-			if (tokens == null)
-			{
-				return ModRef.Helper.Translation.Get(key);
-			}
+			
             return ModRef.Helper.Translation.Get(key, tokens);
+		}
+
+        /// <summary>
+        /// Gets the English translation of a key
+        /// Used when we need this, but are using another locale
+        /// </summary>
+        /// <param name="key">The translation key</param>
+        /// <param name="tokens">Tokens to replace in the translation</param>
+        /// <returns>The translation</returns>
+        public static string GetEnglishTranslation(string key, object tokens = null)
+		{
+			var allTranslations = ModRef.Helper.Translation.GetInAllLocales(key);
+			return allTranslations["default"].Tokens(tokens);
 		}
 
 		/// <summary>

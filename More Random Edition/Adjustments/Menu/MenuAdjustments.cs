@@ -52,6 +52,7 @@ namespace Randomizer
             if (e.NewMenu is JunimoNoteMenu openedBundleMenu)
             {
                 BundleMenuAdjustments.FixRingSelection(openedBundleMenu);
+                BundleMenuAdjustments.InsertCustomBundleNames(openedBundleMenu);
             }
 
             // Shops - adjust on open

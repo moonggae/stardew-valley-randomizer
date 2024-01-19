@@ -17,7 +17,7 @@ namespace Randomizer
 			switch (BundleType)
 			{
 				case BundleTypes.JojaMissing:
-					Name = Globals.GetTranslation("bundle-joja-missing");
+					SetBundleName("bundle-joja-missing");
 
 					RequiredItems = new List<RequiredItem>
 					{
