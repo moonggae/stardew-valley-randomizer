@@ -1,47 +1,41 @@
 ﻿using StardewValley;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Randomizer
 {
-	/// <summary>
-	/// Represents a boot - doesn't use the same IDs as normal items, but we'll treat it like an item
-	/// </summary>
-	public class BootItem : Item
+    /// <summary>
+    /// Represents a boot - doesn't use the same IDs as normal items, but we'll treat it like an item
+    /// </summary>
+    public class BootItem : Item
 	{
 		public string Description { get; set; }
-		public int NotActuallyPrice { get; set; }
 		public int Defense { get; set; }
 		public int Immunity { get; set; }
-		public int ColorSheetIndex { get; set; }
 
         public BootItem(
 			int id,
 			string name,
-			int notActuallyPrice,
 			int defense,
-			int immunity,
-			int colorSheetIndex) : base(id)
+			int immunity) : base(id)
         {
             DifficultyToObtain = ObtainingDifficulties.NonCraftingItem;
             CanStack = false;
             ShouldBeForagable = false;
 
             OverrideName = name;
-            Description = Globals.GetTranslation($"boots-{id}-description");
-            NotActuallyPrice = notActuallyPrice;
+            Description = BootRandomizer.BootData[id].Split("/")[(int)BootIndexes.Description];
             Defense = defense;
             Immunity = immunity;
-            ColorSheetIndex = colorSheetIndex;
         }
 
         public BootItem(
 			int id,
 			string name,
 			string description,
-			int notActuallyPrice,
 			int defense,
-			int immunity,
-			int colorSheetIndex) : this(id, name, notActuallyPrice, defense, immunity, colorSheetIndex)
+			int immunity) : this(id, name, defense, immunity)
 		{
 			if (Globals.ModRef.Helper.Translation.LocaleEnum == LocalizedContentManager.LanguageCode.en)
 			{
@@ -65,7 +59,21 @@ namespace Randomizer
 		/// <returns />
 		public override string ToString()
 		{
-			return $"{Name}/{Description}/{NotActuallyPrice}/{Defense}/{Immunity}/{ColorSheetIndex}/{Name}";
+			List<string> originalData = BootRandomizer.BootData[Id].Split("/").ToList();
+            originalData[(int)BootIndexes.Name] = OverrideName;
+            originalData[(int)BootIndexes.Description] = Description;
+			originalData[(int)BootIndexes.Price] = GetBuyPrice().ToString();
+            originalData[(int)BootIndexes.Defense] = Defense.ToString();
+            originalData[(int)BootIndexes.Immunity] = Immunity.ToString();
+
+			// The display name field does not exist in English
+			int displayNameIndex = (int)BootIndexes.DisplayName;
+            if (originalData.Count > (int)BootIndexes.DisplayName)
+			{
+				originalData[displayNameIndex] = OverrideName;
+			} 
+
+            return string.Join("/", originalData);
 		}
 	}
 }

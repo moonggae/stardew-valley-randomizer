@@ -4,25 +4,39 @@ namespace Randomizer
 {
 	public class BootRandomizer
 	{
-		public static Dictionary<int, BootItem> Boots = new Dictionary<int, BootItem>();
+		public readonly static Dictionary<int, BootItem> Boots = new();
 
-		/// <summary>
-		/// Randomizes boots - currently only changes defense and immunity
-		/// </summary>
-		/// <returns />
-		public static Dictionary<int, string> Randomize()
+        /// <summary>
+        /// The data from Data/Boots.xnb
+        /// </summary>
+        public static Dictionary<int, string> BootData { get; private set; }
+
+        /// <summary>
+        /// Randomizes boots - currently only changes defense and immunity
+        /// </summary>
+        /// <returns />
+        public static Dictionary<int, string> Randomize()
 		{
+            // Initialize boot data here so that it's reloaded in case of a locale change
+            BootData = Globals.ModRef.Helper.GameContent
+                .Load<Dictionary<int, string>>("Data/Boots");
 			Boots.Clear();
-			WeaponAndArmorNameRandomizer nameRandomizer = new WeaponAndArmorNameRandomizer();
-			List<string> descriptions = NameAndDescriptionRandomizer.GenerateBootDescriptions(BootData.AllBoots.Count);
 
-			Dictionary<int, string> bootReplacements = new Dictionary<int, string>();
-			List<BootItem> bootsToUse = new List<BootItem>();
+			WeaponAndArmorNameRandomizer nameRandomizer = new();
+			List<string> descriptions = 
+				NameAndDescriptionRandomizer.GenerateBootDescriptions(BootData.Count);
 
-			for (int i = 0; i < BootData.AllBoots.Count; i++)
+			Dictionary<int, string> bootReplacements = new();
+			List<BootItem> bootsToUse = new();
+
+			int index = 0;
+			foreach (KeyValuePair<int, string> bootData in BootData)
 			{
-				BootItem originalBoot = BootData.AllBoots[i];
-				int statPool = Globals.RNGGetIntWithinPercentage(originalBoot.Defense + originalBoot.Immunity, 30);
+				string[] bootStringData = bootData.Value.Split("/");
+				int originalDefense = int.Parse(bootStringData[(int)BootIndexes.Defense]);
+                int originalImmunity = int.Parse(bootStringData[(int)BootIndexes.Immunity]);
+
+                int statPool = Globals.RNGGetIntWithinPercentage(originalDefense + originalImmunity, 30);
 				int defense = Range.GetRandomValue(0, statPool);
 				int immunity = statPool - defense;
 
@@ -39,18 +53,17 @@ namespace Randomizer
 					}
 				}
 
-				BootItem newBootItem = new BootItem(
-					originalBoot.Id,
+				BootItem newBootItem = new(
+					bootData.Key,
 					nameRandomizer.GenerateRandomBootName(),
-					descriptions[i],
-					originalBoot.NotActuallyPrice,
+					descriptions[index],
 					defense,
-					immunity,
-					originalBoot.ColorSheetIndex
-				);
+					immunity);
 
 				bootsToUse.Add(newBootItem);
 				Boots.Add(newBootItem.Id, newBootItem);
+
+				index++;
 			}
 
 			foreach (BootItem bootToAdd in bootsToUse)
