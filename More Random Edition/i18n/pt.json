@@ -224,8 +224,6 @@
 	"coffee-bean-name": "Grão de {{itemName}}",
 	"unmilled-rice-name": "{{itemName}} não moído",
 
-	"item-rice-description": "Um grão básico geralmente servido com legumes.",
-	"item-coffee-description": "Possui um cheiro delicioso. Com certeza vai lhe dar energia extra.",
 	"item-coffee-bean-description": "Plante na primavera ou no verão para conseguir {{itemName}}. Ponha cinco grãos num barril para fazer {{coffeeName}}.",
 	"item-coffee-name": "{{itemName}} quente",
 	"item-recursion-sapling-name": "Rebento de recursão",

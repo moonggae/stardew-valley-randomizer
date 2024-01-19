@@ -224,8 +224,6 @@
 	"coffee-bean-name": "{{itemName}}bab",
 	"unmilled-rice-name": "Darálatlan {{itemName}}",
 
-	"item-rice-description": "Egy alap gabona, amit gyakran tálalnak zöldségek alatt.",
-	"item-coffee-description": "Finom az illata. Ez majd biztosan felélénkít.",
 	"item-coffee-bean-description": "Tavasszal vagy nyáron ültesd el, hogy {{itemName}} növényt termessz. Egy keghordóba ötöt helyezve {{coffeeName}} lesz belőle.",
 	"item-coffee-name": "Forró {{itemName}}",
 	"item-recursion-sapling-name": "Rekurziós csemete",

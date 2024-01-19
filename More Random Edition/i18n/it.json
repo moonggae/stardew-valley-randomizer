@@ -224,8 +224,6 @@
 	"coffee-bean-name": "Chicco di {{itemName}}",
 	"unmilled-rice-name": "{{itemName}} non macinato",
 
-	"item-rice-description": "Un cereale basilare servito spesso con verdure.",
-	"item-coffee-description": "Ha un aroma delizioso. Ti darà una bella carica.",
 	"item-coffee-bean-description": "Piantalo in primavera o in estate per far crescere una pianta di {{itemName}}. Metti cinque chicchi in un barilotto per fare il {{coffeeName}}.",
 	"item-coffee-name": "{{itemName}} caldo",
 	"item-recursion-sapling-name": "Alberello di ricorsione",

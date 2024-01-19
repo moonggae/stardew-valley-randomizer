@@ -224,8 +224,6 @@
 	"coffee-bean-name": "{{itemName}}豆",
 	"unmilled-rice-name": "未碾{{itemName}}",
 
-	"item-rice-description": "基本的粮食，可以配菜食用。",
-	"item-coffee-description": "闻上去就很好喝。它肯定能让你充满活力。",
 	"item-coffee-bean-description": "在夏季种植，长成{{itemName}}树。在小桶里放五颗{{itemName}}来制作{{coffeeName}}。",
 	"item-coffee-name": "热{{itemName}}",
 	"item-recursion-sapling-name": "递归树苗",

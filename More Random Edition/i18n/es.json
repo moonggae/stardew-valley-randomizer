@@ -224,8 +224,6 @@
 	"coffee-bean-name": "Grano de {{itemName}}",
 	"unmilled-rice-name": "{{itemName}} sin moler",
 
-	"item-rice-description": "Un cereal básico que se suele servir con verduras.",
-	"item-coffee-description": "Huele de maravilla. Seguro que te da energía.",
 	"item-coffee-bean-description": "Plante en primavera o verano para cultivar {{itemName}} plantas. Coloque cinco frijoles en un barril para hacer {{coffeeName}}.",
 	"item-coffee-name": "{{itemName}} caliente",
 	"item-recursion-sapling-name": "Retoño recursivo",

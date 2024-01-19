@@ -224,8 +224,6 @@
 	"coffee-bean-name": "{{itemName}} зерно",
 	"unmilled-rice-name": "Не измельченный {{itemName}}",
 
-	"item-rice-description": "Обычный злак, который часто подают с овощами.",
-	"item-coffee-description": "Пахнет отлично. Он определeнно даст вам прилив энергии.",
 	"item-coffee-bean-description": "Сажайте летом, чтобы вырастить {{itemName}} дерево. Положите 5 зерен в бочонок, чтобы приготовить {{coffeeName}}.",
 	"item-coffee-name": "Горячий {{itemName}}",
 	"item-recursion-sapling-name": "Recursion {{itemName}}",

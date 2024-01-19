@@ -224,8 +224,6 @@
 	"coffee-bean-name": "{{itemName}} Bean",
 	"unmilled-rice-name": "Unmilled {{itemName}}",
 
-	"item-rice-description": "A basic grain often served under vegetables.",
-	"item-coffee-description": "It smells delicious. This is sure to give you a boost.",
 	"item-coffee-bean-description": "Plant in spring or summer to grow {{itemName}} plants. Place five beans in a keg to make {{coffeeName}}.",
 	"item-coffee-name": "Hot {{itemName}}",
 	"item-recursion-sapling-name": "Recursion Sapling",

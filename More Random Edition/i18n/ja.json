@@ -224,8 +224,6 @@
 	"coffee-bean-name": "{{itemName}}豆",
 	"unmilled-rice-name": "未粉砕{{itemName}}",
 
-	"item-rice-description": "水田で栽培される穀物。ときどき野菜にそえられて出てくる。",
-	"item-coffee-description": "かぐわしい香りの飲みもの。飲めばからだがシャキッとする。",
 	"item-coffee-bean-description": "夏に植えると{{itemName}}の木がそだつ。とれた豆は、5つ醸造ダルに入れれば{{coffeeName}}ができる。",
 	"item-coffee-name": "ホット{{itemName}}",
 	"item-recursion-sapling-name": "再帰苗木",

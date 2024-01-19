@@ -224,8 +224,6 @@
 	"coffee-bean-name": "{{itemName}}bohne",
 	"unmilled-rice-name": "Ungemahlener {{itemName}}",
 
-	"item-rice-description": "Standardgetreide, das oft mit Gemüse serviert wird.",
-	"item-coffee-description": "Riecht lecker. Gibt dir sicher einen Schub.",
 	"item-coffee-name": "Heißer {{itemName}}",
 	"item-coffee-bean-description": "Pflanze sie im Sommer, um eine {{itemName}} Planze wachsen zu lassen. Lege fünf Bohnen in ein Fass, um {{coffeeName}} zu machen.",
 	"item-recursion-sapling-name": "Rekursionsschössling",

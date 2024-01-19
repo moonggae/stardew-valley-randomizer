@@ -224,8 +224,6 @@
 	"coffee-bean-name": "{{itemName}} Çekirdeği",
 	"unmilled-rice-name": "Öğütülmemiş {{itemName}}",
 
-	"item-rice-description": "Genellikle sebzelerin altına konulan tahıl türü.",
-	"item-coffee-description": "Harika kokuyor. İnsanı canlandıracağı kesin.",
 	"item-coffee-bean-description": "{{itemName}} ağacı yetiştirmek için baharda yada yazın ekilir. {{coffeeName}} yapmak için fıçıya beş çekirdek konulur.",
 	"item-coffee-name": "Sıcak {{itemName}}",
 	"item-recursion-sapling-name": "Özyineleme Fidanı",

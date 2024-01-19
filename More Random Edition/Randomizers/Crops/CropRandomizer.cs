@@ -246,9 +246,11 @@ namespace Randomizer
 			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.UnmilledRice] = unmilledRice.ToString();
 
 			Item rice = ItemList.Items[(int)ObjectIndexes.Rice];
-			rice.OverrideName = riceName;
-			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.Rice] =
-				$"{ItemList.OriginalItemList[rice.Id]}/100/5/Basic/{riceName}/{Globals.GetTranslation("item-rice-description")}";
+            rice.OverrideName = riceName;
+
+			string[] riceData = ItemList.OriginalItemList[(int)ObjectIndexes.Rice].Split("/");
+			riceData[(int)ObjectInformationIndexes.DisplayName] = riceName;
+			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.Rice] = string.Join("/", riceData);
 		}
 
 		/// <summary>

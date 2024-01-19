@@ -224,8 +224,6 @@
 	"coffee-bean-name": "Grain de {{itemName}}",
 	"unmilled-rice-name": "{{itemName}} non moulu",
 
-	"item-rice-description": "Céréale de base souvent servie avec des légumes.",
-	"item-coffee-description": "L'odeur est exquise. Ça vous donnera un petit coup de fouet.",
 	"item-coffee-bean-description": "À planter au printemps ou en été pour faire pousser un usine de {{itemName}}. Placez 5 grains dans un tonneau pour faire du {{coffeeName}}.",
 	"item-coffee-name": "{{itemName}} chaud",
 	"item-recursion-sapling-name": "Arbrisseau récursif",

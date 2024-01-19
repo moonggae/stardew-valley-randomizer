@@ -259,7 +259,11 @@ namespace Randomizer
 		{
 			if (Id == (int)ObjectIndexes.Coffee)
 			{
-				return $"{Name}/150/1/Crafting/{Globals.GetTranslation("item-coffee-name", new { itemName = CoffeeIngredient })}/{Globals.GetTranslation("item-coffee-description")}/drink/0 0 0 0 0 0 0 0 0 1 0/120";
+                string[] coffeeData = ItemList.OriginalItemList[(int)ObjectIndexes.Coffee].Split("/");
+				string coffeeName = Globals.GetTranslation("item-coffee-name", new { itemName = CoffeeIngredient });
+                coffeeData[(int)ObjectInformationIndexes.DisplayName] = coffeeName;
+
+                return string.Join("/", coffeeData);
 			}
 
 			Globals.ConsoleError($"Called the ToString of unexpected item {Id}: {Name}");
