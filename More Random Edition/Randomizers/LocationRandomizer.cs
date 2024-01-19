@@ -119,7 +119,7 @@ namespace Randomizer
 			Globals.SpoilerWrite(season.ToString());
 			foreach (ForagableData foragableData in dataToWrite)
 			{
-				Globals.SpoilerWrite($"{foragableData.ItemId}: {ItemList.Items[foragableData.ItemId].Name} | {foragableData.ItemRarity}");
+				Globals.SpoilerWrite($"{foragableData.ItemId}: {ItemList.Items[(ObjectIndexes)foragableData.ItemId].Name} | {foragableData.ItemRarity}");
 			}
 		}
 
@@ -452,62 +452,62 @@ namespace Randomizer
 
 			SpringForagables.AddRange(new List<Item>()
 			{
-				ItemList.Items[(int)ObjectIndexes.WildHorseradish],
-				ItemList.Items[(int)ObjectIndexes.Daffodil],
-				ItemList.Items[(int)ObjectIndexes.Leek],
-				ItemList.Items[(int)ObjectIndexes.Dandelion]
+				ItemList.Items[ObjectIndexes.WildHorseradish],
+				ItemList.Items[ObjectIndexes.Daffodil],
+				ItemList.Items[ObjectIndexes.Leek],
+				ItemList.Items[ObjectIndexes.Dandelion]
 			});
 
 			SummerForagables.AddRange(new List<Item>()
 			{
-				ItemList.Items[(int)ObjectIndexes.SpiceBerry],
-				ItemList.Items[(int)ObjectIndexes.Grape],
-				ItemList.Items[(int)ObjectIndexes.SweetPea]
+				ItemList.Items[ObjectIndexes.SpiceBerry],
+				ItemList.Items[ObjectIndexes.Grape],
+				ItemList.Items[ObjectIndexes.SweetPea]
 			});
 
 			FallForagables.AddRange(new List<Item>()
 			{
-				ItemList.Items[(int)ObjectIndexes.WildPlum],
-				ItemList.Items[(int)ObjectIndexes.Hazelnut],
-				ItemList.Items[(int)ObjectIndexes.Blackberry],
-				ItemList.Items[(int)ObjectIndexes.CommonMushroom],
+				ItemList.Items[ObjectIndexes.WildPlum],
+				ItemList.Items[ObjectIndexes.Hazelnut],
+				ItemList.Items[ObjectIndexes.Blackberry],
+				ItemList.Items[ObjectIndexes.CommonMushroom],
 
 			});
 
 			WinterForagables.AddRange(new List<Item>()
 			{
-				ItemList.Items[(int)ObjectIndexes.WinterRoot],
-				ItemList.Items[(int)ObjectIndexes.CrystalFruit],
-				ItemList.Items[(int)ObjectIndexes.SnowYam],
-				ItemList.Items[(int)ObjectIndexes.Crocus],
-				ItemList.Items[(int)ObjectIndexes.Holly],
+				ItemList.Items[ObjectIndexes.WinterRoot],
+				ItemList.Items[ObjectIndexes.CrystalFruit],
+				ItemList.Items[ObjectIndexes.SnowYam],
+				ItemList.Items[ObjectIndexes.Crocus],
+				ItemList.Items[ObjectIndexes.Holly],
 			});
 
 			BeachForagables.AddRange(new List<Item>()
 			{
-				ItemList.Items[(int)ObjectIndexes.NautilusShell],
-				ItemList.Items[(int)ObjectIndexes.Coral],
-				ItemList.Items[(int)ObjectIndexes.SeaUrchin],
-				ItemList.Items[(int)ObjectIndexes.RainbowShell],
-				ItemList.Items[(int)ObjectIndexes.Clam],
-				ItemList.Items[(int)ObjectIndexes.Cockle],
-				ItemList.Items[(int)ObjectIndexes.Mussel],
-				ItemList.Items[(int)ObjectIndexes.Oyster]
+				ItemList.Items[ObjectIndexes.NautilusShell],
+				ItemList.Items[ObjectIndexes.Coral],
+				ItemList.Items[ObjectIndexes.SeaUrchin],
+				ItemList.Items[ObjectIndexes.RainbowShell],
+				ItemList.Items[ObjectIndexes.Clam],
+				ItemList.Items[ObjectIndexes.Cockle],
+				ItemList.Items[ObjectIndexes.Mussel],
+				ItemList.Items[ObjectIndexes.Oyster]
 			});
 
 			WoodsForagables.AddRange(new List<Item>()
 			{
-				ItemList.Items[(int)ObjectIndexes.Morel],
-				ItemList.Items[(int)ObjectIndexes.CommonMushroom],
-				ItemList.Items[(int)ObjectIndexes.RedMushroom],
-				ItemList.Items[(int)ObjectIndexes.FiddleheadFern],
-				ItemList.Items[(int)ObjectIndexes.Chanterelle],
+				ItemList.Items[ObjectIndexes.Morel],
+				ItemList.Items[ObjectIndexes.CommonMushroom],
+				ItemList.Items[ObjectIndexes.RedMushroom],
+				ItemList.Items[ObjectIndexes.FiddleheadFern],
+				ItemList.Items[ObjectIndexes.Chanterelle],
 			});
 
 			DesertForagables.AddRange(new List<Item>()
 			{
-				ItemList.Items[(int)ObjectIndexes.CactusFruit],
-				ItemList.Items[(int)ObjectIndexes.Coconut]
+				ItemList.Items[ObjectIndexes.CactusFruit],
+				ItemList.Items[ObjectIndexes.Coconut]
 			});
 		}
 	}

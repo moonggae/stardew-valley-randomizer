@@ -107,7 +107,7 @@ namespace Randomizer
 		{
 			string fileName;
 			int cropId = CropGrowthImagePointsToIds[position];
-			Item item = ItemList.Items[cropId];
+			Item item = ItemList.Items[(ObjectIndexes)cropId];
 
 			SeedItem seedItem = item.Id == (int)ObjectIndexes.CoffeeBean ?
 				(SeedItem)item : ((CropItem)item).MatchingSeedItem;

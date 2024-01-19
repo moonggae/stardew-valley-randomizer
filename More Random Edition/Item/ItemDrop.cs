@@ -10,7 +10,7 @@ namespace Randomizer
 		public Item ItemToDrop { get; set; }
 		public double Probability { get; set; }
 
-		public ItemDrop(int itemId, double probability)
+		public ItemDrop(ObjectIndexes itemId, double probability)
 		{
 			ItemToDrop = ItemList.Items[itemId];
 			Probability = probability;
@@ -23,7 +23,7 @@ namespace Randomizer
 		/// <returns />
 		public static List<ItemDrop> ParseString(string itemDropString)
 		{
-			List<ItemDrop> itemDrops = new List<ItemDrop>();
+			List<ItemDrop> itemDrops = new();
 
 			string[] itemTokens = itemDropString.Split(' ');
 			for (int i = 0; i + 1 < itemTokens.Length; i += 2)
@@ -40,7 +40,7 @@ namespace Randomizer
 					probability = 0.75;
 				}
 
-				itemDrops.Add(new ItemDrop(itemId, probability));
+				itemDrops.Add(new ItemDrop((ObjectIndexes)itemId, probability));
 			}
 
 			return itemDrops;

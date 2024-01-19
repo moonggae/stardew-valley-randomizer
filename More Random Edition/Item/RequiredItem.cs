@@ -44,29 +44,54 @@ namespace Randomizer
 		/// <param name="itemId">The item id of the item that's required</param>
 		/// <param name="minValue">The max number of items required to craft this</param>
 		/// <param name="maxValue">The minimum number of items required to craft this</param>
-		public RequiredItem(int itemId, int minValue, int maxValue)
+		public RequiredItem(ObjectIndexes itemId, int minValue, int maxValue)
 		{
 			Item = ItemList.Items[itemId];
 			_rangeOfItems = new Range(minValue, maxValue);
 			NumberOfItems = _rangeOfItems.GetRandomValue();
 		}
 
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="itemId">The item id of the item that's required</param>
-		/// <param name="numberOfItems">The number of items required to craft this</param>
-		public RequiredItem(int itemId, int numberOfItems = 1)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="itemId">The item id of the item that's required</param>
+        /// <param name="minValue">The max number of items required to craft this</param>
+        /// <param name="maxValue">The minimum number of items required to craft this</param>
+        public RequiredItem(BigCraftableIndexes itemId, int minValue, int maxValue)
+        {
+            Item = ItemList.BigCraftableItems[itemId];
+            _rangeOfItems = new Range(minValue, maxValue);
+            NumberOfItems = _rangeOfItems.GetRandomValue();
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="itemId">The item id of the item that's required</param>
+        /// <param name="numberOfItems">The number of items required to craft this</param>
+        public RequiredItem(ObjectIndexes itemId, int numberOfItems = 1)
 		{
 			Item = ItemList.Items[itemId];
 			_rangeOfItems = new Range(numberOfItems, numberOfItems);
 			NumberOfItems = _rangeOfItems.GetRandomValue();
 		}
 
-		/// <summary>
-		/// Default constructor
-		/// </summary>
-		public RequiredItem() { }
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="itemId">The item id of the item that's required</param>
+        /// <param name="numberOfItems">The number of items required to craft this</param>
+        public RequiredItem(BigCraftableIndexes itemId, int numberOfItems = 1)
+        {
+            Item = ItemList.BigCraftableItems[itemId];
+            _rangeOfItems = new Range(numberOfItems, numberOfItems);
+            NumberOfItems = _rangeOfItems.GetRandomValue();
+        }
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public RequiredItem() { }
 
 		/// <summary>
 		/// Creates a list of required items based on the given list of items
@@ -75,10 +100,17 @@ namespace Randomizer
 		/// <param name="numberOfItems">The number of items to set each required item to</param>
 		public static List<RequiredItem> CreateList(List<Item> itemList, int numberOfItems = 1)
 		{
-			List<RequiredItem> list = new List<RequiredItem>();
+			List<RequiredItem> list = new();
 			foreach (Item item in itemList)
 			{
-				list.Add(new RequiredItem(item.Id, numberOfItems));
+				if (item.IsBigCraftable)
+				{
+                    list.Add(new RequiredItem((BigCraftableIndexes)item.Id, numberOfItems));
+                }
+				else
+				{
+                    list.Add(new RequiredItem((ObjectIndexes)item.Id, numberOfItems));
+                }
 			}
 			return list;
 		}
@@ -94,8 +126,15 @@ namespace Randomizer
 			List<RequiredItem> list = new List<RequiredItem>();
 			foreach (Item item in itemList)
 			{
-				list.Add(new RequiredItem(item.Id, minValue, maxValue));
-			}
+                if (item.IsBigCraftable)
+                {
+                    list.Add(new RequiredItem((BigCraftableIndexes)item.Id, minValue, maxValue));
+                }
+                else
+                {
+                    list.Add(new RequiredItem((ObjectIndexes)item.Id, minValue, maxValue));
+                }
+            }
 			return list;
 		}
 
@@ -104,10 +143,10 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="itemIdList">The item id list</param>
 		/// <param name="numberOfItems">The number of items to set each required item to</param>
-		public static List<RequiredItem> CreateList(List<int> itemIdList, int numberOfItems = 1)
+		public static List<RequiredItem> CreateList(List<ObjectIndexes> itemIdList, int numberOfItems = 1)
 		{
-			List<RequiredItem> list = new List<RequiredItem>();
-			foreach (int id in itemIdList)
+			List<RequiredItem> list = new();
+			foreach (ObjectIndexes id in itemIdList)
 			{
 				list.Add(new RequiredItem(id, numberOfItems));
 			}
@@ -120,10 +159,10 @@ namespace Randomizer
 		/// <param name="itemIdList">The item id list</param>
 		/// <param name="minValue">The max number of items required to craft this</param>
 		/// <param name="maxValue">The minimum number of items required to craft this</param>
-		public static List<RequiredItem> CreateList(List<int> itemIdList, int minValue, int maxValue)
+		public static List<RequiredItem> CreateList(List<ObjectIndexes> itemIdList, int minValue, int maxValue)
 		{
-			List<RequiredItem> list = new List<RequiredItem>();
-			foreach (int id in itemIdList)
+			List<RequiredItem> list = new();
+			foreach (ObjectIndexes id in itemIdList)
 			{
 				list.Add(new RequiredItem(id, minValue, maxValue));
 			}

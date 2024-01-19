@@ -17,7 +17,7 @@ namespace Randomizer
 			public string Item1 { get; set; }
 			public string Item2 { get; set; }
 
-			public ShowData(int id, int recipeItemId = 0, int item1Id = 0, int item2Id = 0)
+			public ShowData(int id, ObjectIndexes recipeItemId = 0, ObjectIndexes item1Id = 0, ObjectIndexes item2Id = 0)
 			{
 				ID = id;
 				Recipe = recipeItemId > 0 ? ItemList.Items[recipeItemId].OverrideDisplayName : "";
@@ -60,21 +60,21 @@ namespace Randomizer
 		{
 			return new List<ShowData>
 			{
-				new ShowData(2, 0, (int)ObjectIndexes.RedCabbage),
-				new ShowData(3, (int)ObjectIndexes.RadishSalad, (int)ObjectIndexes.Radish),
-				new ShowData(7, 0, (int)ObjectIndexes.Rice),
-				new ShowData(10, (int)ObjectIndexes.TroutSoup, (int)ObjectIndexes.RainbowTrout),
-				new ShowData(11, (int)ObjectIndexes.GlazedYams, (int)ObjectIndexes.Yam),
-				new ShowData(12, (int)ObjectIndexes.ArtichokeDip, (int)ObjectIndexes.Artichoke),
-				new ShowData(15, (int)ObjectIndexes.PumpkinPie, (int)ObjectIndexes.Pumpkin),
-				new ShowData(16, (int)ObjectIndexes.CranberryCandy, (int)ObjectIndexes.Cranberries),
-				new ShowData(17, 0, (int)ObjectIndexes.Tomato),
-				new ShowData(18, 0, (int)ObjectIndexes.Potato),
-				new ShowData(21, (int)ObjectIndexes.CarpSurprise, (int)ObjectIndexes.Carp),
-				new ShowData(23, 0, (int)ObjectIndexes.Melon),
-				new ShowData(24, (int)ObjectIndexes.FruitSalad),
-				new ShowData(29, (int)ObjectIndexes.PoppyseedMuffin, (int)ObjectIndexes.Poppy, ((CropItem)ItemList.Items[(int)ObjectIndexes.Poppy]).MatchingSeedItem.Id),
-				new ShowData(31, 0, (int)ObjectIndexes.Tomato),
+				new(2, 0, ObjectIndexes.RedCabbage),
+				new(3, ObjectIndexes.RadishSalad, ObjectIndexes.Radish),
+				new(7, 0, ObjectIndexes.Rice),
+				new(10, ObjectIndexes.TroutSoup, ObjectIndexes.RainbowTrout),
+				new(11, ObjectIndexes.GlazedYams, ObjectIndexes.Yam),
+				new(12, ObjectIndexes.ArtichokeDip, ObjectIndexes.Artichoke),
+				new(15, ObjectIndexes.PumpkinPie, ObjectIndexes.Pumpkin),
+				new(16, ObjectIndexes.CranberryCandy, ObjectIndexes.Cranberries),
+				new(17, 0, ObjectIndexes.Tomato),
+				new(18, 0, ObjectIndexes.Potato),
+				new(21, ObjectIndexes.CarpSurprise, ObjectIndexes.Carp),
+				new(23, 0, ObjectIndexes.Melon),
+				new(24, ObjectIndexes.FruitSalad),
+				new(29, ObjectIndexes.PoppyseedMuffin, ObjectIndexes.Poppy, (ObjectIndexes)((CropItem)ItemList.GetItem(ObjectIndexes.Poppy)).MatchingSeedItem.Id),
+				new(31, 0, ObjectIndexes.Tomato),
 			};
 		}
 

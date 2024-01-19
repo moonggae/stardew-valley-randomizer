@@ -222,12 +222,12 @@ namespace Randomizer
 		{
 			if (!Globals.Config.Crops.Randomize) { return; }
 
-			Item coffee = ItemList.Items[(int)ObjectIndexes.Coffee];
+			Item coffee = ItemList.Items[ObjectIndexes.Coffee];
 			coffee.OverrideName = $"Hot {coffeeName}";
 			coffee.CoffeeIngredient = coffeeName;
 			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.Coffee] = coffee.ToString();
 
-			Item coffeeBean = ItemList.Items[(int)ObjectIndexes.CoffeeBean];
+			Item coffeeBean = ItemList.Items[ObjectIndexes.CoffeeBean];
 			coffeeBean.OverrideName = $"{coffeeName} Bean";
 			coffeeBean.OverrideDisplayName = Globals.GetTranslation("coffee-bean-name", new { itemName = coffeeName });
 			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.CoffeeBean] = coffeeBean.ToString();
@@ -239,13 +239,13 @@ namespace Randomizer
 		/// <param name="editedObjectInfo">The object info containing changes to apply</param>
 		public static void SetUpRice(EditedObjectInformation editedObjectInfo)
 		{
-			CropItem unmilledRice = (CropItem)ItemList.Items[(int)ObjectIndexes.UnmilledRice];
+			CropItem unmilledRice = (CropItem)ItemList.Items[ObjectIndexes.UnmilledRice];
 			string riceName = unmilledRice.OverrideName;
 			unmilledRice.OverrideName = $"Unmilled {riceName}";
 			unmilledRice.OverrideDisplayName = Globals.GetTranslation("unmilled-rice-name", new { itemName = riceName });
 			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.UnmilledRice] = unmilledRice.ToString();
 
-			Item rice = ItemList.Items[(int)ObjectIndexes.Rice];
+			Item rice = ItemList.Items[ObjectIndexes.Rice];
             rice.OverrideName = riceName;
 
 			string[] riceData = ItemList.OriginalItemList[(int)ObjectIndexes.Rice].Split("/");
@@ -386,7 +386,7 @@ namespace Randomizer
 				foreach (SeedItem seedItem in ItemList.GetSeeds())
 				{
 					if (seedItem.Id == (int)ObjectIndexes.CoffeeBean || seedItem.Id == (int)ObjectIndexes.AncientSeeds) { continue; }
-					CropItem cropItem = (CropItem)ItemList.Items[seedItem.CropGrowthInfo.CropId];
+					CropItem cropItem = (CropItem)ItemList.Items[(ObjectIndexes)seedItem.CropGrowthInfo.CropId];
 					Globals.SpoilerWrite($"{cropItem.Id}: {cropItem.Name} - Seed Buy Price: {seedItem.Price * 2}G - Crop Sell Price: {cropItem.Price}G");
 					Globals.SpoilerWrite($"{seedItem.Id}: {seedItem.Description}");
 					Globals.SpoilerWrite("---");
@@ -397,12 +397,12 @@ namespace Randomizer
 			if (Globals.Config.RandomizeFruitTrees)
 			{
 				Globals.SpoilerWrite("==== FRUIT TREES ====");
-				Globals.SpoilerWrite($"{ItemList.GetItemName((int)ObjectIndexes.CherrySapling)}");
-				Globals.SpoilerWrite($"{ItemList.GetItemName((int)ObjectIndexes.AppleSapling)}");
-				Globals.SpoilerWrite($"{ItemList.GetItemName((int)ObjectIndexes.OrangeSapling)}");
-				Globals.SpoilerWrite($"{ItemList.GetItemName((int)ObjectIndexes.PeachSapling)}");
-				Globals.SpoilerWrite($"{ItemList.GetItemName((int)ObjectIndexes.PomegranateSapling)}");
-				Globals.SpoilerWrite($"{ItemList.GetItemName((int)ObjectIndexes.ApricotSapling)}");
+				Globals.SpoilerWrite($"{ItemList.GetItemName(ObjectIndexes.CherrySapling)}");
+				Globals.SpoilerWrite($"{ItemList.GetItemName(ObjectIndexes.AppleSapling)}");
+				Globals.SpoilerWrite($"{ItemList.GetItemName(ObjectIndexes.OrangeSapling)}");
+				Globals.SpoilerWrite($"{ItemList.GetItemName(ObjectIndexes.PeachSapling)}");
+				Globals.SpoilerWrite($"{ItemList.GetItemName(ObjectIndexes.PomegranateSapling)}");
+				Globals.SpoilerWrite($"{ItemList.GetItemName(ObjectIndexes.ApricotSapling)}");
 				Globals.SpoilerWrite("");
 			}
 		}

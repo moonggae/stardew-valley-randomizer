@@ -32,7 +32,7 @@ namespace Randomizer
 
             if (chestsInRoom.Count > 0)
             {
-                string parsnipSeedsName = ItemList.GetItemName((int)ObjectIndexes.ParsnipSeeds);
+                string parsnipSeedsName = ItemList.GetItemName(ObjectIndexes.ParsnipSeeds);
                 StardewValley.Item itemInChest = chestsInRoom[0].items[0];
                 if (itemInChest.ParentSheetIndex == (int)ObjectIndexes.ParsnipSeeds)
                 {

@@ -22,14 +22,14 @@ namespace Randomizer
 					SetBundleName("bundle-bulletin-news");
 					potentialItems = new List<RequiredItem>()
 					{
-						new RequiredItem((int)ObjectIndexes.SoggyNewspaper),
-						new RequiredItem((int)ObjectIndexes.SoggyNewspaper),
-						new RequiredItem((int)ObjectIndexes.SoggyNewspaper),
-						new RequiredItem((int)ObjectIndexes.SoggyNewspaper),
-						new RequiredItem((int)ObjectIndexes.SoggyNewspaper),
-						new RequiredItem((int)ObjectIndexes.SoggyNewspaper),
-						new RequiredItem((int)ObjectIndexes.SoggyNewspaper),
-						new RequiredItem((int)ObjectIndexes.SoggyNewspaper),
+						new RequiredItem(ObjectIndexes.SoggyNewspaper),
+						new RequiredItem(ObjectIndexes.SoggyNewspaper),
+						new RequiredItem(ObjectIndexes.SoggyNewspaper),
+						new RequiredItem(ObjectIndexes.SoggyNewspaper),
+						new RequiredItem(ObjectIndexes.SoggyNewspaper),
+						new RequiredItem(ObjectIndexes.SoggyNewspaper),
+						new RequiredItem(ObjectIndexes.SoggyNewspaper),
+						new RequiredItem(ObjectIndexes.SoggyNewspaper),
 					};
 					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, Range.GetRandomValue(1, 8));
 					Color = BundleColors.Orange;
@@ -321,22 +321,22 @@ namespace Randomizer
 					break;
 				case BundleTypes.BulletinColorPink:
 					SetBundleName("bundle-bulletin-pink");
-					potentialItems = RequiredItem.CreateList(new List<int>
+					potentialItems = RequiredItem.CreateList(new List<ObjectIndexes>
 					{
-						(int)ObjectIndexes.Shrimp,
-						(int)ObjectIndexes.StrangeBun,
-						(int)ObjectIndexes.SalmonDinner,
-						(int)ObjectIndexes.PinkCake,
-						(int)ObjectIndexes.Sashimi,
-						(int)ObjectIndexes.IceCream,
-						(int)ObjectIndexes.Salmonberry,
-						(int)ObjectIndexes.Coral,
-						(int)ObjectIndexes.Dolomite,
-						(int)ObjectIndexes.Nekoite,
-						(int)ObjectIndexes.StarShards,
-						(int)ObjectIndexes.Peach,
-						(int)ObjectIndexes.BugMeat,
-						(int)ObjectIndexes.Bait
+						ObjectIndexes.Shrimp,
+						ObjectIndexes.StrangeBun,
+						ObjectIndexes.SalmonDinner,
+						ObjectIndexes.PinkCake,
+						ObjectIndexes.Sashimi,
+						ObjectIndexes.IceCream,
+						ObjectIndexes.Salmonberry,
+						ObjectIndexes.Coral,
+						ObjectIndexes.Dolomite,
+						ObjectIndexes.Nekoite,
+						ObjectIndexes.StarShards,
+						ObjectIndexes.Peach,
+						ObjectIndexes.BugMeat,
+						ObjectIndexes.Bait
 					});
 					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
 					MinimumRequiredItems = Range.GetRandomValue(3, 6);
@@ -344,51 +344,51 @@ namespace Randomizer
 					break;
 				case BundleTypes.BulletinColorWhite:
 					SetBundleName("bundle-bulletin-white");
-					potentialItems = RequiredItem.CreateList(new List<int>
+					potentialItems = RequiredItem.CreateList(new List<ObjectIndexes>
 					{
-						(int)ObjectIndexes.Leek,
-						(int)ObjectIndexes.Quartz,
-						(int)ObjectIndexes.OrnamentalFan,
-						(int)ObjectIndexes.DinosaurEgg,
-						(int)ObjectIndexes.ChickenStatue,
-						(int)ObjectIndexes.WhiteAlgae,
-						(int)ObjectIndexes.WhiteEgg,
-						(int)ObjectIndexes.LargeWhiteEgg,
-						(int)ObjectIndexes.Milk,
-						(int)ObjectIndexes.LargeMilk,
-						(int)ObjectIndexes.FriedEgg,
-						(int)ObjectIndexes.RicePudding,
-						(int)ObjectIndexes.IceCream,
-						(int)ObjectIndexes.Mayonnaise,
-						(int)ObjectIndexes.IronBar,
-						(int)ObjectIndexes.RefinedQuartz,
-						(int)ObjectIndexes.IronOre,
-						(int)ObjectIndexes.SpringOnion,
-						(int)ObjectIndexes.SnowYam,
-						(int)ObjectIndexes.Rice,
-						(int)ObjectIndexes.GoatCheese,
-						(int)ObjectIndexes.Cloth,
-						(int)ObjectIndexes.GoatMilk,
-						(int)ObjectIndexes.LargeGoatMilk,
-						(int)ObjectIndexes.Wool,
-						(int)ObjectIndexes.DuckEgg,
-						(int)ObjectIndexes.RabbitsFoot,
-						(int)ObjectIndexes.PaleBroth,
-						(int)ObjectIndexes.Esperite,
-						(int)ObjectIndexes.Lunarite,
-						(int)ObjectIndexes.Marble,
-						(int)ObjectIndexes.PrehistoricScapula,
-						(int)ObjectIndexes.PrehistoricTibia,
-						(int)ObjectIndexes.PrehistoricSkull,
-						(int)ObjectIndexes.SkeletalHand,
-						(int)ObjectIndexes.PrehistoricRib,
-						(int)ObjectIndexes.PrehistoricVertebra,
-						(int)ObjectIndexes.SkeletalTail,
-						(int)ObjectIndexes.NautilusFossil,
-						(int)ObjectIndexes.Trilobite,
-						(int)ObjectIndexes.ArtichokeDip,
-						(int)ObjectIndexes.LeadBobber,
-						(int)ObjectIndexes.Chowder
+						ObjectIndexes.Leek,
+						ObjectIndexes.Quartz,
+						ObjectIndexes.OrnamentalFan,
+						ObjectIndexes.DinosaurEgg,
+						ObjectIndexes.ChickenStatue,
+						ObjectIndexes.WhiteAlgae,
+						ObjectIndexes.WhiteEgg,
+						ObjectIndexes.LargeWhiteEgg,
+						ObjectIndexes.Milk,
+						ObjectIndexes.LargeMilk,
+						ObjectIndexes.FriedEgg,
+						ObjectIndexes.RicePudding,
+						ObjectIndexes.IceCream,
+						ObjectIndexes.Mayonnaise,
+						ObjectIndexes.IronBar,
+						ObjectIndexes.RefinedQuartz,
+						ObjectIndexes.IronOre,
+						ObjectIndexes.SpringOnion,
+						ObjectIndexes.SnowYam,
+						ObjectIndexes.Rice,
+						ObjectIndexes.GoatCheese,
+						ObjectIndexes.Cloth,
+						ObjectIndexes.GoatMilk,
+						ObjectIndexes.LargeGoatMilk,
+						ObjectIndexes.Wool,
+						ObjectIndexes.DuckEgg,
+						ObjectIndexes.RabbitsFoot,
+						ObjectIndexes.PaleBroth,
+						ObjectIndexes.Esperite,
+						ObjectIndexes.Lunarite,
+						ObjectIndexes.Marble,
+						ObjectIndexes.PrehistoricScapula,
+						ObjectIndexes.PrehistoricTibia,
+						ObjectIndexes.PrehistoricSkull,
+						ObjectIndexes.SkeletalHand,
+						ObjectIndexes.PrehistoricRib,
+						ObjectIndexes.PrehistoricVertebra,
+						ObjectIndexes.SkeletalTail,
+						ObjectIndexes.NautilusFossil,
+						ObjectIndexes.Trilobite,
+						ObjectIndexes.ArtichokeDip,
+						ObjectIndexes.LeadBobber,
+						ObjectIndexes.Chowder
 					});
 					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
 					MinimumRequiredItems = Range.GetRandomValue(3, 6);
@@ -404,7 +404,7 @@ namespace Randomizer
 		{
 			if (Globals.RNGGetNextBoolean(1))
 			{
-				Reward = new RequiredItem((int)ObjectIndexes.PrismaticShard);
+				Reward = new RequiredItem(ObjectIndexes.PrismaticShard);
 			}
 
 			else if (Globals.RNGGetNextBoolean(5))
@@ -421,15 +421,15 @@ namespace Randomizer
 
 			List<RequiredItem> potentialRewards = new()
 			{
-				new((int)ObjectIndexes.JunimoKartArcadeSystem),
-				new((int)ObjectIndexes.PrairieKingArcadeSystem),
-				new((int)ObjectIndexes.SodaMachine),
-				new((int)ObjectIndexes.Beer, 43),
-				new((int)ObjectIndexes.Salad, Range.GetRandomValue(5, 25)),
-				new((int)ObjectIndexes.Bread, Range.GetRandomValue(5, 25)),
-				new((int)ObjectIndexes.Spaghetti, Range.GetRandomValue(5, 25)),
-				new((int)ObjectIndexes.Pizza, Range.GetRandomValue(5, 25)),
-				new((int)ObjectIndexes.Coffee, Range.GetRandomValue(5, 25))
+				new(BigCraftableIndexes.JunimoKartArcadeSystem),
+				new(BigCraftableIndexes.PrairieKingArcadeSystem),
+				new(BigCraftableIndexes.SodaMachine),
+				new(ObjectIndexes.Beer, 43),
+				new(ObjectIndexes.Salad, Range.GetRandomValue(5, 25)),
+				new(ObjectIndexes.Bread, Range.GetRandomValue(5, 25)),
+				new(ObjectIndexes.Spaghetti, Range.GetRandomValue(5, 25)),
+				new(ObjectIndexes.Pizza, Range.GetRandomValue(5, 25)),
+				new(ObjectIndexes.Coffee, Range.GetRandomValue(5, 25))
 			};
 
 			Reward = Globals.RNGGetRandomValueFromList(potentialRewards);

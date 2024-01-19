@@ -75,7 +75,7 @@ namespace Randomizer
                 .ToList();
 
             Random shopRNG = Globals.GetDailyRNG(nameof(CarpenterShopMenuAdjustments));
-            var tapperItemIdsAndStock = ((CraftableItem)ItemList.Items[(int)ObjectIndexes.Tapper]).LastRecipeGenerated;
+            var tapperItemIdsAndStock = ((CraftableItem)ItemList.BigCraftableItems[BigCraftableIndexes.Tapper]).LastRecipeGenerated;
             var tapperItems = tapperItemIdsAndStock.Keys
                 .Select(id => ItemList.Items[id])
                 .Where(item => !exitingStockIds.Contains(item.Id))
@@ -84,7 +84,7 @@ namespace Randomizer
             if (tapperItems.Any())
             {
                 var tapperItemToSell = Globals.RNGGetRandomValueFromList(tapperItems, shopRNG);
-                var stock = tapperItemIdsAndStock[tapperItemToSell.Id];
+                var stock = tapperItemIdsAndStock[(ObjectIndexes)tapperItemToSell.Id];
                 var price = GetAdjustedItemPrice(tapperItemToSell, 50, 5);
                 InsertStockAt(menu, tapperItemToSell.GetSaliableObject(stock), stock: stock, salePrice: price, index: 2);
             }

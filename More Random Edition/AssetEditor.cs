@@ -328,17 +328,17 @@ namespace Randomizer
         }
 
 		/// <summary>
-		/// Validates that all the items in the ObjectIndexes exist in the main item list
+		/// Validates that all the items in ObjectIndexes exist in the main item lists
 		/// </summary>
 		private static void ValidateItemList()
 		{
-			foreach (ObjectIndexes index in Enum.GetValues(typeof(ObjectIndexes)).Cast<ObjectIndexes>())
+			foreach (ObjectIndexes index in Enum.GetValues(typeof(ObjectIndexes)))
 			{
-				if (!ItemList.Items.ContainsKey((int)index))
+				if (!ItemList.Items.ContainsKey(index))
 				{
 					Globals.ConsoleWarn($"Missing item: {(int)index}: {index}");
 				}
 			}
-		}
+        }
 	}
 }

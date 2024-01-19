@@ -21,7 +21,7 @@ namespace Randomizer
 			{
 				return IngredientId == null
 					? string.Empty
-					: ItemList.Items[IngredientId.Value].Name;
+					: ItemList.Items[(ObjectIndexes)IngredientId.Value].Name;
 			}
 		}
 

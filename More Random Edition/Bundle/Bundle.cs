@@ -188,10 +188,6 @@ namespace Randomizer
 			{
 				string rewardStringPrefix = GetRewardStringPrefix();
 				int itemId = Reward.Item.Id;
-				if (rewardStringPrefix == "BO")
-				{
-					itemId = ItemList.BigCraftableItems[itemId];
-				}
 				rewardString = $"{rewardStringPrefix} {itemId} {Reward.NumberOfItems}";
 			}
 
@@ -221,7 +217,7 @@ namespace Randomizer
 				return "R";
 			}
 
-			if (Reward.Item.Id <= -100)
+			if (Reward.Item.IsBigCraftable)
 			{
 				return "BO";
 			}
@@ -321,8 +317,12 @@ namespace Randomizer
                         letters = letters.Replace(randomLetter, "");
 						potentialItems = RequiredItem.CreateList(
 							ItemList.Items.Values.Where(x =>
-								x.EnglishName.StartsWith(randomLetter, StringComparison.InvariantCultureIgnoreCase) &&
-								x.Id >= 0
+                                (
+									// Prioritiy is: OverrideDisplayName => OverrideName => EnglishName
+									(x.OverrideDisplayName ?? x.OverrideName ?? x.EnglishName)
+										.StartsWith(randomLetter, StringComparison.InvariantCultureIgnoreCase)
+                                ) &&
+                                x.Id >= 0
 							).ToList()
 						);
 					} while (potentialItems.Count < 4);
@@ -342,15 +342,18 @@ namespace Randomizer
 		/// </summary>
 		protected void GenerateRandomReward()
 		{
-			Item reward = Globals.RNGGetRandomValueFromList(ItemList.Items.Values.Where(x =>
-				x.Id != (int)ObjectIndexes.AnyFish &&
-				x.Id != (int)ObjectIndexes.TransmuteAu &&
-				x.Id != (int)ObjectIndexes.TransmuteFe).ToList()
+			Item reward = Globals.RNGGetRandomValueFromList(
+				ItemList.Items.Values
+					.Where(x => x.Id != (int)ObjectIndexes.AnyFish)
+					.Concat(ItemList.BigCraftableItems.Values)
+					.ToList()
 			);
 			int numberToGive = Range.GetRandomValue(1, 25);
 			if (!reward.CanStack) { numberToGive = 1; }
 
-			Reward = new RequiredItem(reward.Id, numberToGive);
-		}
+			Reward = reward.IsBigCraftable
+				? new RequiredItem((BigCraftableIndexes)reward.Id, numberToGive)
+				: new RequiredItem((ObjectIndexes)reward.Id, numberToGive);
+        }
 	}
 }

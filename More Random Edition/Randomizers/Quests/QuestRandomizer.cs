@@ -11,7 +11,7 @@ namespace Randomizer
 		private static List<Item> FishList { get; set; }
 		private static List<Item> Items { get; set; }
 
-		private static int ParsnipCropId { get; set; }
+		private static ObjectIndexes ParsnipCropId { get; set; }
 		private static Dictionary<int, string> DefaultQuestData { get; set; }
 
 		private readonly static List<string> QuestableNPCsList = new()
@@ -144,12 +144,12 @@ namespace Randomizer
 		/// </summary>
 		private static void PopulateQuestDictionary()
 		{
-			ParsnipCropId = ((SeedItem)ItemList.Items[(int)ObjectIndexes.ParsnipSeeds]).CropGrowthInfo.CropId;
+			ParsnipCropId = (ObjectIndexes)((SeedItem)ItemList.Items[ObjectIndexes.ParsnipSeeds]).CropGrowthInfo.CropId;
 			DefaultQuestData = new Dictionary<int, string>
 			{
-				{ 3, Globals.GetTranslation("quest-3", new { crop = ItemList.GetItemName((int)ObjectIndexes.Beet) }) },
-				{ 6, Globals.GetTranslation("quest-6", new { crop = ItemList.GetItemName(ParsnipCropId), cropId = ParsnipCropId }) },
-				{ 22, Globals.GetTranslation("quest-22", new { fish = ItemList.GetItemName((int)ObjectIndexes.LargemouthBass) }) },
+				{ 3, Globals.GetTranslation("quest-3", new { crop = ItemList.GetItemName(ObjectIndexes.Beet) }) },
+                { 6, Globals.GetTranslation("quest-6", new { crop = ItemList.GetItemName(ParsnipCropId), cropId = ParsnipCropId }) },
+                { 22, Globals.GetTranslation("quest-22", new { fish = ItemList.GetItemName(ObjectIndexes.LargemouthBass) }) },
 			};
 
 			List<int> nonStaticQuestIds = new()
@@ -248,7 +248,7 @@ namespace Randomizer
 			string itemName = "";
 			string cropStart = "";
 			string article = "";
-			int id = 0;
+			ObjectIndexes id = 0;
 
 			QuestItemTypes questType = QuestIdToQuestTypeMap[questId];
 			switch (questType)
@@ -257,14 +257,14 @@ namespace Randomizer
 					switch (questId)
 					{
 						case 3:
-							itemName = ItemList.GetItemName((int)ObjectIndexes.Beet);
+							itemName = ItemList.GetItemName(ObjectIndexes.Beet);
 							break;
 						case 6:
 							itemName = ItemList.GetItemName(ParsnipCropId);
 							id = ParsnipCropId;
 							break;
 						case 22:
-							itemName = ItemList.GetItemName((int)ObjectIndexes.LargemouthBass);
+							itemName = ItemList.GetItemName(ObjectIndexes.LargemouthBass);
 							break;
 						default:
 							Globals.ConsoleError($"In the static quest type for unexpected quest: {questId}");
@@ -274,19 +274,19 @@ namespace Randomizer
 				case QuestItemTypes.Crop:
 					itemName = replacements.Crop.DisplayName;
 					cropStart = Globals.GetStringStart(itemName, 4);
-					id = replacements.Crop.Id;
+					id = (ObjectIndexes)replacements.Crop.Id;
 					break;
 				case QuestItemTypes.Dish:
 					itemName = replacements.Dish.DisplayName;
-					id = replacements.Crop.Id;
+					id = (ObjectIndexes)replacements.Crop.Id;
 					break;
 				case QuestItemTypes.Fish:
 					itemName = replacements.Fish.DisplayName;
-					id = replacements.Fish.Id;
+					id = (ObjectIndexes)replacements.Fish.Id;
 					break;
 				case QuestItemTypes.Item:
 					itemName = replacements.Item.DisplayName;
-					id = replacements.Item.Id;
+					id = (ObjectIndexes)replacements.Item.Id;
 					break;
 				default:
 					break;

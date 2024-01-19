@@ -15,39 +15,39 @@ namespace Randomizer
 		/// A mapping of cooking recipes that include crop names to the id of that crop
 		/// These ARE needed because the cooking recipe is slightly different than the item name in some cases
 		/// </summary>
-		private readonly static Dictionary<string, int> CropDishesMap = new()
+		private readonly static Dictionary<string, ObjectIndexes> CropDishesMap = new()
 		{
-			{ "Cheese Cauli.", (int)ObjectIndexes.CheeseCauliflower },
-			{ "Parsnip Soup", (int)ObjectIndexes.ParsnipSoup },
-			{ "Bean Hotpot", (int)ObjectIndexes.BeanHotpot },
-			{ "Glazed Yams", (int)ObjectIndexes.GlazedYams },
-			{ "Pepper Poppers", (int)ObjectIndexes.PepperPoppers },
-			{ "Rhubarb Pie", (int)ObjectIndexes.RhubarbPie },
-			{ "Eggplant Parm.", (int)ObjectIndexes.EggplantParmesan },
-			{ "Blueberry Tart", (int)ObjectIndexes.BlueberryTart },
-			{ "Pumpkin Soup", (int)ObjectIndexes.PumpkinSoup },
-			{ "Cran. Sauce", (int)ObjectIndexes.CranberrySauce },
-			{ "Pumpkin Pie", (int)ObjectIndexes.PumpkinPie },
-			{ "Radish Salad", (int)ObjectIndexes.RadishSalad },
-			{ "Cranberry Candy", (int)ObjectIndexes.CranberryCandy },
-			{ "Artichoke Dip", (int)ObjectIndexes.ArtichokeDip },
-			{ "Rice Pudding", (int)ObjectIndexes.RicePudding },
-			{ "Fruit Salad", (int)ObjectIndexes.FruitSalad },
-			{ "Poppyseed Muffin", (int)ObjectIndexes.PoppyseedMuffin }
+			{ "Cheese Cauli.", ObjectIndexes.CheeseCauliflower },
+			{ "Parsnip Soup", ObjectIndexes.ParsnipSoup },
+			{ "Bean Hotpot", ObjectIndexes.BeanHotpot },
+			{ "Glazed Yams", ObjectIndexes.GlazedYams },
+			{ "Pepper Poppers", ObjectIndexes.PepperPoppers },
+			{ "Rhubarb Pie", ObjectIndexes.RhubarbPie },
+			{ "Eggplant Parm.", ObjectIndexes.EggplantParmesan },
+			{ "Blueberry Tart", ObjectIndexes.BlueberryTart },
+			{ "Pumpkin Soup", ObjectIndexes.PumpkinSoup },
+			{ "Cran. Sauce", ObjectIndexes.CranberrySauce },
+			{ "Pumpkin Pie", ObjectIndexes.PumpkinPie },
+			{ "Radish Salad", ObjectIndexes.RadishSalad },
+			{ "Cranberry Candy", ObjectIndexes.CranberryCandy },
+			{ "Artichoke Dip", ObjectIndexes.ArtichokeDip },
+			{ "Rice Pudding", ObjectIndexes.RicePudding },
+			{ "Fruit Salad", ObjectIndexes.FruitSalad },
+			{ "Poppyseed Muffin", ObjectIndexes.PoppyseedMuffin }
 		};
 
         /// <summary>
         /// A mapping of cooking recipes that include fish names to the id of that fish
 		/// These ARE needed because the cooking recipe is slightly different than the item name in some cases
         /// </summary>
-        private readonly static Dictionary<string, int> FishDishesMap = new()
+        private readonly static Dictionary<string, ObjectIndexes> FishDishesMap = new()
 		{
-			{ "Carp Surprise", (int)ObjectIndexes.CarpSurprise },
-			{ "Salmon Dinner", (int)ObjectIndexes.SalmonDinner },
-			{ "Crispy Bass", (int)ObjectIndexes.CrispyBass },
-			{ "Trout Soup", (int)ObjectIndexes.TroutSoup },
-			{ "Fried Eel", (int)ObjectIndexes.FriedEel },
-			{ "Spicy Eel", (int)ObjectIndexes.SpicyEel }
+			{ "Carp Surprise", ObjectIndexes.CarpSurprise },
+			{ "Salmon Dinner", ObjectIndexes.SalmonDinner },
+			{ "Crispy Bass", ObjectIndexes.CrispyBass },
+			{ "Trout Soup", ObjectIndexes.TroutSoup },
+			{ "Fried Eel", ObjectIndexes.FriedEel },
+			{ "Spicy Eel", ObjectIndexes.SpicyEel }
 		};
 
         /// <summary>
@@ -56,16 +56,16 @@ namespace Randomizer
         /// </summary>
         public static void FixCookingRecipeDisplayNames()
 		{
-			foreach (KeyValuePair<string, int> entry in CropDishesMap)
+			foreach (KeyValuePair<string, ObjectIndexes> entry in CropDishesMap)
 			{
-				int id = entry.Value;
+				ObjectIndexes id = entry.Value;
 				CookedItem item = (CookedItem)ItemList.Items[id];
 				item.OverrideDisplayName = GetDishName(entry.Value);
 			}
 
-			foreach (KeyValuePair<string, int> entry in FishDishesMap)
+			foreach (KeyValuePair<string, ObjectIndexes> entry in FishDishesMap)
 			{
-				int id = entry.Value;
+                ObjectIndexes id = entry.Value;
 				CookedItem item = (CookedItem)ItemList.Items[id];
 				item.OverrideDisplayName = GetDishName(entry.Value);
 			}
@@ -111,8 +111,8 @@ namespace Randomizer
 					CraftingRecipe recipe = page[key];
 					if (recipe.name == "Crab Pot")
 					{
-						CraftableItem crabPot = (CraftableItem)ItemList.Items[(int)ObjectIndexes.CrabPot];
-						Dictionary<int, int> randomizedRecipe = crabPot.LastRecipeGenerated;
+						CraftableItem crabPot = (CraftableItem)ItemList.Items[ObjectIndexes.CrabPot];
+						Dictionary<ObjectIndexes, int> randomizedRecipe = crabPot.LastRecipeGenerated;
 						ReduceRecipeCost(page[key], randomizedRecipe);
 					}
 				}
@@ -126,31 +126,33 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="inGameRecipe">The recipe as stored by Stardew Valley</param>
 		/// <param name="randomizedRecipe">The recipe as stored by this mod</param>
-		private static void ReduceRecipeCost(CraftingRecipe inGameRecipe, Dictionary<int, int> randomizedRecipe)
+		private static void ReduceRecipeCost(
+			CraftingRecipe inGameRecipe, 
+			Dictionary<ObjectIndexes, int> randomizedRecipe)
 		{
 			Dictionary<int, int> recipeList = (Dictionary<int, int>)GetInstanceField(inGameRecipe, "recipeList");
 			recipeList.Clear();
 
-			List<int> itemIds = randomizedRecipe.Keys.ToList();
+			List<ObjectIndexes> itemIds = randomizedRecipe.Keys.ToList();
 			if (randomizedRecipe.Values.All(x => x < 2))
 			{
-				int firstKeyOfEasiestItem = randomizedRecipe.Keys
+				ObjectIndexes firstKeyOfEasiestItem = randomizedRecipe.Keys
 					.Select(x => ItemList.Items[x])
 					.OrderBy(x => x.DifficultyToObtain)
-					.Select(x => x.Id)
+					.Select(x => (ObjectIndexes)x.Id)
 					.First();
 
-				foreach (int id in randomizedRecipe.Keys.Where(x => x != firstKeyOfEasiestItem))
+				foreach (ObjectIndexes id in randomizedRecipe.Keys.Where(x => x != firstKeyOfEasiestItem))
 				{
-					recipeList.Add(id, 1);
+					recipeList.Add((int)id, 1);
 				}
 			}
 			else
 			{
-				foreach (int id in randomizedRecipe.Keys)
+				foreach (ObjectIndexes id in randomizedRecipe.Keys)
 				{
 					int value = randomizedRecipe[id];
-					recipeList.Add(id, Math.Max(value / 2, 1));
+					recipeList.Add((int)id, Math.Max(value / 2, 1));
 				}
 			}
 		}
@@ -208,7 +210,7 @@ namespace Randomizer
 		/// Gets the dish name based on the id
 		/// </summary>
 		/// <param name="id"></param>
-		private static string GetDishName(int id)
+		private static string GetDishName(ObjectIndexes id)
 		{
 			CookedItem item = ItemList.Items[id] as CookedItem;
 			return item.DisplayName;

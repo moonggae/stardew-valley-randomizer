@@ -17,7 +17,7 @@ namespace Randomizer
 			Dictionary<string, string> stringReplacements = new();
 
 			// Fix the "Parsnip" string at the start of the game
-			string parsnipSeedName = ItemList.Items[(int)ObjectIndexes.ParsnipSeeds].Name;
+			string parsnipSeedName = ItemList.Items[ObjectIndexes.ParsnipSeeds].Name;
 			stringReplacements["Farmer.cs.1918"] = Globals.GetTranslation("Farmer.cs.1918", new { seedName = parsnipSeedName });
 
 			// Fix the queen of sauce strings so it doesn't say the wrong recipe
@@ -46,10 +46,10 @@ namespace Randomizer
 
 			if (Globals.Config.Crops.Randomize)
 			{
-				string sweetGemBerryName = ItemList.GetItemName((int)ObjectIndexes.SweetGemBerry);
+				string sweetGemBerryName = ItemList.GetItemName(ObjectIndexes.SweetGemBerry);
 				stringReplacements["Woods_Statue"] = Globals.GetTranslation("Woods_Statue", new { cropName = sweetGemBerryName });
 
-				string beetName = ItemList.GetItemName((int)ObjectIndexes.Beet);
+				string beetName = ItemList.GetItemName(ObjectIndexes.Beet);
 				stringReplacements["Railroad_Box_MrQiNote"] = Globals.GetTranslation("Railroad_Box_MrQiNote", new { cropName = beetName });
 			}
 

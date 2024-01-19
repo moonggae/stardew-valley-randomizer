@@ -39,7 +39,9 @@ namespace Randomizer
 					return OverrideDisplayName;
 				}
 
-                return ItemList.GetOriginalItemData(Id, ObjectInformationIndexes.DisplayName);
+                return IsBigCraftable
+					? Name
+					: ItemList.GetOriginalItemData(Id, ObjectInformationIndexes.DisplayName);
             }
 		}
 		public string OverrideName { get; set; }
@@ -51,7 +53,9 @@ namespace Randomizer
 		{
 			get
 			{
-				return ItemList.GetOriginalItemData(Id, ObjectInformationIndexes.Name);
+				return IsBigCraftable
+					? Name
+					: ItemList.GetOriginalItemData(Id, ObjectInformationIndexes.Name);
             }
 		}
 		public LocationData ForagableLocationData { get; } = new LocationData();
@@ -125,20 +129,25 @@ namespace Randomizer
 		public Item(int id)
 		{
 			Id = id;
-			CanStack = id >= -4;
+			CanStack = id >= -4 && !IsBigCraftable;
 		}
 
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="id">The item ID</param>
-		/// <param name="difficultyToObtain">The difficulty to obtain this item</param>
-		public Item(int id, ObtainingDifficulties difficultyToObtain)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="id">The item ID</param>
+        /// <param name="id">Whether the item is a big craftable</param>
+        /// <param name="difficultyToObtain">The difficulty to obtain this item</param>
+        public Item(int id, ObtainingDifficulties difficultyToObtain, bool isBigCraftable = false)
 		{
 			Id = id;
+			IsBigCraftable = isBigCraftable;
 			DifficultyToObtain = difficultyToObtain;
+			if (isBigCraftable) 
+			{ 
+				CanStack = false; 
+			}
 		}
-
 
 		/// <summary>
 		/// Returns the string version of this item to use in crafting recipes
@@ -171,15 +180,18 @@ namespace Randomizer
 		/// </returns>
 		private string GetName()
 		{
-			bool ignoreOverrideName =
+            bool ignoreOverrideName =
 				(!Globals.Config.Crops.Randomize && (IsCrop || IsSeed)) ||
 				(!Globals.Config.Fish.Randomize && IsFish);
-			if (!ignoreOverrideName && !string.IsNullOrEmpty(OverrideName))
-			{
-				return OverrideName;
-			}
 
-			string enumName = ((ObjectIndexes)Id).ToString();
+            if (!ignoreOverrideName && !string.IsNullOrEmpty(OverrideName))
+            {
+                return OverrideName;
+            }
+
+			string enumName = IsBigCraftable
+				? ((BigCraftableIndexes)Id).ToString()
+				: ((ObjectIndexes)Id).ToString();
 			return Regex.Replace(enumName, @"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", " $1").Trim();
 		}
 

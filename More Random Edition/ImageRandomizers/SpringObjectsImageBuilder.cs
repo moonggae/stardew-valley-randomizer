@@ -132,7 +132,7 @@ namespace Randomizer
 				return fileName;
 			}
 
-			Item item = ItemList.Items[itemId];
+			Item item = ItemList.Items[(ObjectIndexes)itemId];
 
 			if (item.Id == (int)ObjectIndexes.CherrySapling)
 			{
@@ -310,7 +310,7 @@ namespace Randomizer
 				return Globals.Config.Boots.Randomize && Globals.Config.Boots.UseCustomImages;
 			}
 
-			Item item = ItemList.Items[itemId];
+			Item item = ItemList.Items[(ObjectIndexes)itemId];
 			if (item.IsCrop || item.IsSeed || item.Id == (int)ObjectIndexes.CherrySapling)
 			{
 				return Globals.Config.Crops.Randomize && Globals.Config.Crops.UseCustomImages;

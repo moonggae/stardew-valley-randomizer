@@ -37,9 +37,9 @@ namespace Randomizer
             var desertShopSeeds = menu.itemPriceAndStock.Keys
                 .Where(item =>
                     item is SVObject &&
-                    ItemList.Items.ContainsKey((item as SVObject).ParentSheetIndex) &&
-                    ItemList.Items[(item as SVObject).ParentSheetIndex].IsSeed)
-                .Select(item => ItemList.Items[(item as SVObject).ParentSheetIndex] as SeedItem)
+                    ItemList.Items.ContainsKey((ObjectIndexes)(item as SVObject).ParentSheetIndex) &&
+                    ItemList.Items[(ObjectIndexes)(item as SVObject).ParentSheetIndex].IsSeed)
+                .Select(item => ItemList.Items[(ObjectIndexes)(item as SVObject).ParentSheetIndex] as SeedItem)
                 .ToList();
 
             EmptyStock(menu);
@@ -67,7 +67,7 @@ namespace Randomizer
         private static void AddDaySpecificItems(ShopMenu menu, List<SeedItem> desertShopSeeds, Random weeklyShopRNG)
         {
             var desertShopCrops = desertShopSeeds
-                .Select(item => ItemList.Items[item.CropGrowthInfo.CropId])
+                .Select(item => ItemList.Items[(ObjectIndexes)item.CropGrowthInfo.CropId])
                 .ToList();
 
             // Perform these first so the seed doesn't change on different days of the week

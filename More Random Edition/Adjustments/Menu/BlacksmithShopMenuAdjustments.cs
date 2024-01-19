@@ -109,7 +109,7 @@ namespace Randomizer
         /// <param name="shopRNG"></param>
         private static void AddIridiumOre(ShopMenu menu, Random shopRNG)
         {
-            var iridiumOre = ItemList.Items[(int)ObjectIndexes.IridiumOre];
+            var iridiumOre = ItemList.Items[ObjectIndexes.IridiumOre];
             var stock = Range.GetRandomValue(5, 15, shopRNG);
             var salePrice = GetAdjustedItemPrice(iridiumOre, fallbackPrice: 50, multiplier: 5);
             AddStock(menu, iridiumOre.GetSaliableObject(stock), stock, salePrice);
@@ -128,7 +128,7 @@ namespace Randomizer
             var getIridiumBar = Globals.RNGGetNextBoolean(5, shopRNG);
             if (getIridiumBar)
             {
-                var iridiumBar = ItemList.Items[(int)ObjectIndexes.IridiumBar];
+                var iridiumBar = ItemList.Items[ObjectIndexes.IridiumBar];
                 var stock = Range.GetRandomValue(2, 4, shopRNG);
                 var salePrice = GetAdjustedItemPrice(iridiumBar, fallbackPrice: 50, multiplier: 3);
                 AddStock(menu, iridiumBar.GetSaliableObject(stock), stock, salePrice);
@@ -138,10 +138,10 @@ namespace Randomizer
             {
                 var commonMetalBars = new List<Item>()
                 {
-                    ItemList.Items[(int)ObjectIndexes.CopperBar],
-                    ItemList.Items[(int)ObjectIndexes.IronBar],
-                    ItemList.Items[(int)ObjectIndexes.GoldBar],
-                    ItemList.Items[(int)ObjectIndexes.MapleBar]
+                    ItemList.Items[ObjectIndexes.CopperBar],
+                    ItemList.Items[ObjectIndexes.IronBar],
+                    ItemList.Items[ObjectIndexes.GoldBar],
+                    ItemList.Items[ObjectIndexes.MapleBar]
                 };
 
                 var stock = Range.GetRandomValue(3, 8);

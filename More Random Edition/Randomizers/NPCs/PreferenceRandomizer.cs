@@ -334,25 +334,25 @@ namespace Randomizer
 		/// <returns>String of item names in a comma-separated list.</returns>
 		private static string TranslateIDs(string itemIDString)
 		{
-			string[] IDStringArray = itemIDString.Trim().Split(' ');
+			string[] idStringArray = itemIDString.Trim().Split(' ');
 			string outputString = "";
 
-			for (int arrayPos = 0; arrayPos < IDStringArray.Length; arrayPos++)
+			for (int arrayPos = 0; arrayPos < idStringArray.Length; arrayPos++)
 			{
-				bool IDParsed = int.TryParse(IDStringArray[arrayPos], out int ID);
+				bool IDParsed = int.TryParse(idStringArray[arrayPos], out int id);
 				if (!IDParsed)
 				{
-					Globals.ConsoleWarn($"Input string was not in a correct format: '{IDStringArray[arrayPos]}'");
+					Globals.ConsoleWarn($"Input string was not in a correct format: '{idStringArray[arrayPos]}'");
 					continue;
 				}
 
-				// Add the stirng based on whether it's a category
-				outputString += ID > 0
-					? ItemList.GetItemName(ID)
-					: $"[{GiftableItemCategories[ID]}]";
+				// Add the string based on whether it's a category
+				outputString += id > 0
+					? ItemList.GetItemName((ObjectIndexes)id)
+					: $"[{GiftableItemCategories[id]}]";
 
 				// Not last item - put comma after
-				if (arrayPos != IDStringArray.Length - 1)
+				if (arrayPos != idStringArray.Length - 1)
 				{
 					outputString += ", ";
 				}

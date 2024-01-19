@@ -1,54 +1,75 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Randomizer
 {
 	public class CraftableItem : Item
 	{
-		public string Path { get; set; }
-		public string SkillString { get; set; }
+		public string SkillString { get; set; } = "";
+		public int OriginalLevelLearnedAt { get; set; }
 		public int BaseLevelLearnedAt { get; set; }
-		public int OverrideBaseLevelLearnedAt { get; set; }
 		public bool IsLearnedOnLevelup
 		{
 			get { return SkillString.Length > 0; }
 		}
 		public CraftableCategories Category { get; set; }
-		public Dictionary<int, int> LastRecipeGenerated { get; set; } = new Dictionary<int, int>(); // item id to amount needed
+		public Dictionary<ObjectIndexes, int> LastRecipeGenerated { get; set; } = new(); // item id to amount needed
+
+		private readonly static Dictionary<string, string> CraftingRecipeData = 
+			Globals.ModRef.Helper.GameContent.Load<Dictionary<string, string>>("Data/CraftingRecipes");
+
+		/// <summary>
+		/// The original data taken from Data/CraftingRecipes.xnb
+		/// Will be modified as it is randomzied
+		/// </summary>
+		public string[] CraftingData { get; private set; }
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="id">The id of the item</param>
-        /// <param name="path">The hard-coded path for this craftable item</param>
-        /// <param name="skillString">The name of the skill you need to level up to learn the recipe</param>
-        /// <param name="baseLevelLearnedAt">The base level you can learn this recipe at</param>
+		/// <param name="category">The category of the item - defines how hard it is to craft</param>
         /// <param name="overrideBaseLevelLearnedAt">Will override the base level learned at with this value - set to -1 to not use it</param>
 		/// <param name="isBigCraftable">Whether this is a BigCraftable object</param>
 		/// <param name="bigCraftablePrice">The price to use for BigCrafables - 1000 is default</param>
+		/// <param name="dataKey">
+		/// Normally linked to the English name in Object Information - but if there's an exception,
+		/// this paramter should be passed in
+		/// </param>
         public CraftableItem(
 			int id,
-			string path, 
 			CraftableCategories category, 
-			string skillString = "", 
-			int baseLevelLearnedAt = 0, 
 			int overrideBaseLevelLearnedAt = -1,
 			bool isBigCraftable = false,
-			int bigCraftablePrice = 1000) : base(id)
+			int bigCraftablePrice = 1000,
+			string dataKey = null) : base(id)
 		{
-			IsCraftable = true;
-			IsBigCraftable = isBigCraftable;
+			IsBigCraftable = isBigCraftable; // Put this first so the value is set for EnglishName
+            CraftingData = CraftingRecipeData[dataKey ?? EnglishName].Split("/");
+            IsCraftable = true;
 			BigCraftablePrice = bigCraftablePrice;
-			Path = path;
 			Category = category;
-			SkillString = skillString;
-			BaseLevelLearnedAt = baseLevelLearnedAt;
 			DifficultyToObtain = ObtainingDifficulties.NonCraftingItem; // By default, craftable items won't be materials for other craftable items
-			
-			if (overrideBaseLevelLearnedAt == -1)
+
+            if (isBigCraftable && !Enum.IsDefined(typeof(BigCraftableIndexes), id))
 			{
-				OverrideBaseLevelLearnedAt = baseLevelLearnedAt;
+				Globals.ConsoleWarn($"Craftable item marked as big craftable without a matching BigCraftableIndex: {id}");
 			}
+
+			// The skill and level learned at are in a space-delimited string
+			// not all crafting recipes have this, though, so check the exceptions first
+			string unlockConditionsString = CraftingData[(int)CraftingRecipeIndexes.UnlockConditions];
+			if (unlockConditionsString != "null" && unlockConditionsString != "l 0")
+			{
+                string[] unlockConditions = unlockConditionsString.Split(" ");
+                SkillString = unlockConditions[^2].Trim();
+                OriginalLevelLearnedAt = int.Parse(unlockConditions[^1].Trim());
+            }
+
+			BaseLevelLearnedAt = overrideBaseLevelLearnedAt == -1
+				? OriginalLevelLearnedAt
+				: overrideBaseLevelLearnedAt;
 		}
 
 		/// <summary>
@@ -60,7 +81,7 @@ namespace Randomizer
 		/// </returns>
 		public int GetLevelLearnedAt()
 		{
-			Range levelRange = new Range(OverrideBaseLevelLearnedAt - 3, OverrideBaseLevelLearnedAt + 3);
+			Range levelRange = new(BaseLevelLearnedAt - 3, BaseLevelLearnedAt + 3);
 			int generatedLevel = levelRange.GetRandomValue();
 			if (generatedLevel > 8) { return 9; }
 			if (generatedLevel < 1) { return 1; }
@@ -69,7 +90,11 @@ namespace Randomizer
 				generatedLevel = Globals.RNGGetNextBoolean() ? 4 : 6;
 			}
 
-			if (!Globals.Config.CraftingRecipes.Randomize || !Globals.Config.CraftingRecipes.RandomizeLevels) { return BaseLevelLearnedAt; }
+			if (!Globals.Config.CraftingRecipes.Randomize || 
+				!Globals.Config.CraftingRecipes.RandomizeLevels) 
+			{ 
+				return OriginalLevelLearnedAt; 
+			}
 
 			return generatedLevel;
 		}
@@ -77,30 +102,31 @@ namespace Randomizer
 		/// <summary>
 		/// Gets the string to be used for the crafting recipe
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>The data in the xnb format</returns>
 		public string GetCraftingString()
 		{
 			string itemsRequiredString = GetItemsRequired();
-			string stringSuffix = IsLearnedOnLevelup ? $"{SkillString} {GetLevelLearnedAt()}" : "";
-			string craftingString = $"{itemsRequiredString}{Path}{stringSuffix}";
+			string unlockConditions = IsLearnedOnLevelup ? $"{SkillString} {GetLevelLearnedAt()}" : "";
+			CraftingData[(int)CraftingRecipeIndexes.Ingredients] = itemsRequiredString;
+			CraftingData[(int)CraftingRecipeIndexes.UnlockConditions] = unlockConditions;
 
-			string requiredItemsSpoilerString = "";
+            string requiredItemsSpoilerString = "";
 			string[] requiredItemsTokens = itemsRequiredString.Split(' ');
 			for (int i = 0; i < requiredItemsTokens.Length; i += 2)
 			{
-				string itemName = ItemList.GetItemName(int.Parse(requiredItemsTokens[i]));
+				string itemName = ItemList.GetItemName((ObjectIndexes)int.Parse(requiredItemsTokens[i]));
 				string amount = requiredItemsTokens[i + 1];
 				requiredItemsSpoilerString += $" - {itemName}: {amount}";
 			}
 
 			if (Globals.Config.CraftingRecipes.Randomize)
 			{
-				Globals.SpoilerWrite($"{Name} - {stringSuffix}");
+				Globals.SpoilerWrite($"{Name} - {unlockConditions}");
 				Globals.SpoilerWrite(requiredItemsSpoilerString);
 				Globals.SpoilerWrite("---");
 			}
 
-			return craftingString;
+			return string.Join("/", CraftingData);
 		}
 
 		/// <summary>
@@ -113,7 +139,7 @@ namespace Randomizer
 		/// </returns>
 		private string GetItemsRequired()
 		{
-			string craftingString = "";
+			string craftingString;
 			switch (Category)
 			{
 				case CraftableCategories.EasyAndNeedMany:
@@ -161,7 +187,7 @@ namespace Randomizer
 			string[] tokens = craftingString.Split(' ');
 			for (int i = 0; i + 1 < tokens.Length; i += 2)
 			{
-				int id = int.Parse(tokens[i]);
+				ObjectIndexes id = (ObjectIndexes)int.Parse(tokens[i]);
 				int amount = int.Parse(tokens[i + 1]);
 
 				if (!LastRecipeGenerated.ContainsKey(id))
