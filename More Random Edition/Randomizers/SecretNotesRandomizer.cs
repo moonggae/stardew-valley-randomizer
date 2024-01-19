@@ -56,7 +56,7 @@ namespace Randomizer
 			foreach (string NPC in NPCs)
 			{
 				string[] tokens = prefs[NPC].Split('/');
-				List<string> items = tokens[1].Split(' ') 
+				List<string> items = tokens[1].Trim().Split(' ') 
 					.Where(x => int.Parse(x) > 0)            
 					.ToList();                               
 

@@ -108,9 +108,23 @@ namespace Randomizer
 		/// <returns>List&lt;Item&gt; containing all giftable items</returns>
 		public static List<Item> GetGiftables()
 		{
-			return Items.Values.Where(x => x.IsAnimalProduct || x.IsArtifact || x.IsCooked || x.IsCrabPotItem || x.IsCrop || x.IsFish
-										|| x.IsFlower || x.IsForagable || x.IsFruit || x.IsGeodeMineral || x.IsMayonaisse || x.IsMonsterItem
-										|| x.IsResource || x.IsSeed || x.IsSmelted || x.IsTrash).ToList();
+			return Items.Values.Where(x => 
+				x.IsAnimalProduct || 
+				x.IsArtifact || 
+				x.IsCooked || 
+				x.IsCrabPotItem || 
+				x.IsCrop || 
+				x.IsFish || 
+				x.IsFlower ||
+				x.IsForagable || 
+				x.IsFruit ||
+				x.IsGeodeMineral ||
+				x.IsMayonaisse || 
+				x.IsMonsterItem || 
+				x.IsResource || 
+				x.IsSeed ||
+				x.IsSmelted ||
+				x.IsTrash).ToList();
 		}
 
 		/// <summary>
@@ -238,9 +252,9 @@ namespace Randomizer
 		/// <returns></returns>
 		public static List<Item> GetItemListFromString(string itemString, char separator)
 		{
-			List<Item> itemList = new List<Item>();
+			List<Item> itemList = new();
 
-			string[] items = itemString.Split(separator);
+			string[] items = itemString.Trim().Split(separator);
 			foreach (string item in items)
 			{
 				int ID = int.Parse(item);

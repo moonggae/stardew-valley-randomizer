@@ -33,9 +33,9 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// 
+		/// Updates the NPC loves for the given NPC string
 		/// </summary>
-		/// <param name="newNPCLoves"></param>
+		/// <param name="newNPCLoves">The new loves</param>
 		public static void UpdateNPCLoves(string NPC, List<Item> newNPCLoves)
 		{
 			switch (NPC)
@@ -222,7 +222,7 @@ namespace Randomizer
 		/// <summary>
 		/// All NPCs which can be gifted items.
 		/// </summary>
-		public static List<string> GiftableNPCs = new List<string>
+		public readonly static List<string> GiftableNPCs = new()
 		{
 			"Robin", 
 			"Demetrius", 
@@ -260,7 +260,7 @@ namespace Randomizer
 			"Leo"
 		};
 
-		public static List<string> QuestableNPCsList = new List<string>
+		public readonly static List<string> QuestableNPCsList = new()
 		{ // Kent is not included because of him not appearing for awhile
 			"Alex",
 			"Elliot",
