@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Randomizer
 {
-	public class CropGrowthImageBuilder : ImageBuilder
+    public class CropGrowthImageBuilder : ImageBuilder
 	{
 		private const string NormalDirectory = "NormalCrops";
 		private const string RegrowingDirectory = "RegrowingCrops";
@@ -184,7 +185,8 @@ namespace Randomizer
             if (ImageNameToCropIds.TryGetValue(fileName, out int cropId) &&
 				CropIdsToLinkingData.TryGetValue(cropId, out CropImageLinkingData linkingData))
             {
-				linkingData.HueShiftValue = Range.GetRandomValue(0, Globals.Config.Crops.HueShiftMax);
+                Random rng = Globals.GetFarmRNG($"{nameof(CropGrowthImageBuilder)}{fileName}");
+                linkingData.HueShiftValue = Range.GetRandomValue(0, Globals.Config.Crops.HueShiftMax, rng);
                 return ImageManipulator.ShiftImageHue(image, linkingData.HueShiftValue);
             }
 

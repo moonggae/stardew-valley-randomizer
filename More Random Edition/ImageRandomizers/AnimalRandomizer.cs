@@ -55,7 +55,8 @@ namespace Randomizer
 
             if (randomAnimalFileName[..^4].EndsWith("-hue-shift"))
             {
-                int hueShiftValue = Range.GetRandomValue(0, 359);
+                Random rng = Globals.GetFarmRNG(nameof(AnimalRandomizer));
+                int hueShiftValue = Range.GetRandomValue(0, 359, rng);
                 Color shiftedPaleColor = ImageManipulator.IncreaseHueBy(ImageManipulator.PaleColor, hueShiftValue);
                 animalImage = ImageManipulator.MultiplyImageByColor(animalImage, shiftedPaleColor);
             }
@@ -78,16 +79,13 @@ namespace Randomizer
         /// <returns></returns>
         private string GetRandomAnimalFileName()
         {
-            byte[] seedvar = new SHA1Managed().ComputeHash(Encoding.UTF8.GetBytes(Game1.player.farmName.Value));
-            int seed = BitConverter.ToInt32(seedvar, 0);
-            Random rng = new(seed);
-
             var animalImages = Directory.GetFiles($"{ImageDirectory}")
                 .Where(x => x.EndsWith(".png") && !x.EndsWith(OutputFileName))
                 .Select(x => Path.GetFileName(x))
                 .OrderBy(x => x)
                 .ToList();
 
+            Random rng = Globals.GetFarmRNG(nameof(AnimalRandomizer));
             return Globals.RNGGetRandomValueFromList(animalImages, rng);
         }
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace Randomizer
 {
@@ -260,7 +261,7 @@ namespace Randomizer
         public static Random GetWeeklyRNG(string seed)
         {
 			int time = Game1.Date.TotalDays / 7;
-            byte[] seedvar = (new SHA1Managed()).ComputeHash(System.Text.Encoding.UTF8.GetBytes(Game1.player.farmName.Value + seed));
+            byte[] seedvar = new SHA1Managed().ComputeHash(Encoding.UTF8.GetBytes(Game1.player.farmName.Value + seed));
             int fullSeed = BitConverter.ToInt32(seedvar, 0) + time;
 
             return new Random(fullSeed);
@@ -276,8 +277,21 @@ namespace Randomizer
         public static Random GetDailyRNG(string seed)
         {
 			int time = Game1.Date.TotalDays;
-            byte[] seedvar = (new SHA1Managed()).ComputeHash(System.Text.Encoding.UTF8.GetBytes(Game1.player.farmName.Value + seed));
+            byte[] seedvar = new SHA1Managed().ComputeHash(Encoding.UTF8.GetBytes(Game1.player.farmName.Value + seed));
             int fullSeed = BitConverter.ToInt32(seedvar, 0) + time;
+
+            return new Random(fullSeed);
+        }
+
+        /// <summary>
+        /// Gets an RNG value based on the farm namd and the given seed
+        /// </summary>
+        /// <param name="seed">The seed to use</param>
+        /// <returns>The Random object</returns>
+        public static Random GetFarmRNG(string seed)
+		{
+            byte[] seedvar = new SHA1Managed().ComputeHash(Encoding.UTF8.GetBytes(Game1.player.farmName.Value + seed));
+            int fullSeed = BitConverter.ToInt32(seedvar, 0);
 
             return new Random(fullSeed);
         }

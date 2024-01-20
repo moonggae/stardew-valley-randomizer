@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Monsters;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -145,7 +146,9 @@ namespace Randomizer
         {
             Texture2D monsterImage = Globals.ModRef.Helper.GameContent
                 .Load<Texture2D>(GetStardewAssetPath(monsterName));
-            int hueShiftAmount = Range.GetRandomValue(0, Globals.Config.Monsters.HueShiftMax);
+
+            Random rng = Globals.GetFarmRNG($"{nameof(MonsterHueShifter)}{monsterName}");
+            int hueShiftAmount = Range.GetRandomValue(0, Globals.Config.Monsters.HueShiftMax, rng);
 
             return new MonsterHueShiftData(
                 monsterName,

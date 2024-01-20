@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -222,7 +223,8 @@ namespace Randomizer
 					hueShiftMax = Globals.Config.Crops.HueShiftMax; 
 				}
 
-                int hueShiftAmount = Range.GetRandomValue(0, hueShiftMax);
+                Random rng = Globals.GetFarmRNG($"{nameof(SpringObjectsImageBuilder)}{fileName}");
+                int hueShiftAmount = Range.GetRandomValue(0, hueShiftMax, rng);
                 return ImageManipulator.ShiftImageHue(image, hueShiftAmount);
             }
 
