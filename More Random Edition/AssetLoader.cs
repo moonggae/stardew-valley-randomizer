@@ -102,6 +102,7 @@ namespace Randomizer
 			{
 				_mod.Helper.GameContent.InvalidateCache(assetName);
 			}
+            ReplaceCatIcon();
         }
 
         /// <summary>
@@ -111,14 +112,14 @@ namespace Randomizer
         public void ReplaceTitleScreenAssets()
 		{
 			ReplaceTitleScreen();
-			ReplaceNewGameCatIcon();
+			ReplaceCatIcon();
         }
 
 		/// <summary>
-		/// Replaces the cat icon on the new game menu if pets are randomized
+		/// Replaces the cat icon on the new game and the pause menu if pets are randomized
 		/// Otherwise, restore the icon
 		/// </summary>
-		private void ReplaceNewGameCatIcon()
+		private void ReplaceCatIcon()
 		{
             _mod.Helper.GameContent.InvalidateCache(PetIconPatcher.StardewAssetPath);
         }

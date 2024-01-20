@@ -96,12 +96,14 @@ namespace Randomizer
         /// Returns it without the file extension, and all lowercase
         /// This should always be the same value since the seed should start in the same spot
         /// </summary>
+        /// <param name="getOriginalName">Whether to get the original file name, with extension and capatalized</param>
         /// <returns></returns>
-        public static string GetRandomPetName()
+        public static string GetRandomPetName(bool getOriginalName = false)
         {
-            return new AnimalRandomizer(AnimalTypes.Pets)
-                .GetRandomAnimalFileName()[..^4]
-                .ToLower();
+            string originalFileName = new AnimalRandomizer(AnimalTypes.Pets).GetRandomAnimalFileName();
+            return getOriginalName
+                ? originalFileName
+                : originalFileName[..^4].ToLower();
         }
 
         /// <summary>

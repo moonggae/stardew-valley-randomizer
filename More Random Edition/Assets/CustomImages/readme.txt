@@ -26,6 +26,9 @@ Animals
   - These images do not need to be grayscale
 - If you want to force a certain pet to be used, delete all images out of the desired directory except the one you want
 
+Pets/Icons
+- To use an icon in-game (the little pet pic at the bottom of the pause menu), place a 16x16 image in this directory with the same name as your sprite sheet
+
 
 Bundles
 -------
