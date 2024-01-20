@@ -50,7 +50,7 @@ namespace Randomizer
 		/// <summary>
 		/// Maps the quest to what type of item it gives
 		/// </summary>
-		private static readonly Dictionary<int, QuestItemTypes> QuestIdToQuestTypeMap = new Dictionary<int, QuestItemTypes>
+		private static readonly Dictionary<int, QuestItemTypes> QuestIdToQuestTypeMap = new()
 		{
 			{ 3, QuestItemTypes.Static },
 			{ 6, QuestItemTypes.Static },
@@ -83,7 +83,7 @@ namespace Randomizer
 		/// <summary>
 		/// A mapping of quest IDs to what mail key it belongs to
 		/// </summary>
-		private static readonly Dictionary<int, string> QuestToMailMap = new Dictionary<int, string>()
+		private static readonly Dictionary<int, string> QuestToMailMap = new()
 		{
 			{ 101, "spring_19_1" },
 			{ 103, "summer_14_1" },

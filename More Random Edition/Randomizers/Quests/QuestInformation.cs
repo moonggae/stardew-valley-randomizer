@@ -7,8 +7,8 @@ namespace Randomizer
 	/// </summary>
 	public class QuestInformation
 	{
-		public Dictionary<int, string> QuestReplacements = new Dictionary<int, string>();
-		public Dictionary<string, string> MailReplacements = new Dictionary<string, string>();
+		public Dictionary<int, string> QuestReplacements = new();
+		public Dictionary<string, string> MailReplacements = new();
 
 		public QuestInformation(
 			Dictionary<int, string> questReplacements,
