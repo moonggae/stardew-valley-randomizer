@@ -45,7 +45,7 @@ namespace Randomizer
 		/// <returns />
 		public static List<Item> GetForagables(Seasons season)
 		{
-			List<Item> foragablesInSeason = new List<Item>();
+			List<Item> foragablesInSeason = new();
 			switch (season)
 			{
 				case Seasons.Spring:

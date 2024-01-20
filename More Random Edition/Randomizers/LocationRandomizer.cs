@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using StardewValley;
+using StardewValley.GameData.Movies;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Randomizer
@@ -8,7 +11,7 @@ namespace Randomizer
 	/// </summary>
 	public class LocationRandomizer
 	{
-		private static List<Item> _allForagables { get; set; }
+		private static List<Item> AllForagables { get; set; }
 
 		public static List<Item> SpringForagables { get; } = new List<Item>();
 		public static List<Item> SummerForagables { get; } = new List<Item>();
@@ -22,10 +25,16 @@ namespace Randomizer
 		/// <summary>
 		/// Randomizes all foragables to a random season and location - does not yet handle fishing or dirt items
 		/// </summary>
+		/// <param name="objectInformationReplacements">
+		/// The in-progress objectInformationReplacements - it's important to NOT
+		/// overwrite anything in this, since it contains already edited information already
+		/// This is passed into edit the tooltip of the foragables to include its season
+		/// </param>
 		/// <returns>A dictionary of locations to replace</returns>
-		public static Dictionary<string, string> Randomize()
+		public static Dictionary<string, string> Randomize(
+			Dictionary<int, string> objectInformationReplacements)
 		{
-			_allForagables = ItemList.Items.Values.Where(x => x.ShouldBeForagable).ToList();
+			AllForagables = ItemList.Items.Values.Where(x => x.ShouldBeForagable).ToList();
 
 			SpringForagables.Clear();
 			SummerForagables.Clear();
@@ -50,6 +59,8 @@ namespace Randomizer
 			{
 				PopulateDefaultForagables();
 			}
+
+			AddTooltipToForagableItems(objectInformationReplacements, foragableLocationDataList);
 
 			return locationsReplacements;
 		}
@@ -111,7 +122,7 @@ namespace Randomizer
 
 			if (dataToWrite == null)
 			{
-				Globals.ConsoleError($"Could not find the foragable list for {season.ToString()}");
+				Globals.ConsoleError($"Could not find the foragable list for {season}");
 				return;
 			}
 
@@ -239,7 +250,7 @@ namespace Randomizer
 					AddUniqueNewForagable(DesertForagables);
 				}
 
-				LocationData foragableLocationData = new LocationData()
+				LocationData foragableLocationData = new()
 				{
 					Location = location
 				};
@@ -253,7 +264,7 @@ namespace Randomizer
 				forgableLocationDataList.Add(foragableLocationData);
 			}
 
-			LocationData mineLocationData = new LocationData() { Location = Locations.UndergroundMine };
+			LocationData mineLocationData = new() { Location = Locations.UndergroundMine };
 			SetExtraDiggableItemInfo(mineLocationData);
 			forgableLocationDataList.Add(mineLocationData);
 			return forgableLocationDataList;
@@ -340,7 +351,7 @@ namespace Randomizer
 		/// <param name="listToPopulate">The list to populate</param>
 		private static void AddUniqueNewForagable(List<Item> listToPopulate)
 		{
-			if (listToPopulate.Count >= _allForagables.Count)
+			if (listToPopulate.Count >= AllForagables.Count)
 			{
 				Globals.ConsoleWarn("Tried to add a unique foragable when the given list was full!");
 				return;
@@ -349,10 +360,10 @@ namespace Randomizer
 			int itemIndex;
 			do
 			{
-				itemIndex = Globals.RNG.Next(0, _allForagables.Count);
-			} while (listToPopulate.Contains(_allForagables[itemIndex]));
+				itemIndex = Globals.RNG.Next(0, AllForagables.Count);
+			} while (listToPopulate.Contains(AllForagables[itemIndex]));
 
-			listToPopulate.Add(_allForagables[itemIndex]);
+			listToPopulate.Add(AllForagables[itemIndex]);
 		}
 
 		/// <summary>
@@ -362,7 +373,7 @@ namespace Randomizer
 		private static void SetExtraDiggableItemInfo(LocationData locationData)
 		{
 			ObtainingDifficulties difficulty = GetRandomItemDifficulty();
-			double probability = 0;
+			double probability;
 			switch (difficulty)
 			{
 				case ObtainingDifficulties.NoRequirements:
@@ -510,5 +521,88 @@ namespace Randomizer
 				ItemList.Items[ObjectIndexes.Coconut]
 			});
 		}
-	}
+
+		/// <summary>
+		/// Adds tooltips to foragable items to help the player know when
+		/// they're available
+		/// </summary>
+		/// <param name="objectInformationReplacements">
+		/// The object information replacements dictionary from EditedObjectInfo
+		/// It is important to NOT modify this more than we intend to
+		/// </param>
+		/// <param name="foragableLocationDataList">The list of foragable data that we constructed</param>
+        private static void AddTooltipToForagableItems(
+			Dictionary<int, string> objectInformationReplacements,
+			List<LocationData> foragableLocationDataList)
+		{
+			Dictionary<int, List<Seasons>> foragableIdToSeasons = new();
+
+			foreach (LocationData foragableLocationData in foragableLocationDataList)
+			{
+                FindForagableSeasons(foragableIdToSeasons, foragableLocationData.SpringForagables, Seasons.Spring);
+                FindForagableSeasons(foragableIdToSeasons, foragableLocationData.SummerForagables, Seasons.Summer);
+                FindForagableSeasons(foragableIdToSeasons, foragableLocationData.FallForagables, Seasons.Fall);
+                FindForagableSeasons(foragableIdToSeasons, foragableLocationData.WinterForagables, Seasons.Winter);
+            }
+
+			foreach (var foragableData in foragableIdToSeasons)
+			{
+				int itemId = foragableData.Key;
+				var seasonList = foragableData.Value.Distinct();
+                if (!seasonList.Any())
+                {
+                    Globals.ConsoleWarn($"Foragable with no season: ${itemId}");
+                }
+
+                // Insert the data into objectInformation if it isn't there already
+                // This is expected for Grapes and Cactus fruit, where we append to the description
+                if (!objectInformationReplacements.ContainsKey(itemId))
+                {
+                    objectInformationReplacements[itemId] = ItemList.OriginalItemList[itemId];
+                }
+
+                // Now append the season string to the description in objectInformation
+				// Also yes, we're using the fish translations here since it's item-agnostic
+                string tooltip = seasonList.Count() >= 4
+					? Globals.GetTranslation("fish-tooltip-seasons-all")
+					: Globals.GetTranslation("fish-tooltip-seasons", new { seasons = string.Join(", ", seasonList) });
+
+                string[] objectInfoData = objectInformationReplacements[itemId].Split("/");
+                objectInfoData[(int)ObjectInformationIndexes.Description] += $" {tooltip}";
+
+                objectInformationReplacements[itemId] = string.Join("/", objectInfoData);
+            }
+        }
+
+		/// <summary>
+		/// Fills a dictionary with a list of seasons that a foragable can be collected in
+		/// </summary>
+		/// <param name="foragableIdToSeasons">The dictionary to fill</param>
+		/// <param name="foragableList">Fhe list of foragables to loop through</param>
+		/// <param name="season">The season the foragable list is for</param>
+		private static void FindForagableSeasons(
+			Dictionary<int, List<Seasons>> foragableIdToSeasons, 
+			List<ForagableData> foragableList, 
+			Seasons season)
+		{
+			foreach(ForagableData foragableData in foragableList)
+			{
+				// Skip over non-foragables - they are the 1 in 1k drops
+				// Also skip over 1 in 1k drops in case they are foragables!
+				// We only want the tooltip for when the player can reasonably get them
+                int itemId = foragableData.ItemId;
+                if (!ItemList.Items[(ObjectIndexes)itemId].IsForagable ||
+                    foragableData.ItemRarity == 0.001)
+                {
+                    continue;
+                }
+
+                if (!foragableIdToSeasons.ContainsKey(itemId))
+				{
+                    foragableIdToSeasons[itemId] = new List<Seasons>();
+                }
+				foragableIdToSeasons[itemId].Add(season);
+            }
+		}
+    }
 }

@@ -264,7 +264,7 @@ namespace Randomizer
 			}
 			if (fishIdIndex != fishIds.Count)
 			{
-				Globals.ConsoleError($"Didn't assign all the fish to {Location.ToString()} in the {season.ToString()}! Assigned {fishIdIndex} out of {fishIds.Count}.");
+				Globals.ConsoleError($"Didn't assign all the fish to {Location} in the {season}! Assigned {fishIdIndex} out of {fishIds.Count}.");
 			}
 
 			return string.Join(" ", stringParts);

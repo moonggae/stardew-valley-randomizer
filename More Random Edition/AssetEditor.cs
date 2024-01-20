@@ -281,7 +281,7 @@ namespace Randomizer
 
 			_blueprintReplacements = BlueprintRandomizer.Randomize();
 			_monsterReplacements = MonsterRandomizer.Randomize(); // Must be done before recipes since rarities of drops change
-			_locationsReplacements = LocationRandomizer.Randomize(); // Must be done before recipes because of wild seeds
+			_locationsReplacements = LocationRandomizer.Randomize(_objectInformationReplacements); // Must be done before recipes because of wild seeds
 			_recipeReplacements = CraftingRecipeRandomizer.Randomize();
 			_stringReplacements = StringsAdjustments.GetCSFileStringReplacements();
 			_farmEventsReplacements = StringsAdjustments.GetFarmEventsReplacements();
