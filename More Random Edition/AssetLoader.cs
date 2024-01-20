@@ -33,9 +33,9 @@ namespace Randomizer
             {
                 e.Edit(new RainPatcher().OnAssetRequested);
             }
-            else if (e.Name.IsEquivalentTo(PetIconPatcher.StardewAssetPath))
+            else if (e.Name.IsEquivalentTo(AnimalIconPatcher.StardewAssetPath))
             {
-                e.Edit(new PetIconPatcher().OnAssetRequested);
+                e.Edit(new AnimalIconPatcher().OnAssetRequested);
             }
             else if (e.NameWithoutLocale.IsEquivalentTo(TitleScreenPatcher.StardewAssetPath))
             {
@@ -121,7 +121,7 @@ namespace Randomizer
 		/// </summary>
 		private void ReplaceCatIcon()
 		{
-            _mod.Helper.GameContent.InvalidateCache(PetIconPatcher.StardewAssetPath);
+            _mod.Helper.GameContent.InvalidateCache(AnimalIconPatcher.StardewAssetPath);
         }
 
 		/// <summary>

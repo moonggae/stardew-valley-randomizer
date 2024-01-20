@@ -4,8 +4,6 @@ using StardewValley;
 using System;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Randomizer
 {
@@ -87,6 +85,12 @@ namespace Randomizer
 
             Random rng = Globals.GetFarmRNG(nameof(AnimalRandomizer));
             return Globals.RNGGetRandomValueFromList(animalImages, rng);
+
+            // Uncomment to debug/test images, and comment out the other return
+            // Change the animal type to the one you're testing
+            //return AnimalTypeToRandomize == AnimalTypes.Horses
+            //    ? "Ostrich.png"
+            //    : Globals.RNGGetRandomValueFromList(animalImages, rng);
         }
 
         /// <summary>
@@ -96,9 +100,9 @@ namespace Randomizer
         /// </summary>
         /// <param name="getOriginalName">Whether to get the original file name, with extension and capatalized</param>
         /// <returns></returns>
-        public static string GetRandomPetName(bool getOriginalName = false)
+        public static string GetRandomAnimalName(AnimalTypes animalType, bool getOriginalName = false)
         {
-            string originalFileName = new AnimalRandomizer(AnimalTypes.Pets).GetRandomAnimalFileName();
+            string originalFileName = new AnimalRandomizer(animalType).GetRandomAnimalFileName();
             return getOriginalName
                 ? originalFileName
                 : originalFileName[..^4].Replace("-hue-shift", "").ToLower();

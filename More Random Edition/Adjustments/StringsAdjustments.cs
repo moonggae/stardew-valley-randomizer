@@ -30,7 +30,7 @@ namespace Randomizer
 			// Fix the pet cutscene to have the random pet name
 			if (Globals.Config.Animals.RandomizePets)
 			{
-				stringReplacements["Event.cs.1242"] = AnimalRandomizer.GetRandomPetName();
+				stringReplacements["Event.cs.1242"] = AnimalRandomizer.GetRandomAnimalName(AnimalTypes.Pets);
             }
 
 			return stringReplacements;
@@ -136,7 +136,7 @@ namespace Randomizer
 				return new Dictionary<string, string>();
 			}
 
-			string petName = AnimalRandomizer.GetRandomPetName();
+			string petName = AnimalRandomizer.GetRandomAnimalName(AnimalTypes.Pets);
             string catCutsceneKey = "1590166/m 1000/t 600 930/d Mon Tue Thu Sat Sun/w sunny/h cat/H";
 			string catCutsceneTemplate = "continue/64 15/farmer 64 15 2 Marnie 65 16 0 cat 63 16 2/faceDirection Cat 2/pause 500/animate Cat false false 120 16 17 18 18/pause 480/animate Cat false true 120 18/pause 2000/speak Marnie \"Hello @!$h#$b#You see this {cat} here?\"/faceDirection Marnie 3/pause 400/showFrame Cat 18/playSound cat/pause 1200/faceDirection Marnie 0/speak Marnie \"I found it sitting outside the entrance to your farm! I think it's a stray... poor little thing.$s\"/showFrame Cat 19/pause 500/showFrame Cat 18/playSound cat/shake Cat 150/pause 1500/speak Marnie \"I think it likes this place! Hey, um.... Don't you think this farm could use a good {cat}?$h\"/catQuestion/pause 1000/faceDirection Marnie 3/speak Marnie \"Well, little %pet... You be a good {cat} now... okay?\"/pause 500/showFrame Cat 19/shake Cat 100/playSound cat/pause 800/animate Cat false false 120 20 21 22 23 21 22 23 21 22 23 21 22 23 21 22 23 21 22 23 21 22 23/pause 200/globalFade/viewport -1000 -1000/end";
             return new Dictionary<string, string>()
