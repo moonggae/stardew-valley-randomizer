@@ -101,7 +101,7 @@ namespace Randomizer
             string originalFileName = new AnimalRandomizer(AnimalTypes.Pets).GetRandomAnimalFileName();
             return getOriginalName
                 ? originalFileName
-                : originalFileName[..^4].ToLower();
+                : originalFileName[..^4].Replace("-hue-shift", "").ToLower();
         }
 
         /// <summary>
