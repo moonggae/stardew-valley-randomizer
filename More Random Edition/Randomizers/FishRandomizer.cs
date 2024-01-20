@@ -134,13 +134,13 @@ namespace Randomizer
 		/// <returns />
 		private static string GetFishObjectInformation(FishItem fish)
 		{
-			string defaultObjectInfo = FishData.DefaultObjectInformation[fish.Id];
-			string[] objectInfoParts = defaultObjectInfo.Split('/');
+            string defaultObjectInfo = ItemList.OriginalItemList[fish.Id];
+            string[] objectInfoParts = defaultObjectInfo.Split('/');
 
-			objectInfoParts[0] = fish.OverrideName;
-			objectInfoParts[4] = fish.OverrideName;
-			objectInfoParts[5] = fish.Description;
-			objectInfoParts[6] = fish.ObjectInformationSuffix;
+            objectInfoParts[(int)ObjectInformationIndexes.Name] = fish.Name;
+            objectInfoParts[(int)ObjectInformationIndexes.DisplayName] = fish.OverrideName;
+			objectInfoParts[(int)ObjectInformationIndexes.Description] = fish.Description;
+			objectInfoParts[(int)ObjectInformationIndexes.AdditionalFishInfo] = fish.ObjectInformationSuffix;
 
 			return string.Join("/", objectInfoParts);
 		}

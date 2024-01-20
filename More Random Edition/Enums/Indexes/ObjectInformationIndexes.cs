@@ -9,6 +9,12 @@
         Name = 0,
         Price = 1,
         DisplayName = 4,
-        Description = 5
+        Description = 5,
+
+        /// <summary>
+        /// This is at the end of the object information - unsure if it's actually used anywhere
+        /// See FishItem.ObjectInformationSuffix
+        /// </summary>
+        AdditionalFishInfo = 6
     }
 }
