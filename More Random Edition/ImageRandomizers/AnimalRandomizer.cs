@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -16,6 +17,15 @@ namespace Randomizer
         /// The type of animal this is randomizing
         /// </summary>
         private AnimalTypes AnimalTypeToRandomize { get; set; }
+
+        /// <summary>
+        /// A dictionary containing the last hue shift value chosen for the
+        /// given animal type
+        /// 
+        /// This is used by the animal icon patcher to shift the matching icon colors
+        /// when loading a farm
+        /// </summary>
+        public static Dictionary<AnimalTypes, int> LastHueShiftValue = new ();
 
         public AnimalRandomizer(AnimalTypes animalTypeToRandomize)
         {
@@ -51,12 +61,15 @@ namespace Randomizer
             string imageLocation = $"{ImageDirectory}/{randomAnimalFileName}";
             Texture2D animalImage = Texture2D.FromFile(Game1.graphics.GraphicsDevice, imageLocation);
 
+            LastHueShiftValue.Remove(AnimalTypeToRandomize);
             if (randomAnimalFileName[..^4].EndsWith("-hue-shift"))
             {
                 Random rng = Globals.GetFarmRNG(nameof(AnimalRandomizer));
                 int hueShiftValue = Range.GetRandomValue(0, 359, rng);
                 Color shiftedPaleColor = ImageManipulator.IncreaseHueBy(ImageManipulator.PaleColor, hueShiftValue);
                 animalImage = ImageManipulator.MultiplyImageByColor(animalImage, shiftedPaleColor);
+
+                LastHueShiftValue[AnimalTypeToRandomize] = hueShiftValue;
             }
 
             if (ShouldSaveImage() && Globals.Config.SaveRandomizedImages)
@@ -89,7 +102,7 @@ namespace Randomizer
             // Uncomment to debug/test images, and comment out the other return
             // Change the animal type to the one you're testing
             //return AnimalTypeToRandomize == AnimalTypes.Horses
-            //    ? "Ostrich.png"
+            //    ? "Horse-hue-shift.png"
             //    : Globals.RNGGetRandomValueFromList(animalImages, rng);
         }
 

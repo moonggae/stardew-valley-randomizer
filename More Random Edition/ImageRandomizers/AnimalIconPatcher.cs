@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using System.IO;
 
@@ -14,6 +15,7 @@ namespace Randomizer
     /// </summary>
     public class AnimalIconPatcher : ImagePatcher
     {
+        private const string UnknownAnimalIconName = "UnknownAnimalIcon.png";
         public static string StardewAssetPath => 
             Globals.GetLocalizedFileName("LooseSprites/Cursors");
 
@@ -49,12 +51,21 @@ namespace Randomizer
                 return;
             }
 
-            IRawTextureData overlay = Globals.ModRef.Helper.ModContent
-                .Load<IRawTextureData>(animalNamePath);
+            Texture2D overlay = Globals.ModRef.Helper.ModContent
+                .Load<Texture2D>(animalNamePath);
+
+            if (!animalNamePath.EndsWith(UnknownAnimalIconName) &&
+                AnimalRandomizer.LastHueShiftValue.TryGetValue(animalType, out int hueShift))
+            {
+                Color shiftedPaleColor = ImageManipulator.IncreaseHueBy(ImageManipulator.PaleColor, hueShift);
+                overlay = ImageManipulator.MultiplyImageByColor(overlay, shiftedPaleColor);
+            }
 
             asset.AsImage().PatchImage(
                 overlay,
                 targetArea: new Rectangle(x, y, ImageWidthInPx, ImageHeightInPx));
+
+            overlay.Dispose();
         }
 
         /// <summary>
@@ -78,7 +89,7 @@ namespace Randomizer
             }
 
             var animalSpriteImage = isRandomized
-                ? $"UnknownAnimalIcon.png"
+                ? UnknownAnimalIconName
                 : $"Original{animalType}Icon.png";
 
             return $"{PatcherImageFolder}/{animalSpriteImage}";
