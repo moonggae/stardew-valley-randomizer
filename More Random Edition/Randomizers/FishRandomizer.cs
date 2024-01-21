@@ -13,10 +13,10 @@ namespace Randomizer
 		{
 			List<FishItem> legendaryFish = FishItem.GetLegendaries().Cast<FishItem>().ToList();
 			List<FishItem> normalFish = FishItem.Get().Cast<FishItem>().ToList();
-			List<FishItem> normalFishCopy = new List<FishItem>();
+			List<FishItem> normalFishCopy = new();
 			foreach (FishItem fish in normalFish)
 			{
-				FishItem fishInfo = new FishItem(fish.Id, true);
+				FishItem fishInfo = new(fish.Id, true); // A constructor that does nothing
 				CopyFishInfo(fish, fishInfo);
 				normalFishCopy.Add(fishInfo);
 			}
@@ -37,6 +37,8 @@ namespace Randomizer
 				fish.BehaviorType = newBehaviorType;
 				fish.OverrideName = newName;
 
+				// Locations are copied over, but these specific IDs
+				// will ALWAYS spawn here, so add the location to them
 				if (fish.IsMinesFish)
 				{
 					if (!fish.AvailableLocations.Contains(Locations.UndergroundMine))
@@ -77,7 +79,22 @@ namespace Randomizer
 				editedObjectInfo.ObjectInformationReplacements.Add(fish.Id, GetFishObjectInformation(fish));
 			}
 
-			WriteToSpoilerLog();
+            // Keeping this here for debugging purposes
+			// Uncomment to print out all randomized seasons and locations
+            //List<int> sortedFishIds = ItemList.Items.Values
+            //    .Where(x => x is FishItem)
+            //    .Select(x => x.Id).ToList();
+            //sortedFishIds.Sort();
+            //foreach (int fishId in sortedFishIds)
+            //{
+            //    List<Seasons> seasons = (ItemList.Items[(ObjectIndexes)fishId] as FishItem).AvailableSeasons;
+            //    List<Locations> locs = (ItemList.Items[(ObjectIndexes)fishId] as FishItem).AvailableLocations;
+            //    string itemName = ItemList.Items[(ObjectIndexes)fishId].Name;
+            //    Globals.ConsoleWarn($"{fishId} {itemName}: {string.Join(" ", seasons.Select(x => x.ToString().ToLower()))}");
+            //    Globals.ConsoleWarn($"{fishId} {itemName}: {string.Join(" ", locs.Select(x => x.ToString().ToLower()))}");
+            //}
+
+            WriteToSpoilerLog();
 		}
 
 		/// <summary>

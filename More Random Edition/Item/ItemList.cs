@@ -643,162 +643,58 @@ namespace Randomizer
 				// Fish - defaults to ObtainingDifficulties.LargeTimeRequirements
 				{ ObjectIndexes.AnyFish, new FishItem((int)ObjectIndexes.AnyFish, ObtainingDifficulties.NonCraftingItem) },
 
-				{ ObjectIndexes.Pufferfish, new FishItem((int)ObjectIndexes.Pufferfish) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ ObjectIndexes.Anchovy, new FishItem((int)ObjectIndexes.Anchovy) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ ObjectIndexes.Tuna, new FishItem((int)ObjectIndexes.Tuna) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ ObjectIndexes.Sardine, new FishItem((int)ObjectIndexes.Sardine) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ ObjectIndexes.Bream, new FishItem((int)ObjectIndexes.Bream) {
-					AvailableLocations = new List<Locations> { Locations.Town, Locations.Forest }
-				} },
-				{ ObjectIndexes.LargemouthBass, new FishItem((int)ObjectIndexes.LargemouthBass) {
-					AvailableLocations = new List<Locations> { Locations.Mountain }
-				} },
-				{ ObjectIndexes.SmallmouthBass, new FishItem((int)ObjectIndexes.SmallmouthBass) {
-					AvailableLocations = new List<Locations> { Locations.Town, Locations.Forest }
-				} },
-				{ ObjectIndexes.RainbowTrout, new FishItem((int)ObjectIndexes.RainbowTrout) {
-					AvailableLocations = new List<Locations> { Locations.Forest, Locations.Town, Locations.Mountain }
-				} },
-				{ ObjectIndexes.Salmon, new FishItem((int)ObjectIndexes.Salmon) {
-					AvailableLocations = new List<Locations> { Locations.Town, Locations.Forest }
-				} },
-				{ ObjectIndexes.Walleye, new FishItem((int)ObjectIndexes.Walleye) {
-					AvailableLocations = new List<Locations> { Locations.Forest, Locations.Town, Locations.Mountain }
-				} },
-				{ ObjectIndexes.Perch, new FishItem((int)ObjectIndexes.Perch) {
-					AvailableLocations = new List<Locations> { Locations.Forest, Locations.Town, Locations.Mountain }
-				} },
-				{ ObjectIndexes.Carp, new FishItem((int)ObjectIndexes.Carp) {
-					AvailableLocations = new List<Locations> { Locations.Mountain, Locations.Woods, Locations.Sewer }
-				} },
-				{ ObjectIndexes.Catfish, new FishItem((int)ObjectIndexes.Catfish) {
-					AvailableLocations = new List<Locations> { Locations.Town, Locations.Forest, Locations.Woods, Locations.WitchSwamp }
-				} },
-				{ ObjectIndexes.Pike, new FishItem((int)ObjectIndexes.Pike) {
-					AvailableLocations = new List<Locations> { Locations.Town, Locations.Forest }
-				} },
-				{ ObjectIndexes.Sunfish, new FishItem((int)ObjectIndexes.Sunfish) {
-					AvailableLocations = new List<Locations> { Locations.Town, Locations.Forest }
-				} },
-				{ ObjectIndexes.RedMullet, new FishItem((int)ObjectIndexes.RedMullet) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ ObjectIndexes.Herring, new FishItem((int)ObjectIndexes.Herring) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ ObjectIndexes.Eel, new FishItem((int)ObjectIndexes.Eel) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ ObjectIndexes.Octopus, new FishItem((int)ObjectIndexes.Octopus) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ ObjectIndexes.RedSnapper, new FishItem((int)ObjectIndexes.RedSnapper) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ ObjectIndexes.Squid, new FishItem((int)ObjectIndexes.Squid) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ ObjectIndexes.SeaCucumber, new FishItem((int)ObjectIndexes.SeaCucumber) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ ObjectIndexes.SuperCucumber, new FishItem((int)ObjectIndexes.SuperCucumber) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ ObjectIndexes.Ghostfish, new FishItem((int)ObjectIndexes.Ghostfish) {
-					AvailableLocations = new List<Locations> { Locations.UndergroundMine }
-				} },
-				{ ObjectIndexes.Stonefish, new FishItem((int)ObjectIndexes.Stonefish) {
-					AvailableLocations = new List<Locations> { Locations.UndergroundMine }
-				} },
-				{ ObjectIndexes.IcePip, new FishItem((int)ObjectIndexes.IcePip) {
-					AvailableLocations = new List<Locations> { Locations.UndergroundMine }
-				} },
-				{ ObjectIndexes.LavaEel, new FishItem((int)ObjectIndexes.LavaEel) {
-					AvailableLocations = new List<Locations> { Locations.UndergroundMine }
-				} },
-				{ ObjectIndexes.Sandfish, new FishItem((int)ObjectIndexes.Sandfish) {
-					AvailableLocations = new List<Locations> { Locations.Desert }
-				} },
-				{ ObjectIndexes.ScorpionCarp, new FishItem((int)ObjectIndexes.ScorpionCarp) {
-					AvailableLocations = new List<Locations> { Locations.Desert }
-				} },
-				{ ObjectIndexes.Flounder, new FishItem((int)ObjectIndexes.Flounder) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ ObjectIndexes.MidnightCarp, new FishItem((int)ObjectIndexes.MidnightCarp) {
-					AvailableLocations = new List<Locations> { Locations.Forest, Locations.Mountain }
-				} },
-				{ ObjectIndexes.Sturgeon, new FishItem((int)ObjectIndexes.Sturgeon) {
-					AvailableLocations = new List<Locations> { Locations.Mountain }
-				} },
-				{ ObjectIndexes.TigerTrout, new FishItem((int)ObjectIndexes.TigerTrout) {
-					AvailableLocations = new List<Locations> { Locations.Town, Locations.Forest }
-				} },
-				{ ObjectIndexes.Bullhead, new FishItem((int)ObjectIndexes.Bullhead) {
-					AvailableLocations = new List<Locations> { Locations.Mountain }
-				} },
-				{ ObjectIndexes.Tilapia, new FishItem((int)ObjectIndexes.Tilapia) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ ObjectIndexes.Chub, new FishItem((int)ObjectIndexes.Chub) {
-					AvailableLocations = new List<Locations> { Locations.Forest, Locations.Mountain }
-				} },
-				{ ObjectIndexes.Dorado, new FishItem((int)ObjectIndexes.Dorado) {
-					AvailableLocations = new List<Locations> { Locations.Forest }
-				} },
-				{ ObjectIndexes.Albacore, new FishItem((int)ObjectIndexes.Albacore) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ ObjectIndexes.Shad, new FishItem((int)ObjectIndexes.Shad) {
-					AvailableLocations = new List<Locations> { Locations.Town, Locations.Forest }
-				} },
-				{ ObjectIndexes.Lingcod, new FishItem((int)ObjectIndexes.Lingcod) {
-					AvailableLocations = new List<Locations> { Locations.Town, Locations.Forest, Locations.Mountain }
-				} },
-				{ ObjectIndexes.Halibut, new FishItem((int)ObjectIndexes.Halibut) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ ObjectIndexes.Woodskip, new FishItem((int)ObjectIndexes.Woodskip) {
-					AvailableLocations = new List<Locations> { Locations.Woods }
-				} },
-				{ ObjectIndexes.VoidSalmon, new FishItem((int)ObjectIndexes.VoidSalmon, ObtainingDifficulties.Impossible) {
-					AvailableLocations = new List<Locations> { Locations.WitchSwamp }
-				} },
-				{ ObjectIndexes.Slimejack, new FishItem((int)ObjectIndexes.Slimejack, ObtainingDifficulties.Impossible) {
-					AvailableLocations = new List<Locations> { Locations.BugLand }
-				} },
-				{ ObjectIndexes.MidnightSquid, new FishItem((int)ObjectIndexes.MidnightSquid, ObtainingDifficulties.RareItem) {
-					AvailableLocations = new List<Locations> { Locations.NightMarket }
-				} },
-				{ ObjectIndexes.SpookFish, new FishItem((int)ObjectIndexes.SpookFish, ObtainingDifficulties.RareItem) {
-					AvailableLocations = new List<Locations> { Locations.NightMarket }
-				} },
-				{ ObjectIndexes.Blobfish, new FishItem((int)ObjectIndexes.Blobfish, ObtainingDifficulties.RareItem) {
-					AvailableLocations = new List<Locations> { Locations.NightMarket }
-				} },
-				{ ObjectIndexes.Crimsonfish, new FishItem((int)ObjectIndexes.Crimsonfish, ObtainingDifficulties.EndgameItem) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ ObjectIndexes.Angler, new FishItem((int)ObjectIndexes.Angler, ObtainingDifficulties.EndgameItem) {
-					AvailableLocations = new List<Locations> { Locations.Town }
-				} },
-				{ ObjectIndexes.Legend, new FishItem((int)ObjectIndexes.Legend, ObtainingDifficulties.EndgameItem) {
-					AvailableLocations = new List<Locations> { Locations.Mountain }
-				} },
-				{ ObjectIndexes.Glacierfish, new FishItem((int)ObjectIndexes.Glacierfish, ObtainingDifficulties.EndgameItem) {
-					AvailableLocations = new List<Locations> { Locations.Forest }
-				} },
-				{ ObjectIndexes.MutantCarp, new FishItem((int)ObjectIndexes.MutantCarp, ObtainingDifficulties.EndgameItem) {
-					AvailableLocations = new List<Locations> { Locations.Sewer }
-				} },
+				{ ObjectIndexes.Pufferfish, new FishItem((int)ObjectIndexes.Pufferfish) },
+				{ ObjectIndexes.Anchovy, new FishItem((int)ObjectIndexes.Anchovy) },
+				{ ObjectIndexes.Tuna, new FishItem((int)ObjectIndexes.Tuna) },
+				{ ObjectIndexes.Sardine, new FishItem((int)ObjectIndexes.Sardine) },
+				{ ObjectIndexes.Bream, new FishItem((int)ObjectIndexes.Bream) },
+				{ ObjectIndexes.LargemouthBass, new FishItem((int)ObjectIndexes.LargemouthBass) },
+				{ ObjectIndexes.SmallmouthBass, new FishItem((int)ObjectIndexes.SmallmouthBass) },
+				{ ObjectIndexes.RainbowTrout, new FishItem((int)ObjectIndexes.RainbowTrout) },
+				{ ObjectIndexes.Salmon, new FishItem((int)ObjectIndexes.Salmon) },
+				{ ObjectIndexes.Walleye, new FishItem((int)ObjectIndexes.Walleye) },
+				{ ObjectIndexes.Perch, new FishItem((int)ObjectIndexes.Perch) },
+				{ ObjectIndexes.Carp, new FishItem((int)ObjectIndexes.Carp) },
+				{ ObjectIndexes.Catfish, new FishItem((int)ObjectIndexes.Catfish) },
+				{ ObjectIndexes.Pike, new FishItem((int)ObjectIndexes.Pike) },
+				{ ObjectIndexes.Sunfish, new FishItem((int)ObjectIndexes.Sunfish) },
+				{ ObjectIndexes.RedMullet, new FishItem((int)ObjectIndexes.RedMullet) },
+				{ ObjectIndexes.Herring, new FishItem((int)ObjectIndexes.Herring) },
+				{ ObjectIndexes.Eel, new FishItem((int)ObjectIndexes.Eel) },
+				{ ObjectIndexes.Octopus, new FishItem((int)ObjectIndexes.Octopus) },
+				{ ObjectIndexes.RedSnapper, new FishItem((int)ObjectIndexes.RedSnapper) },
+				{ ObjectIndexes.Squid, new FishItem((int)ObjectIndexes.Squid) },
+				{ ObjectIndexes.SeaCucumber, new FishItem((int)ObjectIndexes.SeaCucumber) },
+				{ ObjectIndexes.SuperCucumber, new FishItem((int)ObjectIndexes.SuperCucumber) },
+				{ ObjectIndexes.Ghostfish, new FishItem((int)ObjectIndexes.Ghostfish) },
+				{ ObjectIndexes.Stonefish, new FishItem((int)ObjectIndexes.Stonefish) },
+				{ ObjectIndexes.IcePip, new FishItem((int)ObjectIndexes.IcePip) },
+				{ ObjectIndexes.LavaEel, new FishItem((int)ObjectIndexes.LavaEel) },
+				{ ObjectIndexes.Sandfish, new FishItem((int)ObjectIndexes.Sandfish) },
+				{ ObjectIndexes.ScorpionCarp, new FishItem((int)ObjectIndexes.ScorpionCarp) },
+				{ ObjectIndexes.Flounder, new FishItem((int)ObjectIndexes.Flounder) },
+				{ ObjectIndexes.MidnightCarp, new FishItem((int)ObjectIndexes.MidnightCarp) },
+				{ ObjectIndexes.Sturgeon, new FishItem((int)ObjectIndexes.Sturgeon) },
+				{ ObjectIndexes.TigerTrout, new FishItem((int)ObjectIndexes.TigerTrout) },
+				{ ObjectIndexes.Bullhead, new FishItem((int)ObjectIndexes.Bullhead) },
+				{ ObjectIndexes.Tilapia, new FishItem((int)ObjectIndexes.Tilapia) },
+				{ ObjectIndexes.Chub, new FishItem((int)ObjectIndexes.Chub) },
+				{ ObjectIndexes.Dorado, new FishItem((int)ObjectIndexes.Dorado) },
+				{ ObjectIndexes.Albacore, new FishItem((int)ObjectIndexes.Albacore) },
+				{ ObjectIndexes.Shad, new FishItem((int)ObjectIndexes.Shad) },
+				{ ObjectIndexes.Lingcod, new FishItem((int)ObjectIndexes.Lingcod) },
+				{ ObjectIndexes.Halibut, new FishItem((int)ObjectIndexes.Halibut) },
+				{ ObjectIndexes.Woodskip, new FishItem((int)ObjectIndexes.Woodskip) },
+				{ ObjectIndexes.VoidSalmon, new FishItem((int)ObjectIndexes.VoidSalmon, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.Slimejack, new FishItem((int)ObjectIndexes.Slimejack, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.MidnightSquid, new FishItem((int)ObjectIndexes.MidnightSquid, ObtainingDifficulties.RareItem) },
+				{ ObjectIndexes.SpookFish, new FishItem((int)ObjectIndexes.SpookFish, ObtainingDifficulties.RareItem) },
+				{ ObjectIndexes.Blobfish, new FishItem((int)ObjectIndexes.Blobfish, ObtainingDifficulties.RareItem) },
+				{ ObjectIndexes.Crimsonfish, new FishItem((int)ObjectIndexes.Crimsonfish, ObtainingDifficulties.EndgameItem) },
+				{ ObjectIndexes.Angler, new FishItem((int)ObjectIndexes.Angler, ObtainingDifficulties.EndgameItem) },
+				{ ObjectIndexes.Legend, new FishItem((int)ObjectIndexes.Legend, ObtainingDifficulties.EndgameItem) },
+				{ ObjectIndexes.Glacierfish, new FishItem((int)ObjectIndexes.Glacierfish, ObtainingDifficulties.EndgameItem) },
+				{ ObjectIndexes.MutantCarp, new FishItem((int)ObjectIndexes.MutantCarp, ObtainingDifficulties.EndgameItem) },
 
 				// Crab pot specific
 				{ ObjectIndexes.Lobster, new CrabPotItem((int)ObjectIndexes.Lobster) },
@@ -1309,6 +1205,14 @@ namespace Randomizer
 				{ BigCraftableIndexes.SolidGoldLewis, new Item((int)BigCraftableIndexes.SolidGoldLewis, ObtainingDifficulties.NonCraftingItem, isBigCraftable: true) },
 				{ BigCraftableIndexes.StardewHeroTrophy, new Item((int)BigCraftableIndexes.StardewHeroTrophy, ObtainingDifficulties.NonCraftingItem, isBigCraftable: true) }
 			};
+
+			// Populate the AvailableLocations/Seasons now that all fish are initialized
+			// Afterwards, fill out the default fish info
+			FishData.InitializeFishToLocations();
+			Items.Values.Where(item => item.Id > 0 && item is FishItem)
+				.Cast<FishItem>()
+				.ToList()
+				.ForEach(fishItem => FishData.FillDefaultFishInfo(fishItem));
         }
 
         /// <summary>

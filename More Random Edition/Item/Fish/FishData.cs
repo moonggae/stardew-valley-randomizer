@@ -1,75 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Randomizer
 {
-	public class FishData
+    public class FishData
 	{
+		/// <summary>
+		/// The default fish data from Data/Fish.xnb
+		/// </summary>
 		public readonly static Dictionary<int, string> DefaultStringData =
 			Globals.ModRef.Helper.GameContent.Load<Dictionary<int, string>>("Data/Fish");
 
 		/// <summary>
-		/// Unfortunately, the data in DefaultStringData is not accurate - the game seems to actually
-		/// use the ones in LocationData instead, so this is is a list of the accurate season 
-		/// 
-		/// See Carp and Super Cucumber for a couple examples
-		/// 
-		/// In the future, we could look it up that way instead
+		/// Indexes for the Data/Fish.xnb fields
 		/// </summary>
-		public readonly static Dictionary<int, string> DefaultFishSeasons = new()
-		{
-			{ 128, "summer" },
-			{ 129, "spring fall" },
-			{ 130, "summer winter" },
-			{ 131, "spring fall winter" },
-			{ 132, "spring summer fall winter" },
-			{ 136, "spring summer fall winter" },
-			{ 137, "spring fall" },
-			{ 138, "summer" },
-			{ 139, "fall" },
-			{ 140, "fall winter" },
-			{ 141, "winter" },
-			{ 142, "spring summer fall" },
-			{ 143, "spring fall winter" },
-			{ 144, "summer winter" },
-			{ 145, "spring summer" },
-			{ 146, "summer winter" },
-			{ 147, "spring winter" },
-			{ 148, "spring fall" },
-			{ 149, "summer" },
-			{ 150, "summer fall winter" },
-			{ 151, "winter" },
-			{ 154, "fall winter" },
-			{ 155, "summer fall" },
-			{ 156, "spring summer fall winter" },
-			{ 158, "spring summer fall winter" },
-			{ 159, "summer" },
-			{ 160, "fall" },
-			{ 161, "spring summer fall winter" },
-			{ 162, "spring summer fall winter" },
-			{ 163, "spring" },
-			{ 164, "spring summer fall winter" },
-			{ 165, "spring summer fall winter" },
-			{ 267, "spring summer" },
-			{ 269, "fall winter" },
-			{ 682, "spring summer fall winter" },
-			{ 698, "summer winter" },
-			{ 699, "fall winter" },
-			{ 700, "spring summer fall winter" },
-			{ 701, "summer fall" },
-			{ 702, "spring summer fall winter" },
-			{ 704, "summer" },
-			{ 705, "fall winter" },
-			{ 706, "spring summer fall" },
-			{ 707, "winter" },
-			{ 708, "spring summer winter" },
-			{ 734, "spring summer fall winter" },
-			{ 775, "winter" },
-			{ 795, "spring summer fall winter" },
-			{ 796, "spring summer fall winter" },
-			{ 798, "spring summer fall winter" },
-			{ 799, "spring summer fall winter" },
-			{ 800, "spring summer fall winter" },
-		};
 		public enum FishFields
 		{
 			Name,
@@ -88,10 +33,163 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Populates the given fish with the default info
+		/// We will use the location data to initialize all fish's locations and seasons
+		/// as the fish data is unreliable - the locations are ACTUALLY what are used
 		/// </summary>
-		/// <param name="fish">The fish</param>
-		public static void FillDefaultFishInfo(FishItem fish)
+		public static void InitializeFishToLocations()
+		{
+			InitializeNightMarketFish();
+			InitializeMinesFish();
+			InializeLegendaryFish();
+
+            // Go through each location and add to the location dictionary
+            foreach (var locData in LocationData.DefaultLocationData)
+			{
+				string locationName = locData.Key;
+				if (!Enum.TryParse(locationName, out Locations location))
+				{
+					// This is okay, we don't have every location mapped
+					continue; 
+				}
+
+				var locDataParts = locData.Value.Split("/");
+				var springFish = locDataParts[(int)LocationDataIndexes.SpringFish];
+                var summerFish = locDataParts[(int)LocationDataIndexes.SummerFish];
+                var fallFish = locDataParts[(int)LocationDataIndexes.FallFish];
+                var winterFish = locDataParts[(int)LocationDataIndexes.WinterFish];
+
+				AssignFishDataFromStringList(springFish, location, Seasons.Spring);
+                AssignFishDataFromStringList(summerFish, location, Seasons.Summer);
+                AssignFishDataFromStringList(fallFish, location, Seasons.Fall);
+                AssignFishDataFromStringList(winterFish, location, Seasons.Winter);
+            }
+        }
+
+		/// <summary>
+		/// Takes in a string of location fish data (the space delimited string of ids and -1's)
+		/// and assigns the given location and season to the fish in the list
+		/// </summary>
+		/// <param name="fishData">The fish data string</param>
+		/// <param name="location">The location of the fish to assign</param>
+		/// <param name="season">The season to assign</param>
+		private static void AssignFishDataFromStringList(
+			string fishData, Locations location, Seasons season)
+		{
+            List<FishItem> fishItems = ItemList
+                .GetItemListFromString(fishData)
+                .Distinct()
+                .Where(item => item is FishItem)
+                .Cast<FishItem>()
+                .ToList();
+
+            foreach (FishItem fishItem in fishItems)
+            {
+                int fishId = fishItem.Id;
+				fishItem.AvailableLocations ??= new List<Locations>();
+                fishItem.AvailableSeasons ??= new List<Seasons>();
+
+                // For some reason, Legend is marked as backwoods, and
+                // the rando won't work properly if it's NOT assigned to Mountain
+				// In all other cases, backwoods is equivalent, so this logic should be fine
+                Locations locToAdd = location == Locations.Backwoods
+                    ? locToAdd = Locations.Mountain
+                    : location;
+                if (!fishItem.AvailableLocations.Contains(locToAdd))
+                {
+                    fishItem.AvailableLocations.Add(locToAdd);
+                }
+                if (!fishItem.AvailableSeasons.Contains(season))
+                {
+                    fishItem.AvailableSeasons.Add(season);
+                }
+            }
+        }
+
+        /// <summary>
+        /// These fish are underground but are NOT in Data/Locations
+        /// since they are hard-coded to be caught in the game
+        /// </summary>
+        private static void InitializeMinesFish()
+		{
+            Item[] minesFishList = {
+                ItemList.Items[ObjectIndexes.Stonefish],
+                ItemList.Items[ObjectIndexes.IcePip],
+                ItemList.Items[ObjectIndexes.LavaEel]
+            };
+            foreach (FishItem minesFish in minesFishList.Cast<FishItem>())
+            {
+                minesFish.AvailableLocations = new List<Locations>()
+                    { Locations.UndergroundMine };
+                minesFish.AvailableSeasons = new List<Seasons>()
+                {
+                    Seasons.Spring,
+                    Seasons.Summer,
+                    Seasons.Fall,
+                    Seasons.Winter
+                };
+            }
+        }
+
+		/// <summary>
+		/// The night market is not defined in Data/Locations, but we use it
+		/// internally - we need to manually set this data accordingly
+		/// </summary>
+		private static void InitializeNightMarketFish()
+		{
+            // The night market is NOT a "real" location, so we will add these manually
+            Item[] nightMarketFishList = {
+                ItemList.Items[ObjectIndexes.MidnightSquid],
+                ItemList.Items[ObjectIndexes.SpookFish],
+                ItemList.Items[ObjectIndexes.Blobfish]
+            };
+            foreach (FishItem nightMarketFish in nightMarketFishList.Cast<FishItem>())
+            {
+                nightMarketFish.AvailableLocations = new List<Locations>()
+                    { Locations.NightMarket };
+                nightMarketFish.AvailableSeasons = new List<Seasons>()
+                {
+                    Seasons.Spring,
+                    Seasons.Summer,
+                    Seasons.Fall,
+                    Seasons.Winter
+                };
+            }
+        }
+
+		/// <summary>
+		/// The legendary fish are not defined in Data/Locations,
+		/// as they are hard-coded
+		/// </summary>
+		private static void InializeLegendaryFish()
+		{
+			FishItem crimsonFish = ItemList.Items[ObjectIndexes.Crimsonfish] as FishItem;
+			crimsonFish.AvailableLocations = new List<Locations> { Locations.Beach };
+			crimsonFish.AvailableSeasons = new List<Seasons>() { Seasons.Summer };
+
+            FishItem angler = ItemList.Items[ObjectIndexes.Angler] as FishItem;
+            angler.AvailableLocations = new List<Locations> { Locations.Town };
+            angler.AvailableSeasons = new List<Seasons>() { Seasons.Fall };
+
+			FishItem mutantCarp = ItemList.Items[ObjectIndexes.MutantCarp] as FishItem;
+            mutantCarp.AvailableLocations = new List<Locations> { Locations.Sewer };
+			mutantCarp.AvailableSeasons = new List<Seasons>()
+            {
+                Seasons.Spring,
+                Seasons.Summer,
+                Seasons.Fall,
+                Seasons.Winter
+            };
+
+            FishItem glacierfish = ItemList.Items[ObjectIndexes.Glacierfish] as FishItem;
+            glacierfish.AvailableLocations = new List<Locations> { Locations.Forest };
+            glacierfish.AvailableSeasons = new List<Seasons>() { Seasons.Winter };
+        }
+
+        /// <summary>
+        /// Populates the given fish with the default info
+        /// </summary>
+        /// <param name="fish">The fish</param>
+        public static void FillDefaultFishInfo(FishItem fish)
 		{
 			string input = DefaultStringData[fish.Id];
 
@@ -172,29 +270,7 @@ namespace Randomizer
 				}
 			}
 
-			// Seasons
-			string[] seasonStrings = DefaultFishSeasons[fish.Id].Split(' ');
-			foreach (string seasonString in seasonStrings)
-			{
-				switch (seasonString.ToLower())
-				{
-					case "spring":
-						fish.AvailableSeasons.Add(Seasons.Spring);
-						break;
-					case "summer":
-						fish.AvailableSeasons.Add(Seasons.Summer);
-						break;
-					case "fall":
-						fish.AvailableSeasons.Add(Seasons.Fall);
-						break;
-					case "winter":
-						fish.AvailableSeasons.Add(Seasons.Winter);
-						break;
-					default:
-						Globals.ConsoleError($"Tried to parse {seasonString} into a season when parsing fish with input: {input}");
-						return;
-				}
-			}
+			// Seasons done during initialization (after the ItemList is initialized)
 
 			// Weather
 			string weather = fields[(int)FishFields.Weather];
@@ -226,7 +302,7 @@ namespace Randomizer
 			}
 			fish.MinWaterDepth = minWaterDepth;
 
-			// Spawn Multiplier,
+			// Spawn Multiplier
 			if (!double.TryParse(fields[(int)FishFields.SpawnMultiplier], out double spawnMultiplier))
 			{
 				Globals.ConsoleError($"Could not parse the spawn multiplier when parsing fish with input: {input}");
@@ -234,7 +310,7 @@ namespace Randomizer
 			}
 			fish.SpawnMultiplier = spawnMultiplier;
 
-			// Depth Multiplier,
+			// Depth Multiplier
 			if (!double.TryParse(fields[(int)FishFields.DepthMultiplier], out double depthMultiplier))
 			{
 				Globals.ConsoleError($"Could not parse the depth multiplier when parsing fish with input: {input}");
@@ -259,7 +335,7 @@ namespace Randomizer
 		private static List<int> ParseTimes(string timeString)
 		{
 			string[] timeStringParts = timeString.Split(' ');
-			List<int> times = new List<int>();
+			List<int> times = new();
 
 			foreach (string time in timeStringParts)
 			{

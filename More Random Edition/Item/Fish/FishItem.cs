@@ -44,7 +44,10 @@ namespace Randomizer
 		{
 			get
 			{
-				return new int[] { (int)ObjectIndexes.Stonefish, (int)ObjectIndexes.IcePip, (int)ObjectIndexes.LavaEel }.Contains(Id);
+				return new int[] { 
+					(int)ObjectIndexes.Stonefish, 
+					(int)ObjectIndexes.IcePip, 
+					(int)ObjectIndexes.LavaEel }.Contains(Id);
 			}
 		}
 
@@ -134,11 +137,6 @@ namespace Randomizer
 		{
 			DifficultyToObtain = difficultyToObtain;
 			IsFish = true;
-
-			if (id != (int)ObjectIndexes.AnyFish)
-			{
-				FishData.FillDefaultFishInfo(this);
-			}
 		}
 
 		public FishItem(int id, bool boop) : base(id)
