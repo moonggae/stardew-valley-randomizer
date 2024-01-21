@@ -190,23 +190,6 @@ namespace Randomizer
             return false;
         }
 
-        /// <summary>
-        /// Tries to replace the asset with the one with the given name
-        /// </summary>
-        /// <param name="e"></param>
-        /// <param name="assetName"></param>
-        /// <param name="replacement"></param>
-        /// <returns>True if successful, false otherwise</returns>
-        private static bool TryReplaceAsset(AssetRequestedEventArgs e, string assetName, Dictionary<string, List<string>> replacement)
-        {
-            if (ShouldReplaceAsset(e, assetName))
-            {
-                e.Edit((asset) => ApplyEdits(asset, replacement));
-                return true;
-            }
-            return false;
-        }
-
         private static void ApplyEdits<TKey, TValue>(IAssetData asset, IDictionary<TKey, TValue> edits)
         {
             IAssetDataForDictionary<TKey, TValue> assetDict = asset.AsDictionary<TKey, TValue>();

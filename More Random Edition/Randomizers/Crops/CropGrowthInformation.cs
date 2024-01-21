@@ -93,7 +93,7 @@ namespace Randomizer
 			int result;
 
 			string[] fields = input.Split('/');
-			if (fields.Length != 9)
+			if (fields.Length < 9)
 			{
 				Globals.ConsoleError($"Invalid string passed when parsing crop info: {input}");
 				return null;

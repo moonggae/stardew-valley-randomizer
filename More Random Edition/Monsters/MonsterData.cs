@@ -82,7 +82,7 @@ namespace Randomizer
 		public static Monster ParseMonster(string data)
 		{
 			string[] fields = data.Split('/');
-			if (fields.Length != 15)
+			if (fields.Length < 15)
 			{
 				Globals.ConsoleError($"Incorrect number of fields when parsing monster with input: {data}");
 				return null;

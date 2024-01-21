@@ -103,7 +103,7 @@ namespace Randomizer
 		{
 			string input = DefaultStringData[weapon.Id];
 			string[] fields = input.Split('/');
-			if (fields.Length != 14)
+			if (fields.Length < 14)
 			{
 				Globals.ConsoleError($"Incorrect number of fields when parsing weapons with input: {input}");
 				return;

@@ -193,8 +193,8 @@ namespace Randomizer
 		{
 			string input = DefaultStringData[fish.Id];
 
-			string[] fields = input.Split('/');
-			if (fields.Length != 13)
+			string[] fields = input.Split('/');;
+            if (fields.Length < 13)
 			{
 				Globals.ConsoleError($"Incorrect number of fields when parsing fish with input: {input}");
 				return;
