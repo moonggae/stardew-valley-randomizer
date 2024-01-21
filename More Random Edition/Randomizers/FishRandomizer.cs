@@ -154,7 +154,6 @@ namespace Randomizer
             string defaultObjectInfo = ItemList.OriginalItemList[fish.Id];
             string[] objectInfoParts = defaultObjectInfo.Split('/');
 
-            objectInfoParts[(int)ObjectInformationIndexes.Name] = fish.Name;
             objectInfoParts[(int)ObjectInformationIndexes.DisplayName] = fish.OverrideName;
 			objectInfoParts[(int)ObjectInformationIndexes.Description] = fish.Description;
 			objectInfoParts[(int)ObjectInformationIndexes.AdditionalFishInfo] = fish.ObjectInformationSuffix;

@@ -29,11 +29,11 @@ namespace Randomizer
 			return GetItem(id).Name;
 		}
 
-		/// <summary>
-		/// Gets all the foragables
-		/// </summary>
-		/// <returns />
-		public static List<Item> GetForagables()
+        /// <summary>
+        /// Gets all the foragables
+        /// </summary>
+        /// <returns />
+        public static List<Item> GetForagables()
 		{
 			return Items.Values.Where(x => x.IsForagable).ToList();
 		}

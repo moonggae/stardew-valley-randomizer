@@ -1,8 +1,8 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley.GameData;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Randomizer
 {
@@ -30,14 +30,16 @@ namespace Randomizer
 		private Dictionary<string, string> _monsterReplacements = new();
 		private Dictionary<string, string> _birthdayReplacements = new();
 		private Dictionary<string, string> _preferenceReplacements = new();
-		private Dictionary<int, string> _secretNotesReplacements = new();
+        private Dictionary<int, string> _secretNotesReplacements = new();
+        private Dictionary<string, string> _objectContextTagsAdjustments = new();
+        private Dictionary<string, SpecialOrderData> _specialOrderAdjustments = new();
 
-		/// <summary>
-		/// Whether we're currently ignoring replacing object information
-		/// This is done between day loads to prevent errors with the Special Orders
-		/// Eventually this can be removed when we modify the orders themselves
-		/// </summary>
-		private bool IgnoreObjectInformationReplacements { get; set; }
+        /// <summary>
+        /// Whether we're currently ignoring replacing object information
+        /// This is done between day loads to prevent errors with the Special Orders
+        /// Eventually this can be removed when we modify the orders themselves
+        /// </summary>
+        private bool IgnoreObjectInformationReplacements { get; set; }
 
 		public AssetEditor(ModEntry mod)
 		{
@@ -69,7 +71,9 @@ namespace Randomizer
                 TryReplaceAsset(e, "Data/Monsters", _monsterReplacements) ||
                 TryReplaceAsset(e, "Data/NPCDispositions", _birthdayReplacements) ||
                 TryReplaceAsset(e, "Data/NPCGiftTastes", _preferenceReplacements) ||
-                TryReplaceAsset(e, "Data/SecretNotes", _secretNotesReplacements))
+                TryReplaceAsset(e, "Data/SecretNotes", _secretNotesReplacements) ||
+                TryReplaceAsset(e, "Data/ObjectContextTags", _objectContextTagsAdjustments) ||
+                TryReplaceAsset(e, "Data/SpecialOrders", _specialOrderAdjustments))
 			{
 				return;
 			}
@@ -125,6 +129,13 @@ namespace Randomizer
             if (e.NameWithoutLocale.IsEquivalentTo("Data/NPCDispositions")) { return Globals.Config.NPCs.RandomizeBirthdays; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/NPCGiftTastes")) { return Globals.Config.NPCs.RandomizeIndividualPreferences || Globals.Config.NPCs.RandomizeUniversalPreferences; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/SecretNotes")) { return Globals.Config.NPCs.RandomizeIndividualPreferences; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/ObjectContextTags") ||
+                e.NameWithoutLocale.IsEquivalentTo("Data/SpecialOrders")) 
+            {
+                // Only need to adjust fish quests at the moment
+                // The context tags can't be adjusted unless the world is ready, so we'll wait
+                return Globals.Config.Fish.Randomize; 
+            } 
             return false;
         }
 
@@ -153,6 +164,40 @@ namespace Randomizer
         /// <param name="replacement"></param>
         /// <returns>True if successful, false otherwise</returns>
         private static bool TryReplaceAsset(AssetRequestedEventArgs e, string assetName, Dictionary<int, string> replacement)
+        {
+            if (ShouldReplaceAsset(e, assetName))
+            {
+                e.Edit((asset) => ApplyEdits(asset, replacement));
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Tries to replace the asset with the one with the given name
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="assetName"></param>
+        /// <param name="replacement"></param>
+        /// <returns>True if successful, false otherwise</returns>
+        private static bool TryReplaceAsset(AssetRequestedEventArgs e, string assetName, Dictionary<string, SpecialOrderData> replacement)
+        {
+            if (ShouldReplaceAsset(e, assetName))
+            {
+                e.Edit((asset) => ApplyEdits(asset, replacement));
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Tries to replace the asset with the one with the given name
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="assetName"></param>
+        /// <param name="replacement"></param>
+        /// <returns>True if successful, false otherwise</returns>
+        private static bool TryReplaceAsset(AssetRequestedEventArgs e, string assetName, Dictionary<string, List<string>> replacement)
         {
             if (ShouldReplaceAsset(e, assetName))
             {
@@ -197,7 +242,9 @@ namespace Randomizer
             InvalidateCacheForDefaultAndCurrentLocales("Data/NPCDispositions");
             InvalidateCacheForDefaultAndCurrentLocales("Data/NPCGiftTastes");
             InvalidateCacheForDefaultAndCurrentLocales("Data/SecretNotes");
-		}
+            InvalidateCacheForDefaultAndCurrentLocales("Data/ObjectContextTags");
+            InvalidateCacheForDefaultAndCurrentLocales("Data/SpecialOrders");
+        }
 
         /// <summary>
         /// Invalidates the cache for default and current locales
@@ -239,6 +286,8 @@ namespace Randomizer
             _birthdayReplacements.Clear();
             _preferenceReplacements.Clear();
             _secretNotesReplacements.Clear();
+            _objectContextTagsAdjustments.Clear();
+            _specialOrderAdjustments.Clear();
 
             InvalidateCache();
         }
@@ -305,7 +354,10 @@ namespace Randomizer
 			_weaponReplacements = WeaponRandomizer.Randomize();
 			_bootReplacements = BootRandomizer.Randomize();
 			_birthdayReplacements = BirthdayRandomizer.Randomize();
-		}
+
+            _objectContextTagsAdjustments = ObjectContextTagsAdjustments.GetObjectContextTagAdjustments();
+            _specialOrderAdjustments = SpecialOrderAdjustments.GetSpecialOrderAdjustments();
+        }
 
 		/// <summary>
 		/// Turns on the flag to ignore object information replacements and invalidates the cache
