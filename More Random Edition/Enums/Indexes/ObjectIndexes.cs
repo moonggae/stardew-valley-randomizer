@@ -521,6 +521,7 @@
         CactusSeeds = 802,
         IridiumMilk = 803,
         SquidInk = 814,
+        CuriosityLure = 856,
 
         // New from 1.5 update (add later when these will be in the pool)
         TaroRoot = 830,

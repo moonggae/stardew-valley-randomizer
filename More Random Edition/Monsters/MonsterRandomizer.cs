@@ -20,11 +20,11 @@ namespace Randomizer
 		/// <returns />
 		public static Dictionary<string, string> Randomize()
 		{
-			Dictionary<string, string> replacements = new Dictionary<string, string>();
+			Dictionary<string, string> replacements = new();
 
 			List<Monster> allMonsters = MonsterData.GetAllMonsters();
 			Dictionary<int, int> monsterItemSwaps = GetMonsterDropReplacements(allMonsters);
-			Dictionary<string, ItemDrop> extraItemDrops = new Dictionary<string, ItemDrop>();
+			Dictionary<string, ItemDrop> extraItemDrops = new();
 
 			foreach (Monster monster in allMonsters)
 			{

@@ -639,6 +639,7 @@ namespace Randomizer
 				{ ObjectIndexes.GreenAlgae, new Item((int)ObjectIndexes.GreenAlgae, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
 				{ ObjectIndexes.WhiteAlgae, new Item((int)ObjectIndexes.WhiteAlgae, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
 				{ ObjectIndexes.LeadBobber, new Item((int)ObjectIndexes.LeadBobber, ObtainingDifficulties.MediumTimeRequirements) { CanStack = false } },
+				{ ObjectIndexes.CuriosityLure, new Item((int)ObjectIndexes.CuriosityLure, ObtainingDifficulties.RareItem) { CanStack = false } },
 
 				// Fish - defaults to ObtainingDifficulties.LargeTimeRequirements
 				{ ObjectIndexes.AnyFish, new FishItem((int)ObjectIndexes.AnyFish, ObtainingDifficulties.NonCraftingItem) },

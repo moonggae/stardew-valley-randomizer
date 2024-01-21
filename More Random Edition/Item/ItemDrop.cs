@@ -16,12 +16,16 @@ namespace Randomizer
 			Probability = probability;
 		}
 
-		/// <summary>
-		/// Parses an item drop string into a list of item drops
-		/// </summary>
-		/// <param name="itemDropString">The string to parse</param>
-		/// <returns />
-		public static List<ItemDrop> ParseString(string itemDropString)
+        /// <summary>
+        /// Parses an item drop string into a list of item drops
+        /// - The value -4 is parsed as coal
+        /// - The value -6 is parsed as gold ore
+		/// 
+		/// See the MonsterData Initialize function for more
+        /// </summary>
+        /// <param name="itemDropString">The string to parse</param>
+        /// <returns />
+        public static List<ItemDrop> ParseString(string itemDropString)
 		{
 			List<ItemDrop> itemDrops = new();
 
@@ -38,6 +42,15 @@ namespace Randomizer
 				{
 					Globals.ConsoleError($"Invalid token when parsing monster item probability in string: {itemDropString}");
 					probability = 0.75;
+				}
+
+				if (itemId == -4)
+				{
+					itemId = (int)ObjectIndexes.Coal;
+				}
+				else if (itemId == -6)
+				{
+					itemId = (int)ObjectIndexes.GoldOre;
 				}
 
 				itemDrops.Add(new ItemDrop((ObjectIndexes)itemId, probability));
