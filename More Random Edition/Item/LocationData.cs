@@ -169,7 +169,6 @@ namespace Randomizer
 				.ToList();
 
 			// Build the output string from the list we just built
-			var output = $"{string.Join(" -1 ", fishingList)} -1";
             return $"{string.Join(" -1 ", fishingList)} -1";
 		}
 	}
