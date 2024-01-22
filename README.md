@@ -138,7 +138,7 @@ Note the following:
   * Saloon - changes weekly
     * Beer and Coffee always available
     * 3-5 random cooked foods
-    * 3-5 random recipes (not added if the player has learned themm)
+    * 3-5 random recipes (not added if the player has learned them)
   * Desert Oasis Shop - random based on the day
     * Weekdays - 1-5 of a random desert foragables
     * Tuesdays - 3-8 of a random crop that corresponds to the seeds sold here
@@ -159,10 +159,12 @@ Note the following:
     * A random totem, always costing 500
 * NPC preference randomizer (credit to Vertigon)
   * Includes randomizing secret notes to give random loved item info
-* Support the [GenericModConfigMenuApi]([url](https://www.nexusmods.com/stardewvalley/mods/5098)) mod to more easily manage settings
+* Support the GenericModConfigMenuApi mod to more easily manage settings
+  * https://www.nexusmods.com/stardewvalley/mods/5098
 * Horse and pet randomizer reworked
   * These are now separate settings, so they can both be active at the same time
-  * Added new horse and pet images, modified from the original assets and from the [free Time Fantasy graphics page]([url](https://finalbossblues.com/timefantasy/free-graphics/)))
+  * Added new horse and pet images, modified from the original assets, from Time Fantasy assets, and misc free RPG Maker assets
+    * https://www.timefantasy.net/
 * Random hue-shifting of certain assets
   * Crops - will impact the crop/seed/plant in the same way, for consistency
   * Fish
