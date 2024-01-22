@@ -57,8 +57,7 @@ namespace Randomizer
             if (!animalNamePath.EndsWith(UnknownAnimalIconName) &&
                 AnimalRandomizer.LastHueShiftValue.TryGetValue(animalType, out int hueShift))
             {
-                Color shiftedPaleColor = ImageManipulator.IncreaseHueBy(ImageManipulator.PaleColor, hueShift);
-                overlay = ImageManipulator.MultiplyImageByColor(overlay, shiftedPaleColor);
+                overlay = ImageManipulator.ShiftImageHue(overlay, hueShift);
             }
 
             asset.AsImage().PatchImage(

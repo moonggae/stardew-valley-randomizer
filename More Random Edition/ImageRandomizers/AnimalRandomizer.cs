@@ -25,7 +25,7 @@ namespace Randomizer
         /// This is used by the animal icon patcher to shift the matching icon colors
         /// when loading a farm
         /// </summary>
-        public static Dictionary<AnimalTypes, int> LastHueShiftValue = new ();
+        public static Dictionary<AnimalTypes, int> LastHueShiftValue { get; private set; } = new();
 
         public AnimalRandomizer(AnimalTypes animalTypeToRandomize)
         {
@@ -66,8 +66,7 @@ namespace Randomizer
             {
                 Random rng = Globals.GetFarmRNG(nameof(AnimalRandomizer));
                 int hueShiftValue = Range.GetRandomValue(0, 359, rng);
-                Color shiftedPaleColor = ImageManipulator.IncreaseHueBy(ImageManipulator.PaleColor, hueShiftValue);
-                animalImage = ImageManipulator.MultiplyImageByColor(animalImage, shiftedPaleColor);
+                animalImage = ImageManipulator.ShiftImageHue(animalImage, hueShiftValue);
 
                 LastHueShiftValue[AnimalTypeToRandomize] = hueShiftValue;
             }
