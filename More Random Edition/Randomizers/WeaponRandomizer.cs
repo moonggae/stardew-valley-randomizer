@@ -224,22 +224,22 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Assigns a random defense value to the weapon
-		/// - 95% chance of 0
-		/// - else 1-5
+		/// Assigns a random defense value to the weapon based on its base defense
+		/// This will be a value of + or - 50% of the defense, rounded up
+		/// 
+		/// If no defense, then a 5% chance of getting a value from 1-5
 		/// </summary>
 		/// <param name="weapon">The weapon to add the defense value</param>
 		private static void RandomizeWeaponDefense(WeaponItem weapon)
 		{
-			if (Globals.RNGGetNextBoolean(95))
+			if (weapon.AddedDefense > 0)
 			{
-				weapon.AddedDefense = 0;
-			}
-
-			else
+                weapon.AddedDefense = Globals.RNGGetIntWithinPercentage(weapon.AddedDefense, 50);
+            }
+			else if (Globals.RNGGetNextBoolean(5))
 			{
 				weapon.AddedDefense = Range.GetRandomValue(1, 5);
-			}
+            }
 		}
 
 		/// <summary>

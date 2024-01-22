@@ -10,14 +10,14 @@ namespace Randomizer
 		private static Dictionary<string, string> DefaultMonsterData;
 
         /// <summary>
-        /// Initialize the data form the XNB file, but make the following changes:
+        /// Initialize the data from the XNB file, but make the following changes:
         /// - The value -4 is changed to coal
         /// - The value -6 is changed to gold ore
         /// 
         /// These changes were based on the source code
         /// See the constructor for "Debrs" in Debris.cs
         /// </summary>
-        public static void Initialize()
+        private static void Initialize()
 		{
             DefaultMonsterData = Globals.ModRef.Helper.GameContent
 				.Load<Dictionary<string, string>>("Data/Monsters");
