@@ -317,10 +317,14 @@ namespace Randomizer
                         letters = letters.Replace(randomLetter, "");
 						potentialItems = RequiredItem.CreateList(
 							ItemList.Items.Values.Where(x =>
+                                //TODO: ON THE FINAL RELEASE, ADD THIS IN SO GINGER ISLAND STUFF DOESN'T APPEAR
+                                // AND TO KEEP OTHER LOCALES IN SYNC
+                                //x.DifficultyToObtain < ObtainingDifficulties.Impossible &&
+                                //ShouldIncludeInLetterBundle(x) &&
                                 (
-									// Prioritiy is: OverrideDisplayName => OverrideName => EnglishName
-									(x.OverrideDisplayName ?? x.OverrideName ?? x.EnglishName)
-										.StartsWith(randomLetter, StringComparison.InvariantCultureIgnoreCase)
+                                    // Prioritiy is: OverrideDisplayName => OverrideName => EnglishName
+                                    (x.OverrideDisplayName ?? x.OverrideName ?? x.EnglishName)
+                                        .StartsWith(randomLetter, StringComparison.InvariantCultureIgnoreCase)
                                 ) &&
                                 x.Id >= 0
 							).ToList()
@@ -338,9 +342,29 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Generates a random reward out of all of the items
+		/// Whether we should include the item in a letter bundle - this is necessary because some names are
+		/// changed during localization; we do NOT want to have a different set of items for each letter
+		/// depending on the language
+		/// 
+		/// Logic:
+		/// - Disallow all items with any kind of override name
+		/// - Exclude crops and fish, since their override names are the same across languages
 		/// </summary>
-		protected void GenerateRandomReward()
+		/// <param name="item">The item to check</param>
+		/// <returns>True if the item should be included, false otherwise</returns>
+		private static bool ShouldIncludeInLetterBundle(Item item)
+		{
+			bool overrideNamesAreConstant = item is CropItem || item is FishItem;
+			bool hasNoOverrideName = 
+				string.IsNullOrWhiteSpace(item.OverrideDisplayName) &&
+				string.IsNullOrWhiteSpace(item.OverrideName);
+			return overrideNamesAreConstant || hasNoOverrideName;
+        }
+
+        /// <summary>
+        /// Generates a random reward out of all of the items
+        /// </summary>
+        protected void GenerateRandomReward()
 		{
 			Item reward = Globals.RNGGetRandomValueFromList(
 				ItemList.Items.Values

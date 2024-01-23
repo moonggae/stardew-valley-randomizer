@@ -59,10 +59,9 @@ namespace Randomizer
         }
 
         /// <summary>
-        /// Adds tooltips for the bundle items so that you can see where to get fish
+        /// Adds tooltips for the bundle items so that you can see where to get fish/foragables, etc
         /// </summary>
         /// 
-        //TODO: change the name of this to reflect the bundlefixes as well
         public static void AddDescriptionsToBundleTooltips()
 		{
 			if (Game1.activeClickableMenu is not JunimoNoteMenu menu || 
