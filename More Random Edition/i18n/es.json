@@ -66,10 +66,10 @@
 
 	"bundle-fishtank-seasonal": "{{season}} Pescado",
 	"bundle-fishtank-ocean-food": "Comida para pez",
-	"bundle-fishtank-legendary": "Legendario",
+	"bundle-fishtank-random": "Pez al azar",
 	"bundle-fishtank-location": "{{location}} Pescado",
-	"bundle-fishtank-rain-fish": "Rain Fish",
-	"bundle-fishtank-night-fish": "Pescado Nocturno",
+	"bundle-fishtank-rain-fish": "Pez de lluvia",
+	"bundle-fishtank-night-fish": "Pescado nocturno",
 	"bundle-fishtank-quality-fish": "Pescado de calidad",
 	"bundle-fishtank-beach-foragables": "Playa",
 	"bundle-fishtank-fishing-tools": "Herramientas de pesca",

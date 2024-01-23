@@ -66,7 +66,7 @@
 
 	"bundle-fishtank-seasonal": "{{season}} poisson",
 	"bundle-fishtank-ocean-food": "La nourriture pour poissons",
-	"bundle-fishtank-legendary": "Légendaire",
+	"bundle-fishtank-random": "Poisson aléatoire",
 	"bundle-fishtank-location": "{{location}} poisson",
 	"bundle-fishtank-rain-fish": "Poisson de pluie",
 	"bundle-fishtank-night-fish": "Poisson de nuit",

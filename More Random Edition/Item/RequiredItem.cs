@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using StardewValley.Objects;
+using System;
+using System.Collections.Generic;
 
 namespace Randomizer
 {
@@ -33,7 +35,7 @@ namespace Randomizer
 		/// <param name="numberOfItems">The number of items required to craft this</param>
 		public RequiredItem(Item requiredItem, int numberOfItems = 1)
 		{
-			Item = requiredItem;
+            Item = requiredItem;
 			_rangeOfItems = new Range(numberOfItems, numberOfItems);
 			NumberOfItems = _rangeOfItems.GetRandomValue();
 		}
@@ -46,7 +48,7 @@ namespace Randomizer
 		/// <param name="maxValue">The minimum number of items required to craft this</param>
 		public RequiredItem(ObjectIndexes itemId, int minValue, int maxValue)
 		{
-			Item = ItemList.Items[itemId];
+            Item = ItemList.Items[itemId];
 			_rangeOfItems = new Range(minValue, maxValue);
 			NumberOfItems = _rangeOfItems.GetRandomValue();
 		}
@@ -69,11 +71,14 @@ namespace Randomizer
         /// </summary>
         /// <param name="itemId">The item id of the item that's required</param>
         /// <param name="numberOfItems">The number of items required to craft this</param>
-        public RequiredItem(ObjectIndexes itemId, int numberOfItems = 1)
+        public RequiredItem(ObjectIndexes itemId, int numberOfItems = 1, Random rng = null)
 		{
-			Item = ItemList.Items[itemId];
+            // TODO: REMOVE THE RNG STUFF IN THE FINAL VERSION
+            Random rngToUse = rng ?? Globals.RNG;
+
+            Item = ItemList.Items[itemId];
 			_rangeOfItems = new Range(numberOfItems, numberOfItems);
-			NumberOfItems = _rangeOfItems.GetRandomValue();
+			NumberOfItems = _rangeOfItems.GetRandomValue(rngToUse);
 		}
 
         /// <summary>
@@ -98,8 +103,11 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="itemList">The item list</param>
 		/// <param name="numberOfItems">The number of items to set each required item to</param>
-		public static List<RequiredItem> CreateList(List<Item> itemList, int numberOfItems = 1)
+		public static List<RequiredItem> CreateList(List<Item> itemList, int numberOfItems = 1, Random rng = null)
 		{
+			// TODO: REMOVE THE RNG STUFF IN THE FINAL VERSION
+			Random rngToUse = rng ?? Globals.RNG;
+
 			List<RequiredItem> list = new();
 			foreach (Item item in itemList)
 			{
@@ -109,7 +117,7 @@ namespace Randomizer
                 }
 				else
 				{
-                    list.Add(new RequiredItem((ObjectIndexes)item.Id, numberOfItems));
+                    list.Add(new RequiredItem((ObjectIndexes)item.Id, numberOfItems, rngToUse));
                 }
 			}
 			return list;
