@@ -7,6 +7,10 @@ namespace Randomizer
 	public class CraftableItem : Item
 	{
 		public string SkillString { get; set; } = "";
+		/// <summary>
+		/// We use Name by default, but some recipes use a different name than that
+		/// </summary>
+		public string CraftingRecipeKey { get; set; }
 		public int OriginalLevelLearnedAt { get; set; }
 		public int BaseLevelLearnedAt { get; set; }
 		public bool IsLearnedOnLevelup
@@ -45,8 +49,9 @@ namespace Randomizer
 			int bigCraftablePrice = 1000,
 			string dataKey = null) : base(id)
 		{
-			IsBigCraftable = isBigCraftable; // Put this first so the value is set for EnglishName
-            CraftingData = CraftingRecipeData[dataKey ?? EnglishName].Split("/");
+            IsBigCraftable = isBigCraftable; // Put this first so the value is set for EnglishName
+			CraftingRecipeKey = dataKey ?? EnglishName;
+            CraftingData = CraftingRecipeData[CraftingRecipeKey].Split("/");
             IsCraftable = true;
 			BigCraftablePrice = bigCraftablePrice;
 			Category = category;

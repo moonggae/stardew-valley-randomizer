@@ -28,7 +28,7 @@ namespace Randomizer
 				.ToList();
 			foreach (CraftableItem item in allCraftableItems)
 			{
-				replacements[item.Name] = item.GetCraftingString();
+                replacements[item.CraftingRecipeKey] = item.GetCraftingString();
 			}
 
 			// These two are not actually items, but we want to randomize their recipes anwyway
