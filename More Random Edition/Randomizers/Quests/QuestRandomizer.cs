@@ -148,7 +148,7 @@ namespace Randomizer
 			DefaultQuestData = new Dictionary<int, string>
 			{
 				{ 3, Globals.GetTranslation("quest-3", new { crop = ItemList.GetItemName(ObjectIndexes.Beet) }) },
-                { 6, Globals.GetTranslation("quest-6", new { crop = ItemList.GetItemName(ParsnipCropId), cropId = ParsnipCropId }) },
+                { 6, Globals.GetTranslation("quest-6", new { crop = ItemList.GetItemName(ParsnipCropId), cropId = (int)ParsnipCropId }) },
                 { 22, Globals.GetTranslation("quest-22", new { fish = ItemList.GetItemName(ObjectIndexes.LargemouthBass) }) },
 			};
 
@@ -302,7 +302,7 @@ namespace Randomizer
 
 				item = itemName,
 				cropStart,
-				id,
+				id = (int)id,
 				a = article,
 
 				number = replacements.Number,
