@@ -144,9 +144,11 @@ namespace Randomizer
                     ItemList.Items[ObjectIndexes.MapleBar]
                 };
 
-                var stock = Range.GetRandomValue(3, 8);
+                var stock = Range.GetRandomValue(3, 8, shopRNG);
                 var bar = Globals.RNGGetRandomValueFromList(commonMetalBars, shopRNG);
-                var salePrice = GetAdjustedItemPrice(bar, fallbackPrice: 50, multiplier: 3);
+                var salePrice = bar.Id == (int)ObjectIndexes.MapleBar
+                    ? GetAdjustedItemPrice(bar, fallbackPrice: 50, multiplier: 1)
+                    : GetAdjustedItemPrice(bar, fallbackPrice: 50, multiplier: 3);
                 AddStock(menu, bar.GetSaliableObject(stock), stock, salePrice);
             }
         }

@@ -109,7 +109,8 @@ namespace Randomizer
 		public static List<Item> GetGiftables()
 		{
 			return Items.Values.Where(x => 
-				x.DifficultyToObtain < ObtainingDifficulties.Impossible &&
+				//TODO: ADD THIS IN THE FINAL RELEASE
+				//x.DifficultyToObtain < ObtainingDifficulties.Impossible &&
 				(
 					x.IsAnimalProduct || 
 					x.IsArtifact || 
@@ -512,7 +513,7 @@ namespace Randomizer
         }
 
         /// <summary>
-        /// Adds a random totem type, alwas costing 500 Qi Coins
+        /// Adds a random totem type, always costing 500 Qi Coins
         /// </summary>
         /// <param name="menu"></param>
         /// <param name="shopRNG"></param>
@@ -528,7 +529,7 @@ namespace Randomizer
                 ObjectIndexes.WarpTotemDesert,
                 ObjectIndexes.RainTotem
             };
-            var totemId = Globals.RNGGetRandomValueFromList(totemList, rng);
+            var totemId = Globals.RNGGetRandomValueFromList(totemList, rngToUse);
 			return Items[totemId];
         }
 
