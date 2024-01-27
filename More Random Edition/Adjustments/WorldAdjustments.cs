@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Netcode;
-using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Locations;
@@ -9,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using RandomizerItem = Randomizer.Item;
 using StardewValleyNpc = StardewValley.NPC;
+using SVChest = StardewValley.Objects.Chest;
+using SVItem = StardewValley.Item;
 
 namespace Randomizer
 {
@@ -22,34 +23,28 @@ namespace Randomizer
         /// </summary>
         public static void FixParsnipSeedBox()
         {
-            if (!Context.IsWorldReady)
+            // We don't want to do this before we're initialized
+            if (ItemList.Items == null)
             {
-                // In this case, it's probably the new player connecting - their box will be taken care
-                // of in CalculateAllReplacements
                 return;
             }
 
             GameLocation farmHouse = Game1.getLocationFromName("FarmHouse");
             if (farmHouse?.Objects != null)
             {
-                List<StardewValley.Objects.Chest> chestsInRoom =
+                SVChest chest =
                     farmHouse.Objects.Values.Where(x =>
                         x.DisplayName == "Chest")
-                        .Cast<StardewValley.Objects.Chest>()
+                        .Cast<SVChest>()
                         .Where(x => x.giftbox.Value)
-                    .ToList();
+                    .FirstOrDefault();
 
-                if (chestsInRoom.Count > 0)
+                if (chest != null && chest.items.Count == 1)
                 {
-                    string parsnipSeedsName = ItemList.GetItemName(ObjectIndexes.ParsnipSeeds);
-                    var chest = chestsInRoom[0];
-                    if (chest.items.Count > 0)
+                    SVItem itemInChest = chest.items[0];
+                    if (itemInChest.ParentSheetIndex == (int)ObjectIndexes.ParsnipSeeds)
                     {
-                        StardewValley.Item itemInChest = chest.items[0];
-                        if (itemInChest.ParentSheetIndex == (int)ObjectIndexes.ParsnipSeeds)
-                        {
-                            itemInChest.DisplayName = parsnipSeedsName;
-                        }
+                        itemInChest.DisplayName = ItemList.GetItemName(ObjectIndexes.ParsnipSeeds);
                     }
                 }
             }
