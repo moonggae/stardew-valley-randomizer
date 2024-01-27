@@ -1,7 +1,9 @@
-﻿using StardewModdingAPI.Events;
+﻿using Microsoft.Xna.Framework;
+using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
+using System;
 
 namespace Randomizer
 {
@@ -48,11 +50,26 @@ namespace Randomizer
         /// <param name="e">Contains the menu info - NewMenu means a menu was opened, OldMenu means one was closed</param>
         public static void AdjustMenus(object sender, MenuChangedEventArgs e)
         {
-            // Bundle menu - fix ring deposit
-            if (e.NewMenu is JunimoNoteMenu openedBundleMenu)
+            if (e.NewMenu is OverriddenJunimoNoteMenu)
             {
-                BundleMenuAdjustments.FixRingSelection(openedBundleMenu);
-                BundleMenuAdjustments.InsertCustomBundleNames(openedBundleMenu);
+                return; // We've already done our work!
+            }
+
+            // Bundle menu - fix ring deposit
+            if (e.NewMenu is JunimoNoteMenu junimoNoteMenu)
+            {
+                JunimoNoteMenu overriddenJunimoNoteMenu = BundleMenuAdjustments.OverrideJunimoNoteMenu();
+                if (overriddenJunimoNoteMenu != null)
+                {
+                    BundleMenuAdjustments.FixRingSelection(overriddenJunimoNoteMenu);
+                    BundleMenuAdjustments.InsertCustomBundleNames(overriddenJunimoNoteMenu);
+                }
+
+                // If we didn't override it, we're on the pause screen and still need to insert the custom names
+                else
+                {
+                    BundleMenuAdjustments.InsertCustomBundleNames(junimoNoteMenu);
+                }
             }
 
             // Shops - adjust on open

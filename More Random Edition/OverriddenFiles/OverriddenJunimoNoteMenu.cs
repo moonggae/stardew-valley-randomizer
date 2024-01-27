@@ -5,7 +5,7 @@ using SVBundle = StardewValley.Menus.Bundle;
 using SVItem = StardewValley.Item;
 using SVObject = StardewValley.Object;
 
-namespace Randomizer.OverriddenFiles
+namespace Randomizer
 {
     public class OverriddenJunimoNoteMenu : JunimoNoteMenu
     {

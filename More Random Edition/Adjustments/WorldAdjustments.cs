@@ -21,22 +21,34 @@ namespace Randomizer
         /// </summary>
         public static void FixParsnipSeedBox()
         {
-            GameLocation farmHouse = Game1.getLocationFromName("FarmHouse");
-
-            List<StardewValley.Objects.Chest> chestsInRoom =
-                farmHouse.Objects.Values.Where(x =>
-                    x.DisplayName == "Chest")
-                    .Cast<StardewValley.Objects.Chest>()
-                    .Where(x => x.giftbox.Value)
-                .ToList();
-
-            if (chestsInRoom.Count > 0)
+            if (Game1.Date.TotalDays > 0)
             {
-                string parsnipSeedsName = ItemList.GetItemName(ObjectIndexes.ParsnipSeeds);
-                StardewValley.Item itemInChest = chestsInRoom[0].items[0];
-                if (itemInChest.ParentSheetIndex == (int)ObjectIndexes.ParsnipSeeds)
+                // At this point, the item name is already saved to the farm
+                return;
+            }
+
+            GameLocation farmHouse = Game1.getLocationFromName("FarmHouse");
+            if (farmHouse?.Objects != null)
+            {
+                List<StardewValley.Objects.Chest> chestsInRoom =
+                    farmHouse.Objects.Values.Where(x =>
+                        x.DisplayName == "Chest")
+                        .Cast<StardewValley.Objects.Chest>()
+                        .Where(x => x.giftbox.Value)
+                    .ToList();
+
+                if (chestsInRoom.Count > 0)
                 {
-                    itemInChest.DisplayName = parsnipSeedsName;
+                    string parsnipSeedsName = ItemList.GetItemName(ObjectIndexes.ParsnipSeeds);
+                    var chest = chestsInRoom[0];
+                    if (chest.items.Count > 0)
+                    {
+                        StardewValley.Item itemInChest = chest.items[0];
+                        if (itemInChest.ParentSheetIndex == (int)ObjectIndexes.ParsnipSeeds)
+                        {
+                            itemInChest.DisplayName = parsnipSeedsName;
+                        }
+                    }
                 }
             }
         }

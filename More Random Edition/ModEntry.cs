@@ -72,10 +72,6 @@ namespace Randomizer
 
 			if (Globals.Config.Bundles.Randomize)
 			{
-				// This is currently only to allow rings to be modified
-                helper.Events.GameLoop.DayStarted += (sender, args) => OverriddenCommunityCenter.UseOverriddenCommunityCenter();
-                helper.Events.GameLoop.DayEnding += (sender, args) => OverriddenCommunityCenter.RestoreCommunityCenter();
-
 				if (Globals.Config.Bundles.ShowDescriptionsInBundleTooltips)
 				{
 					helper.Events.Display.RenderedActiveMenu += (sender, args) => BundleMenuAdjustments.AddDescriptionsToBundleTooltips();
