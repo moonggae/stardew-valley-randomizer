@@ -15,10 +15,12 @@ namespace Randomizer
         /// Assumes a JunimoNoteMenu was just opened, and overrides it out own definition
         /// that actually supports depositing rings
         /// </summary>
+        /// <param name="junimoNoteMenu">The menu that was opened - used to check if it was from a pause</param>
         /// <returns>Null if we didn't override it, and the menu itself if we did</returns>
-		public static JunimoNoteMenu OverrideJunimoNoteMenu()
+		public static JunimoNoteMenu OverrideJunimoNoteMenu(JunimoNoteMenu junimoNoteMenu)
 		{
-			if (Game1.currentLocation is not CommunityCenter && Game1.currentLocation is not AbandonedJojaMart)
+			if (junimoNoteMenu.fromGameMenu || // The "game menu" is the pause menu
+                (Game1.currentLocation is not CommunityCenter && Game1.currentLocation is not AbandonedJojaMart))
 			{
 				// This is okay - it's probably from the pause menu
 				return null;

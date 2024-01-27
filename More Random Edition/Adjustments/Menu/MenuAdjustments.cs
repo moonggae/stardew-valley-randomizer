@@ -58,7 +58,7 @@ namespace Randomizer
             // Bundle menu - fix ring deposit
             if (e.NewMenu is JunimoNoteMenu junimoNoteMenu)
             {
-                JunimoNoteMenu overriddenJunimoNoteMenu = BundleMenuAdjustments.OverrideJunimoNoteMenu();
+                JunimoNoteMenu overriddenJunimoNoteMenu = BundleMenuAdjustments.OverrideJunimoNoteMenu(junimoNoteMenu);
                 if (overriddenJunimoNoteMenu != null)
                 {
                     BundleMenuAdjustments.FixRingSelection(overriddenJunimoNoteMenu);
