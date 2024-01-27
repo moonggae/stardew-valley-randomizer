@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Netcode;
+using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Locations;
@@ -21,9 +22,10 @@ namespace Randomizer
         /// </summary>
         public static void FixParsnipSeedBox()
         {
-            if (Game1.Date.TotalDays > 0)
+            if (!Context.IsWorldReady)
             {
-                // At this point, the item name is already saved to the farm
+                // In this case, it's probably the new player connecting - their box will be taken care
+                // of in CalculateAllReplacements
                 return;
             }
 
@@ -102,7 +104,7 @@ namespace Randomizer
             var currentLocation = Game1.currentLocation;
             if (!Globals.Config.Weapons.Randomize ||
                 currentLocation.Name != "Farm" ||
-                Game1.random.NextDouble() < 0.25)
+                !(Game1.random.NextDouble() < 0.25))
             {
                 return;
             }
