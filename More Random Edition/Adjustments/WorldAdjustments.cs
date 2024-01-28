@@ -96,9 +96,19 @@ namespace Randomizer
         /// </summary>
         public static void TrySpawnGalaxySwordBat()
         {
-            var currentLocation = Game1.currentLocation;
+            // Besdies the Randomize check, this logic is taken from Farm.performTenMinuteUpdate
+            // to NOT try to spawn the bat at the wrong time, at the wrong farm
             if (!Globals.Config.Weapons.Randomize ||
-                currentLocation.Name != "Farm" ||
+                !Game1.spawnMonstersAtNight || 
+                Game1.farmEvent != null || 
+                Game1.timeOfDay < 1900 || 
+                Game1.random.NextDouble() >= 0.25 - Game1.player.team.AverageDailyLuck() / 2.0)
+            {
+                return;
+            }
+
+            var currentLocation = Game1.currentLocation;
+            if (currentLocation.Name != "Farm" ||
                 !(Game1.random.NextDouble() < 0.25))
             {
                 return;
