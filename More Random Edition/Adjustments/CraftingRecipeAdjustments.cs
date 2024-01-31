@@ -15,7 +15,7 @@ namespace Randomizer
 		/// A mapping of cooking recipes that include crop names to the id of that crop
 		/// These ARE needed because the cooking recipe is slightly different than the item name in some cases
 		/// </summary>
-		private readonly static Dictionary<string, ObjectIndexes> CropDishesMap = new()
+		public readonly static Dictionary<string, ObjectIndexes> CropDishesMap = new()
 		{
 			{ "Cheese Cauli.", ObjectIndexes.CheeseCauliflower },
 			{ "Parsnip Soup", ObjectIndexes.ParsnipSoup },
@@ -40,7 +40,7 @@ namespace Randomizer
         /// A mapping of cooking recipes that include fish names to the id of that fish
 		/// These ARE needed because the cooking recipe is slightly different than the item name in some cases
         /// </summary>
-        private readonly static Dictionary<string, ObjectIndexes> FishDishesMap = new()
+        public readonly static Dictionary<string, ObjectIndexes> FishDishesMap = new()
 		{
 			{ "Carp Surprise", ObjectIndexes.CarpSurprise },
 			{ "Salmon Dinner", ObjectIndexes.SalmonDinner },

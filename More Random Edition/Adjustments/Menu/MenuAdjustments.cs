@@ -1,9 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using StardewModdingAPI.Events;
+﻿using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
-using System;
 
 namespace Randomizer
 {
@@ -70,6 +68,12 @@ namespace Randomizer
                 {
                     BundleMenuAdjustments.InsertCustomBundleNames(junimoNoteMenu);
                 }
+            }
+
+            // Letters - adjust learned recipe names
+            else if (e.NewMenu is LetterViewerMenu letterViewerMenu)
+            {
+                LetterViewerMenuAdjustments.AdjustCookingRecipeName(letterViewerMenu);
             }
 
             // Shops - adjust on open
