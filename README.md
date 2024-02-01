@@ -114,7 +114,7 @@ Note the following:
     * There's also no way of actually knowing whether the fish is actually valid for the special order
   * We need to modify the ObjectContextTags to take the randomization in mind so that these orders will actually be possible
 * Music restarts when you transition screens, even if it's the same song
-* Issues with non-English languages being inconsistent with the letter bundles
+* [Fixed in upcoming 0.6.0 release] Issues with non-English languages being inconsistent with the letter bundles
   * As such to avoid any issues, do not switch your language after starting a seed, and be consistent which languages are used when playing multiplayer
 * This mod does not fully support other languages (but it does for the most part)
   * Randomly generated weapon/crop names are English
@@ -139,8 +139,10 @@ Note the following:
     * Beer and Coffee always available
     * 3-5 random cooked foods
     * 3-5 random recipes (not added if the player has learned them)
+  * Willy's Fishing Shop
+    * Catch of the day - 1-3 of a random fish that's catchable this season
   * Desert Oasis Shop - random based on the day
-    * Weekdays - 1-5 of a random desert foragables
+    * Mondays - 1-5 of a random desert foragables
     * Tuesdays - 3-8 of a random crop that corresponds to the seeds sold here
     * Weekends - A random cooked item
     * Every week...
@@ -167,6 +169,7 @@ Note the following:
     * https://www.timefantasy.net/
 * Random hue-shifting of certain assets
   * Crops - will impact the crop/seed/plant in the same way, for consistency
+    * Seed packets are now constructed from a tiny seed image onto a random packet template
   * Fish
   * Boots
   * Monsters
@@ -182,10 +185,17 @@ Note the following:
 * Added more random name strings/descriptions for a bit more variety
 * Fixed bugs
   * Fixed rings not being able to be deposited... again
-  * Fixed issues with cooking recipes (tooltip & unlocks for ones with changed names not working)
+  * Fixed several possibilities for impossible to complete bundles
+     * The Legendary Fish bundle was changed to one requiring completely random fish - this is to prevent softlocks if the Legendary Fish are disposed of in some other way
+     * NPC shuffle cannot assign post-community center items to prevent the NPC bundles from being impossible
+  * Fixed the letter bundles from being inconsistent across different locales
+  * Cooking recipe fixes
+    * Tooltips for recipes in shops will now show the correct ingredients
+    * Recipes with changed name that are received in the mail will now show the correct name
   * Fixed the rain, and animal skins potentially affecting the RNG for other things
     * Additionally, rain should now always be the same for all players on a given day
   * Fixed the name of the "BlueBean" seed/crop image, as it had a casing inconsistency that caused errors in the console if chosen
+  * Fixed a few fish images having weird transparency issues
   * Fixed fish special orders
     * Aquatic Overpopulation - should pick a fish that's actually catchable during this season
     * Biome Balance - for ease of doing logic for this, the following fish work for this:
@@ -200,6 +210,7 @@ Note the following:
     * I may look into a better way to do something like this in the future
   * The Galaxy Sword name randomization setting
     * A fix was made so that the current sword name is checked when determing to spawn the bat in a wilderness farm, meaning this setting is no longer necessary
+  * Fixed a harmless error message that occurred when a second person connects to a farm
 * Technical/FYI changes
   * Code rework to redo how menus are modified (done in a much safer way). Credit to Vertigon for the initial work on a bunch of these changes!
   * Look up Stardew xnb data as appropriate instead of hard-coding the expected values
