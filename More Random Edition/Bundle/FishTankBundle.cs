@@ -59,30 +59,12 @@ namespace Randomizer
 					break;
 				case BundleTypes.FishTankRandom:
 					SetBundleName("bundle-fishtank-random");
-
-                    //TODO: RMEOVE ALL CODE BELOW IN THE FINAL VERSION
-                    // THIS IS TEMPORARY SO THE TEST FARM WE'RE PLAYTESTING ON DOESN'T CHANGE
-                    Random tempRNG = Globals.GetFarmRNG(nameof(FishTankBundle));
-
-					// ALSO REMOVE THE PARAM HERE FORM CREATELIST...
-                    RequiredItems = RequiredItem.CreateList
-						(Globals.RNGGetRandomValuesFromList(FishItem.Get(), 8, tempRNG), rng: tempRNG);
-
-					// we rolled 5 fish in our seed, so advance it five times...
-					Globals.RNG.Next();
-                    Globals.RNG.Next();
-                    Globals.RNG.Next();
-                    Globals.RNG.Next();
-                    Globals.RNG.Next();
-
-                    // OLD CODE TO REINSTATE
-                    //RequiredItems = RequiredItem.CreateList(FishItem.GetLegendaries().Cast<Item>().ToList());
-
+                    RequiredItems = RequiredItem.CreateList(Globals.RNGGetRandomValuesFromList(FishItem.Get(), 8));
                     MinimumRequiredItems = Range.GetRandomValue(3, 4);
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.FishTankLocation:
-					List<Locations> locations = new List<Locations>
+					List<Locations> locations = new()
 					{
 						Locations.Town,
 						Locations.Mountain,

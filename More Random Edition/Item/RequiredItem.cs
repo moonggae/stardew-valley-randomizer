@@ -1,13 +1,11 @@
-﻿using StardewValley.Objects;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Randomizer
 {
-	/// <summary>
-	/// Used to track how many of an item might be required for something
-	/// </summary>
-	public class RequiredItem
+    /// <summary>
+    /// Used to track how many of an item might be required for something
+    /// </summary>
+    public class RequiredItem
 	{
 		public Item Item { get; set; }
 		public int NumberOfItems { get; set; }
@@ -71,14 +69,11 @@ namespace Randomizer
         /// </summary>
         /// <param name="itemId">The item id of the item that's required</param>
         /// <param name="numberOfItems">The number of items required to craft this</param>
-        public RequiredItem(ObjectIndexes itemId, int numberOfItems = 1, Random rng = null)
+        public RequiredItem(ObjectIndexes itemId, int numberOfItems = 1)
 		{
-            // TODO: REMOVE THE RNG STUFF IN THE FINAL VERSION
-            Random rngToUse = rng ?? Globals.RNG;
-
             Item = ItemList.Items[itemId];
 			_rangeOfItems = new Range(numberOfItems, numberOfItems);
-			NumberOfItems = _rangeOfItems.GetRandomValue(rngToUse);
+			NumberOfItems = _rangeOfItems.GetRandomValue();
 		}
 
         /// <summary>
@@ -103,11 +98,8 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="itemList">The item list</param>
 		/// <param name="numberOfItems">The number of items to set each required item to</param>
-		public static List<RequiredItem> CreateList(List<Item> itemList, int numberOfItems = 1, Random rng = null)
+		public static List<RequiredItem> CreateList(List<Item> itemList, int numberOfItems = 1)
 		{
-			// TODO: REMOVE THE RNG STUFF IN THE FINAL VERSION
-			Random rngToUse = rng ?? Globals.RNG;
-
 			List<RequiredItem> list = new();
 			foreach (Item item in itemList)
 			{
@@ -117,7 +109,7 @@ namespace Randomizer
                 }
 				else
 				{
-                    list.Add(new RequiredItem((ObjectIndexes)item.Id, numberOfItems, rngToUse));
+                    list.Add(new RequiredItem((ObjectIndexes)item.Id, numberOfItems));
                 }
 			}
 			return list;

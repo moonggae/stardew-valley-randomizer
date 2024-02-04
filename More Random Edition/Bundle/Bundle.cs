@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using static StardewValley.LocalizedContentManager;
 
 namespace Randomizer
 {
-	/// <summary>
-	/// Represents a bundle
-	/// </summary>
-	public abstract class Bundle
+    /// <summary>
+    /// Represents a bundle
+    /// </summary>
+    public abstract class Bundle
 	{
 		public CommunityCenterRooms Room { get; set; }
 		public int Id { get; set; }
@@ -317,20 +316,15 @@ namespace Randomizer
                         letters = letters.Replace(randomLetter, "");
 						potentialItems = RequiredItem.CreateList(
 							ItemList.Items.Values.Where(x =>
-                                //TODO: ON THE FINAL RELEASE, ADD THIS IN SO GINGER ISLAND STUFF DOESN'T APPEAR
-                                // AND TO KEEP OTHER LOCALES IN SYNC
-                                //x.DifficultyToObtain < ObtainingDifficulties.Impossible &&
-                                //ShouldIncludeInLetterBundle(x) &&
-                                (
-                                    // Prioritiy is: OverrideDisplayName => OverrideName => EnglishName
-                                    (x.OverrideDisplayName ?? x.OverrideName ?? x.EnglishName)
-                                        .StartsWith(randomLetter, StringComparison.InvariantCultureIgnoreCase)
-                                ) &&
-                                x.Id >= 0
+								ShouldIncludeInLetterBundle(x) &&
+                                // Prioritiy is: OverrideName > EnglishName
+                                (x.OverrideName ?? x.EnglishName)
+                                    .StartsWith(randomLetter, StringComparison.InvariantCultureIgnoreCase)
 							).ToList()
 						);
 					} while (potentialItems.Count < 4);
-					SetBundleName("bundle-random-letter", new { letter = randomLetter });
+
+                    SetBundleName("bundle-random-letter", new { letter = randomLetter });
 					ImageNameSuffix = randomLetter;
 					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
 					MinimumRequiredItems = 3;
@@ -349,15 +343,28 @@ namespace Randomizer
 		/// Logic:
 		/// - Disallow all items with any kind of override name
 		/// - Exclude crops and fish, since their override names are the same across languages
+		/// - Also, exclude impossible items (including legendary fish)
 		/// </summary>
 		/// <param name="item">The item to check</param>
 		/// <returns>True if the item should be included, false otherwise</returns>
 		private static bool ShouldIncludeInLetterBundle(Item item)
 		{
+			// Exclude all items that...
+			// - Have an override display name
+			// - Are impossible to get
+			// - Are legendary fish
+			if (item.DifficultyToObtain >= ObtainingDifficulties.Impossible ||
+                item.Id < 0 || // The "Any Fish" category
+                !string.IsNullOrWhiteSpace(item.OverrideDisplayName) ||
+				(item is FishItem fishItem && fishItem.IsLegendaryFish))
+			{
+				return false;
+			}
+
+			// Only accept items with an override name if they are crops or fish
+			// Note that Unmilled Rice is covered above since it has an OverrideDisplayName
 			bool overrideNamesAreConstant = item is CropItem || item is FishItem;
-			bool hasNoOverrideName = 
-				string.IsNullOrWhiteSpace(item.OverrideDisplayName) &&
-				string.IsNullOrWhiteSpace(item.OverrideName);
+			bool hasNoOverrideName = string.IsNullOrWhiteSpace(item.OverrideName);
 			return overrideNamesAreConstant || hasNoOverrideName;
         }
 

@@ -109,8 +109,7 @@ namespace Randomizer
 		public static List<Item> GetGiftables()
 		{
 			return Items.Values.Where(x => 
-				//TODO: ADD THIS IN THE FINAL RELEASE
-				//x.DifficultyToObtain < ObtainingDifficulties.Impossible &&
+				x.DifficultyToObtain < ObtainingDifficulties.Impossible &&
 				(
 					x.IsAnimalProduct || 
 					x.IsArtifact || 
