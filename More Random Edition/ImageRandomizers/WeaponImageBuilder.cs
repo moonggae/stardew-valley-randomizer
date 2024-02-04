@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
+using Microsoft.Xna.Framework;
 using System.IO;
 using System.Linq;
 
@@ -29,8 +29,8 @@ namespace Randomizer
 
 		public WeaponImageBuilder() : base()
 		{
-			BaseFileName = "weapons.png";
-			SubDirectory = "Weapons";
+			StardewAssetPath = "TileSheets/weapons";
+            SubDirectory = "Weapons";
 			SetUpWeaponPositionToIDMap();
 			PositionsToOverlay = WeaponPositionToIDMap.Keys.ToList();
 

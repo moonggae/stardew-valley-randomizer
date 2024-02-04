@@ -20,11 +20,11 @@ namespace Randomizer
 		/// <returns />
 		public static Dictionary<string, string> Randomize()
 		{
-			Dictionary<string, string> replacements = new Dictionary<string, string>();
+			Dictionary<string, string> replacements = new();
 
 			List<Monster> allMonsters = MonsterData.GetAllMonsters();
 			Dictionary<int, int> monsterItemSwaps = GetMonsterDropReplacements(allMonsters);
-			Dictionary<string, ItemDrop> extraItemDrops = new Dictionary<string, ItemDrop>();
+			Dictionary<string, ItemDrop> extraItemDrops = new();
 
 			foreach (Monster monster in allMonsters)
 			{
@@ -55,7 +55,7 @@ namespace Randomizer
 		/// <returns />
 		private static Dictionary<int, int> GetMonsterDropReplacements(List<Monster> allMonsters)
 		{
-			Dictionary<int, Item> items = new Dictionary<int, Item>();
+			Dictionary<int, Item> items = new();
 			foreach (Monster monster in allMonsters)
 			{
 				foreach (ItemDrop itemDrop in monster.ItemDrops)
@@ -75,13 +75,13 @@ namespace Randomizer
 			}
 
 			List<int> uniqueIds = items.Keys.ToList();
-			Dictionary<int, int> replacements = new Dictionary<int, int>();
+			Dictionary<int, int> replacements = new();
 			foreach (int id in items.Keys.ToArray())
 			{
 				int newId = Globals.RNGGetAndRemoveRandomValueFromList(uniqueIds);
 				replacements.Add(id, newId);
 
-				Item newItem = ItemList.Items[newId];
+				Item newItem = ItemList.Items[(ObjectIndexes)newId];
 				Item oldItemInfo = items[id];
 				newItem.DifficultyToObtain = oldItemInfo.DifficultyToObtain;
 				newItem.ItemsRequiredForRecipe = oldItemInfo.ItemsRequiredForRecipe;
@@ -140,7 +140,7 @@ namespace Randomizer
 				probability = Range.GetRandomValue(1, 5) / 1000d;
 			}
 
-			return new ItemDrop(item.Id, probability);
+			return new ItemDrop((ObjectIndexes)item.Id, probability);
 		}
 
 		/// <summary>
@@ -171,7 +171,7 @@ namespace Randomizer
 				int id = itemDrop.ItemToDrop.Id;
 				if (swaps.ContainsKey(id))
 				{
-					itemDrop.ItemToDrop = ItemList.Items[swaps[id]];
+					itemDrop.ItemToDrop = ItemList.Items[(ObjectIndexes)swaps[id]];
 				}
 			}
 		}
@@ -240,7 +240,7 @@ namespace Randomizer
 
 			foreach (int originalId in monsterItemSwaps.Keys)
 			{
-				Globals.SpoilerWrite($"{ItemList.Items[originalId].Name} -> {ItemList.Items[monsterItemSwaps[originalId]].Name}");
+				Globals.SpoilerWrite($"{ItemList.Items[(ObjectIndexes)originalId].Name} -> {ItemList.Items[(ObjectIndexes)monsterItemSwaps[originalId]].Name}");
 			}
 		}
 

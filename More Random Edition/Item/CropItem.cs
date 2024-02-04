@@ -10,9 +10,9 @@ namespace Randomizer
 	{
 		public int Price { get; set; }
 		public string CategoryString { get; set; }
-		public string Description { get; set; }
+        public string Description { get; set; }
 
-		public override bool IsFlower
+        public override bool IsFlower
 		{
 			get
 			{
@@ -37,7 +37,8 @@ namespace Randomizer
 
 		public override string ToString()
 		{
-			return $"{Name}/{Price}/{CategoryString}/{Name}/{Description}";
+            string seasonsString = $"{Globals.GetTranslation("crop-tooltip-seasons", new { seasons = MatchingSeedItem.CropGrowthInfo.GetSeasonsStringForDisplay() })} ";
+            return $"{Name}/{Price}/{CategoryString}/{Name}/{Description} {seasonsString}";
 		}
 
 		/// <summary>

@@ -1,5 +1,9 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using StardewValley;
+using System;
 using System.Text.RegularExpressions;
+using SVObject = StardewValley.Object;
+using SVRing = StardewValley.Objects.Ring;
 
 namespace Randomizer
 {
@@ -35,11 +39,25 @@ namespace Randomizer
 					return OverrideDisplayName;
 				}
 
-				return Globals.GetTranslation($"item-{Id}-display-name");
-			}
+                return IsBigCraftable
+					? Name
+					: ItemList.GetOriginalItemData(Id, ObjectInformationIndexes.DisplayName);
+            }
 		}
 		public string OverrideName { get; set; }
 		public string OverrideDisplayName { get; set; } // Used in the xnb string if it is populated
+		/// <summary>
+		/// This is the first field in the XNB file - always contains the English name
+		/// </summary>
+		public string EnglishName
+		{
+			get
+			{
+				return IsBigCraftable
+					? Name
+					: ItemList.GetOriginalItemData(Id, ObjectInformationIndexes.Name);
+            }
+		}
 		public LocationData ForagableLocationData { get; } = new LocationData();
 		public bool ShouldBeForagable { get; set; }
 		public bool IsForagable
@@ -49,6 +67,14 @@ namespace Randomizer
 
 		public bool IsTrash { get; set; }
 		public bool IsCraftable { get; set; }
+		public bool IsBigCraftable { get; set; }
+
+		/// <summary>
+		/// BigCraftables have no price, so we need to define our own
+		/// Note that this is the price that we want to buy it at, so we need to split it in half when setting it as a value
+		/// </summary>
+		public int BigCraftablePrice { get; set; }
+
 		public bool IsSmelted { get; set; }
 		public bool IsAnimalProduct { get; set; }
 		public bool IsMonsterItem { get; set; }
@@ -103,20 +129,25 @@ namespace Randomizer
 		public Item(int id)
 		{
 			Id = id;
-			CanStack = id >= -4;
+			CanStack = id >= -4 && !IsBigCraftable;
 		}
 
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="id">The item ID</param>
-		/// <param name="difficultyToObtain">The difficulty to obtain this item</param>
-		public Item(int id, ObtainingDifficulties difficultyToObtain)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="id">The item ID</param>
+        /// <param name="id">Whether the item is a big craftable</param>
+        /// <param name="difficultyToObtain">The difficulty to obtain this item</param>
+        public Item(int id, ObtainingDifficulties difficultyToObtain, bool isBigCraftable = false)
 		{
 			Id = id;
+			IsBigCraftable = isBigCraftable;
 			DifficultyToObtain = difficultyToObtain;
+			if (isBigCraftable) 
+			{ 
+				CanStack = false; 
+			}
 		}
-
 
 		/// <summary>
 		/// Returns the string version of this item to use in crafting recipes
@@ -149,15 +180,18 @@ namespace Randomizer
 		/// </returns>
 		private string GetName()
 		{
-			bool ignoreOverrideName =
+            bool ignoreOverrideName =
 				(!Globals.Config.Crops.Randomize && (IsCrop || IsSeed)) ||
 				(!Globals.Config.Fish.Randomize && IsFish);
-			if (!ignoreOverrideName && !string.IsNullOrEmpty(OverrideName))
-			{
-				return OverrideName;
-			}
 
-			string enumName = ((ObjectIndexes)Id).ToString();
+            if (!ignoreOverrideName && !string.IsNullOrEmpty(OverrideName))
+            {
+                return OverrideName;
+            }
+
+			string enumName = IsBigCraftable
+				? ((BigCraftableIndexes)Id).ToString()
+				: ((ObjectIndexes)Id).ToString();
 			return Regex.Replace(enumName, @"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", " $1").Trim();
 		}
 
@@ -168,7 +202,7 @@ namespace Randomizer
 		/// <returns>The computed price</returns>
 		public int GetPriceForObtainingDifficulty(double multiplier)
 		{
-			int basePrice = 0;
+			int basePrice;
 			switch (DifficultyToObtain)
 			{
 				case ObtainingDifficulties.NoRequirements:
@@ -201,12 +235,33 @@ namespace Randomizer
 			}
 
 			int smallerBasePrice = basePrice / 10; // Guarantees that the price will be an even number
-			Range range = new Range(
+			Range range = new(
 				(int)(smallerBasePrice - (smallerBasePrice * multiplier)),
 				(int)(smallerBasePrice * (multiplier + 1))
 			);
 			return range.GetRandomValue() * 10;
 		}
+
+		public virtual ISalable GetSaliableObject(int initialStack = 1, bool isRecipe = false, int price = -1)
+		{
+			if (IsRing)
+			{
+                return new SVRing(Id)
+                {
+                    Stack = initialStack
+                };
+            }
+
+            return IsBigCraftable 
+				? new SVObject(Vector2.Zero, Id, isRecipe)
+					{
+						Stack = initialStack,
+						Price = price == -1 
+							? (BigCraftablePrice / 2) // We want the sell price, not the buy price
+							: price
+					}
+				: new SVObject(Id, initialStack, isRecipe, price);
+        }
 
 		/// <summary>
 		/// Not used normally - but when it is, used for the ObjectInformation string
@@ -216,7 +271,11 @@ namespace Randomizer
 		{
 			if (Id == (int)ObjectIndexes.Coffee)
 			{
-				return $"{Name}/150/1/Crafting/{Globals.GetTranslation("item-coffee-name", new { itemName = CoffeeIngredient })}/{Globals.GetTranslation("item-coffee-description")}/drink/0 0 0 0 0 0 0 0 0 1 0/120";
+                string[] coffeeData = ItemList.OriginalItemList[(int)ObjectIndexes.Coffee].Split("/");
+				string coffeeName = Globals.GetTranslation("item-coffee-name", new { itemName = CoffeeIngredient });
+                coffeeData[(int)ObjectInformationIndexes.DisplayName] = coffeeName;
+
+                return string.Join("/", coffeeData);
 			}
 
 			Globals.ConsoleError($"Called the ToString of unexpected item {Id}: {Name}");

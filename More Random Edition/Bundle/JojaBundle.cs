@@ -12,12 +12,11 @@ namespace Randomizer
 		protected override void Populate()
 		{
 			BundleType = Globals.RNGGetAndRemoveRandomValueFromList(RoomBundleTypes);
-			List<RequiredItem> potentialItems = new List<RequiredItem>();
 
 			switch (BundleType)
 			{
 				case BundleTypes.JojaMissing:
-					Name = Globals.GetTranslation("bundle-joja-missing");
+					SetBundleName("bundle-joja-missing");
 
 					RequiredItems = new List<RequiredItem>
 					{
