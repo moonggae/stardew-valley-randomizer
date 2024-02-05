@@ -42,21 +42,12 @@ namespace Randomizer
 
         /// <summary>
         /// The current item on our cursor
+        /// Defining this as an alias since the casing is weird
         /// </summary>
         public SVItem HeldItem
         {
-            get
-            {
-                return Globals.ModRef.Helper.Reflection
-                    .GetField<SVItem>(this, "heldItem", true)
-                    .GetValue();
-            }
-            set
-            {
-                Globals.ModRef.Helper.Reflection
-                    .GetField<SVItem>(this, "heldItem", true)
-                    .SetValue(value);
-            }
+            get { return heldItem; }
+            set { heldItem = value; }
         }
 
         /// <summary>

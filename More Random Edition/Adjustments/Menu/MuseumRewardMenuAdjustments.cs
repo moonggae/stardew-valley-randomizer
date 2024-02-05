@@ -48,27 +48,27 @@ namespace Randomizer
 
             var springSeedId = Globals.RNGGetRandomValueFromList(seedPool
                 .Where(seed => seed.GrowingSeasons.Contains(Seasons.Spring))
-                .Select(seed => seed.QualifiedId)
+                .Select(seed => seed.Id.ToString())
                 .ToList());
             var summerSeedId = Globals.RNGGetRandomValueFromList(seedPool
                 .Where(seed => 
                     seed.QualifiedId != springSeedId &&
                     seed.GrowingSeasons.Contains(Seasons.Summer))
-                .Select(seed => seed.QualifiedId)
+                .Select(seed => seed.Id.ToString())
                 .ToList());
             var fallSeedId = Globals.RNGGetRandomValueFromList(seedPool
                 .Where(seed => 
                     seed.QualifiedId != springSeedId &&
                     seed.QualifiedId != summerSeedId &&
                     seed.GrowingSeasons.Contains(Seasons.Fall))
-                .Select(seed => seed.QualifiedId)
+                .Select(seed => seed.Id.ToString())
                 .ToList());
             var anySeedId = Globals.RNGGetRandomValueFromList(seedPool
                 .Where(seed =>
                     seed.QualifiedId != springSeedId &&
                     seed.QualifiedId != summerSeedId &&
                     seed.QualifiedId != fallSeedId)
-                .Select(seed => seed.QualifiedId)
+                .Select(seed => seed.Id.ToString())
                 .ToList());
 
             var springSeed = new SVObject(springSeedId, Range.GetRandomValue(5, 15));
@@ -77,8 +77,8 @@ namespace Randomizer
             var anySeed = new SVObject(anySeedId, Range.GetRandomValue(3, 8));
 
             var foodItems = Globals.RNGGetRandomValuesFromList(ItemList.GetCookedItems(), 2);
-            var food1 = new SVObject(foodItems[0].QualifiedId, Range.GetRandomValue(1, 10));
-            var food2 = new SVObject(foodItems[1].QualifiedId, Range.GetRandomValue(1, 10));
+            var food1 = new SVObject(foodItems[0].Id.ToString(), Range.GetRandomValue(1, 10));
+            var food2 = new SVObject(foodItems[1].Id.ToString(), Range.GetRandomValue(1, 10));
 
             var bigCraftables = ItemList.GetRandomBigCraftables(4);
             var randomFurniture = ItemList.GetRandomFurniture(16);
@@ -242,7 +242,7 @@ namespace Randomizer
         /// <returns />
         private static SVObject GetSVItem(int id)
         {
-            return new SVObject($"(O){id}", initialStack: 1);
+            return new SVObject($"{id}", initialStack: 1);
         }
 
         /// <summary>

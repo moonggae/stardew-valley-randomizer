@@ -576,8 +576,6 @@ namespace Randomizer
 
         public static void Initialize()
 		{
-			OriginalItemList = Globals.ModRef.Helper.GameContent
-				.Load<Dictionary<int, string>>("Data/ObjectInformation");
             Items = new Dictionary<ObjectIndexes, Item>
 			{ 
 				// Craftable items - Impossible by default
@@ -1239,24 +1237,14 @@ namespace Randomizer
 				{ BigCraftableIndexes.StardewHeroTrophy, new Item((int)BigCraftableIndexes.StardewHeroTrophy, ObtainingDifficulties.NonCraftingItem, isBigCraftable: true) }
 			};
 
+			//TODO 1.6: the data locations is completely different; we'll need to redo it by looking at the new location data
 			// Populate the AvailableLocations/Seasons now that all fish are initialized
 			// Afterwards, fill out the default fish info
-			FishData.InitializeFishToLocations();
-			Items.Values.Where(item => item.Id > 0 && item is FishItem)
-				.Cast<FishItem>()
-				.ToList()
-				.ForEach(fishItem => FishData.FillDefaultFishInfo(fishItem));
-        }
-
-        /// <summary>
-        /// Gets the value currently in the ObjectInformation asset
-        /// </summary>
-        /// <param name="dataToGet">The index of the data to retrieve</param>
-        /// <returns>The data</returns>
-        public static string GetOriginalItemData(int itemId, ObjectInformationIndexes dataToGet)
-        {
-			if (itemId < 0) { return ""; }
-            return OriginalItemList[itemId].Split("/")[(int)dataToGet];
+			//FishData.InitializeFishToLocations();
+			//Items.Values.Where(item => item.Id > 0 && item is FishItem)
+			//	.Cast<FishItem>()
+			//	.ToList()
+			//	.ForEach(fishItem => FishData.FillDefaultFishInfo(fishItem));
         }
     }
 }

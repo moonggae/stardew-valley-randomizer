@@ -78,7 +78,7 @@ namespace Randomizer
 			PointsToItemIds = new Dictionary<Point, int>();
 
 			AddPointsToIdsMapping(FishItem.Get(true).Select(x => x.Id).ToList());
-			AddPointsToIdsMapping(BootRandomizer.BootData.Select(x => x.Key).ToList());
+			AddPointsToIdsMapping(BootRandomizer.BootData.Select(x => int.Parse(x.Key)).ToList());
 			AddPointsToIdsMapping(CropItem.Get().Select(x => x.Id).ToList());
 			AddPointsToIdsMapping(CropItem.Get().Select(x => x.MatchingSeedItem.Id).ToList());
 			AddPointsToIdsMapping(new List<int> { (int)ObjectIndexes.CherrySapling, (int)ObjectIndexes.CoffeeBean });
@@ -120,7 +120,7 @@ namespace Randomizer
 			int itemId = PointsToItemIds[position];
 			string fileName = "";
 			string subDirectory = "";
-			if (BootRandomizer.BootData.Keys.Any(x => x == itemId))
+			if (BootRandomizer.BootData.Keys.Any(x => x == itemId.ToString()))
 			{
 				fileName = Globals.RNGGetAndRemoveRandomValueFromList(BootImages);
 
@@ -307,7 +307,7 @@ namespace Randomizer
 		protected override bool ShouldSaveImage(Point point)
 		{
 			int itemId = PointsToItemIds[point];
-			if (BootRandomizer.BootData.Keys.Any(x => x == itemId))
+			if (BootRandomizer.BootData.Keys.Any(x => x == itemId.ToString()))
 			{
 				return Globals.Config.Boots.Randomize && Globals.Config.Boots.UseCustomImages;
 			}

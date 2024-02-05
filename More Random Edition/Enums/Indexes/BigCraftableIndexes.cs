@@ -190,7 +190,8 @@ namespace Randomizer
         /// <returns />
         public static SVObject GetItem(BigCraftableIndexes index)
         {
-            return new SVObject(Vector2.Zero, GetQualifiedId(index));
+            string stringIndex = ((int)index).ToString();
+            return new SVObject(Vector2.Zero, stringIndex);
         }
 
         /// <summary>

@@ -65,7 +65,9 @@ namespace Randomizer
 			// The skill and level learned at are in a space-delimited string
 			// not all crafting recipes have this, though, so check the exceptions first
 			string unlockConditionsString = CraftingData[(int)CraftingRecipeIndexes.UnlockConditions];
-			if (unlockConditionsString != "null" && unlockConditionsString != "l 0")
+			if (unlockConditionsString != "null" && 
+				unlockConditionsString != "default" &&
+                unlockConditionsString != "l 0")
 			{
                 string[] unlockConditions = unlockConditionsString.Split(" ");
                 SkillString = unlockConditions[^2].Trim();

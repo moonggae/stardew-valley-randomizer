@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using StardewValley;
+using System.Collections.Generic;
 
 namespace Randomizer
 {
@@ -9,28 +10,27 @@ namespace Randomizer
         /// <summary>
         /// The data from Data/Boots.xnb
         /// </summary>
-        public static Dictionary<int, string> BootData { get; private set; }
+        public static Dictionary<string, string> BootData { get; private set; }
 
         /// <summary>
         /// Randomizes boots - currently only changes defense and immunity
         /// </summary>
         /// <returns />
-        public static Dictionary<int, string> Randomize()
+        public static Dictionary<string, string> Randomize()
 		{
-            // Initialize boot data here so that it's reloaded in case of a locale change
-            BootData = Globals.ModRef.Helper.GameContent
-                .Load<Dictionary<int, string>>("Data/Boots");
+			// Initialize boot data here so that it's reloaded in case of a locale change
+			BootData = DataLoader.Boots(Game1.content);
 			Boots.Clear();
 
 			WeaponAndArmorNameRandomizer nameRandomizer = new();
 			List<string> descriptions = 
 				NameAndDescriptionRandomizer.GenerateBootDescriptions(BootData.Count);
 
-			Dictionary<int, string> bootReplacements = new();
+			Dictionary<string, string> bootReplacements = new();
 			List<BootItem> bootsToUse = new();
 
 			int index = 0;
-			foreach (KeyValuePair<int, string> bootData in BootData)
+			foreach (KeyValuePair<string, string> bootData in BootData)
 			{
 				string[] bootStringData = bootData.Value.Split("/");
 				int originalDefense = int.Parse(bootStringData[(int)BootIndexes.Defense]);
@@ -54,7 +54,7 @@ namespace Randomizer
 				}
 
 				BootItem newBootItem = new(
-					bootData.Key,
+					int.Parse(bootData.Key),
 					nameRandomizer.GenerateRandomBootName(),
 					descriptions[index],
 					defense,
@@ -68,7 +68,7 @@ namespace Randomizer
 
 			foreach (BootItem bootToAdd in bootsToUse)
 			{
-				bootReplacements.Add(bootToAdd.Id, bootToAdd.ToString());
+				bootReplacements.Add(bootToAdd.Id.ToString(), bootToAdd.ToString());
 			}
 
 			WriteToSpoilerLog(bootsToUse);

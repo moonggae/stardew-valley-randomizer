@@ -25,7 +25,7 @@ namespace Randomizer
             ShouldBeForagable = false;
 
             OverrideName = name;
-            Description = BootRandomizer.BootData[id].Split("/")[(int)BootIndexes.Description];
+            Description = BootRandomizer.BootData[id.ToString()].Split("/")[(int)BootIndexes.Description];
             Defense = defense;
             Immunity = immunity;
         }
@@ -59,19 +59,13 @@ namespace Randomizer
 		/// <returns />
 		public override string ToString()
 		{
-			List<string> originalData = BootRandomizer.BootData[Id].Split("/").ToList();
+			string[] originalData = BootRandomizer.BootData[Id.ToString()].Split("/");
             originalData[(int)BootIndexes.Name] = OverrideName;
             originalData[(int)BootIndexes.Description] = Description;
 			originalData[(int)BootIndexes.Price] = GetBuyPrice().ToString();
             originalData[(int)BootIndexes.Defense] = Defense.ToString();
             originalData[(int)BootIndexes.Immunity] = Immunity.ToString();
-
-			// The display name field does not exist in English
-			int displayNameIndex = (int)BootIndexes.DisplayName;
-            if (originalData.Count > (int)BootIndexes.DisplayName)
-			{
-				originalData[displayNameIndex] = OverrideName;
-			} 
+            originalData[(int)BootIndexes.DisplayName] = OverrideName;
 
             return string.Join("/", originalData);
 		}

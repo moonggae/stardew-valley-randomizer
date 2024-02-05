@@ -26,58 +26,49 @@ namespace Randomizer
 
             helper.Events.Content.AssetRequested += OnAssetRequested;
 
-            PreLoadReplacments();
-            helper.Events.GameLoop.GameLaunched += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
-            helper.Events.GameLoop.GameLaunched += (sender, args) => TryLoadModConfigMenu();
-            helper.Events.Content.LocaleChanged += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
+			PreLoadReplacments();
+			helper.Events.GameLoop.GameLaunched += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
+			helper.Events.GameLoop.GameLaunched += (sender, args) => TryLoadModConfigMenu();
+			helper.Events.Content.LocaleChanged += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
 			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetEditor.ResetValuesAndInvalidateCache();
-            helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
-            helper.Events.GameLoop.SaveLoaded += (sender, args) => CalculateAllReplacements();
-            helper.Events.Display.MenuChanged += MenuAdjustments.AdjustMenus;
+			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
+			helper.Events.GameLoop.SaveLoaded += (sender, args) => CalculateAllReplacements();
+			helper.Events.Display.MenuChanged += MenuAdjustments.AdjustMenus;
 			helper.Events.GameLoop.DayEnding += (sender, args) => MenuAdjustments.ResetShopStates();
 
-            if (Globals.Config.Music.Randomize) { helper.Events.GameLoop.UpdateTicked += (sender, args) => MusicRandomizer.TryReplaceSong(); }
-			if (Globals.Config.RandomizeRain) 
-			{ 
-                helper.Events.GameLoop.DayStarted += (sender, args) => _modAssetLoader.ReplaceRain();
-            }
+			//         if (Globals.Config.Music.Randomize) { helper.Events.GameLoop.UpdateTicked += (sender, args) => MusicRandomizer.TryReplaceSong(); }
+			//if (Globals.Config.RandomizeRain) 
+			//{ 
+			//             helper.Events.GameLoop.DayStarted += (sender, args) => _modAssetLoader.ReplaceRain();
+			//         }
 
-			if (Globals.Config.Crops.Randomize)
-			{
-				helper.Events.Multiplayer.PeerContextReceived += (sender, args) => WorldAdjustments.FixParsnipSeedBox();
-			}
+			//if (Globals.Config.Crops.Randomize)
+			//{
+			//	helper.Events.Multiplayer.PeerContextReceived += (sender, args) => WorldAdjustments.FixParsnipSeedBox();
+			//}
 
-			if (Globals.Config.Crops.Randomize || Globals.Config.Fish.Randomize)
-			{
-				helper.Events.Display.RenderingActiveMenu += (sender, args) => CraftingRecipeAdjustments.HandleCraftingMenus();
+			//if (Globals.Config.Crops.Randomize || Globals.Config.Fish.Randomize)
+			//{
+			//	helper.Events.Display.RenderingActiveMenu += (sender, args) => CraftingRecipeAdjustments.HandleCraftingMenus();
 
-				// Fix for the Special Orders causing crashes
-				// Re-instate the object info when the save is first loaded for the session, and when saving so that the
-				// items have the correct names on the items sold summary screen
-				helper.Events.GameLoop.DayEnding += (sender, args) => _modAssetEditor.UndoObjectInformationReplacements();
-				helper.Events.GameLoop.SaveLoaded += (sender, args) => _modAssetEditor.RedoObjectInformationReplacements();
-				helper.Events.GameLoop.Saving += (sender, args) => _modAssetEditor.RedoObjectInformationReplacements();
-			}
+			//	 Fix for the Special Orders causing crashes
+			//	 Re-instate the object info when the save is first loaded for the session, and when saving so that the
+			//	 items have the correct names on the items sold summary screen
+			//	helper.Events.GameLoop.DayEnding += (sender, args) => _modAssetEditor.UndoObjectInformationReplacements();
+			//	helper.Events.GameLoop.SaveLoaded += (sender, args) => _modAssetEditor.RedoObjectInformationReplacements();
+			//	helper.Events.GameLoop.Saving += (sender, args) => _modAssetEditor.RedoObjectInformationReplacements();
+			//}
 
-			if (Globals.Config.RandomizeForagables)
-			{
-				helper.Events.GameLoop.GameLaunched += (sender, args) => WildSeedAdjustments.ReplaceGetRandomWildCropForSeason();
-			}
+			//if (Globals.Config.RandomizeForagables)
+			//{
+			//	helper.Events.GameLoop.GameLaunched += (sender, args) => WildSeedAdjustments.ReplaceGetRandomWildCropForSeason();
+			//}
 
-			if (Globals.Config.Fish.Randomize)
-			{
-				helper.Events.GameLoop.DayStarted += (sender, args) => OverriddenSubmarine.UseOverriddenSubmarine();
-				helper.Events.GameLoop.DayEnding += (sender, args) => OverriddenSubmarine.RestoreSubmarineLocation();
-			}
-
-			if (Globals.Config.Bundles.Randomize)
-			{
-				if (Globals.Config.Bundles.ShowDescriptionsInBundleTooltips)
-				{
-					helper.Events.Display.RenderedActiveMenu += (sender, args) => BundleMenuAdjustments.AddDescriptionsToBundleTooltips();
-				}
-			}
-        }
+			//if (Globals.Config.Bundles.Randomize && Globals.Config.Bundles.ShowDescriptionsInBundleTooltips)
+			//{
+			//	helper.Events.Display.RenderedActiveMenu += (sender, args) => BundleMenuAdjustments.AddDescriptionsToBundleTooltips();
+			//}
+		}
 
 		/// <summary>
 		/// When an asset is requested, attempt to replace it
@@ -145,7 +136,8 @@ namespace Randomizer
 			// Ensure that the bundles get changed if they're meant to
 			Game1.GenerateBundles(Game1.bundleType, true);
 
-            WorldAdjustments.ChangeDayOneForagables();
+			//TODO 1.6: re-enable this once foragables are done
+            //WorldAdjustments.ChangeDayOneForagables();
             WorldAdjustments.FixParsnipSeedBox();
 
 			// We should now be done with Globals.RNG

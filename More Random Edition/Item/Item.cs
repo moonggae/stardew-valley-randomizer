@@ -72,15 +72,15 @@ namespace Randomizer
 					return OverrideDisplayName;
 				}
 
-                return IsBigCraftable
+				return IsBigCraftable
 					? Name
-					: ItemList.GetOriginalItemData(Id, ObjectInformationIndexes.DisplayName);
+					: Game1.objectData[Id.ToString()].DisplayName;
             }
 		}
 		public string OverrideName { get; set; }
 		public string OverrideDisplayName { get; set; } // Used in the xnb string if it is populated
 		/// <summary>
-		/// This is the first field in the XNB file - always contains the English name
+		/// The Name field in the object data is the English name
 		/// </summary>
 		public string EnglishName
 		{
@@ -88,7 +88,7 @@ namespace Randomizer
 			{
 				return IsBigCraftable
 					? Name
-					: ItemList.GetOriginalItemData(Id, ObjectInformationIndexes.Name);
+					: Game1.objectData[Id.ToString()].Name;
             }
 		}
 		public LocationData ForagableLocationData { get; } = new LocationData();
@@ -286,14 +286,14 @@ namespace Randomizer
             }
 
             return IsBigCraftable 
-				? new SVObject(Vector2.Zero, QualifiedId, isRecipe)
+				? new SVObject(Vector2.Zero, Id.ToString(), isRecipe)
 					{
 						Stack = initialStack,
 						Price = price == -1 
 							? (BigCraftablePrice / 2) // We want the sell price, not the buy price
 							: price
 					}
-				: new SVObject(QualifiedId, initialStack, isRecipe, price);
+				: new SVObject(Id.ToString(), initialStack, isRecipe, price);
         }
 
 		/// <summary>

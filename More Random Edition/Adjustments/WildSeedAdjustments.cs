@@ -15,30 +15,30 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="season">The season string: "spring", "summer", "fall", or "winter"</param>
 		/// <returns>The ID of the random wild crop</returns>
-		public int GetRandomWildCropForSeason(string season)
+		public string GetRandomWildCropForSeason(string season)
 		{
-			List<int> wildCropIDs;
+			List<string> wildCropIDs;
 			switch (season)
 			{
 				case "spring":
 					wildCropIDs = ItemList.GetForagables(Seasons.Spring)
-						.Where(x => x.ShouldBeForagable).Select(x => x.Id).ToList();
+						.Where(x => x.ShouldBeForagable).Select(x => x.QualifiedId).ToList();
 					break;
 				case "summer":
 					wildCropIDs = ItemList.GetForagables(Seasons.Summer)
-						.Where(x => x.ShouldBeForagable).Select(x => x.Id).ToList();
+						.Where(x => x.ShouldBeForagable).Select(x => x.QualifiedId).ToList();
 					break;
 				case "fall":
 					wildCropIDs = ItemList.GetForagables(Seasons.Fall)
-						.Where(x => x.ShouldBeForagable).Select(x => x.Id).ToList();
+						.Where(x => x.ShouldBeForagable).Select(x => x.QualifiedId).ToList();
 					break;
 				case "winter":
 					wildCropIDs = ItemList.GetForagables(Seasons.Winter)
-						.Where(x => x.ShouldBeForagable).Select(x => x.Id).ToList();
+						.Where(x => x.ShouldBeForagable).Select(x => x.QualifiedId).ToList();
 					break;
 				default:
 					Globals.ConsoleWarn($"GetRandomWildCropForSeason was passed an unexpected season value: {season}. Returning the ID for horseradish.");
-					return (int)ObjectIndexes.WildHorseradish;
+					return ItemList.GetQualifiedId(ObjectIndexes.WildHorseradish);
 			}
 
 			return Globals.RNGGetRandomValueFromList(wildCropIDs, Game1.random);

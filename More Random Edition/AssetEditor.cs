@@ -1,38 +1,44 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley.GameData.Crops;
+using StardewValley.GameData.FruitTrees;
 using StardewValley.GameData.SpecialOrders;
 using System;
 using System.Collections.Generic;
+using SVLocationData = StardewValley.GameData.Locations.LocationData;
+using SVWeaponData = StardewValley.GameData.Weapons.WeaponData;
 
+//TODO 1.6: revisit some of the data files and see if we even need a randomizer version
+// ex) WeaponData
 namespace Randomizer
 {
     public class AssetEditor
 	{
 		private readonly ModEntry _mod;
-		private Dictionary<string, string> _recipeReplacements = new();
-		private Dictionary<string, string> _bundleReplacements = new();
-        private Dictionary<string, string> _blueprintReplacements = new();
-		private Dictionary<string, string> _uiStringReplacements = new();
-		private Dictionary<string, string> _grandpaStringReplacements = new();
-		private Dictionary<string, string> _stringReplacements = new();
-        private Dictionary<string, string> _farmEventsReplacements = new();
-        private Dictionary<string, string> _locationStringReplacements = new();
-		private Dictionary<int, string> _fishReplacements = new();
-		private Dictionary<int, string> _questReplacements = new();
-		private Dictionary<string, string> _mailReplacements = new();
-		private Dictionary<string, string> _locationsReplacements = new();
-		private Dictionary<int, string> _objectInformationReplacements = new();
-		private Dictionary<int, string> _fruitTreeReplacements = new();
-		private Dictionary<int, string> _cropReplacements = new();
-		private Dictionary<string, string> _cookingChannelReplacements = new();
-		private Dictionary<int, string> _weaponReplacements = new();
-		private Dictionary<int, string> _bootReplacements = new();
-		private Dictionary<string, string> _monsterReplacements = new();
-		private Dictionary<string, string> _birthdayReplacements = new();
-		private Dictionary<string, string> _preferenceReplacements = new();
+		private Dictionary<string, string> _recipeReplacements = new(); // TODO 1.6
+		private Dictionary<string, string> _bundleReplacements = new(); // TODO 1.6
+        private Dictionary<string, string> _blueprintReplacements = new(); // TODO 1.6 - this doesn't exist, its  Data/Buildings now
+        private Dictionary<string, string> _uiStringReplacements = new(); // TODO 1.6
+        private Dictionary<string, string> _grandpaStringReplacements = new(); // TODO 1.6
+        private Dictionary<string, string> _stringReplacements = new(); // TODO 1.6
+        private Dictionary<string, string> _farmEventsReplacements = new(); // TODO 1.6
+        private Dictionary<string, string> _locationStringReplacements = new(); // TODO 1.6
+        private Dictionary<string, string> _fishReplacements = new();
+        private Dictionary<string, string> _questReplacements = new();
+        private Dictionary<string, string> _mailReplacements = new(); // TODO 1.6
+        private Dictionary<string, SVLocationData> _locationsReplacements = new();
+        private Dictionary<int, string> _objectInformationReplacements = new(); // TODO 1.6 - this doesn't exist, it's Data/Objects now
+        private Dictionary<string, FruitTreeData> _fruitTreeReplacements = new();
+        private Dictionary<string, CropData> _cropReplacements = new();
+		private Dictionary<string, string> _cookingChannelReplacements = new(); // TODO 1.6
+        private Dictionary<string, SVWeaponData> _weaponReplacements = new();
+        private Dictionary<string, string> _bootReplacements = new();
+        private Dictionary<string, string> _monsterReplacements = new(); // TODO 1.6
+        private Dictionary<string, string> _birthdayReplacements = new(); // TODO 1.6
+        private Dictionary<string, string> _preferenceReplacements = new(); // TODO 1.6
         private Dictionary<int, string> _secretNotesReplacements = new();
-        private Dictionary<string, string> _objectContextTagsAdjustments = new();
-        private Dictionary<string, SpecialOrderData> _specialOrderAdjustments = new();
+        private Dictionary<string, string> _objectContextTagsAdjustments = new(); // TODO 1.6 - this doesn't exist, it's the ContextTags property in Data/Objects now
+        private Dictionary<string, SpecialOrderData> _specialOrderAdjustments = new(); // TODO 1.6
 
         /// <summary>
         /// Whether we're currently ignoring replacing object information
@@ -146,7 +152,10 @@ namespace Randomizer
 		/// <param name="assetName"></param>
 		/// <param name="replacement"></param>
 		/// <returns>True if successful, false otherwise</returns>
-        private static bool TryReplaceAsset(AssetRequestedEventArgs e, string assetName, Dictionary<string, string> replacement)
+        private static bool TryReplaceAsset<TKey, TValue>(
+            AssetRequestedEventArgs e, 
+            string assetName, 
+            IDictionary<TKey, TValue> replacement)
         {
             if (ShouldReplaceAsset(e, assetName))
             {
@@ -156,41 +165,9 @@ namespace Randomizer
             return false;
         }
 
-        /// <summary>
-        /// Tries to replace the asset with the one with the given name
-        /// </summary>
-        /// <param name="e"></param>
-        /// <param name="assetName"></param>
-        /// <param name="replacement"></param>
-        /// <returns>True if successful, false otherwise</returns>
-        private static bool TryReplaceAsset(AssetRequestedEventArgs e, string assetName, Dictionary<int, string> replacement)
-        {
-            if (ShouldReplaceAsset(e, assetName))
-            {
-                e.Edit((asset) => ApplyEdits(asset, replacement));
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Tries to replace the asset with the one with the given name
-        /// </summary>
-        /// <param name="e"></param>
-        /// <param name="assetName"></param>
-        /// <param name="replacement"></param>
-        /// <returns>True if successful, false otherwise</returns>
-        private static bool TryReplaceAsset(AssetRequestedEventArgs e, string assetName, Dictionary<string, SpecialOrderData> replacement)
-        {
-            if (ShouldReplaceAsset(e, assetName))
-            {
-                e.Edit((asset) => ApplyEdits(asset, replacement));
-                return true;
-            }
-            return false;
-        }
-
-        private static void ApplyEdits<TKey, TValue>(IAssetData asset, IDictionary<TKey, TValue> edits)
+        private static void ApplyEdits<TKey, TValue>(
+            IAssetData asset, 
+            IDictionary<TKey, TValue> edits)
         {
             IAssetDataForDictionary<TKey, TValue> assetDict = asset.AsDictionary<TKey, TValue>();
             foreach (KeyValuePair<TKey, TValue> edit in edits)
@@ -302,44 +279,46 @@ namespace Randomizer
 			ItemList.Initialize();
 			ValidateItemList();
 
-			EditedObjectInformation editedObjectInfo = new();
-			FishRandomizer.Randomize(editedObjectInfo);
-			_fishReplacements = editedObjectInfo.FishReplacements;
+            //TODO 1.6: go through and fix/verify these one by one
 
-			CropRandomizer.Randomize(editedObjectInfo);
-			_fruitTreeReplacements = editedObjectInfo.FruitTreeReplacements;
-			_cropReplacements = editedObjectInfo.CropsReplacements;
-			_objectInformationReplacements = editedObjectInfo.ObjectInformationReplacements;
+			//EditedObjectInformation editedObjectInfo = new();
+			//FishRandomizer.Randomize(editedObjectInfo);
+			//_fishReplacements = editedObjectInfo.FishReplacements;
 
-			_blueprintReplacements = BlueprintRandomizer.Randomize();
-			_monsterReplacements = MonsterRandomizer.Randomize(); // Must be done before recipes since rarities of drops change
-			_locationsReplacements = LocationRandomizer.Randomize(_objectInformationReplacements); // Must be done before recipes because of wild seeds
-			_recipeReplacements = CraftingRecipeRandomizer.Randomize();
-			_stringReplacements = StringsAdjustments.GetCSFileStringReplacements();
-			_farmEventsReplacements = StringsAdjustments.GetFarmEventsReplacements();
-			_locationStringReplacements = StringsAdjustments.GetLocationStringReplacements();
-			CraftingRecipeAdjustments.FixCookingRecipeDisplayNames();
-			_cookingChannelReplacements = CookingChannelAdjustments.GetTextEdits();
+			//CropRandomizer.Randomize(editedObjectInfo);
+			//_fruitTreeReplacements = editedObjectInfo.FruitTreeReplacements;
+			//_cropReplacements = editedObjectInfo.CropsReplacements;
+			//_objectInformationReplacements = editedObjectInfo.ObjectInformationReplacements;
 
-			// Needs to run after Cooking Recipe fix so that cooked items are properly named,
-			// and needs to run before bundles so that NPC Loved Item bundles are properly generated
-			_preferenceReplacements = PreferenceRandomizer.Randomize();
-			_secretNotesReplacements = SecretNotesRandomizer.FixSecretNotes(_preferenceReplacements);
+			//_blueprintReplacements = BlueprintRandomizer.Randomize();
+			//_monsterReplacements = MonsterRandomizer.Randomize(); // Must be done before recipes since rarities of drops change
+			//_locationsReplacements = LocationRandomizer.Randomize(_objectInformationReplacements); // Must be done before recipes because of wild seeds
+			//_recipeReplacements = CraftingRecipeRandomizer.Randomize();
+			//_stringReplacements = StringsAdjustments.GetCSFileStringReplacements();
+			//_farmEventsReplacements = StringsAdjustments.GetFarmEventsReplacements();
+			//_locationStringReplacements = StringsAdjustments.GetLocationStringReplacements();
+			//CraftingRecipeAdjustments.FixCookingRecipeDisplayNames();
+			//_cookingChannelReplacements = CookingChannelAdjustments.GetTextEdits();
 
-            // Bundles need to be ran after preverences so modified NPC values are correct
-			_bundleReplacements = BundleRandomizer.Randomize();
-            MusicRandomizer.Randomize();
+			//// Needs to run after Cooking Recipe fix so that cooked items are properly named,
+			//// and needs to run before bundles so that NPC Loved Item bundles are properly generated
+			//_preferenceReplacements = PreferenceRandomizer.Randomize();
+			//_secretNotesReplacements = SecretNotesRandomizer.FixSecretNotes(_preferenceReplacements);
 
-			QuestInformation questInfo = QuestRandomizer.Randomize();
-			_questReplacements = questInfo.QuestReplacements;
-			_mailReplacements = questInfo.MailReplacements;
+   //         // Bundles need to be ran after preverences so modified NPC values are correct
+			//_bundleReplacements = BundleRandomizer.Randomize();
+   //         MusicRandomizer.Randomize();
 
-			_weaponReplacements = WeaponRandomizer.Randomize();
+			//QuestInformation questInfo = QuestRandomizer.Randomize();
+			//_questReplacements = questInfo.QuestReplacements;
+			//_mailReplacements = questInfo.MailReplacements;
+
+			//_weaponReplacements = WeaponRandomizer.Randomize();
 			_bootReplacements = BootRandomizer.Randomize();
-			_birthdayReplacements = BirthdayRandomizer.Randomize();
+			//_birthdayReplacements = BirthdayRandomizer.Randomize();
 
-            _objectContextTagsAdjustments = ObjectContextTagsAdjustments.GetObjectContextTagAdjustments();
-            _specialOrderAdjustments = SpecialOrderAdjustments.GetSpecialOrderAdjustments();
+   //         _objectContextTagsAdjustments = ObjectContextTagsAdjustments.GetObjectContextTagAdjustments();
+   //         _specialOrderAdjustments = SpecialOrderAdjustments.GetSpecialOrderAdjustments();
         }
 
 		/// <summary>
