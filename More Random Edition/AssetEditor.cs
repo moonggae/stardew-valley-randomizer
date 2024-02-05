@@ -3,10 +3,10 @@ using StardewModdingAPI.Events;
 using StardewValley.GameData.Crops;
 using StardewValley.GameData.FruitTrees;
 using StardewValley.GameData.SpecialOrders;
+using StardewValley.GameData.Weapons;
 using System;
 using System.Collections.Generic;
 using SVLocationData = StardewValley.GameData.Locations.LocationData;
-using SVWeaponData = StardewValley.GameData.Weapons.WeaponData;
 
 //TODO 1.6: revisit some of the data files and see if we even need a randomizer version
 // ex) WeaponData
@@ -23,15 +23,15 @@ namespace Randomizer
         private Dictionary<string, string> _stringReplacements = new(); // TODO 1.6
         private Dictionary<string, string> _farmEventsReplacements = new(); // TODO 1.6
         private Dictionary<string, string> _locationStringReplacements = new(); // TODO 1.6
-        private Dictionary<string, string> _fishReplacements = new();
-        private Dictionary<string, string> _questReplacements = new();
+        private Dictionary<string, string> _fishReplacements = new(); // TODO 1.6
+        private Dictionary<string, string> _questReplacements = new(); // TODO 1.6
         private Dictionary<string, string> _mailReplacements = new(); // TODO 1.6
-        private Dictionary<string, SVLocationData> _locationsReplacements = new();
+        private Dictionary<string, SVLocationData> _locationsReplacements = new(); // TODO 1.6
         private Dictionary<int, string> _objectInformationReplacements = new(); // TODO 1.6 - this doesn't exist, it's Data/Objects now
-        private Dictionary<string, FruitTreeData> _fruitTreeReplacements = new();
-        private Dictionary<string, CropData> _cropReplacements = new();
-		private Dictionary<string, string> _cookingChannelReplacements = new(); // TODO 1.6
-        private Dictionary<string, SVWeaponData> _weaponReplacements = new();
+        private Dictionary<string, FruitTreeData> _fruitTreeReplacements = new(); // TODO 1.6
+        private Dictionary<string, CropData> _cropReplacements = new(); // TODO 1.6
+        private Dictionary<string, string> _cookingChannelReplacements = new(); // TODO 1.6
+        private Dictionary<string, WeaponData> _weaponReplacements = new();
         private Dictionary<string, string> _bootReplacements = new();
         private Dictionary<string, string> _monsterReplacements = new(); // TODO 1.6
         private Dictionary<string, string> _birthdayReplacements = new(); // TODO 1.6
@@ -313,7 +313,7 @@ namespace Randomizer
 			//_questReplacements = questInfo.QuestReplacements;
 			//_mailReplacements = questInfo.MailReplacements;
 
-			//_weaponReplacements = WeaponRandomizer.Randomize();
+			_weaponReplacements = WeaponRandomizer.Randomize();
 			_bootReplacements = BootRandomizer.Randomize();
 			//_birthdayReplacements = BirthdayRandomizer.Randomize();
 

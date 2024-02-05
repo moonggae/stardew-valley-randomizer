@@ -58,6 +58,17 @@
 		SteelFalchion,
 		BrokenTrident,
 		TemperedBroadsword,
-		GoldenScythe
-	}
+		GoldenScythe = 53,
+		DwarfSword = 54,
+		DwarfHammer = 55,
+		DwarfDagger = 56,
+        DragontoothCutlass = 57,
+		DragontoothClub = 58,
+        DragontoothShiv = 59,
+        OssifiedBlade = 60,
+        IridiumNeedle = 61,
+        InfinityBlade = 62,
+        InfinityGavel = 63,
+        InfinityDagger = 64
+    }
 }

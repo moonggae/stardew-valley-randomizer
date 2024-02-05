@@ -36,38 +36,43 @@ namespace Randomizer
 			helper.Events.Display.MenuChanged += MenuAdjustments.AdjustMenus;
 			helper.Events.GameLoop.DayEnding += (sender, args) => MenuAdjustments.ResetShopStates();
 
-			//         if (Globals.Config.Music.Randomize) { helper.Events.GameLoop.UpdateTicked += (sender, args) => MusicRandomizer.TryReplaceSong(); }
-			//if (Globals.Config.RandomizeRain) 
-			//{ 
-			//             helper.Events.GameLoop.DayStarted += (sender, args) => _modAssetLoader.ReplaceRain();
-			//         }
+			if (Globals.Config.Music.Randomize) 
+			{ 
+				helper.Events.GameLoop.UpdateTicked += (sender, args) => MusicRandomizer.TryReplaceSong(); 
+			}
 
-			//if (Globals.Config.Crops.Randomize)
-			//{
-			//	helper.Events.Multiplayer.PeerContextReceived += (sender, args) => WorldAdjustments.FixParsnipSeedBox();
-			//}
+			if (Globals.Config.RandomizeRain)
+			{
+				helper.Events.GameLoop.DayStarted += (sender, args) => _modAssetLoader.ReplaceRain();
+			}
 
-			//if (Globals.Config.Crops.Randomize || Globals.Config.Fish.Randomize)
-			//{
-			//	helper.Events.Display.RenderingActiveMenu += (sender, args) => CraftingRecipeAdjustments.HandleCraftingMenus();
+			if (Globals.Config.Crops.Randomize)
+			{
+				helper.Events.Multiplayer.PeerContextReceived += (sender, args) => WorldAdjustments.FixParsnipSeedBox();
+			}
 
-			//	 Fix for the Special Orders causing crashes
-			//	 Re-instate the object info when the save is first loaded for the session, and when saving so that the
-			//	 items have the correct names on the items sold summary screen
-			//	helper.Events.GameLoop.DayEnding += (sender, args) => _modAssetEditor.UndoObjectInformationReplacements();
-			//	helper.Events.GameLoop.SaveLoaded += (sender, args) => _modAssetEditor.RedoObjectInformationReplacements();
-			//	helper.Events.GameLoop.Saving += (sender, args) => _modAssetEditor.RedoObjectInformationReplacements();
-			//}
+			if (Globals.Config.Crops.Randomize || Globals.Config.Fish.Randomize)
+			{
+				helper.Events.Display.RenderingActiveMenu += (sender, args) => CraftingRecipeAdjustments.HandleCraftingMenus();
 
+				// Fix for the Special Orders causing crashes
+				// Re - instate the object info when the save is first loaded for the session, and when saving so that the
+				// items have the correct names on the items sold summary screen
+			    helper.Events.GameLoop.DayEnding += (sender, args) => _modAssetEditor.UndoObjectInformationReplacements();
+				helper.Events.GameLoop.SaveLoaded += (sender, args) => _modAssetEditor.RedoObjectInformationReplacements();
+				helper.Events.GameLoop.Saving += (sender, args) => _modAssetEditor.RedoObjectInformationReplacements();
+			}
+
+			//TODO 1.6: the repoint hack has a myserious crash now... we should probably try to override it instead or something
 			//if (Globals.Config.RandomizeForagables)
 			//{
 			//	helper.Events.GameLoop.GameLaunched += (sender, args) => WildSeedAdjustments.ReplaceGetRandomWildCropForSeason();
 			//}
 
-			//if (Globals.Config.Bundles.Randomize && Globals.Config.Bundles.ShowDescriptionsInBundleTooltips)
-			//{
-			//	helper.Events.Display.RenderedActiveMenu += (sender, args) => BundleMenuAdjustments.AddDescriptionsToBundleTooltips();
-			//}
+			if (Globals.Config.Bundles.Randomize && Globals.Config.Bundles.ShowDescriptionsInBundleTooltips)
+			{
+				helper.Events.Display.RenderedActiveMenu += (sender, args) => BundleMenuAdjustments.AddDescriptionsToBundleTooltips();
+			}
 		}
 
 		/// <summary>

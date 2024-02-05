@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using System.IO;
 using System.Linq;
+using StardewValley.GameData.Weapons;
 
 namespace Randomizer
 {
@@ -48,8 +49,9 @@ namespace Randomizer
 		private void SetUpWeaponPositionToIDMap()
 		{
 			WeaponPositionToIDMap = new Dictionary<Point, int>();
-			foreach (int id in WeaponRandomizer.Weapons.Keys)
+			foreach (string stringKey in WeaponRandomizer.Weapons.Keys)
 			{
+				int id = int.Parse(stringKey);
 				WeaponPositionToIDMap[GetPointFromId(id)] = id;
 			}
 		}
@@ -110,8 +112,8 @@ namespace Randomizer
 		private WeaponType GetWeaponTypeFromPosition(Point position)
 		{
 			int weaponId = WeaponPositionToIDMap[position];
-			WeaponItem weapon = WeaponRandomizer.Weapons[weaponId];
-			return weapon.Type;
+			WeaponData weapon = WeaponRandomizer.Weapons[weaponId.ToString()];
+			return (WeaponType)weapon.Type;
 		}
 
 		/// <summary>

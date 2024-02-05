@@ -1,35 +1,43 @@
-﻿using System;
+﻿using StardewValley;
+using StardewValley.GameData.Weapons;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Randomizer
 {
-	/// <summary>
-	/// Modifies weapons
-	/// </summary>
-	public class WeaponRandomizer
+    /// <summary>
+    /// Modifies weapons
+    /// </summary>
+    public class WeaponRandomizer
 	{
-		public readonly static Dictionary<int, WeaponItem> Weapons = new();
+		public readonly static Dictionary<string, WeaponData> Weapons = new();
 
 		/// <summary>
 		/// Returns the object use to modify the weapons
 		/// </summary>
 		/// <returns />
-		public static Dictionary<int, string> Randomize()
+		public static Dictionary<string, WeaponData> Randomize()
 		{
 			Weapons.Clear();
 			WeaponAndArmorNameRandomizer nameRandomizer = new();
 
-			Dictionary<int, WeaponItem> weaponDictionary = WeaponData.Items();
-			Dictionary<int, string> stringReplacements = new();
-			foreach (WeaponItem weapon in weaponDictionary.Values)
+			// Exclude slingshots and scythes for now
+			Dictionary<string, WeaponData> weaponReplacements = Game1.weaponData
+				.Where(keyValuePair => {
+					var weaponName = keyValuePair.Value.Name;
+					return !weaponName.Contains("Slingshot") && !weaponName.Contains("Scythe");
+                })
+				.ToDictionary(kv => kv.Key, kv => kv.Value);
+
+            foreach (var weaponData in weaponReplacements)
 			{
-				RandomizeWeapon(weapon, nameRandomizer);
-				stringReplacements.Add(weapon.Id, weapon.ToString());
-				Weapons.Add(weapon.Id, weapon);
+				RandomizeWeapon(weaponData.Value, (WeaponIndexes)int.Parse(weaponData.Key), nameRandomizer);
+				Weapons.Add(weaponData.Key, weaponData.Value);
 			}
 
-			WriteToSpoilerLog(weaponDictionary);
-			return stringReplacements;
+			WriteToSpoilerLog(weaponReplacements);
+			return weaponReplacements;
 		}
 
 		/// <summary>
@@ -37,14 +45,17 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="weapon">The weapon to randomize</param>
 		/// <param name="nameRandomizer">The name randomizer</param>
-		private static void RandomizeWeapon(WeaponItem weapon, WeaponAndArmorNameRandomizer nameRandomizer)
+		private static void RandomizeWeapon(
+			WeaponData weapon,
+            WeaponIndexes weaponIndex, 
+			WeaponAndArmorNameRandomizer nameRandomizer)
 		{
-			if (weapon.Type == WeaponType.Slingshot)
+			if (weapon.Type == (int)WeaponType.Slingshot)
 			{
 				//TODO: assign the name here after we deal with the slingshot name hardcoding issue
 				// Doing this to advance the RNG so we don't affect seeds when we do actually
 				// assign one for the slingshot - don't actually assign the name yet, though
-				nameRandomizer.GenerateRandomWeaponName(weapon.Type, (WeaponIndexes)weapon.Id);
+				nameRandomizer.GenerateRandomWeaponName((WeaponType)weapon.Type, weaponIndex);
 				return;
 			}
 
@@ -56,13 +67,13 @@ namespace Randomizer
 			RandomizeWeaponAOE(weapon);
 			RandomizeWeaponPrecision(weapon);
 			RandomizeWeaponDefense(weapon);
-			RandomizeWeaponDropInfo(weapon);
-			SetWeaponDescription(weapon);
+			RandomizeWeaponDropInfo(weapon, weaponIndex);
+			SetWeaponDescription(weapon, weaponIndex);
 
-			string weaponName = nameRandomizer.GenerateRandomWeaponName(weapon.Type);
+			string weaponName = nameRandomizer.GenerateRandomWeaponName((WeaponType)weapon.Type);
 			if (Globals.Config.Weapons.Randomize)
 			{
-				weapon.OverrideName = weaponName;
+				weapon.DisplayName = weaponName;
 			}
 		}
 
@@ -71,12 +82,12 @@ namespace Randomizer
 		/// - 1/4 chance of each type that isn't a slingshot
 		/// </summary>
 		/// <param name="weapon">The weapon to randomize</param>
-		private static void RandomizeWeaponType(WeaponItem weapon)
+		private static void RandomizeWeaponType(WeaponData weapon)
 		{
-			weapon.Type = (WeaponType)Range.GetRandomValue(0, 3);
-			if (weapon.Type == WeaponType.StabbingSword)
+			weapon.Type = Range.GetRandomValue(0, 3);
+			if ((WeaponType)weapon.Type == WeaponType.StabbingSword)
 			{
-				weapon.Type = WeaponType.SlashingSword;
+				weapon.Type = (int)WeaponType.SlashingSword;
 			}
 		}
 
@@ -84,28 +95,29 @@ namespace Randomizer
 		/// Randomizes weapon damage based on the original max damage
 		/// - if the max damage is under 10 - has a 50% variance
 		/// - if the max damage is under 50 - has a 30% variance
-		/// - if the max damage is over 50,- has a 20% variance
+		/// - if the max damage is over 50 - has a 20% variance
 		/// </summary>
 		/// <param name="weapon">The weapon to randomize</param>
-		private static void RandomizeWeaponDamage(WeaponItem weapon)
+		private static void RandomizeWeaponDamage(WeaponData weapon)
 		{
 			const int percentageUnder10 = 50;
 			const int percentageUnder50 = 30;
 			const int percentageOver50 = 20;
 
-			int minDamage = weapon.Damage.MinValue;
-			int maxDamage = weapon.Damage.MaxValue;
-			int percentage;
+			int originalMinDamage = weapon.MinDamage;
+			int originalMaxDamage = weapon.MaxDamage;
+			int variancePercentage;
 
-			if (maxDamage < 10) { percentage = percentageUnder10; }
-			else if (maxDamage < 50) { percentage = percentageUnder50; }
-			else { percentage = percentageOver50; }
+			if (originalMaxDamage < 10) { variancePercentage = percentageUnder10; }
+			else if (originalMaxDamage < 50) { variancePercentage = percentageUnder50; }
+			else { variancePercentage = percentageOver50; }
 
-			int minValueToUse = Globals.RNGGetIntWithinPercentage(minDamage, percentage);
-			int maxValueToUse = Globals.RNGGetIntWithinPercentage(maxDamage, percentage);
+			int minValueToUse = Globals.RNGGetIntWithinPercentage(originalMinDamage, variancePercentage);
+			int maxValueToUse = Globals.RNGGetIntWithinPercentage(originalMaxDamage, variancePercentage);
 
-			weapon.Damage = new Range(minValueToUse, maxValueToUse);
-		}
+            weapon.MinDamage = minValueToUse;
+			weapon.MaxDamage = maxValueToUse;
+        }
 
 		/// <summary>
 		/// Randomize the weapon crit stats
@@ -114,24 +126,24 @@ namespace Randomizer
 		/// - Else, 2-3% crit with a multiplier of 3 - 4x
 		/// </summary>
 		/// <param name="weapon">The weapon to randomize</param>
-		private static void RandomizeWeaponCrits(WeaponItem weapon)
+		private static void RandomizeWeaponCrits(WeaponData weapon)
 		{
 			if (Globals.RNGGetNextBoolean(1))
 			{
-				weapon.CritChance = 0.001;
+				weapon.CritChance = 0.001f;
 				weapon.CritMultiplier = 100;
 			}
 
 			else if (Globals.RNGGetNextBoolean(4))
 			{
-				weapon.CritChance = Range.GetRandomValue(8, 12) / 100d;
-				weapon.CritMultiplier = Range.GetRandomValue(30, 31) / 10d;
+				weapon.CritChance = Range.GetRandomValue(8, 12) / 100f;
+				weapon.CritMultiplier = Range.GetRandomValue(30, 31) / 10f;
 			}
 
 			else
 			{
-				weapon.CritChance = Range.GetRandomValue(20, 30) / 1000d;
-				weapon.CritMultiplier = Range.GetRandomValue(30, 40) / 10d;
+				weapon.CritChance = Range.GetRandomValue(20, 30) / 1000f;
+				weapon.CritMultiplier = Range.GetRandomValue(30, 40) / 10f;
 			}
 		}
 
@@ -141,17 +153,11 @@ namespace Randomizer
 		/// - else 0.5 - 1.6
 		/// </summary>
 		/// <param name="weapon">The weapon to set the knockback for</param>
-		private static void RandomizeWeaponKnockback(WeaponItem weapon)
+		private static void RandomizeWeaponKnockback(WeaponData weapon)
 		{
-			if (Globals.RNGGetNextBoolean(5))
-			{
-				weapon.Knockback = Range.GetRandomValue(16, 20) / 10d;
-			}
-
-			else
-			{
-				weapon.Knockback = Range.GetRandomValue(5, 16) / 10d;
-			}
+			weapon.Knockback = Globals.RNGGetNextBoolean(5)
+				? Range.GetRandomValue(16, 20) / 10f
+				: Range.GetRandomValue(5, 16) / 10f;
 		}
 
 		/// <summary>
@@ -162,7 +168,7 @@ namespace Randomizer
 		/// - Else, value from -8 to 8
 		/// </summary>
 		/// <param name="weapon">The weapon to set the speed for</param>
-		private static void RandomizeWeaponSpeed(WeaponItem weapon)
+		private static void RandomizeWeaponSpeed(WeaponData weapon)
 		{
 			if (Globals.RNGGetNextBoolean(5))
 			{
@@ -191,17 +197,11 @@ namespace Randomizer
 		/// - Else, value from 1 - 4
 		/// </summary>
 		/// <param name="weapon">The weapon to assign the AOE to</param>
-		private static void RandomizeWeaponAOE(WeaponItem weapon)
+		private static void RandomizeWeaponAOE(WeaponData weapon)
 		{
-			if (Globals.RNGGetNextBoolean(80))
-			{
-				weapon.AddedAOE = 0;
-			}
-
-			else
-			{
-				weapon.AddedAOE = Range.GetRandomValue(1, 4);
-			}
+			weapon.AreaOfEffect = Globals.RNGGetNextBoolean(80)
+				? 0
+				: Range.GetRandomValue(1, 4);
 		}
 
 		/// <summary>
@@ -210,17 +210,11 @@ namespace Randomizer
 		/// - else 1 - 10
 		/// </summary>
 		/// <param name="weapon">The weapon to assign the precision value</param>
-		private static void RandomizeWeaponPrecision(WeaponItem weapon)
+		private static void RandomizeWeaponPrecision(WeaponData weapon)
 		{
-			if (Globals.RNGGetNextBoolean(80))
-			{
-				weapon.AddedPrecision = 0;
-			}
-
-			else
-			{
-				weapon.AddedPrecision = Range.GetRandomValue(1, 10);
-			}
+			weapon.Precision = Globals.RNGGetNextBoolean(80)
+				? 0
+				: Range.GetRandomValue(1, 10);
 		}
 
 		/// <summary>
@@ -230,39 +224,40 @@ namespace Randomizer
 		/// If no defense, then a 5% chance of getting a value from 1-5
 		/// </summary>
 		/// <param name="weapon">The weapon to add the defense value</param>
-		private static void RandomizeWeaponDefense(WeaponItem weapon)
+		private static void RandomizeWeaponDefense(WeaponData weapon)
 		{
-			if (weapon.AddedDefense > 0)
+			if (weapon.Defense > 0)
 			{
-                weapon.AddedDefense = Globals.RNGGetIntWithinPercentage(weapon.AddedDefense, 50);
+                weapon.Defense = Globals.RNGGetIntWithinPercentage(weapon.Defense, 50);
             }
 			else if (Globals.RNGGetNextBoolean(5))
 			{
-				weapon.AddedDefense = Range.GetRandomValue(1, 5);
+				weapon.Defense = Range.GetRandomValue(1, 5);
             }
 		}
 
-		/// <summary>
-		/// Randomizes the weapon drop info (where you receive weapons in mine containers).
-		/// This does not affect galaxy items.
-		/// - If you currently can't receive the weapon in the mines, set its base floor based on its max damage
-		///   - less than 10: floor between 1 and 20
-		///   - less than 30: floor between 21 and 60
-		///   - less than 50: floor between 61 and 100
-		///   - else: floor between 110 and 110
-		/// - else, set the base floor to be + or - 10 floors of the original value
-		/// 
-		/// In either case, set the min floor to be between 10 and 30 floors lower than the base
-		/// </summary>
-		/// <param name="weapon">The weapon to set drop info for</param>
-		private static void RandomizeWeaponDropInfo(WeaponItem weapon)
+        /// <summary>
+        /// Randomizes the weapon drop info (where you receive weapons in mine containers).
+        /// This does not affect galaxy items.
+        /// - If you currently can't receive the weapon in the mines, set its base floor based on its max damage
+        ///   - less than 10: floor between 1 and 20
+        ///   - less than 30: floor between 21 and 60
+        ///   - less than 50: floor between 61 and 100
+        ///   - else: floor between 110 and 110
+        /// - else, set the base floor to be + or - 10 floors of the original value
+        /// 
+        /// In either case, set the min floor to be between 10 and 30 floors lower than the base
+        /// </summary>
+        /// <param name="weapon">The weapon to set drop info for</param>
+        /// <param name="weaponIndex">The weapon's index</param>
+        private static void RandomizeWeaponDropInfo(WeaponData weapon, WeaponIndexes weaponIndex)
 		{
-			if (!weapon.ShouldRandomizeDropInfo()) { return; }
+			if (!ShouldRandomizeDropInfo(weaponIndex)) { return; }
 
-			int baseMineLevel = weapon.BaseMineLevelDrop;
+			int baseMineLevel = weapon.MineBaseLevel;
 			if (baseMineLevel == -1)
 			{
-				int maxDamage = weapon.Damage.MaxValue;
+				int maxDamage = weapon.MaxDamage;
 				if (maxDamage < 10) { baseMineLevel = Range.GetRandomValue(1, 20); }
 				else if (maxDamage < 30) { baseMineLevel = Range.GetRandomValue(21, 60); }
 				else if (maxDamage < 50) { baseMineLevel = Range.GetRandomValue(61, 100); }
@@ -274,17 +269,30 @@ namespace Randomizer
 				baseMineLevel = FixMineLevelValue(baseMineLevel + Range.GetRandomValue(-10, 10));
 			}
 
-			weapon.BaseMineLevelDrop = baseMineLevel;
-			weapon.MinMineLevelDrop = FixMineLevelValue(baseMineLevel - Range.GetRandomValue(10, 30), true);
+			weapon.MineBaseLevel = baseMineLevel;
+			weapon.MineMinLevel = FixMineLevelValue(baseMineLevel - Range.GetRandomValue(10, 30), true);
 		}
 
-		/// <summary>
-		/// Ensures the mine level is a value from 1 to 110
-		/// </summary>
-		/// <param name="mineLevel">The mine level</param>
-		/// <param name="allowMinusOne">Whether to set values less than 1 to -1</param>
-		/// <returns>If less than 1, 1 or -1; if greater than 110, 110; else, the value given</returns>
-		private static int FixMineLevelValue(int mineLevel, bool allowMinusOne = false)
+        /// <summary>
+        /// Whether to randomize drop info - currently based on whether it is an endgame weapon
+        /// </summary>
+        /// <returns />
+        private static bool ShouldRandomizeDropInfo(WeaponIndexes weaponIndex)
+        {
+            return weaponIndex != WeaponIndexes.GalaxyDagger &&
+                weaponIndex != WeaponIndexes.GalaxyHammer &&
+                weaponIndex != WeaponIndexes.GalaxySlingshot &&
+                weaponIndex != WeaponIndexes.GalaxySword &&
+                weaponIndex < WeaponIndexes.DwarfSword;
+        }
+
+        /// <summary>
+        /// Ensures the mine level is a value from 1 to 110
+        /// </summary>
+        /// <param name="mineLevel">The mine level</param>
+        /// <param name="allowMinusOne">Whether to set values less than 1 to -1</param>
+        /// <returns>If less than 1, 1 or -1; if greater than 110, 110; else, the value given</returns>
+        private static int FixMineLevelValue(int mineLevel, bool allowMinusOne = false)
 		{
 			if (mineLevel < 1)
 			{
@@ -294,14 +302,15 @@ namespace Randomizer
 			else { return mineLevel; }
 		}
 
-		/// <summary>
-		/// Sets a weapon's description based on its attributes
-		/// </summary>
-		/// <param name="weapon">The weapon to set the description for</param>
-		private static void SetWeaponDescription(WeaponItem weapon)
+        /// <summary>
+        /// Sets a weapon's description based on its attributes
+        /// </summary>
+        /// <param name="weapon">The weapon to set the description for</param>
+        /// <param name="weaponIndex">The weapon index - used to track the dark sword</param>
+        private static void SetWeaponDescription(WeaponData weapon, WeaponIndexes weaponIndex)
 		{
 			string description = "";
-			switch (weapon.Type)
+			switch ((WeaponType)weapon.Type)
 			{
 				case WeaponType.Dagger:
 				case WeaponType.StabbingSword:
@@ -338,22 +347,22 @@ namespace Randomizer
 				description += $" {Globals.GetTranslation("weapon-description-fast")}";
 			}
 
-			if (weapon.AddedAOE > 0)
+			if (weapon.AreaOfEffect > 0)
 			{
 				description += $" {Globals.GetTranslation("weapon-description-aoe")}";
 			}
 
-			if (weapon.AddedPrecision > 4)
+			if (weapon.Precision > 4)
 			{
 				description += $" {Globals.GetTranslation("weapon-description-accurate")}";
 			}
 
-			if (weapon.AddedDefense > 0)
+			if (weapon.Defense > 0)
 			{
 				description += $" {Globals.GetTranslation("weapon-description-defense")}";
 			}
 
-			if (weapon.Id == (int)WeaponIndexes.DarkSword)
+			if (weaponIndex == WeaponIndexes.DarkSword)
 			{
 				description += $" {Globals.GetTranslation("weapon-description-heals")}";
 			}
@@ -365,22 +374,22 @@ namespace Randomizer
 		/// Writes the changed weapon info to the spoiler log
 		/// </summary>
 		/// <param name="modifiedWeaponDictionary">The dictionary with changed info</param>
-		private static void WriteToSpoilerLog(Dictionary<int, WeaponItem> modifiedWeaponDictionary)
+		private static void WriteToSpoilerLog(Dictionary<string, WeaponData> modifiedWeaponDictionary)
 		{
 			if (!Globals.Config.Weapons.Randomize) { return; }
 
 			Globals.SpoilerWrite("==== WEAPONS ====");
-			foreach (int id in modifiedWeaponDictionary.Keys)
+			foreach (var weaponData in modifiedWeaponDictionary)
 			{
-				WeaponItem weapon = modifiedWeaponDictionary[id];
+				WeaponData weapon = weaponData.Value;
 
-				Globals.SpoilerWrite($"{id}: {weapon.OverrideName}");
+                Globals.SpoilerWrite($"{weaponData.Key}: {weapon.DisplayName}");
 				Globals.SpoilerWrite($"Type: {Enum.GetName(typeof(WeaponType), weapon.Type)}");
-				Globals.SpoilerWrite($"Damage: {weapon.Damage.MinValue} - {weapon.Damage.MaxValue}");
+				Globals.SpoilerWrite($"Damage: {weapon.MinDamage} - {weapon.MaxDamage}");
 				Globals.SpoilerWrite($"Crit Chance / Multiplier: {weapon.CritChance} / {weapon.CritMultiplier}");
-				Globals.SpoilerWrite($"Knockback / Speed / AOE: {weapon.Knockback} / {weapon.Speed} / {weapon.AddedAOE}");
-				Globals.SpoilerWrite($"Added Precision / Defense: {weapon.AddedPrecision} / {weapon.AddedDefense}");
-				Globals.SpoilerWrite($"Base / Min Mine Level Drop: {weapon.BaseMineLevelDrop} / {weapon.MinMineLevelDrop}");
+				Globals.SpoilerWrite($"Knockback / Speed / AOE: {weapon.Knockback} / {weapon.Speed} / {weapon.AreaOfEffect}");
+				Globals.SpoilerWrite($"Added Precision / Defense: {weapon.Precision} / {weapon.Defense}");
+				Globals.SpoilerWrite($"Base / Min Mine Level Drop: {weapon.MineBaseLevel} / {weapon.MineMinLevel}");
 				Globals.SpoilerWrite("---");
 			}
 			Globals.SpoilerWrite("");
