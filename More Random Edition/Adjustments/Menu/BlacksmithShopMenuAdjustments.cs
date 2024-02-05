@@ -1,4 +1,5 @@
-﻿using StardewValley.Menus;
+﻿using StardewValley;
+using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,7 +88,9 @@ namespace Randomizer
             var item = Globals.RNGGetRandomValueFromList(itemsAlreadyInStock, shopRNG);
             var priceMultiplier = 1 - (Range.GetRandomValue(10, 25, shopRNG) / 100f);
 
-            item.Value[0] = (int)(item.Key.salePrice() * priceMultiplier);
+            //TODO 1.6: does this actually work...?
+            var itemStock = item.Value;
+            itemStock.Price = (int)(item.Key.salePrice() * priceMultiplier);
         }
 
         /// <summary>

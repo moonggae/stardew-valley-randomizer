@@ -59,7 +59,7 @@ namespace Randomizer
             var clayStock = Range.GetRandomValue(20, 40, shopRNG);
             var clayPrice = Globals.RNGGetIntWithinPercentage(basePrice, 50, shopRNG);
 
-            SVObject clay = new((int)ObjectIndexes.Clay, clayStock);
+            SVObject clay = new(ItemList.GetQualifiedId(ObjectIndexes.Clay), clayStock);
             InsertStockAt(menu, clay, stock: clayStock, salePrice: clayPrice, index: 2);
         }
 

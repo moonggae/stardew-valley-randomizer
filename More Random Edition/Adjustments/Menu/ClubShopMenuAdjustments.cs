@@ -107,7 +107,7 @@ namespace Randomizer
         /// <param name="shopRNG"></param>
         private static void AddTotem(ShopMenu menu, Random shopRNG)
         {
-            var totemToSell = new SVObject(ItemList.GetRandomTotem(shopRNG).Id, 1);
+            var totemToSell = new SVObject(ItemList.GetRandomTotem(shopRNG).QualifiedId, 1);
             AddStock(menu, totemToSell, salePrice: 500);
         }
 

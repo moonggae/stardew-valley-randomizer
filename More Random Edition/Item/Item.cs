@@ -13,6 +13,39 @@ namespace Randomizer
 	public class Item
 	{
 		public int Id { get; }
+
+        /// <summary>
+		/// This is the QualifiedItemId in Stardew's code a prefix before the integer id
+        /// BigCraftables (BC), 
+		/// Boots (B), 
+		/// Farmhouse Flooring (FL), 
+		/// Furniture (F), 
+		/// Hats (H), 
+		/// Objects (O),
+		/// Pants (P), 
+		/// Shirts (S),
+		/// Tools (T), 
+		/// Wallpaper (WP),
+		/// Weapons (W)
+        /// </summary>
+        public string QualifiedId { 
+			get
+			{
+				string itemType = "O";
+				if (IsRing)
+				{
+					itemType = "R";
+                } 
+				else if (IsBigCraftable)
+				{
+					itemType = "BO";
+				}
+
+				// We currently only define objects, rings, and big craftables here
+				return $"({itemType}){Id}";
+			} 
+		}
+
 		public string Name
 		{
 			get { return GetName(); }
@@ -246,21 +279,21 @@ namespace Randomizer
 		{
 			if (IsRing)
 			{
-                return new SVRing(Id)
+                return new SVRing(QualifiedId)
                 {
                     Stack = initialStack
                 };
             }
 
             return IsBigCraftable 
-				? new SVObject(Vector2.Zero, Id, isRecipe)
+				? new SVObject(Vector2.Zero, QualifiedId, isRecipe)
 					{
 						Stack = initialStack,
 						Price = price == -1 
 							? (BigCraftablePrice / 2) // We want the sell price, not the buy price
 							: price
 					}
-				: new SVObject(Id, initialStack, isRecipe, price);
+				: new SVObject(QualifiedId, initialStack, isRecipe, price);
         }
 
 		/// <summary>

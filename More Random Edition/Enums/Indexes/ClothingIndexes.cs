@@ -1,4 +1,7 @@
-﻿namespace Randomizer
+﻿using StardewValley.Objects;
+using StardewValley;
+
+namespace Randomizer
 {
     /// <summary>
     /// An enum representing all the clothing
@@ -220,5 +223,27 @@
         MagicSprinkleShirt = 1997,
         PrismaticShirt1 = 1998,
         PrismaticShirt2 = 1999
+    }
+
+    public class ClothingFunctions
+    {
+        /// <summary>
+        /// Gets the Stardew clothing item from the given index
+        /// </summary>
+        /// <param name="index">The clothing item's index</param>
+        /// <returns />
+        public static Clothing GetItem(ClothingIndexes index)
+        {
+            return ItemRegistry.Create<Clothing>(GetQualifiedId(index));
+        }
+
+        /// <summary>
+        /// Gets the qualified id for the given clothing index
+        /// </summary>
+        /// <param name="index">The index of the clothing item</param>
+        public static string GetQualifiedId(ClothingIndexes index)
+        {
+            return $"(C){(int)index}";
+        }
     }
 }

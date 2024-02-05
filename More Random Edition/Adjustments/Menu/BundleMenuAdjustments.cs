@@ -27,7 +27,7 @@ namespace Randomizer
 			}
             
             int area = Game1.currentLocation is CommunityCenter
-                ? GetAreaNumberFromLocation(Game1.player.getTileLocation())
+                ? GetAreaNumberFromLocation(Game1.player.Tile)
                 : 6; // AbandonedJojaMart.cs simply hard-codes this to 6
 
             CommunityCenter comCenter = Game1.getLocationFromName("CommunityCenter") as CommunityCenter;
@@ -104,12 +104,11 @@ namespace Randomizer
 			{
 				return true;
 			}
-			else if (item is SVObject)
-			{
-				return !(bool)((NetFieldBase<bool, NetBool>)(item as SVObject).bigCraftable);
-			}
-			return false;
-		}
+
+#pragma warning disable CS0618 // Type or member is obsolete
+            return item is SVObject @object && !(bool)@object.bigCraftable;
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
 
 		/// <summary>
 		/// Replaces the bundle names with our custom ones

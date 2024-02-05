@@ -26,6 +26,7 @@ namespace Randomizer
         }
 
         /// <summary>
+        /// TODO 1.6: test this change because ItemId is now used
         /// Adds an hat of the week to the shop
         /// </summary>
         /// <param name="menu">The shop menu</param>
@@ -36,7 +37,7 @@ namespace Randomizer
 
             var existingHatIds = menu.itemPriceAndStock.Keys
                 .Where(item => item is Hat)
-                .Select(item => (item as Hat).which.Value)
+                .Select(item => (item as Hat).ItemId)
                 .ToList();
 
             var hatOfTheWeek = ItemList.GetRandomHatsToSell(shopRNG, numberToGet: 1, existingHatIds).FirstOrDefault();

@@ -1,4 +1,5 @@
 ﻿using StardewValley.Menus;
+using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -142,7 +143,11 @@ namespace Randomizer
             var weeklyFurnitureItems = ItemList.GetRandomFurnitureToSell(
                 weeklyShopRNG,
                 numberToGet: 4,
-                new List<int>() { (dailyFurnitureItem.First() as SVObject).ParentSheetIndex }
+                new List<FurnitureIndexes>() 
+                { 
+                    /// TODO 1.6: Confirm that ParentSheetIndex is okay here
+                    (FurnitureIndexes)(dailyFurnitureItem.First() as SVObject).ParentSheetIndex
+                }
             );
 
             AddStock(menu, dailyClothingItem.Concat(dailyFurnitureItem).Concat(weeklyFurnitureItems).ToList());

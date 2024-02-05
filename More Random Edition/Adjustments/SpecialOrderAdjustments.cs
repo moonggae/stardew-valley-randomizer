@@ -1,4 +1,4 @@
-﻿using StardewValley.GameData;
+﻿using StardewValley.GameData.SpecialOrders;
 using System.Collections.Generic;
 using System.Linq;
 

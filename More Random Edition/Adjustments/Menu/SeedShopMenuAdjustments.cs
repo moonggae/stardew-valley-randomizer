@@ -40,9 +40,9 @@ namespace Randomizer
             var saplingMenuItems = menu.itemPriceAndStock
                 .Where(keyValuePair => keyValuePair.Key.Name.Contains("Sapling"))
                 .ToList();
-            foreach (KeyValuePair<ISalable, int[]> sapling in saplingMenuItems)
+            foreach (KeyValuePair<ISalable, ItemStockInformation> sapling in saplingMenuItems)
             {
-                menu.itemPriceAndStock[sapling.Key] = new[] { sapling.Key.salePrice(), _maxValue };
+                menu.itemPriceAndStock[sapling.Key] = new ItemStockInformation(sapling.Key.salePrice(), _maxValue);
             }
         }
 

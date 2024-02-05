@@ -106,7 +106,9 @@ namespace Randomizer
         /// <param name="wasShopOpened">True if the shop was just opened, false if it was closed</param>
         private static void AdjustShopMenus(ShopMenu shopMenu, bool wasShopOpened)
         {
-            switch (shopMenu.storeContext)
+            //TODO 1.6: the shop ids are NOT these - look them up from Data/Shops
+            // it looks like each shop ACTUALLY has a unique ID now!
+            switch (shopMenu.ShopId)
             {
                 // Seed shop and Joja Mart - adds item of the week
                 case "SeedShop":
@@ -146,7 +148,7 @@ namespace Randomizer
                 // Hat shop - will sell a random hat each week in addition to what you've already unlocked
                 case "Forest":
                     // The hat shop is located further down than the Traveling Merchant
-                    if (Game1.player.getTileLocation().Y > 90)
+                    if (Game1.player.Tile.Y > 90)
                     {
                         HatShop.OnChange(shopMenu, wasShopOpened);
                     }

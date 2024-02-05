@@ -60,6 +60,7 @@ namespace Randomizer
         }
 
         /// <summary>
+        /// TODO 1.6: Test this out and see if it works as intended still
         /// This handles whether the UI will highlight or not when its hovered over with an item that can be deposited
         /// The issue is that a Ring object is NOT a StardewValley.Object, so we convert it to one and call the base version
         /// </summary>
@@ -70,7 +71,7 @@ namespace Randomizer
             var itemToCheck = item;
             if (item is Ring)
             {
-                itemToCheck = new SVObject(item.ParentSheetIndex, 1);
+                itemToCheck = new SVObject(item.ItemId, 1);
             }
 
             return base.CanBePartiallyOrFullyDonated(itemToCheck);
@@ -109,7 +110,7 @@ namespace Randomizer
                     // The entire problem here is that a Ring object is NOT an StardewValley.Object
                     // we can create a mock object here with the same index so it can pass the bundle check
                     // but DO NOT assign it back to HeldItem, or it will not be a Ring anymore!
-                    var ringAsSVObject = new SVObject(HeldItem.ParentSheetIndex, 1);
+                    var ringAsSVObject = new SVObject(HeldItem.ItemId, 1);
 
                     // Check each required item in the bundle to see if it can be deposited
                     for (int index = 0; index < ingredientSlots.Count; ++index)

@@ -4,10 +4,11 @@ using System.Linq;
 
 namespace Randomizer
 {
-	/// <summary>
-	/// Randomizes the blueprints - that is, the buildings that Robin can build for you
-	/// </summary>
-	public class BlueprintRandomizer
+    //TODO 1.6: blueprints are now buildings, so this needs to change
+    /// <summary>
+    /// Randomizes the blueprints - that is, the buildings that Robin can build for you
+    /// </summary>
+    public class BlueprintRandomizer
 	{
         /// <summary>
         /// The data from Data/Blueprints.xnb

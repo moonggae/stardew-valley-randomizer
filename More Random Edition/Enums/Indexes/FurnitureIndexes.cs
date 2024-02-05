@@ -1,4 +1,7 @@
-﻿namespace Randomizer
+﻿using StardewValley;
+using StardewValley.Objects;
+
+namespace Randomizer
 {
     /// <summary>
     /// An enum representing all the furniture
@@ -352,5 +355,27 @@
         SquirrelFigurine = 2814,
         FunkyRug = 2870,
         ModernRug = 2875
+    }
+
+    public class FurnitureFunctions
+    {
+        /// <summary>
+        /// Gets the Stardew furniture item from the given index
+        /// </summary>
+        /// <param name="index">The furniture index</param>
+        /// <returns />
+        public static Furniture GetItem(FurnitureIndexes index)
+        {
+            return ItemRegistry.Create<Furniture>(GetQualifiedId(index));
+        }
+        
+        /// <summary>
+        /// Gets the qualified id for the given furniture index
+        /// </summary>
+        /// <param name="index">The index of the furniture</param>
+        public static string GetQualifiedId(FurnitureIndexes index)
+        {
+            return $"(F){(int)index}";
+        }
     }
 }

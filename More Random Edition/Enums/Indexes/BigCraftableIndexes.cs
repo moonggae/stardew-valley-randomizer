@@ -1,4 +1,11 @@
-﻿namespace Randomizer
+﻿using StardewValley.Objects;
+using StardewValley;
+using SVItem = StardewValley.Item;
+using SVObject = StardewValley.Object;
+using StardewValley.GameData.BigCraftables;
+using Microsoft.Xna.Framework;
+
+namespace Randomizer
 {
     /// <summary>
     /// BigCraftables with the proper ingame indices
@@ -172,5 +179,27 @@
         AutoPetter = 272,
         Hopper = 275,
         StatueOfTruePerfection = 280,
+    }
+
+    public class BigCraftableFunctions
+    {
+        /// <summary>
+        /// Gets the big craftable object from the given index
+        /// </summary>
+        /// <param name="index">The index of the big craftable</param>
+        /// <returns />
+        public static SVObject GetItem(BigCraftableIndexes index)
+        {
+            return new SVObject(Vector2.Zero, GetQualifiedId(index));
+        }
+
+        /// <summary>
+        /// Gets the qualified id for the given big craftable index
+        /// </summary>
+        /// <param name="index">The index of the big craftable</param>
+        public static string GetQualifiedId(BigCraftableIndexes index)
+        {
+            return $"(BO){(int)index}";
+        }
     }
 }

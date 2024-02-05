@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using SVObject = StardewValley.Object;
 
+//TODO 1.6: verify the item stock still works properly
+// perhaps look at ItemStockInformation and see if anything can be set to help do this easier
 namespace Randomizer
 {
     public abstract class ShopMenuAdjustments
@@ -14,7 +16,7 @@ namespace Randomizer
         /// <summary>
         /// These two values track the state of the shop
         /// </summary>
-        protected Dictionary<ISalable, int[]> currentItemPriceAndStock;
+        protected Dictionary<ISalable, ItemStockInformation> currentItemPriceAndStock;
         protected List<ISalable> currentForSale;
 
         /// <summary>
@@ -67,7 +69,7 @@ namespace Randomizer
             var buyBackItemsCount = menu.buyBackItems.Count;
             menu.forSale.RemoveRange(menu.forSale.Count - buyBackItemsCount, buyBackItemsCount);
 
-            Dictionary<ISalable, int[]> fixedDictionary = new();
+            Dictionary<ISalable, ItemStockInformation> fixedDictionary = new();
             menu.forSale.ForEach(item => fixedDictionary[item] = menu.itemPriceAndStock[item]);
             menu.itemPriceAndStock = fixedDictionary;
         }
@@ -232,7 +234,7 @@ namespace Randomizer
             {
                 price = 25; // Put a default on this just in case
             }
-            menu.itemPriceAndStock.Add(item, new[] { price, stock });
+            menu.itemPriceAndStock.Add(item, new ItemStockInformation(price, stock));
         }
 
         /// <summary>

@@ -1,8 +1,8 @@
 ﻿using StardewValley.Menus;
-using System.Linq;
 
 namespace Randomizer
 {
+    // TODO 1.6: Check if this is actually necessary anymore
     internal class AdventureShopMenuAdjustments : ShopMenuAdjustments
     {
         public AdventureShopMenuAdjustments() : base()
@@ -26,10 +26,12 @@ namespace Randomizer
         /// <param name="menu">The shop menu</param>
         private static void FixPrices(ShopMenu menu)
         {
-            menu.itemPriceAndStock = menu.itemPriceAndStock.ToDictionary(
-                item => item.Key,
-                item => new[] { item.Key.salePrice(), _maxValue }
-            );
+            foreach(var itemData in menu.itemPriceAndStock)
+            {
+                var item = itemData.Key;
+                var saleInfo = itemData.Value;
+                saleInfo.Price = item.salePrice();
+            }
         }
     }
 }

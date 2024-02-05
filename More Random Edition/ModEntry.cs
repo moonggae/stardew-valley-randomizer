@@ -77,11 +77,6 @@ namespace Randomizer
 					helper.Events.Display.RenderedActiveMenu += (sender, args) => BundleMenuAdjustments.AddDescriptionsToBundleTooltips();
 				}
 			}
-
-			if (Globals.Config.Weapons.Randomize)
-			{
-				helper.Events.GameLoop.TimeChanged += (sender, args) => WorldAdjustments.TrySpawnGalaxySwordBat();
-            }
         }
 
 		/// <summary>
@@ -129,7 +124,7 @@ namespace Randomizer
 		public void CalculateAllReplacements()
 		{
 			// Seed is pulled from farm name
-			byte[] seedvar = (new SHA1Managed()).ComputeHash(Encoding.UTF8.GetBytes(Game1.player.farmName.Value));
+			byte[] seedvar = SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(Game1.player.farmName.Value));
 			int seed = BitConverter.ToInt32(seedvar, 0);
 
 			Monitor.Log($"Seed Set: {seed}");

@@ -261,7 +261,7 @@ namespace Randomizer
         public static Random GetWeeklyRNG(string seed)
         {
 			int time = Game1.Date.TotalDays / 7;
-            byte[] seedvar = new SHA1Managed().ComputeHash(Encoding.UTF8.GetBytes(Game1.player.farmName.Value + seed));
+            byte[] seedvar = SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(Game1.player.farmName.Value + seed));
             int fullSeed = BitConverter.ToInt32(seedvar, 0) + time;
 
             return new Random(fullSeed);
@@ -277,7 +277,7 @@ namespace Randomizer
         public static Random GetDailyRNG(string seed)
         {
 			int time = Game1.Date.TotalDays;
-            byte[] seedvar = new SHA1Managed().ComputeHash(Encoding.UTF8.GetBytes(Game1.player.farmName.Value + seed));
+            byte[] seedvar = SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(Game1.player.farmName.Value + seed));
             int fullSeed = BitConverter.ToInt32(seedvar, 0) + time;
 
             return new Random(fullSeed);
@@ -290,7 +290,7 @@ namespace Randomizer
         /// <returns>The Random object</returns>
         public static Random GetFarmRNG(string seed)
 		{
-            byte[] seedvar = new SHA1Managed().ComputeHash(Encoding.UTF8.GetBytes(Game1.player.farmName.Value + seed));
+            byte[] seedvar = SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(Game1.player.farmName.Value + seed));
             int fullSeed = BitConverter.ToInt32(seedvar, 0);
 
             return new Random(fullSeed);

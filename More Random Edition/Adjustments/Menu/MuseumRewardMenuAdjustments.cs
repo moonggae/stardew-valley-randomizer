@@ -1,8 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using StardewValley;
+﻿using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
-using StardewValley.Objects;
 using System.Collections.Generic;
 using System.Linq;
 using SVItem = StardewValley.Item;
@@ -50,27 +48,27 @@ namespace Randomizer
 
             var springSeedId = Globals.RNGGetRandomValueFromList(seedPool
                 .Where(seed => seed.GrowingSeasons.Contains(Seasons.Spring))
-                .Select(seed => seed.Id)
+                .Select(seed => seed.QualifiedId)
                 .ToList());
             var summerSeedId = Globals.RNGGetRandomValueFromList(seedPool
                 .Where(seed => 
-                    seed.Id != springSeedId &&
+                    seed.QualifiedId != springSeedId &&
                     seed.GrowingSeasons.Contains(Seasons.Summer))
-                .Select(seed => seed.Id)
+                .Select(seed => seed.QualifiedId)
                 .ToList());
             var fallSeedId = Globals.RNGGetRandomValueFromList(seedPool
                 .Where(seed => 
-                    seed.Id != springSeedId &&
-                    seed.Id != summerSeedId &&
+                    seed.QualifiedId != springSeedId &&
+                    seed.QualifiedId != summerSeedId &&
                     seed.GrowingSeasons.Contains(Seasons.Fall))
-                .Select(seed => seed.Id)
+                .Select(seed => seed.QualifiedId)
                 .ToList());
             var anySeedId = Globals.RNGGetRandomValueFromList(seedPool
                 .Where(seed =>
-                    seed.Id != springSeedId &&
-                    seed.Id != summerSeedId &&
-                    seed.Id != fallSeedId)
-                .Select(seed => seed.Id)
+                    seed.QualifiedId != springSeedId &&
+                    seed.QualifiedId != summerSeedId &&
+                    seed.QualifiedId != fallSeedId)
+                .Select(seed => seed.QualifiedId)
                 .ToList());
 
             var springSeed = new SVObject(springSeedId, Range.GetRandomValue(5, 15));
@@ -79,8 +77,8 @@ namespace Randomizer
             var anySeed = new SVObject(anySeedId, Range.GetRandomValue(3, 8));
 
             var foodItems = Globals.RNGGetRandomValuesFromList(ItemList.GetCookedItems(), 2);
-            var food1 = new SVObject(foodItems[0].Id, Range.GetRandomValue(1, 10));
-            var food2 = new SVObject(foodItems[1].Id, Range.GetRandomValue(1, 10));
+            var food1 = new SVObject(foodItems[0].QualifiedId, Range.GetRandomValue(1, 10));
+            var food2 = new SVObject(foodItems[1].QualifiedId, Range.GetRandomValue(1, 10));
 
             var bigCraftables = ItemList.GetRandomBigCraftables(4);
             var randomFurniture = ItemList.GetRandomFurniture(16);
@@ -96,12 +94,12 @@ namespace Randomizer
             MapItems(springSeed, GetSVItem((int)ObjectIndexes.CauliflowerSeeds));
             MapItems(summerSeed, GetSVItem((int)ObjectIndexes.MelonSeeds));
             MapItems(anySeed, GetSVItem((int)ObjectIndexes.StarfruitSeeds));
-            MapItems(randomFurniture[fIndex++], GetFurnitureItem((int)FurnitureIndexes.ANightOnEcoHill));
-            MapItems(randomFurniture[fIndex++], GetFurnitureItem((int)FurnitureIndexes.JadeHills));
-            MapItems(randomFurniture[fIndex++], GetFurnitureItem((int)FurnitureIndexes.LgFutanBear));
+            MapItems(randomFurniture[fIndex++], FurnitureFunctions.GetItem(FurnitureIndexes.ANightOnEcoHill));
+            MapItems(randomFurniture[fIndex++], FurnitureFunctions.GetItem(FurnitureIndexes.JadeHills));
+            MapItems(randomFurniture[fIndex++], FurnitureFunctions.GetItem(FurnitureIndexes.LgFutanBear));
             MapItems(fallSeed, GetSVItem((int)ObjectIndexes.PumpkinSeeds));
-            MapItems(bigCraftables[bcIndex++], GetBigCraftableItem((int)BigCraftableIndexes.Rarecrow8));
-            MapItems(randomFurniture[fIndex++], GetFurnitureItem((int)FurnitureIndexes.BearStatue));
+            MapItems(bigCraftables[bcIndex++], BigCraftableFunctions.GetItem(BigCraftableIndexes.Rarecrow8));
+            MapItems(randomFurniture[fIndex++], FurnitureFunctions.GetItem(FurnitureIndexes.BearStatue));
             // The 60 reward is the key that's given on the next day
             MapItems(food1, GetSVItem((int)ObjectIndexes.TripleShotEspresso));
             MapItems(randomTotem, GetSVItem((int)ObjectIndexes.WarpTotemFarm));
@@ -110,17 +108,17 @@ namespace Randomizer
 
             // Rewards from minerals donated
             // 11, 21, 31, 41, 50
-            MapItems(randomFurniture[fIndex++], GetFurnitureItem((int)FurnitureIndexes.StandingGeode));
-            MapItems(bigCraftables[bcIndex++], GetBigCraftableItem((int)BigCraftableIndexes.SingingStone));
-            MapItems(randomFurniture[fIndex++], GetFurnitureItem((int)FurnitureIndexes.ObsidianVase));
-            MapItems(randomFurniture[fIndex++], GetFurnitureItem((int)FurnitureIndexes.CrystalChair));
-            MapItems(bigCraftables[bcIndex++], GetBigCraftableItem((int)BigCraftableIndexes.Crystalarium));
+            MapItems(randomFurniture[fIndex++], FurnitureFunctions.GetItem(FurnitureIndexes.StandingGeode));
+            MapItems(bigCraftables[bcIndex++], BigCraftableFunctions.GetItem(BigCraftableIndexes.SingingStone));
+            MapItems(randomFurniture[fIndex++], FurnitureFunctions.GetItem(FurnitureIndexes.ObsidianVase));
+            MapItems(randomFurniture[fIndex++], FurnitureFunctions.GetItem(FurnitureIndexes.CrystalChair));
+            MapItems(bigCraftables[bcIndex++], BigCraftableFunctions.GetItem(BigCraftableIndexes.Crystalarium));
 
             // Rewards from artifacts donated
             // 11 (with rare disc/dwarf gadget), 15, 20
-            MapItems(randomFurniture[fIndex++], GetFurnitureItem((int)FurnitureIndexes.BurntOffering));
-            MapItems(randomFurniture[fIndex++], GetFurnitureItem((int)FurnitureIndexes.Skeleton));
-            MapItems(bigCraftables[bcIndex++], GetBigCraftableItem((int)BigCraftableIndexes.Rarecrow7));
+            MapItems(randomFurniture[fIndex++], FurnitureFunctions.GetItem(FurnitureIndexes.BurntOffering));
+            MapItems(randomFurniture[fIndex++], FurnitureFunctions.GetItem(FurnitureIndexes.Skeleton));
+            MapItems(bigCraftables[bcIndex++], BigCraftableFunctions.GetItem(BigCraftableIndexes.Rarecrow7));
 
             // 3 with ancient drum, and then with bone flute (yes ,these are not actually furniture objects)
             MapItems(randomFurniture[fIndex++], GetSVItem((int)ObjectIndexes.DrumBlock));
@@ -131,12 +129,12 @@ namespace Randomizer
             MapItems(dwarvishTranslationGuide, dwarvishTranslationGuide, skipLog: true);
 
             // 5 with chicken statue (the artifact, different from the reward here)
-            MapItems(randomFurniture[fIndex++], GetFurnitureItem((int)FurnitureIndexes.ChickenStatue));
+            MapItems(randomFurniture[fIndex++], FurnitureFunctions.GetItem(FurnitureIndexes.ChickenStatue));
 
             // the three sets of skeleton artifactcs
-            MapItems(randomFurniture[fIndex++], GetFurnitureItem((int)FurnitureIndexes.SlothSkeletonL));
-            MapItems(randomFurniture[fIndex++], GetFurnitureItem((int)FurnitureIndexes.SlothSkeletonM));
-            MapItems(randomFurniture[fIndex++], GetFurnitureItem((int)FurnitureIndexes.SlothSkeletonR));
+            MapItems(randomFurniture[fIndex++], FurnitureFunctions.GetItem(FurnitureIndexes.SlothSkeletonL));
+            MapItems(randomFurniture[fIndex++], FurnitureFunctions.GetItem(FurnitureIndexes.SlothSkeletonM));
+            MapItems(randomFurniture[fIndex++], FurnitureFunctions.GetItem(FurnitureIndexes.SlothSkeletonR));
 
             WriteToSpoilerLog("");
         }
@@ -171,7 +169,7 @@ namespace Randomizer
                     return;
                 }
 
-                var itemKey = GetUniqueItemKey(item);
+                var itemKey = item.QualifiedItemId;
                 if (_museumMapOldIdToNewItem.TryGetValue(itemKey, out SVItem newItem))
                 {
                     rewardItems.Add(newItem);
@@ -200,14 +198,14 @@ namespace Randomizer
             // - the passed in one if we didn't map it
             // - or the new item that it was mapped to
             var rewardToSendToBaseGame = item;
-            var itemKey = GetUniqueItemKey(item);
+            var itemKey = item.QualifiedItemId;
             if (_museumMapNewIdToOldItem.TryGetValue(itemKey, out SVItem oldItem))
             {
                 rewardToSendToBaseGame = oldItem;
             }
 
             // Send the base game the info so it can handle it as normal so that items are not duped
-            (Game1.currentLocation as LibraryMuseum).collectedReward(rewardToSendToBaseGame, who);
+            (Game1.currentLocation as LibraryMuseum).OnRewardCollected(rewardToSendToBaseGame, who);
         }
 
         /// <summary>
@@ -218,12 +216,12 @@ namespace Randomizer
         /// <param name="skipLog">Whether to not log this item (true if we're not actually remapping this one)</param>
         private static void MapItems(SVItem newItem, SVItem oldItem, bool skipLog = false)
         {
-            var newItemKey = GetUniqueItemKey(newItem);
-            var oldItemKey = GetUniqueItemKey(oldItem);
+            var newItemKey = newItem.QualifiedItemId;
+            var oldItemKey = oldItem.QualifiedItemId;
             if (!_museumMapNewIdToOldItem.ContainsKey(newItemKey) && !_museumMapOldIdToNewItem.ContainsKey(oldItemKey))
             {
-                _museumMapNewIdToOldItem.Add(GetUniqueItemKey(newItem), oldItem);
-                _museumMapOldIdToNewItem.Add(GetUniqueItemKey(oldItem), newItem);
+                _museumMapNewIdToOldItem.Add(newItemKey, oldItem);
+                _museumMapOldIdToNewItem.Add(oldItemKey, newItem);
 
                 if (!skipLog)
                 {
@@ -237,45 +235,14 @@ namespace Randomizer
             }
         }
         /// <summary>
+        /// TODO 1.6: probably use something in Item.cs to get this object
         /// Shortcut to the StardewValley.Object constructor
         /// </summary>
         /// <param name="id">The Id</param>
         /// <returns />
         private static SVObject GetSVItem(int id)
         {
-            return new SVObject(id, initialStack: 1);
-        }
-
-        /// <summary>
-        /// Shortcut to the Furniture factory function
-        /// </summary>
-        /// <param name="id">The Id</param>
-        /// <returns />
-        private static Furniture GetFurnitureItem(int id)
-        {
-            return Furniture.GetFurnitureInstance(id);
-        }
-
-        /// <summary>
-        /// Shortcut to the BigCraftable constructor
-        /// </summary>
-        /// <param name="id">The Id</param>
-        /// <returns />
-        private static SVObject GetBigCraftableItem(int id)
-        {
-            return new SVObject(Vector2.Zero, id);
-        }
-
-        /// <summary>
-        /// Used to get dictionary keys
-        /// This is from Stardew Valley's utility class
-        /// </summary>
-        /// <param name="item">The item</param>
-        /// <returns></returns>
-        private static string GetUniqueItemKey(SVItem item)
-        {
-            // Hard code the stack to 1 becuase we really don't care and it will cause problems looking up the original items
-            return Utility.getStandardDescriptionFromItem(item, 1);
+            return new SVObject($"(O){id}", initialStack: 1);
         }
 
         /// <summary>

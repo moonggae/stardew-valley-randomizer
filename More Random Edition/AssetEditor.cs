@@ -1,6 +1,6 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewValley.GameData;
+using StardewValley.GameData.SpecialOrders;
 using System;
 using System.Collections.Generic;
 

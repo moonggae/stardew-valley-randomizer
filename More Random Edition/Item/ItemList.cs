@@ -20,13 +20,23 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Gets the name of the item with the given id
+		/// Gets the name of the item with the given index
 		/// </summary>
-		/// <param name="id">The item's id</param>
+		/// <param name="index">The item's index</param>
 		/// <returns />
-		public static string GetItemName(ObjectIndexes id)
+		public static string GetItemName(ObjectIndexes index)
 		{
-			return GetItem(id).Name;
+			return GetItem(index).Name;
+		}
+
+		/// <summary>
+		/// Gets the qualified id from the given index
+		/// </summary>
+		/// <param name="index">The item's index</param>
+		/// <returns />
+		public static string GetQualifiedId(ObjectIndexes index)
+		{
+			return GetItem(index).QualifiedId;
 		}
 
         /// <summary>
@@ -407,8 +417,12 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
 		/// <param name="numberToGet">The number of furniture objects to get</param>
+		/// <param name="itemsToExclude">The furniture to exclude</param>
 		/// <returns>A list of furniture to sell</returns>
-		public static List<ISalable> GetRandomFurnitureToSell(Random rng, int numberToGet, List<int> itemsToExclude = null)
+		public static List<ISalable> GetRandomFurnitureToSell(
+			Random rng, 
+			int numberToGet, 
+			List<FurnitureIndexes> itemsToExclude = null)
 		{
 			return GetRandomFurniture(numberToGet, itemsToExclude, rng)
 				.Cast<ISalable>()
@@ -419,20 +433,23 @@ namespace Randomizer
         /// Gets a list of random furniture items
         /// </summary>
         /// <param name="numberToGet">The number of furniture objects to get</param>
-		/// <param name="itemsToExclude">Item ids to not include</param>
+		/// <param name="itemsToExclude">Furniure indexes to not include</param>
         /// <param name="rng">The RNG to use</param>
         /// <returns>A list of furniture to sell</returns>
-        public static List<Furniture> GetRandomFurniture(int numberToGet, List<int> itemsToExclude = null, Random rng = null)
+        public static List<Furniture> GetRandomFurniture(
+			int numberToGet, 
+			List<FurnitureIndexes> itemsToExclude = null, 
+			Random rng = null)
         {
             var rngToUse = rng ?? Globals.RNG;
 
             var allFurnitureIds = Enum.GetValues(typeof(FurnitureIndexes))
-                .Cast<int>()
-                .Where(id => itemsToExclude == null || !itemsToExclude.Contains(id))
+                .Cast<FurnitureIndexes>()
+                .Where(index => itemsToExclude == null || !itemsToExclude.Contains(index))
                 .ToList();
 
             return Globals.RNGGetRandomValuesFromList(allFurnitureIds, numberToGet, rngToUse)
-                .Select(furnitureId => Furniture.GetFurnitureInstance(furnitureId))
+                .Select(furnitureIndex => FurnitureFunctions.GetItem(furnitureIndex))
                 .ToList();
         }
 
@@ -441,37 +458,42 @@ namespace Randomizer
         /// </summary>
         /// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
         /// <param name="numberToGet">The number of clothing objects to get</param>
-		/// <param name="itemsToExclude">Item ids to not include</param>
+		/// <param name="itemsToExclude">Clothing indexes to not include</param>
         /// <returns>A list of clothing objects to sell</returns>
-        public static List<ISalable> GetRandomClothingToSell(Random rng, int numberToGet, List<int> itemsToExclude = null)
+        public static List<ISalable> GetRandomClothingToSell(
+			Random rng, 
+			int numberToGet,
+			List<ClothingIndexes> itemsToExclude = null)
         {
             var allClothingIds = Enum.GetValues(typeof(ClothingIndexes))
-                .Cast<int>()
-				.Where(id => itemsToExclude == null || !itemsToExclude.Contains(id))
+                .Cast<ClothingIndexes>()
+				.Where(index => itemsToExclude == null || !itemsToExclude.Contains(index))
                 .ToList();
 
             return Globals.RNGGetRandomValuesFromList(allClothingIds, numberToGet, rng)
-                .Select(clothingId => new Clothing(clothingId))
+                .Select(clothingIndex => ClothingFunctions.GetItem(clothingIndex))
                 .Cast<ISalable>()
                 .ToList();
         }
 
         /// <summary>
+		/// TODO 1.6: Test the changes here!
         /// Gets a list of random hats to sell
         /// </summary>
         /// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
         /// <param name="numberToGet">The number of hats to get</param>
 		/// <param name="itemsToExclude">Item ids to not include</param>
         /// <returns>A list of furniture to sell</returns>
-        public static List<ISalable> GetRandomHatsToSell(Random rng, int numberToGet, List<int> itemsToExclude = null)
+        public static List<ISalable> GetRandomHatsToSell(Random rng, int numberToGet, List<string> itemsToExclude = null)
         {
             var allHatIds = Enum.GetValues(typeof(HatIndexes))
-                .Cast<int>()
+				.Cast<HatIndexes>()
+                .Select(hat => HatFunctions.GetHatId(hat))
                 .Where(id => itemsToExclude == null || !itemsToExclude.Contains(id))
                 .ToList();
 
             return Globals.RNGGetRandomValuesFromList(allHatIds, numberToGet, rng)
-                .Select(clothingId => new Hat(clothingId))
+                .Select(hatId => new Hat(hatId))
                 .Cast<ISalable>()
                 .ToList();
         }
@@ -481,9 +503,12 @@ namespace Randomizer
         /// </summary>
         /// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
         /// <param name="numberToGet">The number of big craftables to get</param>
-		/// <param name="itemsToExclude">Item ids to not include</param>
+		/// <param name="itemsToExclude">BigCraftable indexes to not include</param>
         /// <returns>A list of big craftables to sell</returns>
-        public static List<ISalable> GetRandomBigCraftablesToSell(Random rng, int numberToGet, List<int> itemsToExclude = null)
+        public static List<ISalable> GetRandomBigCraftablesToSell(
+			Random rng, 
+			int numberToGet, 
+			List<BigCraftableIndexes> itemsToExclude = null)
         {
             return GetRandomBigCraftables(numberToGet, itemsToExclude, rng)
 				.Cast<ISalable>()
@@ -494,20 +519,23 @@ namespace Randomizer
         /// Gets a list of random big craftables
         /// </summary>
         /// <param name="numberToGet">The number of big craftables to get</param>
-		/// <param name="itemsToExclude">Item ids to not include</param>
+		/// <param name="itemsToExclude">BigCraftable indexes to not include</param>
         /// <param name="rng">The RNG to use</param>
         /// <returns>A list of big craftables to sell</returns>
-        public static List<SVObject> GetRandomBigCraftables(int numberToGet, List<int> itemsToExclude = null, Random rng = null)
+        public static List<SVObject> GetRandomBigCraftables(
+			int numberToGet, 
+			List<BigCraftableIndexes> itemsToExclude = null, 
+			Random rng = null)
         {
             var rngToUse = rng ?? Globals.RNG;
 
             var allBigCraftableIds = BigCraftableItems.Keys
-                .Cast<int>()
-                .Where(id => itemsToExclude == null || !itemsToExclude.Contains(id))
+                .Cast<BigCraftableIndexes>()
+                .Where(index => itemsToExclude == null || !itemsToExclude.Contains(index))
                 .ToList();
 
             return Globals.RNGGetRandomValuesFromList(allBigCraftableIds, numberToGet, rng)
-                .Select(bigCraftableId => new SVObject(Vector2.Zero, bigCraftableId))
+                .Select(bigCraftableIndex => BigCraftableFunctions.GetItem(bigCraftableIndex))
                 .ToList();
         }
 

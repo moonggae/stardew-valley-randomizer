@@ -97,4 +97,17 @@
         QuestionMark = 92,
         WarriorHelmet = 93,
     }
+
+    public class HatFunctions
+    {
+        /// <summary>
+        /// Gets the hat id in the form that Stardew references them
+        /// </summary>
+        /// <param name="hat">The hat index</param>
+        /// <returns>(H){hat-id)</returns>
+        public static string GetHatId(HatIndexes hat)
+        {
+            return $"(H){(int)hat}";
+        }
+    }
 }

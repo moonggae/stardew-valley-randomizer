@@ -40,8 +40,8 @@ namespace Randomizer
             EmptyStock(menu);
 
             // Beer and coffee will always be available
-            SVObject beer = new((int)ObjectIndexes.Beer, 1);
-            SVObject coffee = new((int)ObjectIndexes.Coffee, 1);
+            SVObject beer = new(ItemList.GetQualifiedId(ObjectIndexes.Beer), 1);
+            SVObject coffee = new(ItemList.GetQualifiedId(ObjectIndexes.Coffee), 1);
 
             AddStock(menu, beer);
             AddStock(menu, coffee);

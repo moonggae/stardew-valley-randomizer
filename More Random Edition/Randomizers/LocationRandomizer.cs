@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+//TODO 1.6: locations are COMPLETELY reworked, so this needs to be revamped
 namespace Randomizer
 {
 	/// <summary>

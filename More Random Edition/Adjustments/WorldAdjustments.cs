@@ -1,16 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
-using Netcode;
 using StardewModdingAPI.Utilities;
 using StardewValley;
-using StardewValley.Locations;
-using StardewValley.Monsters;
 using System.Collections.Generic;
 using System.Linq;
 using RandomizerItem = Randomizer.Item;
-using StardewValleyNpc = StardewValley.NPC;
 using SVChest = StardewValley.Objects.Chest;
 using SVItem = StardewValley.Item;
 
+//TODO: see if this is necessary anymore after fixing the items, etc
 namespace Randomizer
 {
     /// <summary>
@@ -39,18 +36,23 @@ namespace Randomizer
                         .Where(x => x.giftbox.Value)
                     .FirstOrDefault();
 
-                if (chest != null && chest.items.Count == 1)
+                if (chest != null && chest.Items.Count == 1)
                 {
-                    SVItem itemInChest = chest.items[0];
+                    SVItem itemInChest = chest.Items[0];
+
+                    //TODO 1.6: update ParentSheetIndex - this is NOT the right way to compare things anymore
                     if (itemInChest.ParentSheetIndex == (int)ObjectIndexes.ParsnipSeeds)
                     {
-                        itemInChest.DisplayName = ItemList.GetItemName(ObjectIndexes.ParsnipSeeds);
+                        //TODO 1.6: this is a readonly property now... figure out how to fix it
+                        // (or maybe this will just work without any changes now?
+                        //itemInChest.DisplayName = ItemList.GetItemName(ObjectIndexes.ParsnipSeeds);
                     }
                 }
             }
         }
 
         /// <summary>
+        /// TODO 1.6: check if this is necessary anymore
         /// Fixes the foragables on day 1 - the save file is created too quickly for it to be
         /// randomized right away, so we'll change them on the spot on the first day
         /// </summary>
@@ -61,7 +63,7 @@ namespace Randomizer
             {
                 List<GameLocation> locations = Game1.locations
                     .Concat(
-                        from location in Game1.locations.OfType<BuildableGameLocation>()
+                        from location in Game1.locations
                         from building in location.buildings
                         where building.indoors.Value != null
                         select building.indoors.Value
@@ -86,46 +88,6 @@ namespace Randomizer
                         location.Objects[oldForagableKey].ParentSheetIndex = newForagable.Id;
                         location.Objects[oldForagableKey].Name = newForagable.Name;
                     }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Identical to the logic in Farm.cs (spawnFlyingMonstersOffscreen) for the giant bat spawn, 
-        /// but we check for the randomized weapon instead
-        /// </summary>
-        public static void TrySpawnGalaxySwordBat()
-        {
-            // Besdies the Randomize check, this logic is taken from Farm.performTenMinuteUpdate
-            // to NOT try to spawn the bat at the wrong time, at the wrong farm
-            if (!Globals.Config.Weapons.Randomize ||
-                !Game1.spawnMonstersAtNight || 
-                Game1.farmEvent != null || 
-                Game1.timeOfDay < 1900 || 
-                Game1.random.NextDouble() >= 0.25 - Game1.player.team.AverageDailyLuck() / 2.0)
-            {
-                return;
-            }
-
-            var currentLocation = Game1.currentLocation;
-            if (currentLocation.Name != "Farm" ||
-                !(Game1.random.NextDouble() < 0.25))
-            {
-                return;
-            }
-
-            if (WeaponRandomizer.Weapons.TryGetValue((int)WeaponIndexes.GalaxySword, out var galaxySword)) {
-                if (Game1.player.CombatLevel >= 10 &&
-                    Game1.random.NextDouble() < 0.01 &&
-                    Game1.player.hasItemInInventoryNamed(galaxySword.Name))
-                {
-                    NetCollection<StardewValleyNpc> characters = currentLocation.characters;
-                    Bat bat = new(Vector2.Zero * 64f, 9999)
-                    {
-                        focusedOnFarmers = true,
-                        wildernessFarmMonster = true
-                    };
-                    characters.Add(bat);
                 }
             }
         }
