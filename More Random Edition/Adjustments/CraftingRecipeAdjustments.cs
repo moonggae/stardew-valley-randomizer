@@ -130,7 +130,8 @@ namespace Randomizer
 			CraftingRecipe inGameRecipe, 
 			Dictionary<ObjectIndexes, int> randomizedRecipe)
 		{
-			Dictionary<int, int> recipeList = (Dictionary<int, int>)GetInstanceField(inGameRecipe, "recipeList");
+			Dictionary<string, int> recipeList = 
+				(Dictionary<string, int>)GetInstanceField(inGameRecipe, "recipeList");
 			recipeList.Clear();
 
 			List<ObjectIndexes> itemIds = randomizedRecipe.Keys.ToList();
@@ -144,15 +145,17 @@ namespace Randomizer
 
 				foreach (ObjectIndexes id in randomizedRecipe.Keys.Where(x => x != firstKeyOfEasiestItem))
 				{
-					recipeList.Add((int)id, 1);
+					var idAsString = ((int)id).ToString();
+					recipeList.Add(idAsString, 1);
 				}
 			}
 			else
 			{
 				foreach (ObjectIndexes id in randomizedRecipe.Keys)
 				{
-					int value = randomizedRecipe[id];
-					recipeList.Add((int)id, Math.Max(value / 2, 1));
+                    var idAsString = ((int)id).ToString();
+                    int value = randomizedRecipe[id];
+					recipeList.Add(idAsString, Math.Max(value / 2, 1));
 				}
 			}
 		}

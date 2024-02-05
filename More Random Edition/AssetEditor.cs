@@ -17,12 +17,12 @@ namespace Randomizer
 		private readonly ModEntry _mod;
 		private Dictionary<string, string> _recipeReplacements = new(); // TODO 1.6
 		private Dictionary<string, string> _bundleReplacements = new(); // TODO 1.6
-        private Dictionary<string, string> _blueprintReplacements = new(); // TODO 1.6 - this doesn't exist, its  Data/Buildings now
+        private Dictionary<string, string> _blueprintReplacements = new(); // TODO 1.6 - this doesn't exist, it's Data/Buildings now
         private Dictionary<string, string> _uiStringReplacements = new(); // TODO 1.6
         private Dictionary<string, string> _grandpaStringReplacements = new(); // TODO 1.6
         private Dictionary<string, string> _stringReplacements = new(); // TODO 1.6
         private Dictionary<string, string> _farmEventsReplacements = new(); // TODO 1.6
-        private Dictionary<string, string> _locationStringReplacements = new(); // TODO 1.6
+        private Dictionary<string, string> _locationStringReplacements = new(); // TODO 1.6 - depends on Crop randomization
         private Dictionary<string, string> _fishReplacements = new(); // TODO 1.6
         private Dictionary<string, string> _questReplacements = new(); // TODO 1.6
         private Dictionary<string, string> _mailReplacements = new(); // TODO 1.6
@@ -293,7 +293,7 @@ namespace Randomizer
 			//_blueprintReplacements = BlueprintRandomizer.Randomize();
 			//_monsterReplacements = MonsterRandomizer.Randomize(); // Must be done before recipes since rarities of drops change
 			//_locationsReplacements = LocationRandomizer.Randomize(_objectInformationReplacements); // Must be done before recipes because of wild seeds
-			//_recipeReplacements = CraftingRecipeRandomizer.Randomize();
+			_recipeReplacements = CraftingRecipeRandomizer.Randomize();
 			//_stringReplacements = StringsAdjustments.GetCSFileStringReplacements();
 			//_farmEventsReplacements = StringsAdjustments.GetFarmEventsReplacements();
 			//_locationStringReplacements = StringsAdjustments.GetLocationStringReplacements();

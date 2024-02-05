@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using StardewValley;
+﻿using StardewValley;
 using StardewValley.Objects;
 using System;
 using System.Collections.Generic;

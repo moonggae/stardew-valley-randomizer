@@ -1,10 +1,11 @@
-﻿using System;
+﻿using StardewValley;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Randomizer
 {
-	public class CraftableItem : Item
+    public class CraftableItem : Item
 	{
 		public string SkillString { get; set; } = "";
 		/// <summary>
@@ -20,8 +21,8 @@ namespace Randomizer
 		public CraftableCategories Category { get; set; }
 		public Dictionary<ObjectIndexes, int> LastRecipeGenerated { get; set; } = new(); // item id to amount needed
 
-		private readonly static Dictionary<string, string> CraftingRecipeData = 
-			Globals.ModRef.Helper.GameContent.Load<Dictionary<string, string>>("Data/CraftingRecipes");
+		private readonly static Dictionary<string, string> CraftingRecipeData =
+			DataLoader.CraftingRecipes(Game1.content);
 
 		/// <summary>
 		/// The original data taken from Data/CraftingRecipes.xnb
@@ -498,7 +499,7 @@ namespace Randomizer
 		/// <returns />
 		private string GetStringForForagables()
 		{
-			Seasons season = Seasons.Spring;
+			Seasons season;
 			switch (Id)
 			{
 				case (int)ObjectIndexes.SpringSeeds:
@@ -521,7 +522,9 @@ namespace Randomizer
 			Dictionary<int, int> foragablesToUse = new Dictionary<int, int>();
 			for (int i = 0; i < 4; i++)
 			{
-				int foragableId = Globals.RNGGetRandomValueFromList(ItemList.GetForagables(season)).Id;
+				// TODO 1.6: Re-instate this once foragables are populated once again
+				//int foragableId = Globals.RNGGetRandomValueFromList(ItemList.GetForagables(season)).Id;
+				int foragableId = ItemList.GetItem(ObjectIndexes.WildHorseradish).Id;
 				if (foragablesToUse.ContainsKey(foragableId))
 				{
 					foragablesToUse[foragableId]++;
