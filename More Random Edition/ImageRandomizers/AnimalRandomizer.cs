@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -30,7 +29,7 @@ namespace Randomizer
         public AnimalRandomizer(AnimalTypes animalTypeToRandomize)
         {
             AnimalTypeToRandomize = animalTypeToRandomize;
-            SubDirectory = $"Animals/{animalTypeToRandomize}";
+            SubDirectory = Path.Combine("Animals", animalTypeToRandomize.ToString());
             StardewAssetPath = GetStardewAssetPath();
         }
 
@@ -58,7 +57,7 @@ namespace Randomizer
         protected override Texture2D BuildImage()
         {
             string randomAnimalFileName = GetRandomAnimalFileName();
-            string imageLocation = $"{ImageDirectory}/{randomAnimalFileName}";
+            string imageLocation = Path.Combine(ImageDirectory, randomAnimalFileName);
             Texture2D animalImage = Texture2D.FromFile(Game1.graphics.GraphicsDevice, imageLocation);
 
             LastHueShiftValue.Remove(AnimalTypeToRandomize);

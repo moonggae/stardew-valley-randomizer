@@ -79,7 +79,14 @@ namespace Randomizer
             {
                 string animalImage = AnimalRandomizer.GetRandomAnimalName(animalType, getOriginalName: true);
                 string animalIconPath = Globals.GetFilePath(
-                    $"{AssetsFolder}/CustomImages/Animals/{animalType}/Icons/{animalImage}");
+                    Path.Combine(
+                        AssetsFolder, 
+                        "CustomImages", 
+                        "Animals", 
+                        animalType.ToString(), 
+                        "Icons", 
+                        animalImage)
+                    );
 
                 if (File.Exists(animalIconPath))
                 {
@@ -91,7 +98,7 @@ namespace Randomizer
                 ? UnknownAnimalIconName
                 : $"Original{animalType}Icon.png";
 
-            return $"{PatcherImageFolder}/{animalSpriteImage}";
+            return Path.Combine(PatcherImageFolder, animalSpriteImage);
         }
 
         /// <summary>

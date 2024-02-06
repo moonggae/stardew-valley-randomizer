@@ -57,13 +57,13 @@ namespace Randomizer
 			SetAllItemMappings();
 			PositionsToOverlay = PointsToItemIds.Keys.ToList();
 
-			FishImages = Directory.GetFiles($"{ImageDirectory}/{FishDirectory}")
+			FishImages = Directory.GetFiles(Path.Combine(ImageDirectory, FishDirectory))
 				.Where(x => x.EndsWith(".png"))
 				.OrderBy(x => x)
 				.ToList();
 
-			BootImages = Directory.GetFiles($"{ImageDirectory}/{BootsDirectory}")
-				.Where(x => x.EndsWith(".png"))
+			BootImages = Directory.GetFiles(Path.Combine(ImageDirectory, BootsDirectory))
+                .Where(x => x.EndsWith(".png"))
 				.OrderBy(x => x)
 				.ToList();
 		}
@@ -138,7 +138,7 @@ namespace Randomizer
 			if (item.Id == (int)ObjectIndexes.CherrySapling)
 			{
 				ImageWidthInPx = 96;
-				return $"{ImageDirectory}/{FruitTreeSpritesImageName}.png";
+				return Path.Combine(ImageDirectory, $"{FruitTreeSpritesImageName}.png");
 			}
 
 			if (item.IsFish)
@@ -157,19 +157,19 @@ namespace Randomizer
 			int cropId = item.Id;
 			if (item.IsCrop || item.Id == (int)ObjectIndexes.CoffeeBean)
 			{
-				subDirectory = $"/{CropsDirectory}";
+				subDirectory = $"{Path.DirectorySeparatorChar}{CropsDirectory}";
 			}
 
 			else if (item.IsSeed)
 			{
 				SeedItem seedItem = (SeedItem)item;
 				cropId = seedItem.CropGrowthInfo.CropId;
-				subDirectory = $"/{SeedsDirectory}";
+				subDirectory = $"{Path.DirectorySeparatorChar}{SeedsDirectory}";
 			}
 
 			if (item.IsFlower)
 			{
-				subDirectory = $"/{FlowersDirectory}";
+				subDirectory = $"{Path.DirectorySeparatorChar}{FlowersDirectory}";
 
 				CropItem cropItem = (CropItem)item;
 				if (cropItem.MatchingSeedItem.CropGrowthInfo.TintColorInfo.HasTint)
@@ -184,7 +184,7 @@ namespace Randomizer
 				return null;
 			}
 
-			string fullImagePath = $"{ImageDirectory}{subDirectory}/{linkingData.ImageName}";
+			string fullImagePath = Path.Combine($"{ImageDirectory}{subDirectory}", linkingData.ImageName);
             ImageNameToCropIds[fullImagePath] = cropId; // Use this path because it's what we have in MainipulateImage
             return fullImagePath;
 		}
@@ -197,7 +197,8 @@ namespace Randomizer
 		/// <returns>The manipulated image (or the input, if nothing is done)</returns>
         protected override Texture2D ManipulateImage(Texture2D image, string fileName)
         {
-            string endingFileName = fileName.Split($"CustomImages/{SubDirectory}/")[1];
+            string endingFileName = fileName.Split(
+				$"CustomImages{Path.DirectorySeparatorChar}{SubDirectory}{Path.DirectorySeparatorChar}")[1];
 
 			// Use the LinkingData to grab the hue shift value for crops and seeds
 			bool isCropImage = endingFileName.StartsWith(CropsDirectory);
@@ -271,8 +272,8 @@ namespace Randomizer
 			seedImage = ImageManipulator.ShiftImageHue(seedImage, linkingData.HueShiftValue);
 
 			string directory = linkingData.SeedItem.CropGrowthInfo.IsTrellisCrop
-                ? $"{ImageDirectory}/{SeedPacketDirectory}/{TrellisPacketSubDirectory}"
-				: $"{ImageDirectory}/{SeedPacketDirectory}";
+				? Path.Combine(ImageDirectory, SeedPacketDirectory, TrellisPacketSubDirectory)
+				: Path.Combine(ImageDirectory, SeedPacketDirectory);
 
             var seedPacketFileNames = Directory.GetFiles(directory)
 				.Where(x => x.EndsWith(".png"))

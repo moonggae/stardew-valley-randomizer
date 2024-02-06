@@ -63,7 +63,7 @@ namespace Randomizer
 		protected override string GetRandomFileName(Point position)
 		{
 			Bundle bundle = PointsToBundlesMap[position];
-			return $"{ImageDirectory}/{bundle.ImageName}.png";
+			return Path.Combine(ImageDirectory, $"{bundle.ImageName}.png");
 		}
 
 		/// <summary>
