@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using StardewValley;
+using System.Collections.Generic;
 
 namespace Randomizer
 {
@@ -19,8 +20,7 @@ namespace Randomizer
         /// </summary>
         private static void Initialize()
 		{
-            DefaultMonsterData = Globals.ModRef.Helper.GameContent
-				.Load<Dictionary<string, string>>("Data/Monsters");
+			DefaultMonsterData = DataLoader.Monsters(Game1.content);
 
 			foreach(KeyValuePair<string, string> data in DefaultMonsterData)
 			{

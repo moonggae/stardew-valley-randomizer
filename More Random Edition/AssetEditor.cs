@@ -35,10 +35,10 @@ namespace Randomizer
         private Dictionary<string, string> _cookingChannelReplacements = new(); // TODO 1.6 - depends on Crops
         private Dictionary<string, WeaponData> _weaponReplacements = new();
         private Dictionary<string, string> _bootReplacements = new();
-        private Dictionary<string, string> _monsterReplacements = new(); // TODO 1.6
+        private Dictionary<string, string> _monsterReplacements = new();
         private Dictionary<string, CharacterData> _birthdayReplacements = new();
         private Dictionary<string, string> _preferenceReplacements = new(); // TODO 1.6 - depends on Crops/Fish/Foragables
-        private Dictionary<int, string> _secretNotesReplacements = new();
+        private Dictionary<int, string> _secretNotesReplacements = new(); // TODO 1.6 - depends on NPC Preferences
         private Dictionary<string, string> _objectContextTagsAdjustments = new(); // TODO 1.6 - this doesn't exist, it's the ContextTags property in Data/Objects now
         private Dictionary<string, SpecialOrderData> _specialOrderAdjustments = new(); // TODO 1.6 - depends on Fish
 
@@ -294,7 +294,7 @@ namespace Randomizer
 			//_objectInformationReplacements = editedObjectInfo.ObjectInformationReplacements;
 
 			_buildingReplacements = BuildingRandomizer.Randomize();
-			//_monsterReplacements = MonsterRandomizer.Randomize(); // Must be done before recipes since rarities of drops change
+			_monsterReplacements = MonsterRandomizer.Randomize(); // Must be done before recipes since rarities of drops change
 			//_locationsReplacements = LocationRandomizer.Randomize(_objectInformationReplacements); // Must be done before recipes because of wild seeds
 			_recipeReplacements = CraftingRecipeRandomizer.Randomize();
 			_stringReplacements = StringsAdjustments.GetCSFileStringReplacements();
