@@ -1,6 +1,7 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley.GameData.Buildings;
+using StardewValley.GameData.Characters;
 using StardewValley.GameData.Crops;
 using StardewValley.GameData.FruitTrees;
 using StardewValley.GameData.SpecialOrders;
@@ -35,7 +36,7 @@ namespace Randomizer
         private Dictionary<string, WeaponData> _weaponReplacements = new();
         private Dictionary<string, string> _bootReplacements = new();
         private Dictionary<string, string> _monsterReplacements = new(); // TODO 1.6
-        private Dictionary<string, string> _birthdayReplacements = new(); // TODO 1.6
+        private Dictionary<string, CharacterData> _birthdayReplacements = new();
         private Dictionary<string, string> _preferenceReplacements = new(); // TODO 1.6 - depends on Crops/Fish/Foragables
         private Dictionary<int, string> _secretNotesReplacements = new();
         private Dictionary<string, string> _objectContextTagsAdjustments = new(); // TODO 1.6 - this doesn't exist, it's the ContextTags property in Data/Objects now
@@ -77,7 +78,7 @@ namespace Randomizer
                 TryReplaceAsset(e, "Data/weapons", _weaponReplacements) ||
                 TryReplaceAsset(e, "Data/Boots", _bootReplacements) ||
                 TryReplaceAsset(e, "Data/Monsters", _monsterReplacements) ||
-                TryReplaceAsset(e, "Data/NPCDispositions", _birthdayReplacements) ||
+                TryReplaceAsset(e, "Data/Characters", _birthdayReplacements) ||
                 TryReplaceAsset(e, "Data/NPCGiftTastes", _preferenceReplacements) ||
                 TryReplaceAsset(e, "Data/SecretNotes", _secretNotesReplacements) ||
                 TryReplaceAsset(e, "Data/ObjectContextTags", _objectContextTagsAdjustments) ||
@@ -134,7 +135,7 @@ namespace Randomizer
             if (e.NameWithoutLocale.IsEquivalentTo("Data/weapons")) { return Globals.Config.Weapons.Randomize; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Boots")) { return Globals.Config.Boots.Randomize; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Monsters")) { return Globals.Config.Monsters.Randomize; }
-            if (e.NameWithoutLocale.IsEquivalentTo("Data/NPCDispositions")) { return Globals.Config.NPCs.RandomizeBirthdays; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Characters")) { return Globals.Config.NPCs.RandomizeBirthdays; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/NPCGiftTastes")) { return Globals.Config.NPCs.RandomizeIndividualPreferences || Globals.Config.NPCs.RandomizeUniversalPreferences; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/SecretNotes")) { return Globals.Config.NPCs.RandomizeIndividualPreferences; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/ObjectContextTags") ||
@@ -201,7 +202,7 @@ namespace Randomizer
 			InvalidateCacheForDefaultAndCurrentLocales("Data/weapons");
 			InvalidateCacheForDefaultAndCurrentLocales("Data/Boots");
 			InvalidateCacheForDefaultAndCurrentLocales("Data/Monsters");
-            InvalidateCacheForDefaultAndCurrentLocales("Data/NPCDispositions");
+            InvalidateCacheForDefaultAndCurrentLocales("Data/Characters");
             InvalidateCacheForDefaultAndCurrentLocales("Data/NPCGiftTastes");
             InvalidateCacheForDefaultAndCurrentLocales("Data/SecretNotes");
             InvalidateCacheForDefaultAndCurrentLocales("Data/ObjectContextTags");
@@ -317,7 +318,7 @@ namespace Randomizer
 
 			_weaponReplacements = WeaponRandomizer.Randomize();
 			_bootReplacements = BootRandomizer.Randomize();
-			//_birthdayReplacements = BirthdayRandomizer.Randomize();
+			_birthdayReplacements = BirthdayRandomizer.Randomize();
 
    //         _objectContextTagsAdjustments = ObjectContextTagsAdjustments.GetObjectContextTagAdjustments();
    //         _specialOrderAdjustments = SpecialOrderAdjustments.GetSpecialOrderAdjustments();

@@ -1,14 +1,17 @@
 ﻿using StardewModdingAPI.Utilities;
+using StardewValley;
+using StardewValley.GameData.Characters;
 using System.Collections.Generic;
 
 namespace Randomizer
 {
-	/// <summary>
-	/// Randomizes the birthdays of all NPCs
-	/// </summary>
-	public class BirthdayRandomizer
+    /// <summary>
+    /// Randomizes the birthdays of all NPCs
+    /// </summary>
+    public class BirthdayRandomizer
 	{
 		/// <summary>
+		/// TODO 1.6: When the date of the new festival is known, we need to add to this list!
 		/// Holidays - don't assign birthdays to these days!
 		/// </summary>
 		private readonly static List<SDate> Holidays = new()
@@ -34,28 +37,25 @@ namespace Randomizer
 		/// Does the birthday randomization
 		/// </summary>
 		/// <returns>The dictionary to use for replacements</returns>
-		public static Dictionary<string, string> Randomize()
+		public static Dictionary<string, CharacterData> Randomize()
 		{
 			Dictionary<SDate, string> birthdaysInUse = InitBirthdaysInUse();
-			Dictionary<string, string> replacements = new();
-			Dictionary<string, string> npcDispositionData = Globals.ModRef.Helper.GameContent
-                .Load<Dictionary<string, string>>("Data/NPCDispositions");
+			Dictionary<string, CharacterData> replacements = new();
+			Dictionary<string, CharacterData> characterData = DataLoader.Characters(Game1.content);
 
-            foreach (KeyValuePair<string, string> dispositionData in npcDispositionData)
+            foreach (KeyValuePair<string, CharacterData> dispositionData in characterData)
 			{
 				string npcName = dispositionData.Key;
-				string[] data = dispositionData.Value.Split('/');
+				CharacterData npc = dispositionData.Value;
 
 				// Don't replace a non-existant birthday
-				if (string.IsNullOrWhiteSpace(data[(int)NPCDispositionIndexes.Birthday]))
+				if (npc.BirthSeason == null)
 				{
 					continue;
 				}
 
-                SDate addedDate = AddRandomBirthdayToNPC(birthdaysInUse, npcName);
-                data[(int)NPCDispositionIndexes.Birthday] = $"{addedDate.Season} {addedDate.Day}";
-
-				replacements.Add(npcName, string.Join("/", data));
+                AddRandomBirthdayToNPC(npcName, npc, birthdaysInUse);
+				replacements.Add(npcName, npc);
 			}
 
 			WriteToSpoilerLog(birthdaysInUse);
@@ -80,13 +80,18 @@ namespace Randomizer
 		/// <summary>
 		/// Gets a random Stardew Valley date - excludes the holidays and birthdays already in use
 		/// </summary>
+		/// <param name="npcName">The name of the NPC - used as the key</param>
+		/// <param name="npc">The npc to modify</param>
 		/// <param name="birthdaysInUse">The birthdays in use - this function adds the date to it</param>
-		/// <returns>The date added</returns>
-		private static SDate AddRandomBirthdayToNPC(Dictionary<SDate, string> birthdaysInUse, string npcName)
+		private static void AddRandomBirthdayToNPC(
+            string npcName,
+            CharacterData npc,
+            Dictionary<SDate, string> birthdaysInUse)
 		{
 			if (npcName == "Wizard")
 			{
-				return GetWizardBirthday(birthdaysInUse);
+				SetWizardBirthday(npc, birthdaysInUse);
+				return;
 			}
 
 			List<string> seasonStrings = new() { "spring", "summer", "fall", "winter" };
@@ -100,27 +105,30 @@ namespace Randomizer
 				if (!birthdaysInUse.ContainsKey(date))
 				{
 					birthdaysInUse.Add(date, npcName);
-					dateRetrieved = true;
+                    npc.BirthSeason = date.Season;
+					npc.BirthDay = date.Day;
+                    dateRetrieved = true;
 				}
 			} while (!dateRetrieved);
-
-			return date;
 		}
 
 		/// <summary>
-		/// Gets the wizard's birthday - must be from the 15-17, as the game hard-codes the "Night Market" text
+		/// Sets the wizard's birthday - must be from the 15-17, as the game hard-codes the "Night Market" text
 		/// to the billboard
 		/// </summary>
+		/// <param name="wizard">The wizard to modify</param>
 		/// <param name="birthdaysInUse">The birthdays in use - this function adds the date to it</param>
 		/// <returns />
-		private static SDate GetWizardBirthday(Dictionary<SDate, string> birthdaysInUse)
+		private static void SetWizardBirthday(CharacterData wizard, Dictionary<SDate, string> birthdaysInUse)
 		{
 			int day = Range.GetRandomValue(15, 17);
 			SDate wizardBirthday = new(day, "winter", 1);
 
 			birthdaysInUse.Remove(wizardBirthday);
 			birthdaysInUse.Add(wizardBirthday, "Wizard");
-			return wizardBirthday;
+
+			wizard.BirthSeason = wizardBirthday.Season;
+			wizard.BirthDay = wizardBirthday.Day;
 		}
 
 		/// <summary>

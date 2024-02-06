@@ -1,15 +1,6 @@
 ﻿namespace Randomizer
 {
     /// <summary>
-    /// The indexes in the Data/NPCDIspositions.xnb dictionary
-    /// Add to this enum as these are used
-    /// </summary>
-    public enum NPCDispositionIndexes
-    {
-        Birthday = 8
-    }
-
-    /// <summary>
     /// The indexes in the Data/NPCGiftTastes.xnb dictionary
     /// Add to this enum as these are used
     /// </summary>
