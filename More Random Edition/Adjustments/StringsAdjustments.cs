@@ -16,16 +16,18 @@ namespace Randomizer
 		{
 			Dictionary<string, string> stringReplacements = new();
 
-			// Fix the "Parsnip" string at the start of the game
-			string parsnipSeedName = ItemList.Items[ObjectIndexes.ParsnipSeeds].Name;
-			stringReplacements["Farmer.cs.1918"] = Globals.GetTranslation("Farmer.cs.1918", new { seedName = parsnipSeedName });
+			//TODO 1.6: uncomment when crops/fish are randomized again
 
-			// Fix the queen of sauce strings so it doesn't say the wrong recipe
-			if (Globals.Config.Fish.Randomize || Globals.Config.Crops.Randomize)
-			{
-				stringReplacements["TV.cs.13151"] = Globals.GetTranslation("TV.cs.13151");
-				stringReplacements["TV.cs.13153"] = Globals.GetTranslation("TV.cs.13153");
-			}
+			//// Fix the "Parsnip" string at the start of the game
+			//string parsnipSeedName = ItemList.Items[ObjectIndexes.ParsnipSeeds].Name;
+			//stringReplacements["Farmer.cs.1918"] = Globals.GetTranslation("Farmer.cs.1918", new { seedName = parsnipSeedName });
+
+			//// Fix the queen of sauce strings so it doesn't say the wrong recipe
+			//if (Globals.Config.Fish.Randomize || Globals.Config.Crops.Randomize)
+			//{
+			//	stringReplacements["TV.cs.13151"] = Globals.GetTranslation("TV.cs.13151");
+			//	stringReplacements["TV.cs.13153"] = Globals.GetTranslation("TV.cs.13153");
+			//}
 
 			// Fix the pet cutscene to have the random pet name
 			if (Globals.Config.Animals.RandomizePets)
@@ -122,7 +124,7 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Gets event string replacements for Events/Farm.xnb
+		/// Gets event string replacements for Data/Events/Farm.xnb
 		/// Currently just sets the animal name during the adoption cutscene
 		/// 
 		/// Only done in English for now

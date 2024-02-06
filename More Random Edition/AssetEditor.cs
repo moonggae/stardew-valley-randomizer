@@ -19,27 +19,27 @@ namespace Randomizer
 		private Dictionary<string, string> _recipeReplacements = new();
 		private Dictionary<string, string> _bundleReplacements = new(); // TODO 1.6 - depends on Crop/Fish/Foragables/NPC Prefs
         private Dictionary<string, BuildingData> _buildingReplacements = new();
-        private Dictionary<string, string> _uiStringReplacements = new(); // TODO 1.6
-        private Dictionary<string, string> _grandpaStringReplacements = new(); // TODO 1.6
-        private Dictionary<string, string> _stringReplacements = new(); // TODO 1.6
-        private Dictionary<string, string> _farmEventsReplacements = new(); // TODO 1.6
+        private Dictionary<string, string> _uiStringReplacements = new();
+        private Dictionary<string, string> _grandpaStringReplacements = new();
+        private Dictionary<string, string> _stringReplacements = new(); // TODO 1.6 - depends on Crop/Fish - only partially working now
+        private Dictionary<string, string> _farmEventsReplacements = new();
         private Dictionary<string, string> _locationStringReplacements = new(); // TODO 1.6 - depends on Crop randomization
         private Dictionary<string, string> _fishReplacements = new(); // TODO 1.6
-        private Dictionary<string, string> _questReplacements = new(); // TODO 1.6
-        private Dictionary<string, string> _mailReplacements = new(); // TODO 1.6
+        private Dictionary<string, string> _questReplacements = new(); // TODO 1.6 - depends on Crop/Fish/Foragables
+        private Dictionary<string, string> _mailReplacements = new(); // TODO 1.6 - depends on Crop/Fish/Foragables
         private Dictionary<string, SVLocationData> _locationsReplacements = new(); // TODO 1.6
         private Dictionary<int, string> _objectInformationReplacements = new(); // TODO 1.6 - this doesn't exist, it's Data/Objects now
-        private Dictionary<string, FruitTreeData> _fruitTreeReplacements = new(); // TODO 1.6
+        private Dictionary<string, FruitTreeData> _fruitTreeReplacements = new(); // TODO 1.6 - depends on Crops
         private Dictionary<string, CropData> _cropReplacements = new(); // TODO 1.6
-        private Dictionary<string, string> _cookingChannelReplacements = new(); // TODO 1.6
+        private Dictionary<string, string> _cookingChannelReplacements = new(); // TODO 1.6 - depends on Crops
         private Dictionary<string, WeaponData> _weaponReplacements = new();
         private Dictionary<string, string> _bootReplacements = new();
         private Dictionary<string, string> _monsterReplacements = new(); // TODO 1.6
         private Dictionary<string, string> _birthdayReplacements = new(); // TODO 1.6
-        private Dictionary<string, string> _preferenceReplacements = new(); // TODO 1.6
+        private Dictionary<string, string> _preferenceReplacements = new(); // TODO 1.6 - depends on Crops/Fish/Foragables
         private Dictionary<int, string> _secretNotesReplacements = new();
         private Dictionary<string, string> _objectContextTagsAdjustments = new(); // TODO 1.6 - this doesn't exist, it's the ContextTags property in Data/Objects now
-        private Dictionary<string, SpecialOrderData> _specialOrderAdjustments = new(); // TODO 1.6
+        private Dictionary<string, SpecialOrderData> _specialOrderAdjustments = new(); // TODO 1.6 - depends on Fish
 
         /// <summary>
         /// Whether we're currently ignoring replacing object information
@@ -296,8 +296,8 @@ namespace Randomizer
 			//_monsterReplacements = MonsterRandomizer.Randomize(); // Must be done before recipes since rarities of drops change
 			//_locationsReplacements = LocationRandomizer.Randomize(_objectInformationReplacements); // Must be done before recipes because of wild seeds
 			_recipeReplacements = CraftingRecipeRandomizer.Randomize();
-			//_stringReplacements = StringsAdjustments.GetCSFileStringReplacements();
-			//_farmEventsReplacements = StringsAdjustments.GetFarmEventsReplacements();
+			_stringReplacements = StringsAdjustments.GetCSFileStringReplacements();
+			_farmEventsReplacements = StringsAdjustments.GetFarmEventsReplacements();
 			//_locationStringReplacements = StringsAdjustments.GetLocationStringReplacements();
 			//CraftingRecipeAdjustments.FixCookingRecipeDisplayNames();
 			//_cookingChannelReplacements = CookingChannelAdjustments.GetTextEdits();
