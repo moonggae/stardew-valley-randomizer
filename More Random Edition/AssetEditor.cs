@@ -26,11 +26,11 @@ namespace Randomizer
         private Dictionary<string, string> _stringReplacements = new(); // TODO 1.6 - depends on Crop/Fish - only partially working now
         private Dictionary<string, string> _farmEventsReplacements = new();
         private Dictionary<string, string> _locationStringReplacements = new(); // TODO 1.6 - depends on Crop randomization
-        private Dictionary<string, string> _fishReplacements = new();
+        private Dictionary<string, string> _fishReplacements = new(); //TODO 1.6 - DONE, but need to wait on locations before it can be finalized!
         private Dictionary<string, string> _questReplacements = new(); // TODO 1.6 - depends on Crop/Fish/Foragables
         private Dictionary<string, string> _mailReplacements = new(); // TODO 1.6 - depends on Crop/Fish/Foragables
         private Dictionary<string, SVLocationData> _locationsReplacements = new(); // TODO 1.6
-        private Dictionary<string, ObjectData> _objectsReplacements = new();
+        private Dictionary<string, ObjectData> _objectReplacements = new();
         private Dictionary<string, FruitTreeData> _fruitTreeReplacements = new(); // TODO 1.6 - depends on Crops
         private Dictionary<string, CropData> _cropReplacements = new(); // TODO 1.6
         private Dictionary<string, string> _cookingChannelReplacements = new(); // TODO 1.6 - depends on Crops
@@ -101,7 +101,7 @@ namespace Randomizer
                 }
                 else
                 {
-                    e.Edit((asset) => ApplyEdits(asset, _objectsReplacements));
+                    e.Edit((asset) => ApplyEdits(asset, _objectReplacements));
                 }
             } 
         }
@@ -240,7 +240,7 @@ namespace Randomizer
             _questReplacements.Clear();
             _mailReplacements.Clear();
             _locationsReplacements.Clear();
-            _objectsReplacements.Clear();
+            _objectReplacements.Clear();
             _fruitTreeReplacements.Clear();
             _cropReplacements.Clear();
             _cookingChannelReplacements.Clear();
@@ -292,7 +292,7 @@ namespace Randomizer
 			//CropRandomizer.Randomize(editedObjectInfo);
 			//_fruitTreeReplacements = editedObjectInfo.FruitTreeReplacements;
 			//_cropReplacements = editedObjectInfo.CropsReplacements;
-			_objectsReplacements = editedObjectInfo.ObjectsReplacements;
+			_objectReplacements = editedObjectInfo.ObjectsReplacements;
 
 			_buildingReplacements = BuildingRandomizer.Randomize();
 			_monsterReplacements = MonsterRandomizer.Randomize(); // Must be done before recipes since rarities of drops change
