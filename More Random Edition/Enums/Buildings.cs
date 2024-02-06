@@ -16,9 +16,7 @@
 		DeluxeBarn,
 		SlimeHutch,
 		Shed,
-		StoneCabin,
-		PlankCabin,
-		LogCabin,
+		Cabin,
 		Well,
 		FishPond,
 		Stable

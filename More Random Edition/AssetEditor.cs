@@ -1,5 +1,6 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley.GameData.Buildings;
 using StardewValley.GameData.Crops;
 using StardewValley.GameData.FruitTrees;
 using StardewValley.GameData.SpecialOrders;
@@ -9,15 +10,15 @@ using System.Collections.Generic;
 using SVLocationData = StardewValley.GameData.Locations.LocationData;
 
 //TODO 1.6: revisit some of the data files and see if we even need a randomizer version
-// ex) WeaponData
+// ex) LocationData
 namespace Randomizer
 {
     public class AssetEditor
 	{
 		private readonly ModEntry _mod;
-		private Dictionary<string, string> _recipeReplacements = new(); // TODO 1.6
-		private Dictionary<string, string> _bundleReplacements = new(); // TODO 1.6
-        private Dictionary<string, string> _blueprintReplacements = new(); // TODO 1.6 - this doesn't exist, it's Data/Buildings now
+		private Dictionary<string, string> _recipeReplacements = new();
+		private Dictionary<string, string> _bundleReplacements = new(); // TODO 1.6 - depends on Crop/Fish/Foragables/NPC Prefs
+        private Dictionary<string, BuildingData> _buildingReplacements = new();
         private Dictionary<string, string> _uiStringReplacements = new(); // TODO 1.6
         private Dictionary<string, string> _grandpaStringReplacements = new(); // TODO 1.6
         private Dictionary<string, string> _stringReplacements = new(); // TODO 1.6
@@ -59,9 +60,10 @@ namespace Randomizer
 		/// <param name="e"></param>
         public void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
+            //TODO 1.6: use the better way of replacing assets so strings aren't hard-coded
 			if (TryReplaceAsset(e, "Data/CraftingRecipes", _recipeReplacements) ||
                 TryReplaceAsset(e, "Data/Bundles", _bundleReplacements) ||
-                TryReplaceAsset(e, "Data/Blueprints", _blueprintReplacements) ||
+                TryReplaceAsset(e, "Data/Buildings", _buildingReplacements) ||
                 TryReplaceAsset(e, "Strings/UI", _uiStringReplacements) ||
 				TryReplaceAsset(e, "Data/Events/Farm", _farmEventsReplacements) ||
                 TryReplaceAsset(e, "Data/Fish", _fishReplacements) ||
@@ -117,7 +119,7 @@ namespace Randomizer
 
             if (e.NameWithoutLocale.IsEquivalentTo("Data/CraftingRecipes")) { return Globals.Config.CraftingRecipes.Randomize; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Bundles")) { return Globals.Config.Bundles.Randomize; }
-            if (e.NameWithoutLocale.IsEquivalentTo("Data/Blueprints")) { return Globals.Config.RandomizeBuildingCosts; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Buildings")) { return Globals.Config.RandomizeBuildingCosts; }
             if (e.NameWithoutLocale.IsEquivalentTo("Strings/StringsFromCSFiles")) { return true; }
             if (e.NameWithoutLocale.IsEquivalentTo("Strings/UI")) { return true; }
 			if (e.NameWithoutLocale.IsEquivalentTo("Data/Events/Farm")) { return Globals.Config.Animals.RandomizePets; }
@@ -183,7 +185,7 @@ namespace Randomizer
 		{
             InvalidateCacheForDefaultAndCurrentLocales("Data/CraftingRecipes");
             InvalidateCacheForDefaultAndCurrentLocales("Data/Bundles");
-            InvalidateCacheForDefaultAndCurrentLocales("Data/Blueprints");
+            InvalidateCacheForDefaultAndCurrentLocales("Data/Buildings");
 			InvalidateCacheForDefaultAndCurrentLocales("Strings/StringsFromCSFiles");
 			InvalidateCacheForDefaultAndCurrentLocales("Strings/UI");
 			InvalidateCacheForDefaultAndCurrentLocales("Data/ObjectInformation");
@@ -226,7 +228,7 @@ namespace Randomizer
         {
             _recipeReplacements.Clear();
             _bundleReplacements.Clear();
-            _blueprintReplacements.Clear();
+            _buildingReplacements.Clear();
             _uiStringReplacements.Clear();
             _grandpaStringReplacements.Clear();
             _stringReplacements.Clear();
@@ -290,7 +292,7 @@ namespace Randomizer
 			//_cropReplacements = editedObjectInfo.CropsReplacements;
 			//_objectInformationReplacements = editedObjectInfo.ObjectInformationReplacements;
 
-			//_blueprintReplacements = BlueprintRandomizer.Randomize();
+			_buildingReplacements = BuildingRandomizer.Randomize();
 			//_monsterReplacements = MonsterRandomizer.Randomize(); // Must be done before recipes since rarities of drops change
 			//_locationsReplacements = LocationRandomizer.Randomize(_objectInformationReplacements); // Must be done before recipes because of wild seeds
 			_recipeReplacements = CraftingRecipeRandomizer.Randomize();

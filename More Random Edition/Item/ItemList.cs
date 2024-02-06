@@ -39,6 +39,22 @@ namespace Randomizer
 		}
 
         /// <summary>
+        /// Gets the item from the given id
+        /// Handles qualified ids as well
+        /// </summary>
+        /// <param name="qualifiedId"></param>
+        /// <returns>The integer id</returns>
+        public static Item GetItemFromStringId(string givenId)
+        {
+            string[] tokens = givenId.Split(")");
+            int id = tokens.Length > 1
+                ? int.Parse(tokens[^1])
+                : int.Parse(givenId);
+
+			return Items[(ObjectIndexes)id];
+        }
+
+        /// <summary>
         /// Gets all the foragables
         /// </summary>
         /// <returns />
