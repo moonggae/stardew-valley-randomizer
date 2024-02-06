@@ -1256,10 +1256,11 @@ namespace Randomizer
 			// Populate the AvailableLocations/Seasons now that all fish are initialized
 			// Afterwards, fill out the default fish info
 			//FishData.InitializeFishToLocations();
-			//Items.Values.Where(item => item.Id > 0 && item is FishItem)
-			//	.Cast<FishItem>()
-			//	.ToList()
-			//	.ForEach(fishItem => FishData.FillDefaultFishInfo(fishItem));
-        }
+
+			Items.Values.Where(item => item.Id > 0 && item is FishItem)
+				.Cast<FishItem>()
+				.ToList()
+				.ForEach(fishItem => FishData.FillDefaultFishInfo(fishItem));
+		}
     }
 }

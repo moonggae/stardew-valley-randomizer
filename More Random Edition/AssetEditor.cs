@@ -4,6 +4,7 @@ using StardewValley.GameData.Buildings;
 using StardewValley.GameData.Characters;
 using StardewValley.GameData.Crops;
 using StardewValley.GameData.FruitTrees;
+using StardewValley.GameData.Objects;
 using StardewValley.GameData.SpecialOrders;
 using StardewValley.GameData.Weapons;
 using System;
@@ -25,11 +26,11 @@ namespace Randomizer
         private Dictionary<string, string> _stringReplacements = new(); // TODO 1.6 - depends on Crop/Fish - only partially working now
         private Dictionary<string, string> _farmEventsReplacements = new();
         private Dictionary<string, string> _locationStringReplacements = new(); // TODO 1.6 - depends on Crop randomization
-        private Dictionary<string, string> _fishReplacements = new(); // TODO 1.6
+        private Dictionary<string, string> _fishReplacements = new();
         private Dictionary<string, string> _questReplacements = new(); // TODO 1.6 - depends on Crop/Fish/Foragables
         private Dictionary<string, string> _mailReplacements = new(); // TODO 1.6 - depends on Crop/Fish/Foragables
         private Dictionary<string, SVLocationData> _locationsReplacements = new(); // TODO 1.6
-        private Dictionary<int, string> _objectInformationReplacements = new(); // TODO 1.6 - this doesn't exist, it's Data/Objects now
+        private Dictionary<string, ObjectData> _objectsReplacements = new();
         private Dictionary<string, FruitTreeData> _fruitTreeReplacements = new(); // TODO 1.6 - depends on Crops
         private Dictionary<string, CropData> _cropReplacements = new(); // TODO 1.6
         private Dictionary<string, string> _cookingChannelReplacements = new(); // TODO 1.6 - depends on Crops
@@ -92,7 +93,7 @@ namespace Randomizer
                 e.Edit((asset) => ApplyEdits(asset, _grandpaStringReplacements));
                 e.Edit((asset) => ApplyEdits(asset, _stringReplacements));
             }
-            else if (ShouldReplaceAsset(e, "Data/ObjectInformation"))
+            else if (ShouldReplaceAsset(e, "Data/Objects"))
             {
                 if (IgnoreObjectInformationReplacements)
                 {
@@ -100,7 +101,7 @@ namespace Randomizer
                 }
                 else
                 {
-                    e.Edit((asset) => ApplyEdits(asset, _objectInformationReplacements));
+                    e.Edit((asset) => ApplyEdits(asset, _objectsReplacements));
                 }
             } 
         }
@@ -124,7 +125,7 @@ namespace Randomizer
             if (e.NameWithoutLocale.IsEquivalentTo("Strings/StringsFromCSFiles")) { return true; }
             if (e.NameWithoutLocale.IsEquivalentTo("Strings/UI")) { return true; }
 			if (e.NameWithoutLocale.IsEquivalentTo("Data/Events/Farm")) { return Globals.Config.Animals.RandomizePets; }
-            if (e.NameWithoutLocale.IsEquivalentTo("Data/ObjectInformation")) { return true; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Objects")) { return true; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Fish")) { return Globals.Config.Fish.Randomize; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Quests") || e.Name.IsEquivalentTo("Data/mail")) { return Globals.Config.RandomizeQuests; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Locations")) { return Globals.Config.Fish.Randomize || Globals.Config.RandomizeForagables || Globals.Config.AddRandomArtifactItem; }
@@ -189,7 +190,7 @@ namespace Randomizer
             InvalidateCacheForDefaultAndCurrentLocales("Data/Buildings");
 			InvalidateCacheForDefaultAndCurrentLocales("Strings/StringsFromCSFiles");
 			InvalidateCacheForDefaultAndCurrentLocales("Strings/UI");
-			InvalidateCacheForDefaultAndCurrentLocales("Data/ObjectInformation");
+			InvalidateCacheForDefaultAndCurrentLocales("Data/Objects");
 			InvalidateCacheForDefaultAndCurrentLocales("Data/Events/Farm");
 			InvalidateCacheForDefaultAndCurrentLocales("Data/Fish");
 			InvalidateCacheForDefaultAndCurrentLocales("Data/Quests");
@@ -239,7 +240,7 @@ namespace Randomizer
             _questReplacements.Clear();
             _mailReplacements.Clear();
             _locationsReplacements.Clear();
-            _objectInformationReplacements.Clear();
+            _objectsReplacements.Clear();
             _fruitTreeReplacements.Clear();
             _cropReplacements.Clear();
             _cookingChannelReplacements.Clear();
@@ -284,14 +285,14 @@ namespace Randomizer
 
             //TODO 1.6: go through and fix/verify these one by one
 
-			//EditedObjectInformation editedObjectInfo = new();
-			//FishRandomizer.Randomize(editedObjectInfo);
-			//_fishReplacements = editedObjectInfo.FishReplacements;
+			EditedObjects editedObjectInfo = new();
+			FishRandomizer.Randomize(editedObjectInfo);
+			_fishReplacements = editedObjectInfo.FishReplacements;
 
 			//CropRandomizer.Randomize(editedObjectInfo);
 			//_fruitTreeReplacements = editedObjectInfo.FruitTreeReplacements;
 			//_cropReplacements = editedObjectInfo.CropsReplacements;
-			//_objectInformationReplacements = editedObjectInfo.ObjectInformationReplacements;
+			_objectsReplacements = editedObjectInfo.ObjectsReplacements;
 
 			_buildingReplacements = BuildingRandomizer.Randomize();
 			_monsterReplacements = MonsterRandomizer.Randomize(); // Must be done before recipes since rarities of drops change
@@ -331,7 +332,7 @@ namespace Randomizer
 		public void UndoObjectInformationReplacements()
 		{
 			IgnoreObjectInformationReplacements = true;
-            InvalidateCacheForDefaultAndCurrentLocales("Data/ObjectInformation");
+            InvalidateCacheForDefaultAndCurrentLocales("Data/Objects");
         }
 
 		/// <summary>
@@ -341,7 +342,7 @@ namespace Randomizer
 		public void RedoObjectInformationReplacements()
 		{
 			IgnoreObjectInformationReplacements = false;
-            InvalidateCacheForDefaultAndCurrentLocales("Data/ObjectInformation");
+            InvalidateCacheForDefaultAndCurrentLocales("Data/Objects");
         }
 
 		/// <summary>

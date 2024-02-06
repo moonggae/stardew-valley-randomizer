@@ -35,6 +35,7 @@ namespace Randomizer
 		public double SpawnMultiplier { get; set; }
 		public double DepthMultiplier { get; set; }
 		public int MinFishingLevel { get; set; }
+		public bool IsValidTutorialFish { get; set; }
 
 		/// <summary>
 		/// Returns whether this fish is a mines fish
@@ -115,24 +116,6 @@ namespace Randomizer
 			}
 		}
 
-		/// <summary>
-		/// This is at the end of the object information - unsure if it's actually used anywhere
-		/// and also unsure what the requirements for the "Day/Night" strings are
-		/// </summary>
-		public string ObjectInformationSuffix
-		{
-			get
-			{
-				string dayString = Times.MinValue < 500 ? "Day" : "";
-				string nightString = Times.MinValue > 500 || Times.MaxValue > 900 ? "Night" : "";
-				string dayListString = string.Join(" ", new List<string> { dayString, nightString });
-
-				string seasonString = string.Join(" ", AvailableSeasons.Select(x => x.ToString()));
-
-				return $"{dayListString}^{seasonString}";
-			}
-		}
-
 		public FishItem(int id, ObtainingDifficulties difficultyToObtain = ObtainingDifficulties.LargeTimeRequirements) : base(id)
 		{
 			DifficultyToObtain = difficultyToObtain;
@@ -149,7 +132,7 @@ namespace Randomizer
 		/// <returns />
 		private string GetTimesString()
 		{
-			string timesString = "";
+			string timesString;
 			if (ExcludedTimes.MinValue > 0 && ExcludedTimes.MaxValue > 0)
 			{
 				string fromTime = GetStringForTime(ExcludedTimes.MinValue);
@@ -267,41 +250,6 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Returns the ToString representation to be used for the Fish asset
-		/// </summary>
-		/// <returns />
-		public override string ToString()
-		{
-			if (Id == -4) { return ""; }
-
-			string timeString = "";
-			if (ExcludedTimes.MinValue < 600 || ExcludedTimes.MaxValue < 600)
-			{
-				timeString = $"{Times.MinValue} {Times.MaxValue}";
-			}
-			else
-			{
-				timeString = $"{Times.MinValue} {ExcludedTimes.MinValue} {ExcludedTimes.MaxValue} {Times.MaxValue}";
-			}
-
-			string seasonsString = "";
-			foreach (Seasons season in AvailableSeasons)
-			{
-				seasonsString += $"{season.ToString().ToLower()} ";
-			}
-			seasonsString = seasonsString.Trim();
-
-			string weatherString = "";
-			if (Weathers.Count >= 2) { weatherString = "both"; }
-			else { weatherString = Weathers[0].ToString().ToLower(); }
-
-			string spawnMultiplierString = (SpawnMultiplier == 0) ? "0" : SpawnMultiplier.ToString().TrimStart(new char[] { '0' });
-			string depthMultiplierString = (DepthMultiplier == 0) ? "0" : DepthMultiplier.ToString().TrimStart(new char[] { '0' });
-
-			return $"{Name}/{DartChance}/{BehaviorType.ToString().ToLower()}/{MinSize}/{MaxSize}/{timeString}/{seasonsString}/{weatherString}/{UnusedData}/{MinWaterDepth}/{spawnMultiplierString}/{depthMultiplierString}/{MinFishingLevel}";
-		}
-
-		/// <summary>
 		/// Gets all the fish
 		/// </summary>
 		/// <param name="includeLegendaries">Include the legendary fish</param>
@@ -347,7 +295,7 @@ namespace Randomizer
 					return allFish.Where(x => x.IsWinterFish).Cast<Item>().ToList();
 			}
 
-			Globals.ConsoleError($"Tried to get fish belonging to the non-existent season: {season.ToString()}");
+			Globals.ConsoleError($"Tried to get fish belonging to the non-existent season: {season}");
 			return new List<Item>();
 		}
 
@@ -370,7 +318,7 @@ namespace Randomizer
 					return allFish.Where(x => x.IsRainFish).Cast<Item>().ToList();
 			}
 
-			Globals.ConsoleError($"Tried to get fish belonging to the non-existent weather: {weather.ToString()}");
+			Globals.ConsoleError($"Tried to get fish belonging to the non-existent weather: {weather}");
 			return new List<Item>();
 		}
 
@@ -423,5 +371,40 @@ namespace Randomizer
 		{
 			return ItemList.Items.Values.Where(x => x.IsFish && IsLegendary(x.Id)).ToList();
 		}
-	}
+
+        /// <summary>
+        /// Returns the ToString representation to be used for the Fish asset
+        /// </summary>
+        /// <returns />
+        public override string ToString()
+        {
+            if (Id == -4) { return ""; }
+
+            string timeString;
+            if (ExcludedTimes.MinValue < 600 || ExcludedTimes.MaxValue < 600)
+            {
+                timeString = $"{Times.MinValue} {Times.MaxValue}";
+            }
+            else
+            {
+                timeString = $"{Times.MinValue} {ExcludedTimes.MinValue} {ExcludedTimes.MaxValue} {Times.MaxValue}";
+            }
+
+            string seasonsString = "";
+            foreach (Seasons season in AvailableSeasons)
+            {
+                seasonsString += $"{season.ToString().ToLower()} ";
+            }
+            seasonsString = seasonsString.Trim();
+
+            string weatherString;
+            if (Weathers.Count >= 2) { weatherString = "both"; }
+            else { weatherString = Weathers[0].ToString().ToLower(); }
+
+            string spawnMultiplierString = (SpawnMultiplier == 0) ? "0" : SpawnMultiplier.ToString().TrimStart(new char[] { '0' });
+            string depthMultiplierString = (DepthMultiplier == 0) ? "0" : DepthMultiplier.ToString().TrimStart(new char[] { '0' });
+
+            return $"{Name}/{DartChance}/{BehaviorType.ToString().ToLower()}/{MinSize}/{MaxSize}/{timeString}/{seasonsString}/{weatherString}/{UnusedData}/{MinWaterDepth}/{spawnMultiplierString}/{depthMultiplierString}/{MinFishingLevel}/{IsValidTutorialFish}";
+        }
+    }
 }

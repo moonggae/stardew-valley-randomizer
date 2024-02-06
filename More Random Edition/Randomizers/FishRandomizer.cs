@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StardewValley.GameData.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,7 +10,7 @@ namespace Randomizer
 	/// </summary>
 	public class FishRandomizer
 	{
-		public static void Randomize(EditedObjectInformation editedObjectInfo)
+		public static void Randomize(EditedObjects editedObjectInfo)
 		{
 			List<FishItem> legendaryFish = FishItem.GetLegendaries().Cast<FishItem>().ToList();
 			List<FishItem> normalFish = FishItem.Get().Cast<FishItem>().ToList();
@@ -59,8 +60,8 @@ namespace Randomizer
 					}
 				}
 
-				editedObjectInfo.FishReplacements.Add(fish.Id, fish.ToString());
-				editedObjectInfo.ObjectInformationReplacements.Add(fish.Id, GetFishObjectInformation(fish));
+				editedObjectInfo.FishReplacements.Add(fish.Id.ToString(), fish.ToString());
+				editedObjectInfo.ObjectsReplacements.Add(fish.Id.ToString(), GetFishObjectData(fish));
 			}
 
 			foreach (FishItem fish in legendaryFish)
@@ -75,8 +76,8 @@ namespace Randomizer
 				fish.BehaviorType = newBehaviorType;
 				fish.OverrideName = newName;
 
-				editedObjectInfo.FishReplacements.Add(fish.Id, fish.ToString());
-				editedObjectInfo.ObjectInformationReplacements.Add(fish.Id, GetFishObjectInformation(fish));
+				editedObjectInfo.FishReplacements.Add(fish.Id.ToString(), fish.ToString());
+				editedObjectInfo.ObjectsReplacements.Add(fish.Id.ToString(), GetFishObjectData(fish));
 			}
 
             // Keeping this here for debugging purposes
@@ -145,20 +146,20 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Gets the fish object info string
+		/// Gets the fish object data with all the relevant modifications
+		/// Currently this is the display name and description
 		/// </summary>
 		/// <param name="fish">The fish</param>
 		/// <returns />
-		private static string GetFishObjectInformation(FishItem fish)
+		private static ObjectData GetFishObjectData(FishItem fish)
 		{
-            string defaultObjectInfo = ItemList.OriginalItemList[fish.Id];
-            string[] objectInfoParts = defaultObjectInfo.Split('/');
+            ObjectData defaultObjectInfo = 
+				EditedObjects.DefaultObjectInformation[fish.Id.ToString()];
 
-            objectInfoParts[(int)ObjectInformationIndexes.DisplayName] = fish.OverrideName;
-			objectInfoParts[(int)ObjectInformationIndexes.Description] = fish.Description;
-			objectInfoParts[(int)ObjectInformationIndexes.AdditionalFishInfo] = fish.ObjectInformationSuffix;
+			defaultObjectInfo.DisplayName = fish.OverrideName;
+			defaultObjectInfo.Description = fish.Description;
 
-			return string.Join("/", objectInfoParts);
+			return defaultObjectInfo;
 		}
 
 		/// <summary>

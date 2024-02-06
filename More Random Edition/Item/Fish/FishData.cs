@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StardewValley;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,8 +10,8 @@ namespace Randomizer
 		/// <summary>
 		/// The default fish data from Data/Fish.xnb
 		/// </summary>
-		public readonly static Dictionary<int, string> DefaultStringData =
-			Globals.ModRef.Helper.GameContent.Load<Dictionary<int, string>>("Data/Fish");
+		public readonly static Dictionary<string, string> DefaultStringData =
+			DataLoader.Fish(Game1.content);
 
 		/// <summary>
 		/// Indexes for the Data/Fish.xnb fields
@@ -29,9 +30,11 @@ namespace Randomizer
 			MinWaterDepth,
 			SpawnMultiplier,
 			DepthMultiplier,
-			MinFishingLevel
+			MinFishingLevel,
+			IsValidTutorialFish
 		}
 
+		// TODO 1.6: This will need to be completely rewritten, as locations are NOT done the same way
 		/// <summary>
 		/// We will use the location data to initialize all fish's locations and seasons
 		/// as the fish data is unreliable - the locations are ACTUALLY what are used
@@ -191,7 +194,7 @@ namespace Randomizer
         /// <param name="fish">The fish</param>
         public static void FillDefaultFishInfo(FishItem fish)
 		{
-			string input = DefaultStringData[fish.Id];
+			string input = DefaultStringData[fish.Id.ToString()];
 
 			string[] fields = input.Split('/');;
             if (fields.Length < 13)
@@ -325,7 +328,15 @@ namespace Randomizer
 				return;
 			}
 			fish.MinFishingLevel = minFishingLevel;
-		}
+
+			// Is Valid Tutorial Fish
+			if (!bool.TryParse(fields[(int)FishFields.IsValidTutorialFish], out bool isValidTutorialFish))
+			{
+                Globals.ConsoleError($"Could not parse whether the fish is a valid tutorial fish when parsing fish with input: {input}");
+                return;
+            }
+            fish.IsValidTutorialFish = isValidTutorialFish;
+        } 
 
 		/// <summary>
 		/// Parses the given time string into a list of integers

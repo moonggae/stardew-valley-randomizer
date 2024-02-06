@@ -8,7 +8,7 @@ namespace Randomizer
     /// </summary>
     public class CropRandomizer
 	{
-		public static void Randomize(EditedObjectInformation editedObjectInfo)
+		public static void Randomize(EditedObjects editedObjectInfo)
 		{
 			RandomizeCrops(editedObjectInfo);
 			RandomizeFruitTrees(editedObjectInfo);
@@ -19,7 +19,7 @@ namespace Randomizer
 		/// Randomize fruit tree information
 		/// </summary>
 		/// <param name="editedObjectInfo">The edited object information</param>
-		private static void RandomizeFruitTrees(EditedObjectInformation editedObjectInfo)
+		private static void RandomizeFruitTrees(EditedObjects editedObjectInfo)
 		{
 			int[] fruitTreesIds = new int[]
 			{
@@ -81,7 +81,7 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="editedObjectInfo">The edited object information</param>
 		/// crop format: name/price/-300/Seeds -74/name/tooltip
-		private static void RandomizeCrops(EditedObjectInformation editedObjectInfo)
+		private static void RandomizeCrops(EditedObjects editedObjectInfo)
 		{
 			List<int> regrowableSeedIdsToRandomize = ItemList.GetSeeds().Cast<SeedItem>()
 				.Where(x => x.Randomize && x.CropGrowthInfo.RegrowsAfterHarvest)
@@ -182,7 +182,7 @@ namespace Randomizer
 		/// <param name="crops">The crops to set</param>
 		/// <param name="randomNames">The random names to give the crops</param>
 		private static void SetCropAndSeedInformation(
-			EditedObjectInformation editedObjectInfo,
+			EditedObjects editedObjectInfo,
 			List<CropItem> crops,
 			List<string> randomNames,
 			List<string> randomDescriptions)
@@ -218,7 +218,7 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="editedObjectInfo">The object info containing changes to apply</param>
 		/// <param name="coffeeName">The name of the coffee item</param>
-		private static void SetUpCoffee(EditedObjectInformation editedObjectInfo, string coffeeName)
+		private static void SetUpCoffee(EditedObjects editedObjectInfo, string coffeeName)
 		{
 			if (!Globals.Config.Crops.Randomize) { return; }
 
@@ -237,7 +237,7 @@ namespace Randomizer
 		/// Sets up the rice objects
 		/// </summary>
 		/// <param name="editedObjectInfo">The object info containing changes to apply</param>
-		public static void SetUpRice(EditedObjectInformation editedObjectInfo)
+		public static void SetUpRice(EditedObjects editedObjectInfo)
 		{
 			CropItem unmilledRice = (CropItem)ItemList.Items[ObjectIndexes.UnmilledRice];
 			string riceName = unmilledRice.OverrideName;
@@ -257,7 +257,7 @@ namespace Randomizer
 		/// Changes the names of the cooked food to match those of the objects themselves
 		/// </summary>
 		/// <param name="editedObjectInfo">The object info containing changes to apply</param>
-		private static void SetUpCookedFood(EditedObjectInformation editedObjectInfo)
+		private static void SetUpCookedFood(EditedObjects editedObjectInfo)
 		{
 			if (!Globals.Config.Crops.Randomize) { return; }
 

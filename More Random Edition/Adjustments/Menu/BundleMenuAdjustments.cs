@@ -111,6 +111,7 @@ namespace Randomizer
         }
 
 		/// <summary>
+        /// TODO 1.6: Data/Bundle now supports display names for English, so we probably can just deal with it there instead!
 		/// Replaces the bundle names with our custom ones
 		/// Only really necessary for non-English locales
 		/// </summary>
