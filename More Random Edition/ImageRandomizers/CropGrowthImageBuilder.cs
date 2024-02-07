@@ -49,22 +49,22 @@ namespace Randomizer
 			OffsetHeightInPx = 32;
 			OffsetWidthInPx = 128;
 
-			NormalImages = Directory.GetFiles($"{ImageDirectory}/{NormalDirectory}")
+			NormalImages = Directory.GetFiles(Path.Combine(ImageDirectory, NormalDirectory))
 				.Where(x => x.EndsWith("-4.png") || x.EndsWith("-5.png"))
 				.Select(x => x.Replace("-4.png", "").Replace("-5.png", ""))
 				.Distinct()
 				.OrderBy(x => x)
 				.ToList();
 
-			RegrowingImages = Directory.GetFiles($"{ImageDirectory}/{RegrowingDirectory}")
+			RegrowingImages = Directory.GetFiles(Path.Combine(ImageDirectory, RegrowingDirectory))
 				.Where(x => x.EndsWith(".png"))
 				.OrderBy(x => x)
 				.ToList();
-			TrellisImages = Directory.GetFiles($"{ImageDirectory}/{TrellisDirectory}")
+			TrellisImages = Directory.GetFiles(Path.Combine(ImageDirectory, TrellisDirectory))
 				.Where(x => x.EndsWith(".png"))
 				.OrderBy(x => x)
 				.ToList();
-			FlowerImages = Directory.GetFiles($"{ImageDirectory}/{FlowersDirectory}")
+			FlowerImages = Directory.GetFiles(Path.Combine(ImageDirectory, FlowersDirectory))
 				.Where(x => x.EndsWith(".png") && !x.EndsWith("-NoHue.png"))
 				.OrderBy(x => x)
 				.ToList();
@@ -174,7 +174,8 @@ namespace Randomizer
         /// <returns>The manipulated image (or the input, if nothing is done)</returns>
         protected override Texture2D ManipulateImage(Texture2D image, string fileName)
         {
-			string endingFileName = fileName.Split("CustomImages/CropGrowth/")[1];
+			string endingFileName = fileName.Split(
+				$"CustomImages{Path.DirectorySeparatorChar}CropGrowth{Path.DirectorySeparatorChar}")[1];
 
 			// Flowers are the only thing that we're NOT hue-shifting
 			if (endingFileName.StartsWith("Flowers"))
@@ -227,7 +228,7 @@ namespace Randomizer
 		private void ValidateCropImages()
 		{
 			// Gather data for normal images
-			string normalCropGrowthDirectory = $"{ImageDirectory}/{NormalDirectory}";
+			string normalCropGrowthDirectory = Path.Combine(ImageDirectory, NormalDirectory);
 			List<string> normalImageNames = Directory.GetFiles(normalCropGrowthDirectory).ToList();
 
 			List<string> normal4StageImages = normalImageNames
@@ -267,7 +268,7 @@ namespace Randomizer
 			}
 
 			// Check that every crop growth image has a matching seed packet
-			string seedImageDirectory = $"{CustomImagesPath}/SpringObjects/Seeds";
+			string seedImageDirectory = Path.Combine(CustomImagesPath, "SpringObjects", "Seeds");
 			List<string> seedImageNames = Directory.GetFiles(seedImageDirectory)
 				.Where(x => x.EndsWith(".png"))
 				.Select(x => Path.GetFileNameWithoutExtension(x))
@@ -282,8 +283,8 @@ namespace Randomizer
 			}
 
 			// Check that all crop growth images exist as a crop or flower
-			string cropImageDirectory = $"{CustomImagesPath}/SpringObjects/Crops";
-			List<string> cropImageNames = Directory.GetFiles(cropImageDirectory)
+			string cropImageDirectory = Path.Combine(CustomImagesPath, "SpringObjects", "Crops");
+            List<string> cropImageNames = Directory.GetFiles(cropImageDirectory)
 				.Where(x => x.EndsWith(".png"))
 				.Select(x => Path.GetFileNameWithoutExtension(x))
 				.ToList();
@@ -296,8 +297,8 @@ namespace Randomizer
 				}
 			}
 
-			string flowerImageDirectory = $"{CustomImagesPath}/SpringObjects/Flowers";
-			List<string> flowerImageNames = Directory.GetFiles(flowerImageDirectory)
+			string flowerImageDirectory = Path.Combine(CustomImagesPath, "SpringObjects", "Flowers");
+            List<string> flowerImageNames = Directory.GetFiles(flowerImageDirectory)
 				.Where(x => x.EndsWith(".png"))
 				.Select(x => Path.GetFileNameWithoutExtension(x))
 				.ToList();
@@ -311,7 +312,7 @@ namespace Randomizer
 			}
 
 			// Check that each flower image contains the no-hue version
-			List<string> noHueFlowerImages = Directory.GetFiles($"{ImageDirectory}/{FlowersDirectory}")
+			List<string> noHueFlowerImages = Directory.GetFiles(Path.Combine(ImageDirectory, FlowersDirectory))
 				.Where(x => x.EndsWith("-NoHue.png"))
 				.Select(x => Path.GetFileNameWithoutExtension(x))
 				.OrderBy(x => x)

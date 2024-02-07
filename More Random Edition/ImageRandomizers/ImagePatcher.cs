@@ -30,14 +30,14 @@ namespace Randomizer
         {
             get
             {
-                return Globals.GetFilePath($"{PatcherImageFolder}/{OutputFileName}");
+                return Globals.GetFilePath(Path.Combine(PatcherImageFolder, OutputFileName));
             }
         }
 
         /// <summary>
         /// The assets folder name
         /// </summary>
-        protected const string AssetsFolder = "Assets";
+        protected const string AssetsFolder = "assets";
 
         /// <summary>
         /// The sub folder to use as the root for this patcher - located after Assets
@@ -46,9 +46,9 @@ namespace Randomizer
 
         /// <summary>
         /// The folder to use for this patcher - equivalent to
-        /// Assets/<SubFolder>
+        /// assets/<SubFolder>
         /// </summary>
-        protected string PatcherImageFolder => $"{AssetsFolder}/{SubFolder}";
+        protected string PatcherImageFolder => Path.Combine(AssetsFolder, SubFolder);
 
         /// <summary>
         /// Called when the asset is requested
@@ -80,7 +80,7 @@ namespace Randomizer
         {
             var pathToSearch = subfolder == ""
                 ? PatcherImageFolder
-                : $"{PatcherImageFolder}/{subfolder}";
+                : Path.Combine(PatcherImageFolder, subfolder);
 
             return Directory.GetFiles(Globals.GetFilePath(pathToSearch))
                 .Where(x => x.EndsWith(".png") && !x.EndsWith(OutputFileName))

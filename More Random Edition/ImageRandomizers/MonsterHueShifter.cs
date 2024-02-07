@@ -17,7 +17,7 @@ namespace Randomizer
         /// This is only used if the setting is on to save the images
         /// </summary>
         private static string RandomizedImagesDirectory =>
-            Globals.GetFilePath("Assets/CustomImages/HueShiftedMonsters");
+            Globals.GetFilePath(Path.Combine("assets", "CustomImages", "HueShiftedMonsters"));
 
         /// <summary>
         /// The list of monsters to hue shift
@@ -180,7 +180,8 @@ namespace Randomizer
             if (Globals.Config.SaveRandomizedImages && Globals.Config.Monsters.HueShiftMax > 0)
             {
                 Texture2D image = monsterHueShiftData.MonsterImage;
-                using FileStream stream = File.OpenWrite($"{RandomizedImagesDirectory}/{monsterHueShiftData.AssetName}.png");
+                using FileStream stream = File.OpenWrite(
+                    Path.Combine(RandomizedImagesDirectory, $"{monsterHueShiftData.AssetName}.png"));
                 image.SaveAsPng(stream, image.Width, image.Height);
             }
         }

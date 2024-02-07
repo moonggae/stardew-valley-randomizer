@@ -43,7 +43,7 @@ namespace Randomizer
         private static void AddCritterReplacement(string critterName)
 		{
 			_critterSpoilerString = $"Critter sheet replaced with {critterName}";
-			_replacements.Add("TileSheets/critters", $"Assets/TileSheets/{critterName}");
+			_replacements.Add("TileSheets/critters", $"assets/TileSheets/{critterName}");
 		}
 
 		/// <summary>

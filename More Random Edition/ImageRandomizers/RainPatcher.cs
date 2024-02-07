@@ -2,6 +2,7 @@
 using StardewModdingAPI;
 using StardewValley;
 using System;
+using System.IO;
 
 namespace Randomizer
 {
@@ -46,7 +47,7 @@ namespace Randomizer
         {
             Random rng = Globals.GetDailyRNG("rain"); // DO NOT use the global RNG for this!
             string randomRainAsset = Globals.RNGGetRandomValueFromList(GetAllFileNamesInFolder(), rng);
-            return $"{PatcherImageFolder}/{randomRainAsset}";
+            return Path.Combine(PatcherImageFolder, randomRainAsset);
         }
     }
 }

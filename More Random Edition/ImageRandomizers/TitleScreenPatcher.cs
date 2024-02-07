@@ -1,4 +1,5 @@
 ﻿using StardewModdingAPI;
+using System.IO;
 
 namespace Randomizer
 {
@@ -34,7 +35,7 @@ namespace Randomizer
         /// <returns>The full path of the icon, starting at the root of the mod</returns>
         public string GetCustomAssetPath()
         {
-            return $"{PatcherImageFolder}/{Globals.GetLocalizedFileName("TitleButtons", "png")}";
+            return Path.Combine(PatcherImageFolder, Globals.GetLocalizedFileName("TitleButtons", "png"));
         }
     }
 }

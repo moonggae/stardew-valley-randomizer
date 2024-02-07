@@ -42,7 +42,7 @@ namespace Randomizer
         /// <summary>
         /// The path for all the custom images
         /// </summary>
-        protected readonly string CustomImagesPath = Globals.GetFilePath("Assets/CustomImages");
+        protected readonly string CustomImagesPath = Globals.GetFilePath(Path.Combine("assets", "CustomImages"));
 
         /// <summary>
         /// The path to the custom images
@@ -51,7 +51,7 @@ namespace Randomizer
         {
             get
             {
-                return $"{CustomImagesPath}/{SubDirectory}";
+                return Path.Combine(CustomImagesPath, SubDirectory);
             }
         }
 
@@ -62,18 +62,7 @@ namespace Randomizer
         {
             get
             {
-                return $"{ImageDirectory}/{OutputFileName}";
-            }
-        }
-
-        /// <summary>
-        /// The output path as needed by SMAPI
-        /// </summary>
-        public string SMAPIOutputFilePath
-        {
-            get
-            {
-                return $"Assets/CustomImages/{SubDirectory}/{OutputFileName}";
+                return Path.Combine(ImageDirectory, OutputFileName);
             }
         }
 

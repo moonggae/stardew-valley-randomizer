@@ -35,12 +35,24 @@ namespace Randomizer
 			SetUpWeaponPositionToIDMap();
 			PositionsToOverlay = WeaponPositionToIDMap.Keys.ToList();
 
-			SwordImages = Directory.GetFiles($"{ImageDirectory}/{SwordSubDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
-			DaggerImages = Directory.GetFiles($"{ImageDirectory}/{DaggerSubDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
-			HammerAndClubImages = Directory.GetFiles($"{ImageDirectory}/{HammerAndClubSubDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
+			SwordImages = Directory.GetFiles(Path.Combine(ImageDirectory, SwordSubDirectory))
+				.Where(x => x.EndsWith(".png"))
+				.OrderBy(x => x).
+				ToList();
+			DaggerImages = Directory.GetFiles(Path.Combine(ImageDirectory, DaggerSubDirectory))
+				.Where(x => x.EndsWith(".png"))
+				.OrderBy(x => x)
+				.ToList();
+			HammerAndClubImages = Directory.GetFiles(Path.Combine(ImageDirectory, HammerAndClubSubDirectory))
+				.Where(x => x.EndsWith(".png"))
+				.OrderBy(x => x)
+				.ToList();
 
 			//TODO: enable this when we actually randomize slingshot images
-			//SlingshotImages = Directory.GetFiles($"{ImageDirectory}/{SlingshotSubDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
+			//SlingshotImages = Directory.GetFiles(Path.Combine(ImageDirectory, SlingshotSubDirectory))
+			//	.Where(x => x.EndsWith(".png"))
+			//	.OrderBy(x => x)
+			//	.ToList();
 		}
 
 		/// <summary>
