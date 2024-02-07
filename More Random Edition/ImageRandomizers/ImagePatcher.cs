@@ -37,7 +37,7 @@ namespace Randomizer
         /// <summary>
         /// The assets folder name
         /// </summary>
-        protected const string AssetsFolder = "Assets";
+        protected const string AssetsFolder = "assets";
 
         /// <summary>
         /// The sub folder to use as the root for this patcher - located after Assets
@@ -46,7 +46,7 @@ namespace Randomizer
 
         /// <summary>
         /// The folder to use for this patcher - equivalent to
-        /// Assets/<SubFolder>
+        /// assets/<SubFolder>
         /// </summary>
         protected string PatcherImageFolder => Path.Combine(AssetsFolder, SubFolder);
 

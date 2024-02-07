@@ -17,7 +17,7 @@ namespace Randomizer
         /// This is only used if the setting is on to save the images
         /// </summary>
         private static string RandomizedImagesDirectory =>
-            Globals.GetFilePath(Path.Combine("Assets", "CustomImages", "HueShiftedMonsters"));
+            Globals.GetFilePath(Path.Combine("assets", "CustomImages", "HueShiftedMonsters"));
 
         /// <summary>
         /// The list of monsters to hue shift
