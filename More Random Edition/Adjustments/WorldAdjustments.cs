@@ -52,7 +52,6 @@ namespace Randomizer
         }
 
         /// <summary>
-        /// TODO 1.6: check if this is necessary anymore
         /// Fixes the foragables on day 1 - the save file is created too quickly for it to be
         /// randomized right away, so we'll change them on the spot on the first day
         /// </summary>
@@ -76,17 +75,19 @@ namespace Randomizer
 
                 foreach (GameLocation location in locations)
                 {
-                    List<int> foragableIds = ItemList.GetForagables().Select(x => x.Id).ToList();
+                    List<string> foragableIds = ItemList.GetForagables().Select(x => x.QualifiedId).ToList();
                     List<Vector2> tiles = location.Objects.Pairs
-                        .Where(x => foragableIds.Contains(x.Value.ParentSheetIndex))
+                        .Where(x => foragableIds.Contains(x.Value.QualifiedItemId))
                         .Select(x => x.Key)
                         .ToList();
 
+                    var dailyRNG = Globals.GetDailyRNG(nameof(WorldAdjustments));
                     foreach (Vector2 oldForagableKey in tiles)
                     {
-                        RandomizerItem newForagable = Globals.RNGGetRandomValueFromList(newForagables, Game1.random);
-                        location.Objects[oldForagableKey].ParentSheetIndex = newForagable.Id;
-                        location.Objects[oldForagableKey].Name = newForagable.Name;
+                        RandomizerItem newForagable = 
+                            Globals.RNGGetRandomValueFromList(newForagables, dailyRNG);
+                        location.Objects[oldForagableKey] = (Object)newForagable.GetSaliableObject();
+                        location.Objects[oldForagableKey].IsSpawnedObject = true;
                     }
                 }
             }

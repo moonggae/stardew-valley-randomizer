@@ -88,7 +88,7 @@ namespace Randomizer
 		{
 			get
 			{
-				return AvailableLocations.Count == 1 && AvailableLocations.Contains(Locations.NightMarket);
+				return AvailableLocations.Count == 1 && AvailableLocations.Contains(Locations.Submarine);
 			}
 		}
 

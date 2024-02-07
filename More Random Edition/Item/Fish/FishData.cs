@@ -41,31 +41,31 @@ namespace Randomizer
 		/// </summary>
 		public static void InitializeFishToLocations()
 		{
-			InitializeNightMarketFish();
+			InitializeSubmarineFish();
 			InitializeMinesFish();
 			InializeLegendaryFish();
 
             // Go through each location and add to the location dictionary
-            foreach (var locData in LocationData.DefaultLocationData)
-			{
-				string locationName = locData.Key;
-				if (!Enum.TryParse(locationName, out Locations location))
-				{
-					// This is okay, we don't have every location mapped
-					continue; 
-				}
+   //         foreach (var locData in LocationData.DefaultLocationData)
+			//{
+			//	string locationName = locData.Key;
+			//	if (!Enum.TryParse(locationName, out Locations location))
+			//	{
+			//		// This is okay, we don't have every location mapped
+			//		continue; 
+			//	}
 
-				var locDataParts = locData.Value.Split("/");
-				var springFish = locDataParts[(int)LocationDataIndexes.SpringFish];
-                var summerFish = locDataParts[(int)LocationDataIndexes.SummerFish];
-                var fallFish = locDataParts[(int)LocationDataIndexes.FallFish];
-                var winterFish = locDataParts[(int)LocationDataIndexes.WinterFish];
+			//	var locDataParts = locData.Value.Split("/");
+			//	var springFish = locDataParts[(int)LocationDataIndexes.SpringFish];
+   //             var summerFish = locDataParts[(int)LocationDataIndexes.SummerFish];
+   //             var fallFish = locDataParts[(int)LocationDataIndexes.FallFish];
+   //             var winterFish = locDataParts[(int)LocationDataIndexes.WinterFish];
 
-				AssignFishDataFromStringList(springFish, location, Seasons.Spring);
-                AssignFishDataFromStringList(summerFish, location, Seasons.Summer);
-                AssignFishDataFromStringList(fallFish, location, Seasons.Fall);
-                AssignFishDataFromStringList(winterFish, location, Seasons.Winter);
-            }
+			//	AssignFishDataFromStringList(springFish, location, Seasons.Spring);
+   //             AssignFishDataFromStringList(summerFish, location, Seasons.Summer);
+   //             AssignFishDataFromStringList(fallFish, location, Seasons.Fall);
+   //             AssignFishDataFromStringList(winterFish, location, Seasons.Winter);
+   //         }
         }
 
 		/// <summary>
@@ -137,19 +137,20 @@ namespace Randomizer
 		/// The night market is not defined in Data/Locations, but we use it
 		/// internally - we need to manually set this data accordingly
 		/// </summary>
-		private static void InitializeNightMarketFish()
+		private static void InitializeSubmarineFish()
 		{
+			//TODO 1.6: it IS now (submarine instead), we should rework this accordingly!
             // The night market is NOT a "real" location, so we will add these manually
-            Item[] nightMarketFishList = {
+            Item[] submarineFishList = {
                 ItemList.Items[ObjectIndexes.MidnightSquid],
                 ItemList.Items[ObjectIndexes.SpookFish],
                 ItemList.Items[ObjectIndexes.Blobfish]
             };
-            foreach (FishItem nightMarketFish in nightMarketFishList.Cast<FishItem>())
+            foreach (FishItem submarineFish in submarineFishList.Cast<FishItem>())
             {
-                nightMarketFish.AvailableLocations = new List<Locations>()
-                    { Locations.NightMarket };
-                nightMarketFish.AvailableSeasons = new List<Seasons>()
+                submarineFish.AvailableLocations = new List<Locations>()
+                    { Locations.Submarine };
+                submarineFish.AvailableSeasons = new List<Seasons>()
                 {
                     Seasons.Spring,
                     Seasons.Summer,

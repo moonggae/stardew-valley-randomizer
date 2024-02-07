@@ -575,6 +575,7 @@ namespace Randomizer
 			return Items[totemId];
         }
 
+		// TODO 1.6: this isn't really needed... use Game1.objectData instead
 		public static Dictionary<int, string> OriginalItemList { get; private set; }
         public static Dictionary<ObjectIndexes, Item> Items { get; private set; }
         public static Dictionary<BigCraftableIndexes, Item> BigCraftableItems { get; private set; }

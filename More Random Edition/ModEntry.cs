@@ -32,7 +32,7 @@ namespace Randomizer
 			helper.Events.Content.LocaleChanged += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
 			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetEditor.ResetValuesAndInvalidateCache();
 			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
-			helper.Events.GameLoop.SaveLoaded += (sender, args) => CalculateAllReplacements();
+            helper.Events.GameLoop.SaveLoaded += (sender, args) => CalculateAllReplacements();
 			helper.Events.Display.MenuChanged += MenuAdjustments.AdjustMenus;
 			helper.Events.GameLoop.DayEnding += (sender, args) => MenuAdjustments.ResetShopStates();
 
@@ -54,13 +54,6 @@ namespace Randomizer
 			if (Globals.Config.Crops.Randomize || Globals.Config.Fish.Randomize)
 			{
 				helper.Events.Display.RenderingActiveMenu += (sender, args) => CraftingRecipeAdjustments.HandleCraftingMenus();
-
-				// Fix for the Special Orders causing crashes
-				// Re - instate the object info when the save is first loaded for the session, and when saving so that the
-				// items have the correct names on the items sold summary screen
-			    helper.Events.GameLoop.DayEnding += (sender, args) => _modAssetEditor.UndoObjectInformationReplacements();
-				helper.Events.GameLoop.SaveLoaded += (sender, args) => _modAssetEditor.RedoObjectInformationReplacements();
-				helper.Events.GameLoop.Saving += (sender, args) => _modAssetEditor.RedoObjectInformationReplacements();
 			}
 
 			//TODO 1.6: the repoint hack has a myserious crash now... we should probably try to override it instead or something
@@ -141,8 +134,7 @@ namespace Randomizer
 			// Ensure that the bundles get changed if they're meant to
 			Game1.GenerateBundles(Game1.bundleType, true);
 
-			//TODO 1.6: re-enable this once foragables are done
-            //WorldAdjustments.ChangeDayOneForagables();
+            WorldAdjustments.ChangeDayOneForagables();
             WorldAdjustments.FixParsnipSeedBox();
 
 			// We should now be done with Globals.RNG

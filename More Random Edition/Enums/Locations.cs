@@ -2,6 +2,8 @@
 {
 	/// <summary>
 	/// Locations in the game
+	/// For now, the string versions of these match, but we can have a helper to get the name if
+	/// we add one of the locations where this is not the case
 	/// </summary>
 	public enum Locations
 	{
@@ -18,6 +20,6 @@
 		Sewer,
 		WitchSwamp,
 		BugLand,
-		NightMarket, // There's not actually an official location for this, so don't use it for any strings
+		Submarine
 	}
 }

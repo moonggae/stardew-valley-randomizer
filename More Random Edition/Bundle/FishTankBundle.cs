@@ -71,7 +71,7 @@ namespace Randomizer
 						Locations.Desert,
 						Locations.Woods,
 						Locations.Forest,
-						Locations.NightMarket,
+						Locations.Submarine,
 						Locations.Beach
 					};
 					Locations location = Globals.RNGGetRandomValueFromList(locations);
@@ -134,7 +134,7 @@ namespace Randomizer
 				case BundleTypes.FishTankUnique:
 					SetBundleName("bundle-fishtank-unique");
 
-					List<Item> nightFish = FishItem.Get(Locations.NightMarket);
+					List<Item> nightFish = FishItem.Get(Locations.Submarine);
 					List<Item> minesFish = FishItem.Get(Locations.UndergroundMine);
 					List<Item> desertFish = FishItem.Get(Locations.Desert);
 					List<Item> woodsFish = FishItem.Get(Locations.Woods);

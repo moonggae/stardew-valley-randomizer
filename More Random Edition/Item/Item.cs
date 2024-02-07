@@ -91,11 +91,10 @@ namespace Randomizer
 					: Game1.objectData[Id.ToString()].Name;
             }
 		}
-		public LocationData ForagableLocationData { get; } = new LocationData();
 		public bool ShouldBeForagable { get; set; }
 		public bool IsForagable
 		{
-			get { return ShouldBeForagable || ForagableLocationData.HasData(); }
+			get { return ShouldBeForagable; }
 		}
 
 		public bool IsTrash { get; set; }

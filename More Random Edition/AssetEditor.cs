@@ -29,7 +29,7 @@ namespace Randomizer
         private Dictionary<string, string> _fishReplacements = new(); //TODO 1.6 - DONE, but need to wait on locations before it can be finalized!
         private Dictionary<string, string> _questReplacements = new(); // TODO 1.6 - depends on Crop/Fish/Foragables
         private Dictionary<string, string> _mailReplacements = new(); // TODO 1.6 - depends on Crop/Fish/Foragables
-        private Dictionary<string, SVLocationData> _locationsReplacements = new(); // TODO 1.6
+        private Dictionary<string, SVLocationData> _locationsReplacements = new();
         private Dictionary<string, ObjectData> _objectReplacements = new();
         private Dictionary<string, FruitTreeData> _fruitTreeReplacements = new(); // TODO 1.6 - depends on Crops
         private Dictionary<string, CropData> _cropReplacements = new(); // TODO 1.6
@@ -42,13 +42,6 @@ namespace Randomizer
         private Dictionary<int, string> _secretNotesReplacements = new(); // TODO 1.6 - depends on NPC Preferences
         private Dictionary<string, string> _objectContextTagsAdjustments = new(); // TODO 1.6 - this doesn't exist, it's the ContextTags property in Data/Objects now
         private Dictionary<string, SpecialOrderData> _specialOrderAdjustments = new(); // TODO 1.6 - depends on Fish
-
-        /// <summary>
-        /// Whether we're currently ignoring replacing object information
-        /// This is done between day loads to prevent errors with the Special Orders
-        /// Eventually this can be removed when we modify the orders themselves
-        /// </summary>
-        private bool IgnoreObjectInformationReplacements { get; set; }
 
 		public AssetEditor(ModEntry mod)
 		{
@@ -73,6 +66,7 @@ namespace Randomizer
                 TryReplaceAsset(e, "Data/mail", _mailReplacements) ||
                 TryReplaceAsset(e, "Data/Locations", _locationsReplacements) ||
                 TryReplaceAsset(e, "Strings/Locations", _locationStringReplacements) ||
+                TryReplaceAsset(e, "Data/Objects", _objectReplacements) ||
                 TryReplaceAsset(e, "Data/fruitTrees", _fruitTreeReplacements) ||
                 TryReplaceAsset(e, "Data/Crops", _cropReplacements) ||
                 TryReplaceAsset(e, "Data/TV/CookingChannel", _cookingChannelReplacements) ||
@@ -93,17 +87,6 @@ namespace Randomizer
                 e.Edit((asset) => ApplyEdits(asset, _grandpaStringReplacements));
                 e.Edit((asset) => ApplyEdits(asset, _stringReplacements));
             }
-            else if (ShouldReplaceAsset(e, "Data/Objects"))
-            {
-                if (IgnoreObjectInformationReplacements)
-                {
-                    e.Edit((asset) => ApplyEdits(asset, new Dictionary<int, string>()));
-                }
-                else
-                {
-                    e.Edit((asset) => ApplyEdits(asset, _objectReplacements));
-                }
-            } 
         }
 
         /// <summary>
@@ -261,8 +244,8 @@ namespace Randomizer
         /// </summary>
         public void CalculateEditsBeforeLoad()
 		{
-			CalculateAndInvalidateUIEdits();
 			_grandpaStringReplacements = StringsAdjustments.RandomizeGrandpasStory();
+			CalculateAndInvalidateUIEdits();
         }
 
         /// <summary>
@@ -296,7 +279,7 @@ namespace Randomizer
 
 			_buildingReplacements = BuildingRandomizer.Randomize();
 			_monsterReplacements = MonsterRandomizer.Randomize(); // Must be done before recipes since rarities of drops change
-			//_locationsReplacements = LocationRandomizer.Randomize(_objectInformationReplacements); // Must be done before recipes because of wild seeds
+			_locationsReplacements = LocationRandomizer.RandomizeForagables(_objectReplacements); // Must be done before recipes because of wild seeds
 			_recipeReplacements = CraftingRecipeRandomizer.Randomize();
 			_stringReplacements = StringsAdjustments.GetCSFileStringReplacements();
 			_farmEventsReplacements = StringsAdjustments.GetFarmEventsReplacements();
@@ -323,26 +306,6 @@ namespace Randomizer
 
    //         _objectContextTagsAdjustments = ObjectContextTagsAdjustments.GetObjectContextTagAdjustments();
    //         _specialOrderAdjustments = SpecialOrderAdjustments.GetSpecialOrderAdjustments();
-        }
-
-		/// <summary>
-		/// Turns on the flag to ignore object information replacements and invalidates the cache
-		/// so that the original values are reloaded
-		/// </summary>
-		public void UndoObjectInformationReplacements()
-		{
-			IgnoreObjectInformationReplacements = true;
-            InvalidateCacheForDefaultAndCurrentLocales("Data/Objects");
-        }
-
-		/// <summary>
-		/// Turns off the flag to ignore object information replacements and invalidates the cache
-		/// so that the randomized values are reloaded
-		/// </summary>
-		public void RedoObjectInformationReplacements()
-		{
-			IgnoreObjectInformationReplacements = false;
-            InvalidateCacheForDefaultAndCurrentLocales("Data/Objects");
         }
 
 		/// <summary>
