@@ -10,6 +10,7 @@ namespace Randomizer
 	/// </summary>
 	public class FishItem : Item
 	{
+		public string OriginalName { get; set; }
 		public List<Seasons> AvailableSeasons { get; set; } = new List<Seasons>();
 		public List<Weather> Weathers { get; set; } = new List<Weather>();
 		public List<Locations> AvailableLocations { get; set; } = new List<Locations>();
@@ -403,7 +404,7 @@ namespace Randomizer
             string spawnMultiplierString = (SpawnMultiplier == 0) ? "0" : SpawnMultiplier.ToString().TrimStart(new char[] { '0' });
             string depthMultiplierString = (DepthMultiplier == 0) ? "0" : DepthMultiplier.ToString().TrimStart(new char[] { '0' });
 
-            return $"{EnglishName}/{DartChance}/{BehaviorType.ToString().ToLower()}/{MinSize}/{MaxSize}/{timeString}/{seasonsString}/{weatherString}/{UnusedData}/{MinWaterDepth}/{spawnMultiplierString}/{depthMultiplierString}/{MinFishingLevel}/{IsValidTutorialFish}";
+            return $"{OriginalName}/{DartChance}/{BehaviorType.ToString().ToLower()}/{MinSize}/{MaxSize}/{timeString}/{seasonsString}/{weatherString}/{UnusedData}/{MinWaterDepth}/{spawnMultiplierString}/{depthMultiplierString}/{MinFishingLevel}/{IsValidTutorialFish}";
         }
     }
 }

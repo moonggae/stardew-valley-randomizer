@@ -1255,9 +1255,7 @@ namespace Randomizer
 				{ BigCraftableIndexes.StardewHeroTrophy, new Item((int)BigCraftableIndexes.StardewHeroTrophy, ObtainingDifficulties.NonCraftingItem, isBigCraftable: true) }
 			};
 
-			// Populate the AvailableLocations/Seasons now that all fish are initialized
-			// Afterwards, fill out the default fish info
-			//FishData.InitializeFishToLocations();
+			// Fill out the default fish info based off Data/Fish
 			Items.Values.Where(item => item.Id > 0 && item is FishItem)
 				.Cast<FishItem>()
 				.ToList()

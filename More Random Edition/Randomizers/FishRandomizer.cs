@@ -9,16 +9,7 @@ using SVLocationData = StardewValley.GameData.Locations.LocationData;
 
 namespace Randomizer
 {
-    //TODO 1.6 - current fish thing
-    // - FishData.InitializeFishToLocations (untested) should pretty much be done
-    // - here, we wil replace each fish with another fish, so we need to:
-    //   - go through the LocationInfo and swap out the fish IDs in each location with the new ones
-    //     that we're replacing the fish with - this will keep everything consistent!
-    // - also will probably want to deal with locations (pond vs river in the forest)
-    //   - may want to edit the tooltip to reflect this
-    // - ALSO will want to deal with ContextTags too for these locations
-
-    // TODO 1.6 - confirm mines/submarine fish seasons
+    //TODO 1.6 - Deal with ContextTags for these locations
 
     public class FishRandomizer
 	{
@@ -132,8 +123,6 @@ namespace Randomizer
 			toFish.MinWaterDepth = fromFish.MinWaterDepth;
 			toFish.DepthMultiplier = fromFish.DepthMultiplier;
 			toFish.IsValidTutorialFish = fromFish.IsValidTutorialFish;
-			//toFish.AvailableLocations = new List<Locations>(fromFish.AvailableLocations);
-			//toFish.AvailableSeasons = new List<Seasons>(fromFish.AvailableSeasons);
 		}
 
 		/// <summary>
@@ -208,16 +197,17 @@ namespace Randomizer
 
                 // Use the location data in the replacements if it's there
                 // Otherwise, use the one we're looping through, but add it to the replacements
+                // USE THIS VALUE AND NOT locData.Value NOW!
                 SVLocationData locationData = locationDataReplacements.ContainsKey(locationName)
                     ? locationDataReplacements[locationName]
                     : locData.Value;
 
                 if (!locationDataReplacements.ContainsKey(locationName))
                 {
-                    locationDataReplacements[locationName] = locData.Value;
+                    locationDataReplacements[locationName] = locationData;
                 }
                 
-                foreach (var spawnFishData in locData.Value.Fish)
+                foreach (var spawnFishData in locationData.Fish)
                 {
                     if (spawnFishData.ItemId == null)
                     {
@@ -230,15 +220,22 @@ namespace Randomizer
                         continue;
                     }
 
-                    TryAddLocationToFishItem(fishItem, location);
-                    TryAddSeasonsToFishItem(fishItem, spawnFishData);
-
-                    // Actually set the new ids based on the map
-                    if (oldToNewFishIdMap.TryGetValue(spawnFishData.ItemId, out string newFishId))
+                    // Set the fish item to the one we should modify, if applicable
+                    // We also set the ids on the location data to whatever fish will now be there
+                    if (oldToNewFishIdMap.TryGetValue(fishItem.QualifiedId, out string newFishId))
                     {
+                        fishItem = ItemList.GetItemFromStringId(newFishId) as FishItem;
                         spawnFishData.Id = newFishId;
                         spawnFishData.ItemId = newFishId;
+
+                        // This will get it to behave like the old randomizer
+                        // We may want to revisit this and add approriate things to the
+                        // tooltip if we want to actually re-instate fish areas
+                        spawnFishData.FishAreaId = null;
                     }
+
+                    TryAddLocationToFishItem(fishItem, location);
+                    TryAddSeasonsToFishItem(fishItem, location, spawnFishData);
                 }
             }
         }
@@ -271,11 +268,20 @@ namespace Randomizer
         /// Else, this fish belongs to add seasons, so add all of them
         /// </summary>
         /// <param name="fishItem">The fish item</param>
+        /// <param name="location">The location - Submarine should only add winter</param>
         /// <param name="spawnFishData">the spawn data, containing the season and condition</param>
         private static void TryAddSeasonsToFishItem(
-            FishItem fishItem, 
+            FishItem fishItem,
+            Locations location,
             SpawnFishData spawnFishData)
         {
+            // Special case - the submarine is always during winter only!
+            if (location == Locations.Submarine)
+            {
+                TryAddSeasonToFishItem(fishItem, Seasons.Winter);
+                return;
+            }
+
             // Get the seasons to add from the condition, if relevant
             string condition = spawnFishData.Condition;
             if (!string.IsNullOrWhiteSpace(condition) && 
