@@ -9,8 +9,6 @@ using SVLocationData = StardewValley.GameData.Locations.LocationData;
 
 namespace Randomizer
 {
-    //TODO 1.6 - Deal with ContextTags for these locations
-
     public class FishRandomizer
 	{
         /// <summary>

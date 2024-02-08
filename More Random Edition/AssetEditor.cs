@@ -39,8 +39,7 @@ namespace Randomizer
         private Dictionary<string, CharacterData> _birthdayReplacements = new();
         private Dictionary<string, string> _preferenceReplacements = new(); // TODO 1.6 - depends on Crops/Fish/Foragables
         private Dictionary<int, string> _secretNotesReplacements = new(); // TODO 1.6 - depends on NPC Preferences
-        private Dictionary<string, string> _objectContextTagsAdjustments = new(); // TODO 1.6 - this doesn't exist, it's the ContextTags property in Data/Objects now
-        private Dictionary<string, SpecialOrderData> _specialOrderAdjustments = new(); // TODO 1.6 - depends on Fish
+        private Dictionary<string, SpecialOrderData> _specialOrderAdjustments = new();
 
 		public AssetEditor(ModEntry mod)
 		{
@@ -75,7 +74,6 @@ namespace Randomizer
                 TryReplaceAsset(e, "Data/Characters", _birthdayReplacements) ||
                 TryReplaceAsset(e, "Data/NPCGiftTastes", _preferenceReplacements) ||
                 TryReplaceAsset(e, "Data/SecretNotes", _secretNotesReplacements) ||
-                TryReplaceAsset(e, "Data/ObjectContextTags", _objectContextTagsAdjustments) ||
                 TryReplaceAsset(e, "Data/SpecialOrders", _specialOrderAdjustments))
 			{
 				return;
@@ -121,13 +119,8 @@ namespace Randomizer
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Characters")) { return Globals.Config.NPCs.RandomizeBirthdays; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/NPCGiftTastes")) { return Globals.Config.NPCs.RandomizeIndividualPreferences || Globals.Config.NPCs.RandomizeUniversalPreferences; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/SecretNotes")) { return Globals.Config.NPCs.RandomizeIndividualPreferences; }
-            if (e.NameWithoutLocale.IsEquivalentTo("Data/ObjectContextTags") ||
-                e.NameWithoutLocale.IsEquivalentTo("Data/SpecialOrders")) 
-            {
-                // Only need to adjust fish quests at the moment
-                // The context tags can't be adjusted unless the world is ready, so we'll wait
-                return Globals.Config.Fish.Randomize; 
-            } 
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/SpecialOrders")) { return Globals.Config.Fish.Randomize; } 
+
             return false;
         }
 
@@ -232,7 +225,6 @@ namespace Randomizer
             _birthdayReplacements.Clear();
             _preferenceReplacements.Clear();
             _secretNotesReplacements.Clear();
-            _objectContextTagsAdjustments.Clear();
             _specialOrderAdjustments.Clear();
 
             InvalidateCache();
@@ -304,8 +296,8 @@ namespace Randomizer
 			_bootReplacements = BootRandomizer.Randomize();
 			_birthdayReplacements = BirthdayRandomizer.Randomize();
 
-   //         _objectContextTagsAdjustments = ObjectContextTagsAdjustments.GetObjectContextTagAdjustments();
-   //         _specialOrderAdjustments = SpecialOrderAdjustments.GetSpecialOrderAdjustments();
+            ObjectContextTagsAdjustments.AdjustContextTags(_objectReplacements);
+            _specialOrderAdjustments = SpecialOrderAdjustments.GetSpecialOrderAdjustments();
         }
 
 		/// <summary>
