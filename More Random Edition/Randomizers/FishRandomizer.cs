@@ -1,26 +1,52 @@
-﻿using StardewValley.GameData.Objects;
+﻿using StardewValley;
+using StardewValley.GameData.Locations;
+using StardewValley.GameData.Objects;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using SVLocationData = StardewValley.GameData.Locations.LocationData;
 
 namespace Randomizer
 {
-	/// <summary>
-	/// Randomizes fish
-	/// </summary>
-	public class FishRandomizer
+    //TODO 1.6 - current fish thing
+    // - FishData.InitializeFishToLocations (untested) should pretty much be done
+    // - here, we wil replace each fish with another fish, so we need to:
+    //   - go through the LocationInfo and swap out the fish IDs in each location with the new ones
+    //     that we're replacing the fish with - this will keep everything consistent!
+    // - also will probably want to deal with locations (pond vs river in the forest)
+    //   - may want to edit the tooltip to reflect this
+    // - ALSO will want to deal with ContextTags too for these locations
+
+    // TODO 1.6 - confirm mines/submarine fish seasons
+
+    public class FishRandomizer
 	{
-		public static void Randomize(EditedObjects editedObjectInfo)
+        /// <summary>
+        /// Randomizes the fish by shuffling which fish ids appear in which location
+        /// It also completely randomizes behaviors, dart chance, and names
+        /// </summary>
+        /// <param name="editedObjectInfo">Used to change the fish behaviors, dart chance, and names</param>
+        /// <param name="locationReplacements">Used to change which fish id appears where</param>
+        public static void Randomize(
+            EditedObjects editedObjectInfo, 
+            Dictionary<string, SVLocationData> locationReplacements)
 		{
 			List<FishItem> legendaryFish = FishItem.GetLegendaries().Cast<FishItem>().ToList();
 			List<FishItem> normalFish = FishItem.Get().Cast<FishItem>().ToList();
 			List<FishItem> normalFishCopy = new();
-			foreach (FishItem fish in normalFish)
+
+			// A map of the old qualified fish id to the one it will replace
+			// Used to replace the location information's fish ids
+			Dictionary<string, string> oldToNewFishIdMap = new();
+            Dictionary<string, string> newToOldFishIdMap = new();
+
+            foreach (FishItem fish in normalFish)
 			{
 				FishItem fishInfo = new(fish.Id, true); // A constructor that does nothing
 				CopyFishInfo(fish, fishInfo);
 				normalFishCopy.Add(fishInfo);
-			}
+            }
 
 			List<string> fishNames = NameAndDescriptionRandomizer.GenerateFishNames(normalFish.Count + legendaryFish.Count);
 			foreach (FishItem fish in normalFish)
@@ -37,31 +63,21 @@ namespace Randomizer
 				fish.DartChance = newDartChance;
 				fish.BehaviorType = newBehaviorType;
 				fish.OverrideName = newName;
+                oldToNewFishIdMap.Add(fishToReplace.QualifiedId, fish.QualifiedId);
+                newToOldFishIdMap.Add(fish.QualifiedId, fishToReplace.QualifiedId);
 
-				// Locations are copied over, but these specific IDs
-				// will ALWAYS spawn here, so add the location to them
-				if (fish.IsMinesFish)
+                // These fish are unfortunately hard-coded to spawn here
+                if (fish.IsMinesFish)
+                {
+                    TryAddLocationToFishItem(fish, Locations.UndergroundMine);
+                }
+
+                if (Globals.Config.Fish.Randomize)
 				{
-					if (!fish.AvailableLocations.Contains(Locations.UndergroundMine))
-					{
-						fish.AvailableLocations.Add(Locations.UndergroundMine);
-					}
+					fish.DifficultyToObtain = fish.IsSubmarineOnlyFish
+						? ObtainingDifficulties.RareItem
+						: ObtainingDifficulties.LargeTimeRequirements;
 				}
-
-				if (Globals.Config.Fish.Randomize)
-				{
-					if (fish.IsSubmarineOnlyFish)
-					{
-						fish.DifficultyToObtain = ObtainingDifficulties.RareItem;
-					}
-					else
-					{
-						fish.DifficultyToObtain = ObtainingDifficulties.LargeTimeRequirements;
-					}
-				}
-
-				editedObjectInfo.FishReplacements.Add(fish.Id.ToString(), fish.ToString());
-				editedObjectInfo.ObjectsReplacements.Add(fish.Id.ToString(), GetFishObjectData(fish));
 			}
 
 			foreach (FishItem fish in legendaryFish)
@@ -75,10 +91,15 @@ namespace Randomizer
 
 				fish.BehaviorType = newBehaviorType;
 				fish.OverrideName = newName;
-
-				editedObjectInfo.FishReplacements.Add(fish.Id.ToString(), fish.ToString());
-				editedObjectInfo.ObjectsReplacements.Add(fish.Id.ToString(), GetFishObjectData(fish));
 			}
+
+            ComputeFishLocationChanges(locationReplacements, oldToNewFishIdMap);
+
+            foreach(FishItem fish in normalFish.Concat(legendaryFish))
+            {
+                editedObjectInfo.FishReplacements.Add(fish.Id.ToString(), fish.ToString());
+                editedObjectInfo.ObjectsReplacements.Add(fish.Id.ToString(), GetFishObjectData(fish));
+            }
 
             // Keeping this here for debugging purposes
 			// Uncomment to print out all randomized seasons and locations
@@ -95,7 +116,7 @@ namespace Randomizer
             //    Globals.ConsoleWarn($"{fishId} {itemName}: {string.Join(" ", locs.Select(x => x.ToString().ToLower()))}");
             //}
 
-            WriteToSpoilerLog();
+            WriteToSpoilerLog(newToOldFishIdMap);
 		}
 
 		/// <summary>
@@ -110,8 +131,9 @@ namespace Randomizer
 			toFish.Weathers = new List<Weather>(fromFish.Weathers);
 			toFish.MinWaterDepth = fromFish.MinWaterDepth;
 			toFish.DepthMultiplier = fromFish.DepthMultiplier;
-			toFish.AvailableLocations = new List<Locations>(fromFish.AvailableLocations);
-			toFish.AvailableSeasons = new List<Seasons>(fromFish.AvailableSeasons);
+			toFish.IsValidTutorialFish = fromFish.IsValidTutorialFish;
+			//toFish.AvailableLocations = new List<Locations>(fromFish.AvailableLocations);
+			//toFish.AvailableSeasons = new List<Seasons>(fromFish.AvailableSeasons);
 		}
 
 		/// <summary>
@@ -162,10 +184,150 @@ namespace Randomizer
 			return defaultObjectInfo;
 		}
 
-		/// <summary>
-		/// Writes the relevant changes to the spoiler log
-		/// </summary>
-		public static void WriteToSpoilerLog()
+        /// <summary>
+        /// Go through the location data and modify which fish goes where based on the
+        /// map we created earlier
+        /// 
+        /// This also populates the location/season data of each fish
+        /// </summary>
+        /// <param name="locationDataReplacements">The location data to pase and modify</param>
+        /// <param name="oldToNewFishIdMap">A map of the old fish ids to the new ones</param>
+        private static void ComputeFishLocationChanges(
+            Dictionary<string, SVLocationData> locationDataReplacements,
+            Dictionary<string, string> oldToNewFishIdMap)
+        {
+            // Go through each location and add to the location dictionary
+            foreach (var locData in DataLoader.Locations(Game1.content))
+            {
+                string locationName = locData.Key;
+                if (!Enum.TryParse(locationName, out Locations location))
+                {
+                    // This is okay, we don't have every location mapped
+                    continue;
+                }
+
+                // Use the location data in the replacements if it's there
+                // Otherwise, use the one we're looping through, but add it to the replacements
+                SVLocationData locationData = locationDataReplacements.ContainsKey(locationName)
+                    ? locationDataReplacements[locationName]
+                    : locData.Value;
+
+                if (!locationDataReplacements.ContainsKey(locationName))
+                {
+                    locationDataReplacements[locationName] = locData.Value;
+                }
+                
+                foreach (var spawnFishData in locData.Value.Fish)
+                {
+                    if (spawnFishData.ItemId == null)
+                    {
+                        continue;
+                    }
+
+                    Item item = ItemList.GetItemFromStringId(spawnFishData.ItemId);
+                    if (item is not FishItem fishItem)
+                    {
+                        continue;
+                    }
+
+                    TryAddLocationToFishItem(fishItem, location);
+                    TryAddSeasonsToFishItem(fishItem, spawnFishData);
+
+                    // Actually set the new ids based on the map
+                    if (oldToNewFishIdMap.TryGetValue(spawnFishData.ItemId, out string newFishId))
+                    {
+                        spawnFishData.Id = newFishId;
+                        spawnFishData.ItemId = newFishId;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds the loctaion to the fish item if it doesn't already have it
+        /// </summary>
+        /// <param name="fishItem">The fish item</param>
+        /// <param name="location">The location to add</param>
+        private static void TryAddLocationToFishItem(FishItem fishItem, Locations location)
+        {
+            // For some reason, Legend is marked as backwoods, and
+            // the rando won't work properly if it's NOT assigned to Mountain
+            // In all other cases, backwoods is equivalent, so this logic should be fine
+            Locations locToUse = location == Locations.Backwoods
+                ? Locations.Mountain
+                : location;
+
+            if (!fishItem.AvailableLocations.Contains(locToUse))
+            {
+                fishItem.AvailableLocations.Add(locToUse);
+            }
+        }
+
+        /// <summary>
+        /// Adds the seasons to the fish item if they don't already exist
+        /// 
+        /// If the condition is a LOCATION_SEASON condition, adds all the ones present there
+        /// Else, if Season exists, add that one
+        /// Else, this fish belongs to add seasons, so add all of them
+        /// </summary>
+        /// <param name="fishItem">The fish item</param>
+        /// <param name="spawnFishData">the spawn data, containing the season and condition</param>
+        private static void TryAddSeasonsToFishItem(
+            FishItem fishItem, 
+            SpawnFishData spawnFishData)
+        {
+            // Get the seasons to add from the condition, if relevant
+            string condition = spawnFishData.Condition;
+            if (!string.IsNullOrWhiteSpace(condition) && 
+                condition.StartsWith("LOCATION_SEASON Here"))
+            {
+                TryAddSeasonToFishItem(fishItem, Seasons.Spring, condition);
+                TryAddSeasonToFishItem(fishItem, Seasons.Summer, condition);
+                TryAddSeasonToFishItem(fishItem, Seasons.Fall, condition);
+                TryAddSeasonToFishItem(fishItem, Seasons.Winter, condition);
+            }
+
+            // Add the season if it exists
+            else if (spawnFishData.Season != null)
+            {
+                TryAddSeasonToFishItem(fishItem, (Seasons)spawnFishData.Season);
+            }
+
+            // Otherwise - it is null, so this is for all the seasons
+            else
+            {
+                TryAddSeasonToFishItem(fishItem, Seasons.Spring);
+                TryAddSeasonToFishItem(fishItem, Seasons.Summer);
+                TryAddSeasonToFishItem(fishItem, Seasons.Fall);
+                TryAddSeasonToFishItem(fishItem, Seasons.Winter);
+            }
+        }
+
+        /// <summary>
+        /// Try to add the season to the fish item
+        /// Will check that the season is within the condition, if applicable
+        /// If nothing is passed in, then it will pass the condition
+        /// </summary>
+        /// <param name="fishItem">The fish item</param>
+        /// <param name="season">The season</param>
+        /// <param name="condition">The condition</param>
+        private static void TryAddSeasonToFishItem(
+            FishItem fishItem,
+            Seasons season,
+            string condition = null)
+        {
+            if (!fishItem.AvailableSeasons.Contains(season) &&
+                (condition == null || condition.Contains(season.ToString().ToLower())))
+            {
+                fishItem.AvailableSeasons.Add(season);
+            }
+        }
+
+        /// <summary>
+        /// Writes the relevant changes to the spoiler log
+        /// </summary>
+        /// <param name="oldToNewFishIdMap">Which fish ids were remapped where</param>
+        public static void WriteToSpoilerLog(Dictionary<string, string> newToOldFishIdMap)
 		{
 			if (!Globals.Config.Fish.Randomize) { return; }
 
@@ -174,7 +336,15 @@ namespace Randomizer
 			Globals.SpoilerWrite("==== FISH ====");
 			foreach (FishItem fish in allRandomizedFish)
 			{
-				Globals.SpoilerWrite($"{fish.Id}: {fish.Name}");
+                Globals.SpoilerWrite($"{fish.Id}: {fish.Name}");
+
+                if (newToOldFishIdMap.TryGetValue(fish.QualifiedId, out string newFishId))
+                {
+                    string newName = ItemRegistry.GetData(fish.QualifiedId).InternalName;
+                    string oldName = ItemRegistry.GetData(newFishId).InternalName;
+                    Globals.SpoilerWrite($"Original fish: {oldName}; Current fish: {newName}");
+                }
+
 				Globals.SpoilerWrite($"Difficulty: {fish.DartChance} - Level Req: {fish.MinFishingLevel} - Water depth: {fish.MinWaterDepth}");
 				Globals.SpoilerWrite(fish.Description);
 				Globals.SpoilerWrite("---");

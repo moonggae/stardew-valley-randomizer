@@ -41,31 +41,102 @@ namespace Randomizer
 		/// </summary>
 		public static void InitializeFishToLocations()
 		{
-			InitializeSubmarineFish();
-			InitializeMinesFish();
-			InializeLegendaryFish();
+			//InitializeSubmarineFish();
+			//InitializeMinesFish();
+			//InitializeLegendaryFish();
 
-            // Go through each location and add to the location dictionary
-   //         foreach (var locData in LocationData.DefaultLocationData)
-			//{
-			//	string locationName = locData.Key;
-			//	if (!Enum.TryParse(locationName, out Locations location))
-			//	{
-			//		// This is okay, we don't have every location mapped
-			//		continue; 
-			//	}
+			// Go through each location and add to the location dictionary
+			foreach (var locData in DataLoader.Locations(Game1.content))
+			{
+				string locationName = locData.Key;
+				if (!Enum.TryParse(locationName, out Locations location))
+				{
+					// This is okay, we don't have every location mapped
+					continue;
+				}
 
-			//	var locDataParts = locData.Value.Split("/");
-			//	var springFish = locDataParts[(int)LocationDataIndexes.SpringFish];
-   //             var summerFish = locDataParts[(int)LocationDataIndexes.SummerFish];
-   //             var fallFish = locDataParts[(int)LocationDataIndexes.FallFish];
-   //             var winterFish = locDataParts[(int)LocationDataIndexes.WinterFish];
+                // For some reason, Legend is marked as backwoods, and
+                // the rando won't work properly if it's NOT assigned to Mountain
+                // In all other cases, backwoods is equivalent, so this logic should be fine
+                Locations locToUse = location == Locations.Backwoods
+                    ? locToUse = Locations.Mountain
+                    : location;
 
-			//	AssignFishDataFromStringList(springFish, location, Seasons.Spring);
-   //             AssignFishDataFromStringList(summerFish, location, Seasons.Summer);
-   //             AssignFishDataFromStringList(fallFish, location, Seasons.Fall);
-   //             AssignFishDataFromStringList(winterFish, location, Seasons.Winter);
-   //         }
+                foreach (var spawnFishData in locData.Value.Fish) 
+				{
+					if (spawnFishData.ItemId == null)
+					{
+						continue;
+					}
+
+					Item item = ItemList.GetItemFromStringId(spawnFishData.ItemId);
+					if (item == null || item is not FishItem fishItem)
+					{
+						continue;
+					}
+
+                    if (!fishItem.AvailableLocations.Contains(locToUse))
+                    {
+                        fishItem.AvailableLocations.Add(locToUse);
+                    }
+
+					// Get the seasons to add and add them
+					string condition = spawnFishData.Condition;
+                    if (condition.StartsWith("LOCATION_SEASON Here"))
+					{
+						TryAddSeasonToFishItem(fishItem, Seasons.Spring, condition);
+                        TryAddSeasonToFishItem(fishItem, Seasons.Summer, condition);
+                        TryAddSeasonToFishItem(fishItem, Seasons.Fall, condition);
+                        TryAddSeasonToFishItem(fishItem, Seasons.Winter, condition);
+                    }
+
+					// Add the season if it exists
+					else if (spawnFishData.Season != null)
+					{
+                        TryAddSeasonToFishItem(fishItem, (Seasons)spawnFishData.Season);
+                    }
+
+					// Otherwise - it is null, so this is for all the seasons
+					else
+					{
+                        TryAddSeasonToFishItem(fishItem, Seasons.Spring);
+                        TryAddSeasonToFishItem(fishItem, Seasons.Summer);
+                        TryAddSeasonToFishItem(fishItem, Seasons.Fall);
+                        TryAddSeasonToFishItem(fishItem, Seasons.Winter);
+                    }
+                }
+
+				//var locDataParts = locData.Value.Split("/");
+				//var springFish = locDataParts[(int)LocationDataIndexes.SpringFish];
+				//var summerFish = locDataParts[(int)LocationDataIndexes.SummerFish];
+				//var fallFish = locDataParts[(int)LocationDataIndexes.FallFish];
+				//var winterFish = locDataParts[(int)LocationDataIndexes.WinterFish];
+
+				//AssignFishDataFromStringList(springFish, location, Seasons.Spring);
+				//AssignFishDataFromStringList(summerFish, location, Seasons.Summer);
+				//AssignFishDataFromStringList(fallFish, location, Seasons.Fall);
+				//AssignFishDataFromStringList(winterFish, location, Seasons.Winter);
+			}
+		}
+
+		/// <summary>
+		/// Try to add the season to the fish item
+		/// Will check that the season is within the condition, if applicable
+		/// If nothing is passed in, then it will pass the condition
+		/// </summary>
+		/// <param name="fishItem">The fish item</param>
+		/// <param name="season">The season</param>
+		/// <param name="condition">The condition</param>
+		private static void TryAddSeasonToFishItem(
+			FishItem fishItem,
+			Seasons season, 
+			string condition = null)
+		{
+            if (!fishItem.AvailableSeasons.Contains(season) &&
+                (condition == null || condition.Contains(season.ToString().ToLower())))
+            {
+                fishItem.AvailableSeasons.Add(season);
+            }
         }
 
 		/// <summary>
@@ -164,7 +235,7 @@ namespace Randomizer
 		/// The legendary fish are not defined in Data/Locations,
 		/// as they are hard-coded
 		/// </summary>
-		private static void InializeLegendaryFish()
+		private static void InitializeLegendaryFish()
 		{
 			FishItem crimsonFish = ItemList.Items[ObjectIndexes.Crimsonfish] as FishItem;
 			crimsonFish.AvailableLocations = new List<Locations> { Locations.Beach };
@@ -198,7 +269,7 @@ namespace Randomizer
 			string input = DefaultStringData[fish.Id.ToString()];
 
 			string[] fields = input.Split('/');;
-            if (fields.Length < 13)
+            if (fields.Length < 14)
 			{
 				Globals.ConsoleError($"Incorrect number of fields when parsing fish with input: {input}");
 				return;

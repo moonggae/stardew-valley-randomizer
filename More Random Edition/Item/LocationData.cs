@@ -54,7 +54,7 @@ namespace Randomizer
         /// <param name="locationData">The data to add the foragables to</param>
         /// <param name="season">The season</param>
         /// <param name="data">The list of foragables to add</param>
-        private void AddForagableDataForSeason(
+        private static void AddForagableDataForSeason(
             SVLocationData locationData,
             Season season, 
             List<ForagableData> data)

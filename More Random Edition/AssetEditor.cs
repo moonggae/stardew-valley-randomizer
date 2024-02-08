@@ -11,8 +11,7 @@ using System;
 using System.Collections.Generic;
 using SVLocationData = StardewValley.GameData.Locations.LocationData;
 
-//TODO 1.6: revisit some of the data files and see if we even need a randomizer version
-// ex) LocationData
+//TODO 1.6: test all of these and make fixes as needed
 namespace Randomizer
 {
     public class AssetEditor
@@ -269,17 +268,18 @@ namespace Randomizer
             //TODO 1.6: go through and fix/verify these one by one
 
 			EditedObjects editedObjectInfo = new();
-			FishRandomizer.Randomize(editedObjectInfo);
+			_objectReplacements = editedObjectInfo.ObjectsReplacements;
+			_locationsReplacements = LocationRandomizer.RandomizeForagables(_objectReplacements); // Must be done before recipes because of wild seeds
+			
+            FishRandomizer.Randomize(editedObjectInfo, _locationsReplacements);
 			_fishReplacements = editedObjectInfo.FishReplacements;
 
 			//CropRandomizer.Randomize(editedObjectInfo);
 			//_fruitTreeReplacements = editedObjectInfo.FruitTreeReplacements;
 			//_cropReplacements = editedObjectInfo.CropsReplacements;
-			_objectReplacements = editedObjectInfo.ObjectsReplacements;
 
 			_buildingReplacements = BuildingRandomizer.Randomize();
 			_monsterReplacements = MonsterRandomizer.Randomize(); // Must be done before recipes since rarities of drops change
-			_locationsReplacements = LocationRandomizer.RandomizeForagables(_objectReplacements); // Must be done before recipes because of wild seeds
 			_recipeReplacements = CraftingRecipeRandomizer.Randomize();
 			_stringReplacements = StringsAdjustments.GetCSFileStringReplacements();
 			_farmEventsReplacements = StringsAdjustments.GetFarmEventsReplacements();

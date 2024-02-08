@@ -51,7 +51,9 @@ namespace Randomizer
                 ? int.Parse(tokens[^1])
                 : int.Parse(givenId);
 
-			return Items[(ObjectIndexes)id];
+			return Items.ContainsKey((ObjectIndexes)id)
+				? Items[(ObjectIndexes)id]
+				: null;
         }
 
         /// <summary>
@@ -1253,11 +1255,9 @@ namespace Randomizer
 				{ BigCraftableIndexes.StardewHeroTrophy, new Item((int)BigCraftableIndexes.StardewHeroTrophy, ObtainingDifficulties.NonCraftingItem, isBigCraftable: true) }
 			};
 
-			//TODO 1.6: the data locations is completely different; we'll need to redo it by looking at the new location data
 			// Populate the AvailableLocations/Seasons now that all fish are initialized
 			// Afterwards, fill out the default fish info
 			//FishData.InitializeFishToLocations();
-
 			Items.Values.Where(item => item.Id > 0 && item is FishItem)
 				.Cast<FishItem>()
 				.ToList()
