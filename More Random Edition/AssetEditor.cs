@@ -13,6 +13,7 @@ using SVLocationData = StardewValley.GameData.Locations.LocationData;
 
 //TODO 1.6: test all of these and make fixes as needed
 //TODO 1.6: artifact spots still! see the location randomizer (but maybe move to its own file)
+//TODO 1.6: check all the menu stuff (shops too!) and see what's actually necessary
 namespace Randomizer
 {
     public class AssetEditor
@@ -23,15 +24,15 @@ namespace Randomizer
         private Dictionary<string, BuildingData> _buildingReplacements = new();
         private Dictionary<string, string> _uiStringReplacements = new();
         private Dictionary<string, string> _grandpaStringReplacements = new();
-        private Dictionary<string, string> _stringReplacements = new(); // TODO 1.6 - depends on Crop/Fish - only partially working now
+        private Dictionary<string, string> _stringReplacements = new();
         private Dictionary<string, string> _farmEventsReplacements = new();
         private Dictionary<string, string> _locationStringReplacements = new();
-        private Dictionary<string, string> _fishReplacements = new(); //TODO 1.6 - DONE, but need to wait on locations before it can be finalized!
+        private Dictionary<string, string> _fishReplacements = new();
         private Dictionary<string, string> _questReplacements = new();
         private Dictionary<string, string> _mailReplacements = new();
         private Dictionary<string, SVLocationData> _locationsReplacements = new();
         private Dictionary<string, ObjectData> _objectReplacements = new();
-        private Dictionary<string, FruitTreeData> _fruitTreeReplacements = new(); // TODO 1.6 - depends on Crops
+        private Dictionary<string, FruitTreeData> _fruitTreeReplacements = new();
         private Dictionary<string, CropData> _cropReplacements = new();
         private Dictionary<string, string> _cookingChannelReplacements = new(); // TODO 1.6 - depends on Crops
         private Dictionary<string, WeaponData> _weaponReplacements = new();
@@ -268,7 +269,7 @@ namespace Randomizer
 			_fishReplacements = editedObjectInfo.FishReplacements;
 
 			CropRandomizer.Randomize(editedObjectInfo);
-			//_fruitTreeReplacements = editedObjectInfo.FruitTreeReplacements;
+			_fruitTreeReplacements = editedObjectInfo.FruitTreeReplacements;
 			_cropReplacements = EditedObjects.CropsReplacements;
 
 			_buildingReplacements = BuildingRandomizer.Randomize();

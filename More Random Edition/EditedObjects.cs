@@ -1,5 +1,6 @@
 ﻿using StardewValley;
 using StardewValley.GameData.Crops;
+using StardewValley.GameData.FruitTrees;
 using StardewValley.GameData.Objects;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,9 @@ namespace Randomizer
     public class EditedObjects
 	{
 		public static IDictionary<string, ObjectData> DefaultObjectInformation;
+
         public Dictionary<string, ObjectData> ObjectsReplacements = new();
-        public Dictionary<int, string> FruitTreeReplacements = new();
+        public Dictionary<string, FruitTreeData> FruitTreeReplacements = new();
 
 		/// <summary>
 		/// Assumes the CropRandomizer has done its thing

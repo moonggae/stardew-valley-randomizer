@@ -1,6 +1,7 @@
 ﻿using Force.DeepCloner;
 using StardewValley;
 using StardewValley.GameData.Crops;
+using StardewValley.GameData.FruitTrees;
 using StardewValley.GameData.Objects;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,20 +16,20 @@ namespace Randomizer
 		public static void Randomize(EditedObjects editedObjectInfo)
 		{
 			RandomizeCrops(editedObjectInfo);
-
-			//TODO 1.6 once we do fruit trees
-			//RandomizeFruitTrees(editedObjectInfo);
+			RandomizeFruitTrees(editedObjectInfo);
 
 			WriteToSpoilerLog();
 		}
 
 		/// <summary>
 		/// Randomize fruit tree information
+		/// TODO 1.6: we can make fruit trees that grow multiple different things! Look into what we want to do.
 		/// </summary>
 		/// <param name="editedObjectInfo">The edited object information</param>
 		private static void RandomizeFruitTrees(EditedObjects editedObjectInfo)
 		{
-			int[] fruitTreesIds = new int[]
+			// We aren't randomizing all the fruit trees yet, so hard-code this list for now
+			List<int> fruitTreeIds = new()
 			{
 				(int)ObjectIndexes.CherrySapling,
 				(int)ObjectIndexes.ApricotSapling,
@@ -38,49 +39,55 @@ namespace Randomizer
 				(int)ObjectIndexes.AppleSapling
 			};
 			List<Item> allPotentialTreesItems = ItemList.Items.Values.Where(x =>
-				fruitTreesIds.Contains(x.Id) || x.DifficultyToObtain < ObtainingDifficulties.Impossible
+				fruitTreeIds.Contains(x.Id) || x.DifficultyToObtain < ObtainingDifficulties.Impossible
 			).ToList();
 
 			List<Item> treeItems = Globals.RNGGetRandomValuesFromList(allPotentialTreesItems, 6);
 
-			string[] seasons = { "spring", "spring", "summer", "summer", "fall", "fall" };
-			seasons[Globals.RNG.Next(0, 6)] = "winter";
+            // Choose the fruit tree to make a winter tree
+			int idToMakeWinter = Globals.RNGGetRandomValueFromList(fruitTreeIds);
 
-			int[] prices = treeItems.Select(x => x.GetPriceForObtainingDifficulty(0.2)).ToArray();
+            int[] prices = treeItems.Select(x => x.GetPriceForObtainingDifficulty(0.2)).ToArray();
 			if (!Globals.Config.RandomizeFruitTrees) { return; }
 
 			// Fruit tree asset replacements
-			var fruitTreeReplacements = new Dictionary<int, string>();
+			var fruitTreeReplacements = new Dictionary<string, FruitTreeData>();
 
 			// The trees are incremented starting with cherry
 			// Note that "treeItems" refers to the item the fruit tree will grow
 			for (int i = 0; i < treeItems.Count; i++)
 			{
 				int price = prices[i];
-                int fruitTreeId = fruitTreesIds[i];
-                string season = seasons[i];
-				string seasonDisplay = Globals.GetTranslation($"seasons-{season}");
+                int fruitTreeId = fruitTreeIds[i];
 				Item treeItem = treeItems[i];
 
-				string newDispName = treeItem.Id == fruitTreesIds[i] ?
-					Globals.GetTranslation("item-recursion-sapling-name") :
-					Globals.GetTranslation("sapling-text", new { itemName = treeItem.DisplayName });
+				string newDispName = treeItem.Id == fruitTreeIds[i]
+					? Globals.GetTranslation("item-recursion-sapling-name")
+					: Globals.GetTranslation("sapling-text", new { itemName = treeItem.DisplayName });
 
-				// Make the fruit tree grow the correct item
-                string fruitTreeValue = $"{i}/{season}/{treeItem.Id}/{price}";
-				editedObjectInfo.FruitTreeReplacements[fruitTreeId] = fruitTreeValue;
+				// Modify the fruit tree item with:
+				// - the winter season (if applicable)
+				// - the id of the grown item
+                FruitTreeData fruitTreeToModify = Game1.fruitTreeData[fruitTreeId.ToString()];
+				if (fruitTreeId == idToMakeWinter) 
+				{
+					fruitTreeToModify.Seasons = new List<Season>() { Season.Winter };
+				}
+				fruitTreeToModify.Fruit[0].ItemId = treeItem.QualifiedId; // This is where we can assign multiple items to grow!
+				editedObjectInfo.FruitTreeReplacements[fruitTreeId.ToString()] = fruitTreeToModify;
 
-				// Replace the fruit tree name/price/description
-                string[] fruitTreeData = ItemList.OriginalItemList[fruitTreeId].Split("/");
-				fruitTreeData[(int)ObjectInformationIndexes.Price] = $"{ price / 2 }";
-                fruitTreeData[(int)ObjectInformationIndexes.DisplayName] = newDispName;
-				fruitTreeData[(int)ObjectInformationIndexes.Description] = 
-					Globals.GetTranslation(
-						"sapling-description", 
-						new { itemName = newDispName, season = seasonDisplay });
+				// If we change fruit trees to be usable multiple seasons, we'll want to change this string accordingly!
+				string season = fruitTreeToModify.Seasons[0].ToString().ToLower();
+                string seasonDisplay = Globals.GetTranslation($"seasons-{season}");
 
-				//TODO 1.6: change this appropriately when fruit trees are done!
-				//editedObjectInfo.ObjectInformationReplacements[fruitTreeId] = string.Join("/", fruitTreeData);
+                // Replace the fruit tree name/price/description
+                ObjectData fruitTreeObject = EditedObjects.DefaultObjectInformation[fruitTreeId.ToString()];
+				fruitTreeObject.Price = price / 2;
+				fruitTreeObject.DisplayName = newDispName;
+				fruitTreeObject.Description = Globals.GetTranslation(
+                    "sapling-description",
+                    new { itemName = newDispName, season = seasonDisplay });
+				editedObjectInfo.ObjectsReplacements[fruitTreeId.ToString()] = fruitTreeObject;
 			}
 		}
 
@@ -435,9 +442,6 @@ namespace Randomizer
 				}
 				Globals.SpoilerWrite("");
 			}
-
-			//TODO 1.6: Remove this when we do fruit trees!
-			return;
 
 			if (Globals.Config.RandomizeFruitTrees)
 			{
