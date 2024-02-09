@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Randomizer
 {
-	public class QuestRandomizer
+    public class QuestRandomizer
 	{
 		private static List<string> People { get; set; }
 		private static List<Item> Crops { get; set; }
@@ -11,8 +11,8 @@ namespace Randomizer
 		private static List<Item> FishList { get; set; }
 		private static List<Item> Items { get; set; }
 
-		private static ObjectIndexes ParsnipCropId { get; set; }
-		private static Dictionary<int, string> DefaultQuestData { get; set; }
+		private static CropItem ParsnipCrop { get; set; }
+		private static Dictionary<string, string> DefaultQuestData { get; set; }
 
 		private readonly static List<string> QuestableNPCsList = new()
 		{ // Kent is not included because of him not appearing for awhile
@@ -50,64 +50,64 @@ namespace Randomizer
 		/// <summary>
 		/// Maps the quest to what type of item it gives
 		/// </summary>
-		private static readonly Dictionary<int, QuestItemTypes> QuestIdToQuestTypeMap = new()
+		private static readonly Dictionary<string, QuestItemTypes> QuestIdToQuestTypeMap = new()
 		{
-			{ 3, QuestItemTypes.Static },
-			{ 6, QuestItemTypes.Static },
-			{ 22, QuestItemTypes.Static },
-			{ 101, QuestItemTypes.Crop },
-			{ 103, QuestItemTypes.Dish },
-			{ 104, QuestItemTypes.Crop },
-			{ 105, QuestItemTypes.Crop },
-			{ 106, QuestItemTypes.Crop },
-			{ 108, QuestItemTypes.Crop },
-			{ 109, QuestItemTypes.Fish },
-			{ 110, QuestItemTypes.Item },
-			{ 111, QuestItemTypes.Item },
-			{ 112, QuestItemTypes.Item },
-			{ 113, QuestItemTypes.Item },
-			{ 114, QuestItemTypes.Fish },
-			{ 115, QuestItemTypes.Crop },
-			{ 116, QuestItemTypes.Crop },
-			{ 117, QuestItemTypes.Dish },
-			{ 118, QuestItemTypes.Fish },
-			{ 119, QuestItemTypes.Crop },
-			{ 120, QuestItemTypes.Item },
-			{ 121, QuestItemTypes.Fish },
-			{ 122, QuestItemTypes.Item },
-			{ 123, QuestItemTypes.Item },
-			{ 124, QuestItemTypes.Fish },
-			{ 125, QuestItemTypes.Crop }
-		};
+			{ "3", QuestItemTypes.Static },
+			{ "6", QuestItemTypes.Static },
+			{ "22", QuestItemTypes.Static },
+			{ "101", QuestItemTypes.Crop },
+			{ "103", QuestItemTypes.Dish },
+			{ "104", QuestItemTypes.Crop },
+			{ "105", QuestItemTypes.Crop },
+			{ "106", QuestItemTypes.Crop },
+			{ "108", QuestItemTypes.Crop },
+			{ "109", QuestItemTypes.Fish },
+			{ "110", QuestItemTypes.Item },
+			{ "111", QuestItemTypes.Item },
+			{ "112", QuestItemTypes.Item },
+			{ "113", QuestItemTypes.Item },
+			{ "114", QuestItemTypes.Fish },
+			{ "115", QuestItemTypes.Crop },
+			{ "116", QuestItemTypes.Crop },
+			{ "117", QuestItemTypes.Dish },
+			{ "118", QuestItemTypes.Fish },
+			{ "119", QuestItemTypes.Crop },
+			{ "120", QuestItemTypes.Item },
+			{ "121", QuestItemTypes.Fish },
+			{ "122", QuestItemTypes.Item },
+			{ "123", QuestItemTypes.Item },
+			{ "124", QuestItemTypes.Fish },
+			{ "125", QuestItemTypes.Crop }
+        };
 
 		/// <summary>
 		/// A mapping of quest IDs to what mail key it belongs to
 		/// </summary>
-		private static readonly Dictionary<int, string> QuestToMailMap = new()
+		private static readonly Dictionary<string, string> QuestToMailMap = new()
 		{
-			{ 101, "spring_19_1" },
-			{ 103, "summer_14_1" },
-			{ 104, "summer_20_1" },
-			{ 105, "summer_25_1" },
-			{ 106, "fall_3_1" },
-			{ 108, "fall_19_1" },
-			{ 109, "winter_2_1" },
-			{ 110, "winter_6_1" },
-			{ 111, "winter_12_1" },
-			{ 112, "winter_17_1" },
-			{ 113, "winter_21_1" },
-			{ 114, "winter_26_1" },
-			{ 115, "spring_6_2" },
-			{ 116,  "spring_15_2" },
-			{ 117, "spring_21_2" },
-			{ 118, "summer_6_2" },
-			{ 119, "summer_15_2"},
-			{ 120, "summer_21_2" },
-			{ 121, "fall_6_2"},
-			{ 122, "fall_19_2" },
-			{ 123, "winter_5_2"},
-			{ 124, "winter_13_2" },
-			{ 125, "winter_19_2" }
+			{ "101", "spring_19_1" },
+			{ "103", "summer_14_1" },
+			{ "104", "summer_20_1" },
+			{ "105", "summer_25_1" },
+			{ "106", "fall_3_1" },
+			{ "108", "fall_19_1" },
+			{ "109", "winter_2_1" },
+			{ "110", "winter_6_1" },
+			{ "111", "winter_12_1" },
+			{ "112", "winter_17_1" },
+			{ "113", "winter_21_1" },
+			{ "114", "winter_26_1" },
+			{ "115", "spring_6_2" },
+			{ "116",  "spring_15_2" },
+			{ "117", "spring_21_2" },
+			{ "118", "summer_6_2" },
+			{ "119", "summer_15_2"},
+			{ "120", "summer_21_2" },
+			{ "121", "fall_6_2"},
+			{ "122", "fall_19_2" },
+			{ "123", "winter_5_2"},
+			{ "124", "winter_13_2" },
+			{ "125", "winter_19_2" }
 		};
 
 		/// <summary>
@@ -121,7 +121,7 @@ namespace Randomizer
 		/// <returns>The quest information to modify</returns>
 		public static QuestInformation Randomize()
 		{
-			People = QuestableNPCsList;
+            People = QuestableNPCsList;
 			Crops = ItemList.GetCrops(true).ToList();
 			Dishes = ItemList.GetCookedItems().ToList();
 			FishList = FishItem.Get().ToList();
@@ -130,7 +130,7 @@ namespace Randomizer
 			PopulateQuestDictionary();
 			PopulateMailDictionary();
 
-			Dictionary<int, string> questReplacements = new();
+			Dictionary<string, string> questReplacements = new();
 			Dictionary<string, string> mailReplacements = new();
 			RandomizeQuestsAndMailStrings(questReplacements, mailReplacements);
 
@@ -141,22 +141,15 @@ namespace Randomizer
 
 		/// <summary>
 		/// Fills the entries of the quest dictionary with the internationalized strings
+		/// Sets up the parsnip crop for later use
 		/// </summary>
 		private static void PopulateQuestDictionary()
 		{
-			ParsnipCropId = (ObjectIndexes)((SeedItem)ItemList.Items[ObjectIndexes.ParsnipSeeds]).CropId;
-			DefaultQuestData = new Dictionary<int, string>
-			{
-				{ 3, Globals.GetTranslation("quest-3", new { crop = ItemList.GetItemName(ObjectIndexes.Beet) }) },
-                { 6, Globals.GetTranslation("quest-6", new { crop = ItemList.GetItemName(ParsnipCropId), cropId = (int)ParsnipCropId }) },
-                { 22, Globals.GetTranslation("quest-22", new { fish = ItemList.GetItemName(ObjectIndexes.LargemouthBass) }) },
-			};
+			var parsnipCropId = (ItemList.Items[ObjectIndexes.ParsnipSeeds] as SeedItem).CropId;
+			ParsnipCrop = ItemList.GetItem((ObjectIndexes)parsnipCropId) as CropItem;
 
-			List<int> nonStaticQuestIds = new()
-			{
-				101, 103, 104, 105, 106, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125
-			};
-			foreach (int questId in nonStaticQuestIds)
+            DefaultQuestData = new();
+            foreach (string questId in QuestIdToQuestTypeMap.Keys)
 			{
 				DefaultQuestData.Add(questId, Globals.GetTranslation($"quest-{questId}"));
 			}
@@ -207,10 +200,10 @@ namespace Randomizer
 		/// <param name="questReplacements">The dictionary of quest replacements to fill</param>
 		/// <param name="mailReplacements">The dictionary of mail replacements to fill</param>
 		private static void RandomizeQuestsAndMailStrings(
-			Dictionary<int, string> questReplacements,
+			Dictionary<string, string> questReplacements,
 			Dictionary<string, string> mailReplacements)
 		{
-			foreach (int questId in DefaultQuestData.Keys)
+			foreach (string questId in DefaultQuestData.Keys)
 			{
 				object tokenObject = GetTokenObject(questId);
 
@@ -242,13 +235,12 @@ namespace Randomizer
 		/// - number - random number between 2 and 10; used to determine how many of an item you need to get
 		/// - reward - the money reward for a quest - between 300 and 3000
 		/// </returns>
-		private static object GetTokenObject(int questId)
+		private static object GetTokenObject(string questId)
 		{
-			ReplacementObject replacements = new ReplacementObject();
+			ReplacementObject replacements = new();
 			string itemName = "";
 			string cropStart = "";
-			string article = "";
-			ObjectIndexes id = 0;
+			string qualifiedId = "";
 
 			QuestItemTypes questType = QuestIdToQuestTypeMap[questId];
 			switch (questType)
@@ -256,15 +248,15 @@ namespace Randomizer
 				case QuestItemTypes.Static:
 					switch (questId)
 					{
-						case 3:
+						case "3":
 							itemName = ItemList.GetItemName(ObjectIndexes.Beet);
 							break;
-						case 6:
-							itemName = ItemList.GetItemName(ParsnipCropId);
-							id = ParsnipCropId;
+						case "6":
+							itemName = ParsnipCrop.DisplayName;
+							qualifiedId = ParsnipCrop.QualifiedId;
 							break;
-						case 22:
-							itemName = ItemList.GetItemName(ObjectIndexes.LargemouthBass);
+						case "22":
+                            itemName = ItemList.GetItemName(ObjectIndexes.LargemouthBass);
 							break;
 						default:
 							Globals.ConsoleError($"In the static quest type for unexpected quest: {questId}");
@@ -274,25 +266,25 @@ namespace Randomizer
 				case QuestItemTypes.Crop:
 					itemName = replacements.Crop.DisplayName;
 					cropStart = Globals.GetStringStart(itemName, 4);
-					id = (ObjectIndexes)replacements.Crop.Id;
+					qualifiedId = replacements.Crop.QualifiedId;
 					break;
 				case QuestItemTypes.Dish:
 					itemName = replacements.Dish.DisplayName;
-					id = (ObjectIndexes)replacements.Crop.Id;
+					qualifiedId = replacements.Crop.QualifiedId;
 					break;
 				case QuestItemTypes.Fish:
 					itemName = replacements.Fish.DisplayName;
-					id = (ObjectIndexes)replacements.Fish.Id;
+					qualifiedId = replacements.Fish.QualifiedId;
 					break;
 				case QuestItemTypes.Item:
 					itemName = replacements.Item.DisplayName;
-					id = (ObjectIndexes)replacements.Item.Id;
+					qualifiedId = replacements.Item.QualifiedId;
 					break;
 				default:
 					break;
 			}
 
-			article = Globals.GetArticle(itemName);
+			string article = Globals.GetArticle(itemName);
 
 			return new
 			{
@@ -302,7 +294,7 @@ namespace Randomizer
 
 				item = itemName,
 				cropStart,
-				id = (int)id,
+				id = qualifiedId,
 				a = article,
 
 				number = replacements.Number,
@@ -341,12 +333,12 @@ namespace Randomizer
 		/// Writes the dictionary info to the spoiler log
 		/// </summary>
 		/// <param name="questList">The info to write out</param>
-		private static void WriteToSpoilerLog(Dictionary<int, string> questList)
+		private static void WriteToSpoilerLog(Dictionary<string, string> questList)
 		{
 			if (!Globals.Config.RandomizeQuests) { return; }
 
 			Globals.SpoilerWrite("==== QUESTS ====");
-			foreach (KeyValuePair<int, string> pair in questList)
+			foreach (KeyValuePair<string, string> pair in questList)
 			{
 				Globals.SpoilerWrite($"{pair.Key}: \"{pair.Value}\"");
 			}

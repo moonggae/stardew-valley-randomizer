@@ -38,7 +38,7 @@ namespace Randomizer
                 } 
 				else if (IsBigCraftable)
 				{
-					itemType = "BO";
+					itemType = "BC";
 				}
 
 				// We currently only define objects, rings, and big craftables here
@@ -204,7 +204,6 @@ namespace Randomizer
 
 		/// <summary>
 		/// Gets the name of an item from
-		/// The putLastWordOfNameInParens parameter won't work if not passed in, no matter the item
 		/// </summary>
 		/// <returns>
 		/// Splits apart the name from the ObjectIndexes name - WildHorseradish -> Wild Horseradish

@@ -127,11 +127,11 @@ namespace Randomizer
 				newCropGrowthInfo.HarvestMethod = Globals.RNGGetNextBoolean(10)
 					? HarvestMethod.Scythe
 					: HarvestMethod.Grab;
-				newCropGrowthInfo.RegrowDays = newCropGrowthInfo.RegrowDays == -1 
-					? Range.GetRandomValue(1, 7) 
-					: -1;
+				newCropGrowthInfo.RegrowDays = newCropGrowthInfo.RegrowDays == -1
+					? -1
+					: Range.GetRandomValue(1, 7);
 
-				if (!Globals.Config.Crops.Randomize) { continue; } // Preserve the original seasons/etc
+                if (!Globals.Config.Crops.Randomize) { continue; } // Preserve the original seasons/etc
 
 				var originalSeedItem = ItemList.GetItem((ObjectIndexes)originalValue) as SeedItem;
 				originalSeedItem.CropGrowthInfo = newCropGrowthInfo;

@@ -46,11 +46,6 @@ namespace Randomizer
 				helper.Events.GameLoop.DayStarted += (sender, args) => _modAssetLoader.ReplaceRain();
 			}
 
-			if (Globals.Config.Crops.Randomize)
-			{
-				helper.Events.Multiplayer.PeerContextReceived += (sender, args) => WorldAdjustments.FixParsnipSeedBox();
-			}
-
 			if (Globals.Config.Crops.Randomize || Globals.Config.Fish.Randomize)
 			{
 				helper.Events.Display.RenderingActiveMenu += (sender, args) => CraftingRecipeAdjustments.HandleCraftingMenus();
@@ -135,7 +130,6 @@ namespace Randomizer
 			Game1.GenerateBundles(Game1.bundleType, true);
 
             WorldAdjustments.ChangeDayOneForagables();
-            WorldAdjustments.FixParsnipSeedBox();
 
 			// We should now be done with Globals.RNG
             Globals.RNG.IsPostFileLoad = true;

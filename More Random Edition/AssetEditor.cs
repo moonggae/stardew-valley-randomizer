@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using SVLocationData = StardewValley.GameData.Locations.LocationData;
 
 //TODO 1.6: test all of these and make fixes as needed
+//TODO 1.6: artifact spots still! see the location randomizer (but maybe move to its own file)
 namespace Randomizer
 {
     public class AssetEditor
@@ -24,10 +25,10 @@ namespace Randomizer
         private Dictionary<string, string> _grandpaStringReplacements = new();
         private Dictionary<string, string> _stringReplacements = new(); // TODO 1.6 - depends on Crop/Fish - only partially working now
         private Dictionary<string, string> _farmEventsReplacements = new();
-        private Dictionary<string, string> _locationStringReplacements = new(); // TODO 1.6 - depends on Crop randomization
+        private Dictionary<string, string> _locationStringReplacements = new();
         private Dictionary<string, string> _fishReplacements = new(); //TODO 1.6 - DONE, but need to wait on locations before it can be finalized!
-        private Dictionary<string, string> _questReplacements = new(); // TODO 1.6 - depends on Crop/Fish/Foragables
-        private Dictionary<string, string> _mailReplacements = new(); // TODO 1.6 - depends on Crop/Fish/Foragables
+        private Dictionary<string, string> _questReplacements = new();
+        private Dictionary<string, string> _mailReplacements = new();
         private Dictionary<string, SVLocationData> _locationsReplacements = new();
         private Dictionary<string, ObjectData> _objectReplacements = new();
         private Dictionary<string, FruitTreeData> _fruitTreeReplacements = new(); // TODO 1.6 - depends on Crops
@@ -275,7 +276,7 @@ namespace Randomizer
 			_recipeReplacements = CraftingRecipeRandomizer.Randomize();
 			_stringReplacements = StringsAdjustments.GetCSFileStringReplacements();
 			_farmEventsReplacements = StringsAdjustments.GetFarmEventsReplacements();
-			//_locationStringReplacements = StringsAdjustments.GetLocationStringReplacements();
+			_locationStringReplacements = StringsAdjustments.GetLocationStringReplacements();
 			//CraftingRecipeAdjustments.FixCookingRecipeDisplayNames();
 			//_cookingChannelReplacements = CookingChannelAdjustments.GetTextEdits();
 
@@ -288,9 +289,9 @@ namespace Randomizer
 			//_bundleReplacements = BundleRandomizer.Randomize();
    //         MusicRandomizer.Randomize();
 
-			//QuestInformation questInfo = QuestRandomizer.Randomize();
-			//_questReplacements = questInfo.QuestReplacements;
-			//_mailReplacements = questInfo.MailReplacements;
+			QuestInformation questInfo = QuestRandomizer.Randomize();
+			_questReplacements = questInfo.QuestReplacements;
+			_mailReplacements = questInfo.MailReplacements;
 
 			_weaponReplacements = WeaponRandomizer.Randomize();
 			_bootReplacements = BootRandomizer.Randomize();
