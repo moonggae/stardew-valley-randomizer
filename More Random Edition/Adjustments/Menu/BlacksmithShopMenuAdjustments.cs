@@ -1,31 +1,12 @@
-﻿using StardewValley;
-using StardewValley.Menus;
+﻿using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SVObject = StardewValley.Object;
 
 namespace Randomizer
 {
     internal class BlacksmithShopMenuAdjustments : ShopMenuAdjustments
     { 
-        /// <summary>
-        /// The blacksmith context has two shops... unsure how else to detect which shop is
-        /// being opened besides checking whether this one contians a certain item
-        /// For now, we will check that it contains coal
-        /// </summary>
-        /// <param name="menu">The shop menu</param>
-        /// <param name="wasOpened">Whether the shop was opened</param>
-        public override void OnChange(ShopMenu menu, bool wasOpened)
-        {
-            if (menu.forSale.Any(item => 
-                    item is SVObject objItem && 
-                    objItem.ParentSheetIndex == (int)ObjectIndexes.Coal))
-            {
-                base.OnChange(menu, wasOpened);
-            }
-        }
-
         /// <summary>
         /// Adds a chance at a discount, or mining-related items to show up
         /// </summary>
@@ -88,9 +69,11 @@ namespace Randomizer
             var item = Globals.RNGGetRandomValueFromList(itemsAlreadyInStock, shopRNG);
             var priceMultiplier = 1 - (Range.GetRandomValue(10, 25, shopRNG) / 100f);
 
-            //TODO 1.6: does this actually work...?
+            // ItemStockInformation is a struct, so values are cloned over and are not references
+            // So - here, we get the value, modify it, then reset it back into the menu
             var itemStock = item.Value;
             itemStock.Price = (int)(item.Key.salePrice() * priceMultiplier);
+            menu.itemPriceAndStock[item.Key] = itemStock;
         }
 
         /// <summary>
@@ -102,7 +85,7 @@ namespace Randomizer
         {
             var artifact = Globals.RNGGetRandomValueFromList(ItemList.GetArtifacts(), shopRNG);
             var salePrice = GetAdjustedItemPrice(artifact, fallbackPrice: 50, multiplier: 3);
-            AddStock(menu, artifact.GetSaliableObject(initialStack: 1), stock: 1, salePrice);
+            AddStock(menu, artifact.GetSaliableObject(), stock: 1, salePrice);
         }
 
         /// <summary>
@@ -115,7 +98,7 @@ namespace Randomizer
             var iridiumOre = ItemList.Items[ObjectIndexes.IridiumOre];
             var stock = Range.GetRandomValue(5, 15, shopRNG);
             var salePrice = GetAdjustedItemPrice(iridiumOre, fallbackPrice: 50, multiplier: 5);
-            AddStock(menu, iridiumOre.GetSaliableObject(stock), stock, salePrice);
+            AddStock(menu, iridiumOre.GetSaliableObject(), stock, salePrice);
         }
 
         /// <summary>
@@ -134,7 +117,7 @@ namespace Randomizer
                 var iridiumBar = ItemList.Items[ObjectIndexes.IridiumBar];
                 var stock = Range.GetRandomValue(2, 4, shopRNG);
                 var salePrice = GetAdjustedItemPrice(iridiumBar, fallbackPrice: 50, multiplier: 3);
-                AddStock(menu, iridiumBar.GetSaliableObject(stock), stock, salePrice);
+                AddStock(menu, iridiumBar.GetSaliableObject(), stock, salePrice);
             }
 
             else
@@ -152,7 +135,7 @@ namespace Randomizer
                 var salePrice = bar.Id == (int)ObjectIndexes.MapleBar
                     ? GetAdjustedItemPrice(bar, fallbackPrice: 50, multiplier: 1)
                     : GetAdjustedItemPrice(bar, fallbackPrice: 50, multiplier: 3);
-                AddStock(menu, bar.GetSaliableObject(stock), stock, salePrice);
+                AddStock(menu, bar.GetSaliableObject(), stock, salePrice);
             }
         }
     }

@@ -114,7 +114,7 @@ namespace Randomizer
                 case "SeedShop":
                     SeedShop.OnChange(shopMenu, wasShopOpened);
                     break;
-                case "JojaMart":
+                case "Joja":
                     JojaMart.OnChange(shopMenu, wasShopOpened);
                     break;
                 // Blacksmith shop - chance of mining-related random items/discounts
@@ -122,11 +122,11 @@ namespace Randomizer
                     BlacksmithShop.OnChange(shopMenu, wasShopOpened);
                     break;
                 // Adventure shop - fix weapon prices so infinite money can't be made
-                case "AdventureGuild":
+                case "AdventureShop":
                     AdventureShop.OnChange(shopMenu, wasShopOpened);
                     break;
                 // Carpenter shop - add clay to prevent long grinds
-                case "ScienceHouse":
+                case "Carpenter":
                     CarpenterShop.OnChange(shopMenu, wasShopOpened);
                     break;
                 // Saloon shop - will sell random foods/recipes each day
@@ -134,11 +134,11 @@ namespace Randomizer
                     SaloonShop.OnChange(shopMenu, wasShopOpened);
                     break;
                 // Oasis shop - randomizes its foragable/crop/furniture stock each week
-                case "SandyHouse":
+                case "Sandy":
                     OasisShop.OnChange(shopMenu, wasShopOpened);
                     break;
                 // Sewer shop - randomizes the furniture and big craftable items daily
-                case "Sewer":
+                case "ShadowShop":
                     SewerShop.OnChange(shopMenu, wasShopOpened);
                     break;
                 // Fishing shop - adds a catch of the day
@@ -146,15 +146,11 @@ namespace Randomizer
                     FishingShop.OnChange(shopMenu, wasShopOpened);
                     break;
                 // Hat shop - will sell a random hat each week in addition to what you've already unlocked
-                case "Forest":
-                    // The hat shop is located further down than the Traveling Merchant
-                    if (Game1.player.Tile.Y > 90)
-                    {
-                        HatShop.OnChange(shopMenu, wasShopOpened);
-                    }
+                case "HatMouse":
+                    HatShop.OnChange(shopMenu, wasShopOpened);
                     break;
                 // Club shop sells random furniture/clothing items weekly
-                case "Club":
+                case "Casino":
                     ClubShop.OnChange(shopMenu, wasShopOpened);
                     break;
             }

@@ -104,10 +104,10 @@
         /// Gets the hat id in the form that Stardew references them
         /// </summary>
         /// <param name="hat">The hat index</param>
-        /// <returns>(H){hat-id)</returns>
+        /// <returns>The integer hat id, as a string</returns>
         public static string GetHatId(HatIndexes hat)
         {
-            return $"(H){(int)hat}";
+            return ((int)hat).ToString();
         }
     }
 }

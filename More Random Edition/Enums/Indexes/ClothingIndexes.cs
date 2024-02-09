@@ -234,7 +234,7 @@ namespace Randomizer
         /// <returns />
         public static Clothing GetItem(ClothingIndexes index)
         {
-            return ItemRegistry.Create<Clothing>(GetQualifiedId(index));
+            return ItemRegistry.Create<Clothing>(((int)index).ToString());
         }
 
         /// <summary>

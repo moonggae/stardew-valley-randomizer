@@ -8,23 +8,6 @@ namespace Randomizer
     internal class CarpenterShopMenuAdjustments : ShopMenuAdjustments
     {
         /// <summary>
-        /// The carpenter shop has a rennovations menu
-        /// We'll check that the shop contains wood before modifying it so we're sure we're
-        /// not changing the wrong shop
-        /// </summary>
-        /// <param name="menu">The shop menu</param>
-        /// <param name="wasOpened">Whether the shop was opened</param>
-        public override void OnChange(ShopMenu menu, bool wasOpened)
-        {
-            if (menu.forSale.Any(item =>
-                    item is SVObject objItem &&
-                    objItem.ParentSheetIndex == (int)ObjectIndexes.Wood))
-            {
-                base.OnChange(menu, wasOpened);
-            }
-        }
-
-        /// <summary>
         /// Adds clay and tapper craft items
         /// </summary>
         /// <param name="menu">The shop menu</param>
@@ -59,7 +42,7 @@ namespace Randomizer
             var clayStock = Range.GetRandomValue(20, 40, shopRNG);
             var clayPrice = Globals.RNGGetIntWithinPercentage(basePrice, 50, shopRNG);
 
-            SVObject clay = new(ItemList.GetQualifiedId(ObjectIndexes.Clay), clayStock);
+            SVObject clay = new(((int)ObjectIndexes.Clay).ToString(), clayStock);
             InsertStockAt(menu, clay, stock: clayStock, salePrice: clayPrice, index: 2);
         }
 
@@ -86,7 +69,7 @@ namespace Randomizer
                 var tapperItemToSell = Globals.RNGGetRandomValueFromList(tapperItems, shopRNG);
                 var stock = tapperItemIdsAndStock[(ObjectIndexes)tapperItemToSell.Id];
                 var price = GetAdjustedItemPrice(tapperItemToSell, 50, 5);
-                InsertStockAt(menu, tapperItemToSell.GetSaliableObject(stock), stock: stock, salePrice: price, index: 2);
+                InsertStockAt(menu, tapperItemToSell.GetSaliableObject(), stock: stock, salePrice: price, index: 2);
             }
         }
     }

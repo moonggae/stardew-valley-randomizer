@@ -277,7 +277,7 @@ namespace Randomizer
 		{
 			if (IsRing)
 			{
-                return new SVRing(QualifiedId)
+                return new SVRing(Id.ToString())
                 {
                     Stack = initialStack
                 };

@@ -82,7 +82,7 @@ namespace Randomizer
                 ? Range.GetRandomValue(30, 50, shopRNG)
                 : Range.GetRandomValue(3, 15, shopRNG);
             int salePrice = GetAdjustedItemPrice(itemOfTheWeek, fallbackPrice: 20, multiplier: 3);
-            InsertStockAt(menu, itemOfTheWeek.GetSaliableObject(initialStack: stock), stock, salePrice);
+            InsertStockAt(menu, itemOfTheWeek.GetSaliableObject(), stock, salePrice);
         }
     }
 }

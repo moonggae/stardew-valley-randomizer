@@ -26,11 +26,13 @@ namespace Randomizer
         /// <param name="menu">The shop menu</param>
         private static void FixPrices(ShopMenu menu)
         {
+            // ItemStockInformation is a struct, so we need to reassign the value after it's modified
             foreach(var itemData in menu.itemPriceAndStock)
             {
                 var item = itemData.Key;
                 var saleInfo = itemData.Value;
                 saleInfo.Price = item.salePrice();
+                menu.itemPriceAndStock[item] = saleInfo;
             }
         }
     }

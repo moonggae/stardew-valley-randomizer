@@ -1,5 +1,4 @@
 ﻿using StardewValley.Menus;
-using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,7 +82,7 @@ namespace Randomizer
                 int foragableStock = Range.GetRandomValue(1, 5, weeklyShopRNG);
                 AddStock(
                     menu, 
-                    desertForagable.GetSaliableObject(foragableStock), 
+                    desertForagable.GetSaliableObject(), 
                     stock: foragableStock, 
                     salePrice: foragablePrice
                 );

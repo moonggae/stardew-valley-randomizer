@@ -1,7 +1,6 @@
 ﻿using StardewValley;
 using StardewValley.Menus;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using SVObject = StardewValley.Object;
 
@@ -107,7 +106,7 @@ namespace Randomizer
         /// <param name="shopRNG"></param>
         private static void AddTotem(ShopMenu menu, Random shopRNG)
         {
-            var totemToSell = new SVObject(ItemList.GetRandomTotem(shopRNG).QualifiedId, 1);
+            var totemToSell = new SVObject(ItemList.GetRandomTotem(shopRNG).Id.ToString(), 1);
             AddStock(menu, totemToSell, salePrice: 500);
         }
 

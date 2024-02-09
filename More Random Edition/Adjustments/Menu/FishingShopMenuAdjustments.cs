@@ -39,7 +39,7 @@ namespace Randomizer
             var catchOfTheDay = Globals.RNGGetRandomValueFromList(possibleFish, shopRNG);
             var stock = Range.GetRandomValue(1, 3, shopRNG);
 
-            InsertStockAt(menu, catchOfTheDay.GetSaliableObject(stock), stock);
+            InsertStockAt(menu, catchOfTheDay.GetSaliableObject(), stock);
         }
     }
 }
