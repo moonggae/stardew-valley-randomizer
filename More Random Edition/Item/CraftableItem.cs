@@ -519,12 +519,10 @@ namespace Randomizer
 					return $"{(int)ObjectIndexes.Wood} 1";
 			}
 
-			Dictionary<int, int> foragablesToUse = new Dictionary<int, int>();
+			Dictionary<int, int> foragablesToUse = new();
 			for (int i = 0; i < 4; i++)
 			{
-				// TODO 1.6: Re-instate this once foragables are populated once again
-				//int foragableId = Globals.RNGGetRandomValueFromList(ItemList.GetForagables(season)).Id;
-				int foragableId = ItemList.GetItem(ObjectIndexes.WildHorseradish).Id;
+				int foragableId = Globals.RNGGetRandomValueFromList(ItemList.GetForagables(season)).Id;
 				if (foragablesToUse.ContainsKey(foragableId))
 				{
 					foragablesToUse[foragableId]++;

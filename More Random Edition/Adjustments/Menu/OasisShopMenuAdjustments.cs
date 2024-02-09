@@ -68,7 +68,7 @@ namespace Randomizer
         private static void AddDaySpecificItems(ShopMenu menu, List<SeedItem> desertShopSeeds, Random weeklyShopRNG)
         {
             var desertShopCrops = desertShopSeeds
-                .Select(item => ItemList.Items[(ObjectIndexes)item.CropGrowthInfo.CropId])
+                .Select(item => ItemList.Items[(ObjectIndexes)item.CropId])
                 .ToList();
 
             // Perform these first so the seed doesn't change on different days of the week

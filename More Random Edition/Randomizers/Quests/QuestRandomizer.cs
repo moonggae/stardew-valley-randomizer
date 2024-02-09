@@ -144,7 +144,7 @@ namespace Randomizer
 		/// </summary>
 		private static void PopulateQuestDictionary()
 		{
-			ParsnipCropId = (ObjectIndexes)((SeedItem)ItemList.Items[ObjectIndexes.ParsnipSeeds]).CropGrowthInfo.CropId;
+			ParsnipCropId = (ObjectIndexes)((SeedItem)ItemList.Items[ObjectIndexes.ParsnipSeeds]).CropId;
 			DefaultQuestData = new Dictionary<int, string>
 			{
 				{ 3, Globals.GetTranslation("quest-3", new { crop = ItemList.GetItemName(ObjectIndexes.Beet) }) },

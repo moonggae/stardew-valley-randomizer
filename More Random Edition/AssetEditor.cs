@@ -31,7 +31,7 @@ namespace Randomizer
         private Dictionary<string, SVLocationData> _locationsReplacements = new();
         private Dictionary<string, ObjectData> _objectReplacements = new();
         private Dictionary<string, FruitTreeData> _fruitTreeReplacements = new(); // TODO 1.6 - depends on Crops
-        private Dictionary<string, CropData> _cropReplacements = new(); // TODO 1.6
+        private Dictionary<string, CropData> _cropReplacements = new();
         private Dictionary<string, string> _cookingChannelReplacements = new(); // TODO 1.6 - depends on Crops
         private Dictionary<string, WeaponData> _weaponReplacements = new();
         private Dictionary<string, string> _bootReplacements = new();
@@ -266,9 +266,9 @@ namespace Randomizer
             FishRandomizer.Randomize(editedObjectInfo, _locationsReplacements);
 			_fishReplacements = editedObjectInfo.FishReplacements;
 
-			//CropRandomizer.Randomize(editedObjectInfo);
+			CropRandomizer.Randomize(editedObjectInfo);
 			//_fruitTreeReplacements = editedObjectInfo.FruitTreeReplacements;
-			//_cropReplacements = editedObjectInfo.CropsReplacements;
+			_cropReplacements = EditedObjects.CropsReplacements;
 
 			_buildingReplacements = BuildingRandomizer.Randomize();
 			_monsterReplacements = MonsterRandomizer.Randomize(); // Must be done before recipes since rarities of drops change

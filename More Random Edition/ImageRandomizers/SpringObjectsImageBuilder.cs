@@ -163,7 +163,7 @@ namespace Randomizer
 			else if (item.IsSeed)
 			{
 				SeedItem seedItem = (SeedItem)item;
-				cropId = seedItem.CropGrowthInfo.CropId;
+				cropId = seedItem.CropId;
 				subDirectory = $"{Path.DirectorySeparatorChar}{SeedsDirectory}";
 			}
 
@@ -172,7 +172,7 @@ namespace Randomizer
 				subDirectory = $"{Path.DirectorySeparatorChar}{FlowersDirectory}";
 
 				CropItem cropItem = (CropItem)item;
-				if (cropItem.MatchingSeedItem.CropGrowthInfo.TintColorInfo.HasTint)
+				if (cropItem.MatchingSeedItem.HasTint)
 				{
 					ImageWidthInPx = 32; // Flower images include the stem and the top if they have tint
 				}
@@ -271,7 +271,7 @@ namespace Randomizer
         {
 			seedImage = ImageManipulator.ShiftImageHue(seedImage, linkingData.HueShiftValue);
 
-			string directory = linkingData.SeedItem.CropGrowthInfo.IsTrellisCrop
+			string directory = linkingData.SeedItem.IsTrellisCrop
 				? Path.Combine(ImageDirectory, SeedPacketDirectory, TrellisPacketSubDirectory)
 				: Path.Combine(ImageDirectory, SeedPacketDirectory);
 

@@ -1,17 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using Force.DeepCloner;
+using StardewValley;
+using StardewValley.GameData.Crops;
+using StardewValley.GameData.Objects;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Randomizer
 {
     /// <summary>
-    /// Randomizes fruit trees
+    /// Randomizes crops and fruit trees
     /// </summary>
     public class CropRandomizer
 	{
 		public static void Randomize(EditedObjects editedObjectInfo)
 		{
 			RandomizeCrops(editedObjectInfo);
-			RandomizeFruitTrees(editedObjectInfo);
+
+			//TODO 1.6 once we do fruit trees
+			//RandomizeFruitTrees(editedObjectInfo);
+
 			WriteToSpoilerLog();
 		}
 
@@ -72,7 +79,8 @@ namespace Randomizer
 						"sapling-description", 
 						new { itemName = newDispName, season = seasonDisplay });
 
-				editedObjectInfo.ObjectInformationReplacements[fruitTreeId] = string.Join("/", fruitTreeData);
+				//TODO 1.6: change this appropriately when fruit trees are done!
+				//editedObjectInfo.ObjectInformationReplacements[fruitTreeId] = string.Join("/", fruitTreeData);
 			}
 		}
 
@@ -80,23 +88,22 @@ namespace Randomizer
 		/// Randomizes the crops - currently only does prices, and only for seasonal crops
 		/// </summary>
 		/// <param name="editedObjectInfo">The edited object information</param>
-		/// crop format: name/price/-300/Seeds -74/name/tooltip
 		private static void RandomizeCrops(EditedObjects editedObjectInfo)
 		{
 			List<int> regrowableSeedIdsToRandomize = ItemList.GetSeeds().Cast<SeedItem>()
-				.Where(x => x.Randomize && x.CropGrowthInfo.RegrowsAfterHarvest)
+				.Where(x => x.Randomize && x.RegrowsAfterHarvest)
 				.Select(x => x.Id)
 				.ToList();
-			List<int> regrowableSeedIdsToRandomizeCopy = new List<int>(regrowableSeedIdsToRandomize);
+			List<int> regrowableSeedIdsToRandomizeCopy = new(regrowableSeedIdsToRandomize);
 
 			List<int> nonRegrowableSeedIdsToRandomize = ItemList.GetSeeds().Cast<SeedItem>()
-				.Where(x => x.Randomize && !x.CropGrowthInfo.RegrowsAfterHarvest)
+				.Where(x => x.Randomize && !x.RegrowsAfterHarvest)
 				.Select(x => x.Id)
 				.ToList();
-			List<int> nonRegrowableSeedIdsToRandomizeCopy = new List<int>(nonRegrowableSeedIdsToRandomize);
+			List<int> nonRegrowableSeedIdsToRandomizeCopy = new(nonRegrowableSeedIdsToRandomize);
 
 			// Fill up a dictionary to remap the seed values
-			Dictionary<int, int> seedMappings = new Dictionary<int, int>(); // Original value, new value
+			Dictionary<int, int> seedMappings = new(); // Original value, new value
 
 			foreach (int originalRegrowableSeedId in regrowableSeedIdsToRandomize)
 			{
@@ -114,14 +121,20 @@ namespace Randomizer
 				int originalValue = seedMapping.Key;
 				int newValue = seedMapping.Value;
 
-				CropGrowthInformation cropInfoToAdd = CropGrowthInformation.ParseString(CropGrowthInformation.DefaultStringData[newValue]);
-				cropInfoToAdd.GrowingSeasons = CropGrowthInformation.ParseString(CropGrowthInformation.DefaultStringData[originalValue]).GrowingSeasons;
-				cropInfoToAdd.GrowthStages = GetRandomGrowthStages(cropInfoToAdd.GrowthStages.Count);
-				cropInfoToAdd.CanScythe = Globals.RNGGetNextBoolean(10);
-				cropInfoToAdd.DaysToRegrow = cropInfoToAdd.RegrowsAfterHarvest ? Range.GetRandomValue(1, 7) : -1;
+                CropData newCropGrowthInfo = DataLoader.Crops(Game1.content)[newValue.ToString()].DeepClone();
+                newCropGrowthInfo.Seasons = DataLoader.Crops(Game1.content)[originalValue.ToString()].DeepClone().Seasons;
+				newCropGrowthInfo.DaysInPhase = GetRandomGrowthStages(newCropGrowthInfo.DaysInPhase.Count);
+				newCropGrowthInfo.HarvestMethod = Globals.RNGGetNextBoolean(10)
+					? HarvestMethod.Scythe
+					: HarvestMethod.Grab;
+				newCropGrowthInfo.RegrowDays = newCropGrowthInfo.RegrowDays == -1 
+					? Range.GetRandomValue(1, 7) 
+					: -1;
 
 				if (!Globals.Config.Crops.Randomize) { continue; } // Preserve the original seasons/etc
-				CropGrowthInformation.CropIdsToInfo[originalValue] = cropInfoToAdd;
+
+				var originalSeedItem = ItemList.GetItem((ObjectIndexes)originalValue) as SeedItem;
+				originalSeedItem.CropGrowthInfo = newCropGrowthInfo;
 			}
 
 			// Set the object info
@@ -139,7 +152,7 @@ namespace Randomizer
 				vegetableNames,
 				cropDescriptions); // Note: It removes the descriptions it uses from the list after assigning them- may want to edit later
 
-			SetUpCoffee(editedObjectInfo, vegetableNames[vegetableNames.Count - 1]);
+			SetUpCoffee(editedObjectInfo, vegetableNames[^1]);
 			SetUpRice(editedObjectInfo);
 
 			SetCropAndSeedInformation(
@@ -165,7 +178,7 @@ namespace Randomizer
 			}
 
 			int maxValuePerStage = 12 / numberOfStages;
-			List<int> growthStages = new List<int>();
+			List<int> growthStages = new();
 
 			for (int i = 0; i < numberOfStages; i++)
 			{
@@ -176,7 +189,7 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Sets the ToString information for the given crops
+		/// Sets the crop and seed display name, price, and description
 		/// </summary>
 		/// <param name="editedObjectInfo">The object info containing changes to apply</param>
 		/// <param name="crops">The crops to set</param>
@@ -189,27 +202,41 @@ namespace Randomizer
 		{
 			for (int i = 0; i < crops.Count; i++)
 			{
-				CropItem crop = crops[i];
+                CropItem crop = crops[i];
+				SeedItem seed = crop.MatchingSeedItem;
+
 				string name = randomNames[i];
+                string seasonsString = Globals.GetTranslation(
+					"crop-tooltip-seasons", 
+					new { seasons = seed.GetSeasonsStringForDisplay() });
 				string description = Globals.RNGGetAndRemoveRandomValueFromList(randomDescriptions);
 				crop.OverrideName = name;
-				crop.Description = description;
+				crop.Description = $"{description} {seasonsString}";
 
-				SeedItem seed = ItemList.GetSeedFromCrop(crop);
-				seed.OverrideDisplayName = seed.CropGrowthInfo.IsTrellisCrop ?
-					Globals.GetTranslation("trellis-text", new { itemName = name }) :
-					Globals.GetTranslation("seed-text", new { itemName = name });
-				seed.OverrideName = seed.CropGrowthInfo.IsTrellisCrop ?
-					$"{name} Starter" :
-					$"{name} Seeds";
+				seed.OverrideDisplayName = seed.IsTrellisCrop
+					? Globals.GetTranslation("trellis-text", new { itemName = name })
+					: Globals.GetTranslation("seed-text", new { itemName = name });
+				seed.OverrideName = seed.IsTrellisCrop
+					? $"{name} Starter"
+					: $"{name} Seeds";
 
 				seed.Price = GetRandomSeedPrice();
 				crop.Price = CalculateCropPrice(seed);
 
 				if (!Globals.Config.Crops.Randomize) { continue; }
 
-				editedObjectInfo.ObjectInformationReplacements[crop.Id] = crop.ToString();
-				editedObjectInfo.ObjectInformationReplacements[seed.Id] = seed.ToString();
+				ObjectData cropObject = Game1.objectData[crop.Id.ToString()].DeepClone();
+				cropObject.DisplayName = crop.Name;
+				cropObject.Description = crop.Description;
+				cropObject.Price = crop.Price;
+
+                ObjectData seedObject = Game1.objectData[seed.Id.ToString()].DeepClone();
+                seedObject.DisplayName = seed.Name;
+                seedObject.Description = seed.Description;
+                seedObject.Price = seed.Price;
+
+                editedObjectInfo.ObjectsReplacements[crop.Id.ToString()] = cropObject;
+				editedObjectInfo.ObjectsReplacements[seed.Id.ToString()] = seedObject;
 			}
 		}
 
@@ -217,20 +244,27 @@ namespace Randomizer
 		/// Sets up the coffee beans and coffee objects
 		/// </summary>
 		/// <param name="editedObjectInfo">The object info containing changes to apply</param>
-		/// <param name="coffeeName">The name of the coffee item</param>
-		private static void SetUpCoffee(EditedObjects editedObjectInfo, string coffeeName)
+		/// <param name="coffeeItemName">The name of the coffee item</param>
+		private static void SetUpCoffee(EditedObjects editedObjectInfo, string coffeeItemName)
 		{
 			if (!Globals.Config.Crops.Randomize) { return; }
 
 			Item coffee = ItemList.Items[ObjectIndexes.Coffee];
-			coffee.OverrideName = $"Hot {coffeeName}";
-			coffee.CoffeeIngredient = coffeeName;
-			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.Coffee] = coffee.ToString();
+			coffee.OverrideName = $"Hot {coffeeItemName}";
+            coffee.CoffeeIngredient = coffeeItemName; // Used for the description of the coffee bean
 
-			Item coffeeBean = ItemList.Items[ObjectIndexes.CoffeeBean];
-			coffeeBean.OverrideName = $"{coffeeName} Bean";
-			coffeeBean.OverrideDisplayName = Globals.GetTranslation("coffee-bean-name", new { itemName = coffeeName });
-			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.CoffeeBean] = coffeeBean.ToString();
+			ObjectData coffeeObject = Game1.objectData[coffee.Id.ToString()].DeepClone();
+            coffeeObject.DisplayName = Globals.GetTranslation("item-coffee-name", new { itemName = coffeeItemName });
+            editedObjectInfo.ObjectsReplacements[coffee.Id.ToString()] = coffeeObject;
+
+            SeedItem coffeeBean = ItemList.Items[ObjectIndexes.CoffeeBean] as SeedItem;
+			coffeeBean.OverrideName = $"{coffeeItemName} Bean";
+			coffeeBean.OverrideDisplayName = Globals.GetTranslation("coffee-bean-name", new { itemName = coffeeItemName });
+
+            ObjectData coffeeBeanObject = Game1.objectData[coffeeBean.Id.ToString()].DeepClone();
+			coffeeBeanObject.DisplayName = coffeeBean.Name;
+			coffeeBeanObject.Description = coffeeBean.Description;
+            editedObjectInfo.ObjectsReplacements[coffeeBean.Id.ToString()] = coffeeBeanObject;
 		}
 
 		/// <summary>
@@ -239,19 +273,22 @@ namespace Randomizer
 		/// <param name="editedObjectInfo">The object info containing changes to apply</param>
 		public static void SetUpRice(EditedObjects editedObjectInfo)
 		{
-			CropItem unmilledRice = (CropItem)ItemList.Items[ObjectIndexes.UnmilledRice];
+			CropItem unmilledRice = ItemList.Items[ObjectIndexes.UnmilledRice] as CropItem;
 			string riceName = unmilledRice.OverrideName;
 			unmilledRice.OverrideName = $"Unmilled {riceName}";
 			unmilledRice.OverrideDisplayName = Globals.GetTranslation("unmilled-rice-name", new { itemName = riceName });
-			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.UnmilledRice] = unmilledRice.ToString();
+
+            ObjectData unmilledRiceObject = Game1.objectData[unmilledRice.Id.ToString()].DeepClone();
+			unmilledRiceObject.DisplayName = unmilledRice.Name;
+            editedObjectInfo.ObjectsReplacements[unmilledRice.Id.ToString()] = unmilledRiceObject;
 
 			Item rice = ItemList.Items[ObjectIndexes.Rice];
             rice.OverrideName = riceName;
 
-			string[] riceData = ItemList.OriginalItemList[(int)ObjectIndexes.Rice].Split("/");
-			riceData[(int)ObjectInformationIndexes.DisplayName] = riceName;
-			editedObjectInfo.ObjectInformationReplacements[(int)ObjectIndexes.Rice] = string.Join("/", riceData);
-		}
+            ObjectData riceObject = Game1.objectData[rice.Id.ToString()].DeepClone();
+            riceObject.DisplayName = rice.Name;
+            editedObjectInfo.ObjectsReplacements[rice.Id.ToString()] = riceObject;
+        }
 
 		/// <summary>
 		/// Changes the names of the cooked food to match those of the objects themselves
@@ -266,7 +303,10 @@ namespace Randomizer
 				CookedItem.GetAllCropDishes().ForEach(cropDish =>
 				{
 					cropDish.CalculateOverrideName();
-                    editedObjectInfo.ObjectInformationReplacements[cropDish.Id] = cropDish.ToString();
+
+                    ObjectData cropDishObject = Game1.objectData[cropDish.Id.ToString()].DeepClone();
+                    cropDishObject.DisplayName = cropDish.Name;
+                    editedObjectInfo.ObjectsReplacements[cropDish.Id.ToString()] = cropDishObject;
                 });
 			}
 
@@ -275,7 +315,10 @@ namespace Randomizer
                 CookedItem.GetAllFishDishes().ForEach(fishDish =>
                 {
 					fishDish.CalculateOverrideName();
-                    editedObjectInfo.ObjectInformationReplacements[fishDish.Id] = fishDish.ToString();
+
+                    ObjectData fishDishObject = Game1.objectData[fishDish.Id.ToString()].DeepClone();
+                    fishDishObject.DisplayName = fishDish.Name;
+                    editedObjectInfo.ObjectsReplacements[fishDish.Id.ToString()] = fishDishObject;
                 });
 			}
 		}
@@ -332,17 +375,17 @@ namespace Randomizer
 		private static int CalculateCropPrice(SeedItem seed)
 		{
 			int seedPrice = seed.Price * 2; // The amount we store here is half of what we want to base this off of
-			CropGrowthInformation growthInfo = seed.CropGrowthInfo;
+			CropData growthInfo = seed.CropGrowthInfo;
 
-			double multiplier = 1;
+			double multiplier;
 			if (seedPrice < 31) { multiplier = Range.GetRandomValue(15, 40) / (double)10; }
 			else if (seedPrice < 61) { multiplier = Range.GetRandomValue(15, 35) / (double)10; }
 			else if (seedPrice < 91) { multiplier = Range.GetRandomValue(15, 30) / (double)10; }
 			else if (seedPrice < 121) { multiplier = Range.GetRandomValue(15, 25) / (double)10; }
 			else { multiplier = Range.GetRandomValue(15, 20) / (double)10; }
 
-			double regrowthDaysMultiplier = 1;
-			switch (growthInfo.DaysToRegrow)
+			double regrowthDaysMultiplier;
+			switch (growthInfo.RegrowDays)
 			{
 				case 1: regrowthDaysMultiplier = 0.3; break;
 				case 2: regrowthDaysMultiplier = 0.4; break;
@@ -355,7 +398,7 @@ namespace Randomizer
 			}
 
 			double amountPerHarvestMultiplier = 1;
-			switch (growthInfo.ExtraCropInfo.MinExtra)
+			switch (growthInfo.HarvestMinStack)
 			{
 				case 0: break;
 				case 1: break;
@@ -366,7 +409,7 @@ namespace Randomizer
 					Globals.ConsoleError($"Unexpected seed with more than 4 minimum extra crops: {seed.Id}");
 					break;
 			}
-			if (growthInfo.ExtraCropInfo.CanGetExtraCrops && amountPerHarvestMultiplier == 1)
+			if (seed.CanGetExtraCrops && amountPerHarvestMultiplier == 1)
 			{
 				amountPerHarvestMultiplier = 0.9;
 			}
@@ -379,20 +422,22 @@ namespace Randomizer
 		/// </summary>
 		private static void WriteToSpoilerLog()
 		{
-
 			if (Globals.Config.Crops.Randomize)
 			{
 				Globals.SpoilerWrite("==== CROPS AND SEEDS ====");
 				foreach (SeedItem seedItem in ItemList.GetSeeds())
 				{
 					if (seedItem.Id == (int)ObjectIndexes.CoffeeBean || seedItem.Id == (int)ObjectIndexes.AncientSeeds) { continue; }
-					CropItem cropItem = (CropItem)ItemList.Items[(ObjectIndexes)seedItem.CropGrowthInfo.CropId];
+					CropItem cropItem = (CropItem)ItemList.Items[(ObjectIndexes)seedItem.CropId];
 					Globals.SpoilerWrite($"{cropItem.Id}: {cropItem.Name} - Seed Buy Price: {seedItem.Price * 2}G - Crop Sell Price: {cropItem.Price}G");
 					Globals.SpoilerWrite($"{seedItem.Id}: {seedItem.Description}");
 					Globals.SpoilerWrite("---");
 				}
 				Globals.SpoilerWrite("");
 			}
+
+			//TODO 1.6: Remove this when we do fruit trees!
+			return;
 
 			if (Globals.Config.RandomizeFruitTrees)
 			{

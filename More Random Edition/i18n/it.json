@@ -35,8 +35,8 @@
 	"crop-tooltip-growth-time-reproduces": "Ci vogliono {{daysToGrow}} giorni per crescere ma continua a produrre dopo.",
 	"crop-tooltip-growth-time": "Ci vogliono {{daysToGrow}} giorni per maturare.",
 	"crop-tooltip-seasons": "Pianta durante: {{seasons}}.",
-	"crop-tooltip-cactus-fruit": "Può essere coltivato solo in casa.",
-	"crop-tooltip-rice-shoot": "Cresce più velocemente vicino all'acqua.",
+	"crop-tooltip-indoor-crop": "Può essere coltivato solo in casa.",
+	"crop-tooltip-paddy-crop": "Cresce più velocemente vicino all'acqua.",
 
 	"bundle-random-all": "Casuale",
 	"bundle-random-letter": "Inglese \"{{letter}}\"",

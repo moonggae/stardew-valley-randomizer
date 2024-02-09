@@ -90,9 +90,9 @@ namespace Randomizer
 
 			foreach (SeedItem seedItem in ItemList.GetSeeds().Where(x => !seedIdsToExclude.Contains(x.Id)).Cast<SeedItem>())
 			{
-				int sheetIndex = seedItem.CropGrowthInfo.GraphicId;
+				int sheetIndex = seedItem.CropGrowthInfo.SpriteIndex;
 				int cropId = seedItem.Id == (int)ObjectIndexes.CoffeeBean ?
-					seedItem.Id : seedItem.CropGrowthInfo.CropId;
+					seedItem.Id : seedItem.CropId;
 
 				CropGrowthImagePointsToIds[new Point(sheetIndex % itemsPerRow, sheetIndex / itemsPerRow)] = cropId;
 			}
@@ -112,26 +112,25 @@ namespace Randomizer
 
 			SeedItem seedItem = item.Id == (int)ObjectIndexes.CoffeeBean ?
 				(SeedItem)item : ((CropItem)item).MatchingSeedItem;
-			CropGrowthInformation growthInfo = seedItem.CropGrowthInfo;
 
-			FixWidthValue(seedItem.CropGrowthInfo.GraphicId);
+			FixWidthValue(seedItem.CropGrowthInfo.SpriteIndex);
 
 			if (item.IsFlower)
 			{
 				fileName = Globals.RNGGetAndRemoveRandomValueFromList(FlowerImages);
 
-				if (!seedItem.CropGrowthInfo.TintColorInfo.HasTint)
+				if (!seedItem.HasTint)
 				{
 					fileName = $"{fileName[..^4]}-NoHue.png";
 				}
 			}
 
-			else if (growthInfo.IsTrellisCrop)
+			else if (seedItem.IsTrellisCrop)
 			{
 				fileName = Globals.RNGGetAndRemoveRandomValueFromList(TrellisImages);
 			}
 
-			else if (growthInfo.RegrowsAfterHarvest)
+			else if (seedItem.RegrowsAfterHarvest)
 			{
 				fileName = Globals.RNGGetAndRemoveRandomValueFromList(RegrowingImages);
 			}
@@ -140,7 +139,7 @@ namespace Randomizer
 			{
 				fileName = Globals.RNGGetAndRemoveRandomValueFromList(NormalImages);
 
-				if (growthInfo.GrowthStages.Count <= 4)
+				if (seedItem.CropGrowthInfo.DaysInPhase.Count <= 4)
 				{
 					fileName += "-4.png";
 				}

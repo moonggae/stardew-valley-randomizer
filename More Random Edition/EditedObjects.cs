@@ -1,6 +1,8 @@
 ﻿using StardewValley;
+using StardewValley.GameData.Crops;
 using StardewValley.GameData.Objects;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Randomizer
 {
@@ -10,22 +12,27 @@ namespace Randomizer
     public class EditedObjects
 	{
 		public static IDictionary<string, ObjectData> DefaultObjectInformation;
-
-		// TODO 1.6: remove this in favor of the below!
-		public Dictionary<int, string> ObjectInformationReplacements = new();
-
         public Dictionary<string, ObjectData> ObjectsReplacements = new();
         public Dictionary<int, string> FruitTreeReplacements = new();
-		public Dictionary<int, string> CropsReplacements
+
+		/// <summary>
+		/// Assumes the CropRandomizer has done its thing
+		/// Goes through all the seeds that are randomized and adds their
+		/// crop growth info to the crop replacements
+		/// </summary>
+		public static Dictionary<string, CropData> CropsReplacements
 		{
 			get
 			{
-				Dictionary<int, string> cropsReplacements = new();
-				foreach (KeyValuePair<int, CropGrowthInformation> cropInfo in CropGrowthInformation.CropIdsToInfo)
-				{
-					cropsReplacements.Add(cropInfo.Key, cropInfo.Value.ToString());
-				}
-				return cropsReplacements;
+				Dictionary<string, CropData> cropsReplacements = new();
+                ItemList.GetSeeds()
+					.Cast<SeedItem>()
+					.Where(x => x.Randomize)
+					.ToList()
+					.ForEach(seedItem => 
+						cropsReplacements.Add(seedItem.Id.ToString(), seedItem.CropGrowthInfo));
+
+                return cropsReplacements;
 			}
 		}
 		public Dictionary<string, string> FishReplacements = new();

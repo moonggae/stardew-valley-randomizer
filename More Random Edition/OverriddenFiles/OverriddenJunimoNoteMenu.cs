@@ -15,7 +15,7 @@ namespace Randomizer
         }
 
         /// <summary>
-        /// The current bundle being looed at
+        /// The current bundle being looked at
         /// </summary>
         public SVBundle CurrentPageBundle 
         { 

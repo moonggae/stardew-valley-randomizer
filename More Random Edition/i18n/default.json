@@ -35,8 +35,8 @@
 	"crop-tooltip-growth-time-reproduces": "Takes {{daysToGrow}} days to grow but keeps producing after that.",
 	"crop-tooltip-growth-time": "Takes {{daysToGrow}} days to mature.",
 	"crop-tooltip-seasons": "Plant during: {{seasons}}.",
-	"crop-tooltip-cactus-fruit": "Can only be grown indoors.",
-	"crop-tooltip-rice-shoot": "Grows faster near water.",
+	"crop-tooltip-indoor-crop": "Can only be grown indoors.",
+	"crop-tooltip-paddy-crop": "Grows faster near water.",
 
 	"bundle-random-all": "Random",
 	"bundle-random-letter": "\"{{letter}}\"",

@@ -296,20 +296,11 @@ namespace Randomizer
         }
 
 		/// <summary>
-		/// Not used normally - but when it is, used for the ObjectInformation string
+		/// Not used, so log when it's called
 		/// </summary>
 		/// <returns />
 		public override string ToString()
 		{
-			if (Id == (int)ObjectIndexes.Coffee)
-			{
-                string[] coffeeData = ItemList.OriginalItemList[(int)ObjectIndexes.Coffee].Split("/");
-				string coffeeName = Globals.GetTranslation("item-coffee-name", new { itemName = CoffeeIngredient });
-                coffeeData[(int)ObjectInformationIndexes.DisplayName] = coffeeName;
-
-                return string.Join("/", coffeeData);
-			}
-
 			Globals.ConsoleError($"Called the ToString of unexpected item {Id}: {Name}");
 			return "";
 		}

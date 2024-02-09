@@ -80,8 +80,8 @@ namespace Randomizer
 					RequiredItems = new List<RequiredItem>
 					{
 						new(ObjectIndexes.AncientFruit),
-						new((ObjectIndexes)starFruitSeed.CropGrowthInfo.CropId),
-						new((ObjectIndexes)gemBerrySeed.CropGrowthInfo.CropId),
+						new((ObjectIndexes)starFruitSeed.CropId),
+						new((ObjectIndexes)gemBerrySeed.CropId),
 					};
 					MinimumRequiredItems = 2;
 					Color = BundleColors.Blue;
