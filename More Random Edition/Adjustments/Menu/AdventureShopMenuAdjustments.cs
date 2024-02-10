@@ -2,7 +2,6 @@
 
 namespace Randomizer
 {
-    // TODO 1.6: Check if this is actually necessary anymore
     internal class AdventureShopMenuAdjustments : ShopMenuAdjustments
     {
         public AdventureShopMenuAdjustments() : base()

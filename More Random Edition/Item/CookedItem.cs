@@ -142,26 +142,5 @@ namespace Randomizer
             }
 			return svObject;
         }
-
-        /// <summary>
-        /// Returns the ToString representation to be used for the cooked item object
-        /// </summary>
-        /// <returns />
-        public override string ToString()
-		{
-			if (!IsCropOrFishDish)
-			{
-				Globals.ConsoleWarn($"Unexpected ToString call of cooked item: {Id}: {EnglishName}");
-				return "";
-			}
-
-            string[] itemData = ItemList.OriginalItemList[Id].Split("/");
-            string[] nameAndDescription = Globals.GetTranslation($"item-{Id}-name-and-description", 
-				new { itemName = IngredientName }).Split("/");
-			itemData[(int)ObjectInformationIndexes.DisplayName] = nameAndDescription[0];
-            itemData[(int)ObjectInformationIndexes.Description] = nameAndDescription[1];
-
-            return string.Join("/", itemData);
-		}
     }
 }

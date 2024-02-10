@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using SVObject = StardewValley.Object;
 
-//TODO 1.6: verify the item stock still works properly
-// perhaps look at ItemStockInformation and see if anything can be set to help do this easier
 namespace Randomizer
 {
     public abstract class ShopMenuAdjustments

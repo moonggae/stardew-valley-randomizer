@@ -144,7 +144,6 @@ namespace Randomizer
                 numberToGet: 4,
                 new List<FurnitureIndexes>() 
                 { 
-                    /// TODO 1.6: Confirm that ParentSheetIndex is okay here
                     (FurnitureIndexes)(dailyFurnitureItem.First() as SVObject).ParentSheetIndex
                 }
             );

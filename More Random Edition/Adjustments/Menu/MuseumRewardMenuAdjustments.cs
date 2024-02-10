@@ -235,14 +235,13 @@ namespace Randomizer
             }
         }
         /// <summary>
-        /// TODO 1.6: probably use something in Item.cs to get this object
         /// Shortcut to the StardewValley.Object constructor
         /// </summary>
         /// <param name="id">The Id</param>
         /// <returns />
         private static SVObject GetSVItem(int id)
         {
-            return new SVObject($"{id}", initialStack: 1);
+            return new SVObject(id.ToString(), initialStack: 1);
         }
 
         /// <summary>

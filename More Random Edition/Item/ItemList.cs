@@ -494,7 +494,6 @@ namespace Randomizer
         }
 
         /// <summary>
-		/// TODO 1.6: Test the changes here!
         /// Gets a list of random hats to sell
         /// </summary>
         /// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
@@ -577,8 +576,6 @@ namespace Randomizer
 			return Items[totemId];
         }
 
-		// TODO 1.6: this isn't really needed... use Game1.objectData instead
-		public static Dictionary<int, string> OriginalItemList { get; private set; }
         public static Dictionary<ObjectIndexes, Item> Items { get; private set; }
         public static Dictionary<BigCraftableIndexes, Item> BigCraftableItems { get; private set; }
 

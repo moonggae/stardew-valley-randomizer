@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using SVLocationData = StardewValley.GameData.Locations.LocationData;
 
-//TODO 1.6: locations are COMPLETELY reworked, so this needs to be revamped
 namespace Randomizer
 {
+	// TODO 1.6: split this into two files - we'll pass in the shared LocationDataReplacements to both of them
+	// - ForagableRandomizer
+	// - LocationRandomizer
     /// <summary>
     /// This randomizes the Locations.xnb data
     /// </summary>
@@ -48,22 +50,22 @@ namespace Randomizer
 			GroupForagablesBySeason();
 
 			List<LocationData> foragableLocationDataList = GetForagableLocationDataList();
-			foreach (LocationData foragableLocationData in foragableLocationDataList)
+
+			// Randomization is done at this point, so exit if we aren't keeping the changes
+            if (!Globals.Config.RandomizeForagables)
+            {
+                return new Dictionary<string, SVLocationData>();
+            }
+
+            foreach (LocationData foragableLocationData in foragableLocationDataList)
 			{
 				locationsReplacements.Add(
 					foragableLocationData.LocationName, 
 					foragableLocationData.GetLocationDataWithModifiedForagableData());
 			}
 
-			WriteToSpoilerLog(foragableLocationDataList);
-
-			if (!Globals.Config.RandomizeForagables)
-			{
-				// TODO 1.6: at some point here - just don't add the foragable data to
-				// the replacements list during randomization above
-			}
-
 			AddTooltipToForagableItems(objectReplacements, foragableLocationDataList);
+			WriteToSpoilerLog(foragableLocationDataList);
 
 			return locationsReplacements;
 		}

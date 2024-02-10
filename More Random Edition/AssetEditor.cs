@@ -260,8 +260,6 @@ namespace Randomizer
 			ItemList.Initialize();
 			ValidateItemList();
 
-            //TODO 1.6: go through and fix/verify these one by one
-
 			EditedObjects editedObjectInfo = new();
 			_objectReplacements = editedObjectInfo.ObjectsReplacements;
 			_locationsReplacements = LocationRandomizer.RandomizeForagables(_objectReplacements); // Must be done before recipes because of wild seeds

@@ -26,7 +26,6 @@ namespace Randomizer
         }
 
         /// <summary>
-        /// TODO 1.6: test this change because ItemId is now used
         /// Adds an hat of the week to the shop
         /// </summary>
         /// <param name="menu">The shop menu</param>
