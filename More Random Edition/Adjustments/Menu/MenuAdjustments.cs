@@ -76,6 +76,12 @@ namespace Randomizer
                 LetterViewerMenuAdjustments.AdjustCookingRecipeName(letterViewerMenu);
             }
 
+            // Quests - fix the name is multiplayer
+            else if (e.NewMenu is QuestLog questLog)
+            {
+                QuestLogAdjustments.FixQuestName(questLog);
+            }
+
             // Shops - adjust on open
             else if (e.NewMenu is ShopMenu openedShopMenu)
             {

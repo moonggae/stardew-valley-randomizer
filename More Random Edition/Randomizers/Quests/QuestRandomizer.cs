@@ -116,12 +116,20 @@ namespace Randomizer
 		private static Dictionary<string, string> DefaultMailData { get; set; }
 
 		/// <summary>
+		/// The quest replacement information
+		/// This will be used by the QuestLogAdjustments to fix quest names in the quest log
+		/// </summary>
+		public static Dictionary<int, string> QuestReplacements { get; set; } = new();
+
+		/// <summary>
 		/// Randomizes quest items to get, people, rewards, etc.
 		/// </summary>
 		/// <returns>The quest information to modify</returns>
 		public static QuestInformation Randomize()
 		{
-			People = QuestableNPCsList;
+			QuestReplacements.Clear();
+
+            People = QuestableNPCsList;
 			Crops = ItemList.GetCrops(true).ToList();
 			Dishes = ItemList.GetCookedItems().ToList();
 			FishList = FishItem.Get().ToList();
@@ -130,13 +138,12 @@ namespace Randomizer
 			PopulateQuestDictionary();
 			PopulateMailDictionary();
 
-			Dictionary<int, string> questReplacements = new();
 			Dictionary<string, string> mailReplacements = new();
-			RandomizeQuestsAndMailStrings(questReplacements, mailReplacements);
+			RandomizeQuestsAndMailStrings(QuestReplacements, mailReplacements);
 
-			WriteToSpoilerLog(questReplacements);
+			WriteToSpoilerLog(QuestReplacements);
 
-			return new QuestInformation(questReplacements, mailReplacements);
+			return new QuestInformation(QuestReplacements, mailReplacements);
 		}
 
 		/// <summary>
