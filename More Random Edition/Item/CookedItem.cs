@@ -135,7 +135,7 @@ namespace Randomizer
 		/// <returns>The object that can be sold</returns>
         public override ISalable GetSaliableObject(int initialStack = 1, bool isRecipe = false, int price = -1)
         {
-			var svObject = new SVObject(Id, initialStack, isRecipe, price);
+			var svObject = new SVObject(Id.ToString(), initialStack, isRecipe, price);
 			if (isRecipe)
 			{
 				svObject.Name = RecipeName;
