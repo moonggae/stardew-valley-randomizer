@@ -278,7 +278,7 @@ namespace Randomizer
 					break;
 				case QuestItemTypes.Dish:
 					itemName = replacements.Dish.DisplayName;
-					id = (ObjectIndexes)replacements.Crop.Id;
+					id = (ObjectIndexes)replacements.Dish.Id;
 					break;
 				case QuestItemTypes.Fish:
 					itemName = replacements.Fish.DisplayName;
