@@ -1,13 +1,39 @@
-﻿using System.Collections.Generic;
+﻿using StardewValley;
+using System.Collections.Generic;
 using System.Linq;
+using SVObject = StardewValley.Object;
 
 namespace Randomizer
 {
-    /// <summary>
-    /// Represents an item you make in your kitchen
-    /// </summary>
-    public class CookedItem : Item
+	/// <summary>
+	/// Represents an item you make in your kitchen
+	/// </summary>
+	public class CookedItem : Item
 	{
+		/// <summary>
+		/// Set up a dictionary to link cooked items to their recipe names
+		/// this will be used to fix the recipe tooltips of items in ObjectInformation
+		/// that do not match from their display names
+		/// </summary>
+		private readonly static Dictionary<int, string> CookedItemsToRecipeNames = new();
+		static CookedItem() {
+            const int CookedItemIdIndex = 2;
+            var cookingRecipeData = Globals.ModRef.Helper.GameContent
+                .Load<Dictionary<string, string>>("Data/CookingRecipes");
+
+            foreach (KeyValuePair<string, string> data in cookingRecipeData)
+            {
+                string[] tokens = data.Value.Split("/");
+				int cookedItemId = int.Parse(tokens[CookedItemIdIndex]);
+                CookedItemsToRecipeNames[cookedItemId] = data.Key;
+            }
+        }
+
+		/// <summary>
+		/// The name this item goes by in the recipe list
+		/// </summary>
+		public string RecipeName { get => CookedItemsToRecipeNames[Id]; }
+
 		/// <summary>
 		/// The id of the special ingredient used to cook this item
 		/// </summary>
@@ -24,11 +50,6 @@ namespace Randomizer
 					: ItemList.Items[(ObjectIndexes)IngredientId.Value].Name;
 			}
 		}
-
-		/// <summary>
-		/// The original name of the item
-		/// </summary>
-		public string OriginalName { get; set; }
 
 		/// <summary>
 		/// Whether this is a dish where the name was changed
@@ -50,35 +71,20 @@ namespace Randomizer
 			}
 		}
 
-        /// <summary>
-        /// The object text between the id name and display name
-        /// </summary>
-        private string TextBetweenNames { get; set; }
-
-        /// <summary>
-        /// The ending object text on the item
-        /// </summary>
-        private string EndingObjectText { get; set; }
-
 		public CookedItem(int id) : base(id)
 		{
 			IsCooked = true;
-			OriginalName = Name;
 			DifficultyToObtain = ObtainingDifficulties.LargeTimeRequirements;
-		}
+        }
 
 		public CookedItem(
 			int id, 
-			int? ingredientId, 
-			string textBetweenNames, 
-			string endingObjectText, 
+			int? ingredientId,
 			bool isFishDish = false): this(id)
 		{
 			IsCropOrFishDish = true;
 			IngredientId = ingredientId;
-            TextBetweenNames = textBetweenNames;
-			EndingObjectText = endingObjectText;
-			IsFishDish = isFishDish;
+            IsFishDish = isFishDish;
         }
 
 		/// <summary>
@@ -118,6 +124,25 @@ namespace Randomizer
                 .ToList();
         }
 
+		/// <summary>
+		/// Gets the saliable object for this cooked item
+		/// If it's a recipe, it replaces the name with the recipe name so that
+		/// the tooltip will display correctly
+		/// </summary>
+		/// <param name="initialStack">How many are in the stack to buy</param>
+		/// <param name="isRecipe">Whether this is a recipe</param>
+		/// <param name="price">The price of the item (-1 for default price)</param>
+		/// <returns>The object that can be sold</returns>
+        public override ISalable GetSaliableObject(int initialStack = 1, bool isRecipe = false, int price = -1)
+        {
+			var svObject = new SVObject(Id, initialStack, isRecipe, price);
+			if (isRecipe)
+			{
+				svObject.Name = RecipeName;
+            }
+			return svObject;
+        }
+
         /// <summary>
         /// Returns the ToString representation to be used for the cooked item object
         /// </summary>
@@ -126,12 +151,17 @@ namespace Randomizer
 		{
 			if (!IsCropOrFishDish)
 			{
-				Globals.ConsoleWarn($"Unexpected ToString call of cooked item: {OriginalName}");
+				Globals.ConsoleWarn($"Unexpected ToString call of cooked item: {Id}: {EnglishName}");
 				return "";
 			}
 
-			string NameAndDescription = Globals.GetTranslation($"item-{Id}-name-and-description", new { itemName = IngredientName });
-            return $"{OriginalName}/{TextBetweenNames}/{NameAndDescription}/{EndingObjectText}";
+            string[] itemData = ItemList.OriginalItemList[Id].Split("/");
+            string[] nameAndDescription = Globals.GetTranslation($"item-{Id}-name-and-description", 
+				new { itemName = IngredientName }).Split("/");
+			itemData[(int)ObjectInformationIndexes.DisplayName] = nameAndDescription[0];
+            itemData[(int)ObjectInformationIndexes.Description] = nameAndDescription[1];
+
+            return string.Join("/", itemData);
 		}
     }
 }

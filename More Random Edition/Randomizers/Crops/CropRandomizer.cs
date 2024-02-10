@@ -259,8 +259,6 @@ namespace Randomizer
 		/// <param name="editedObjectInfo">The object info containing changes to apply</param>
 		private static void SetUpCookedFood(EditedObjectInformation editedObjectInfo)
 		{
-			if (!Globals.Config.Crops.Randomize) { return; }
-
 			if (Globals.Config.Crops.Randomize)
 			{
 				CookedItem.GetAllCropDishes().ForEach(cropDish =>
