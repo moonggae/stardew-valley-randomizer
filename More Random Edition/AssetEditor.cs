@@ -14,6 +14,7 @@ using SVLocationData = StardewValley.GameData.Locations.LocationData;
 //TODO 1.6: test all of these and make fixes as needed
 //TODO 1.6: artifact spots still! see the location randomizer (but maybe move to its own file)
 //TODO 1.6: check all the menu stuff (shops too!) and see what's actually necessary
+//TODO 1.6: revamp the music randomizer
 namespace Randomizer
 {
     public class AssetEditor
@@ -34,7 +35,7 @@ namespace Randomizer
         private Dictionary<string, ObjectData> _objectReplacements = new();
         private Dictionary<string, FruitTreeData> _fruitTreeReplacements = new();
         private Dictionary<string, CropData> _cropReplacements = new();
-        private Dictionary<string, string> _cookingChannelReplacements = new(); // TODO 1.6 - depends on Crops
+        private Dictionary<string, string> _cookingChannelReplacements = new();
         private Dictionary<string, WeaponData> _weaponReplacements = new();
         private Dictionary<string, string> _bootReplacements = new();
         private Dictionary<string, string> _monsterReplacements = new();
@@ -278,8 +279,7 @@ namespace Randomizer
 			_stringReplacements = StringsAdjustments.GetCSFileStringReplacements();
 			_farmEventsReplacements = StringsAdjustments.GetFarmEventsReplacements();
 			_locationStringReplacements = StringsAdjustments.GetLocationStringReplacements();
-			//CraftingRecipeAdjustments.FixCookingRecipeDisplayNames();
-			//_cookingChannelReplacements = CookingChannelAdjustments.GetTextEdits();
+			_cookingChannelReplacements = CookingChannelAdjustments.GetTextEdits();
 
 			//// Needs to run after Cooking Recipe fix so that cooked items are properly named,
 			//// and needs to run before bundles so that NPC Loved Item bundles are properly generated

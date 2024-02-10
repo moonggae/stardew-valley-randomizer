@@ -83,6 +83,9 @@ namespace Randomizer
                 : Range.GetRandomValue(3, 15, shopRNG);
             int salePrice = GetAdjustedItemPrice(itemOfTheWeek, fallbackPrice: 20, multiplier: 3);
             InsertStockAt(menu, itemOfTheWeek.GetSaliableObject(), stock, salePrice);
+
+            var testItem = ItemList.Items[ObjectIndexes.DishOTheSea].GetSaliableObject(isRecipe: true);
+            AddStock(menu, testItem, 1);
         }
     }
 }

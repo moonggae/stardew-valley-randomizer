@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Randomizer
 {
@@ -41,7 +42,9 @@ namespace Randomizer
 		/// </summary>
 		public static Dictionary<string, string> GetTextEdits()
 		{
-			Dictionary<string, string> replacements = new Dictionary<string, string>();
+			FixCookingRecipeDisplayNames();
+
+            Dictionary<string, string> replacements = new();
 			if (!Globals.Config.Crops.Randomize && !Globals.Config.Fish.Randomize) { return replacements; }
 
 			foreach (ShowData showData in GetCookingChannelData())
@@ -89,7 +92,24 @@ namespace Randomizer
 			string replacementText = Globals.GetTranslation($"cooking-channel-{id}", tokenObject);
 			replacements.Add(id.ToString(), replacementText);
 		}
-	}
+
+        /// <summary>
+        /// Fix the cooking recipe display names so that the queen of sauce shows
+        /// can actually display the correct thing
+        /// </summary>
+        public static void FixCookingRecipeDisplayNames()
+		{
+			ItemList.GetCookedItems()
+				.Where(item => item is CookedItem cookedItem && cookedItem.IsCropOrFishDish)
+				.ToList()
+				.ForEach(dish =>
+				{
+                    ObjectIndexes id = (ObjectIndexes)dish.Id;
+                    CookedItem item = (CookedItem)ItemList.Items[id];
+                    item.OverrideDisplayName = dish.DisplayName;
+                });
+        }
+    }
 }
 
 

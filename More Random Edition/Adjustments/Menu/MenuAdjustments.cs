@@ -70,16 +70,17 @@ namespace Randomizer
                 }
             }
 
-            // Letters - adjust learned recipe names
-            else if (e.NewMenu is LetterViewerMenu letterViewerMenu)
-            {
-                LetterViewerMenuAdjustments.AdjustCookingRecipeName(letterViewerMenu);
-            }
-
-            // Quests - fix the name is multiplayer
+            //TODO: 1.6: is this necessary still?
+            // Quests - fix the name in multiplayer
             else if (e.NewMenu is QuestLog questLog)
             {
                 QuestLogAdjustments.FixQuestName(questLog);
+            }
+
+            // Pause menu - adjust the crab pot cost if the player has Trapper
+            else if (e.NewMenu is GameMenu gameMenu)
+            {
+                CraftingMenuAdjustments.ReduceCrabPotCost(gameMenu);
             }
 
             // Shops - adjust on open
@@ -108,12 +109,10 @@ namespace Randomizer
         /// Modifies the stock if it was the first time they were open, or restores it from the state
         /// it was at when it was last closed
         /// </summary>
-        /// <param name="shopMenu"></param>
+        /// <param name="shopMenu">The shop menu to adjust</param>
         /// <param name="wasShopOpened">True if the shop was just opened, false if it was closed</param>
         private static void AdjustShopMenus(ShopMenu shopMenu, bool wasShopOpened)
         {
-            //TODO 1.6: the shop ids are NOT these - look them up from Data/Shops
-            // it looks like each shop ACTUALLY has a unique ID now!
             switch (shopMenu.ShopId)
             {
                 // Seed shop and Joja Mart - adds item of the week
