@@ -40,8 +40,8 @@ namespace Randomizer
         private Dictionary<string, string> _bootReplacements = new();
         private Dictionary<string, string> _monsterReplacements = new();
         private Dictionary<string, CharacterData> _birthdayReplacements = new();
-        private Dictionary<string, string> _preferenceReplacements = new(); // TODO 1.6 - depends on Crops/Fish/Foragables
-        private Dictionary<int, string> _secretNotesReplacements = new(); // TODO 1.6 - depends on NPC Preferences
+        private Dictionary<string, string> _preferenceReplacements = new();
+        private Dictionary<int, string> _secretNotesReplacements = new();
         private Dictionary<string, SpecialOrderData> _specialOrderAdjustments = new();
 
 		public AssetEditor(ModEntry mod)
@@ -281,10 +281,10 @@ namespace Randomizer
 			_locationStringReplacements = StringsAdjustments.GetLocationStringReplacements();
 			_cookingChannelReplacements = CookingChannelAdjustments.GetTextEdits();
 
-			//// Needs to run after Cooking Recipe fix so that cooked items are properly named,
-			//// and needs to run before bundles so that NPC Loved Item bundles are properly generated
-			//_preferenceReplacements = PreferenceRandomizer.Randomize();
-			//_secretNotesReplacements = SecretNotesRandomizer.FixSecretNotes(_preferenceReplacements);
+            // Needs to run after Cooking Recipe fix so that cooked items are properly named,
+            // and needs to run before bundles so that NPC Loved Item bundles are properly generated
+            _preferenceReplacements = PreferenceRandomizer.Randomize();
+			_secretNotesReplacements = SecretNotesRandomizer.FixSecretNotes(_preferenceReplacements);
 
    //         // Bundles need to be ran after preverences so modified NPC values are correct
 			//_bundleReplacements = BundleRandomizer.Randomize();

@@ -109,9 +109,14 @@ namespace Randomizer
 
 		/// <summary>
 		/// Gets the string to be used for the crafting recipe
+		/// Also writes to the spoiler log
 		/// </summary>
+		/// <param name="overrideRecipeName">
+		/// The recipe name to use if not an item in ItemList
+		/// Currently used by the two transmute recipes
+		/// </param>
 		/// <returns>The data in the xnb format</returns>
-		public string GetCraftingString()
+		public string GetCraftingString(string overrideRecipeName = null)
 		{
 			string itemsRequiredString = GetItemsRequired();
 			string unlockConditions = IsLearnedOnLevelup ? $"{SkillString} {GetLevelLearnedAt()}" : "";
@@ -123,13 +128,14 @@ namespace Randomizer
 			for (int i = 0; i < requiredItemsTokens.Length; i += 2)
 			{
 				string itemName = ItemList.GetItemName((ObjectIndexes)int.Parse(requiredItemsTokens[i]));
-				string amount = requiredItemsTokens[i + 1];
+                string amount = requiredItemsTokens[i + 1];
 				requiredItemsSpoilerString += $" - {itemName}: {amount}";
 			}
 
 			if (Globals.Config.CraftingRecipes.Randomize)
 			{
-				Globals.SpoilerWrite($"{Name} - {unlockConditions}");
+				string displayName = overrideRecipeName ?? Name;
+                Globals.SpoilerWrite($"{displayName} - {unlockConditions}");
 				Globals.SpoilerWrite(requiredItemsSpoilerString);
 				Globals.SpoilerWrite("---");
 			}

@@ -33,10 +33,16 @@ namespace Randomizer
 
 			// These two are not actually items, but we want to randomize their recipes anwyway
 			// The IDs passed in don't really matter
-			replacements["Transmute (Fe)"] = new CraftableItem(
-				-1000, CraftableCategories.Moderate, dataKey: "Transmute (Fe)").GetCraftingString();
-            replacements["Transmute (Au)"] = new CraftableItem(
-				-1000, CraftableCategories.Moderate, dataKey: "Transmute (Au)").GetCraftingString();
+			const string TransmuteIronName = "Transmute (Fe)";
+            const string TransmuteGoldName = "Transmute (Au)";
+            replacements[TransmuteIronName] = new CraftableItem(
+				-1000, 
+				CraftableCategories.Moderate, 
+				dataKey: TransmuteIronName).GetCraftingString(TransmuteIronName);
+            replacements[TransmuteGoldName] = new CraftableItem(
+				-1000, 
+				CraftableCategories.Moderate, 
+				dataKey: TransmuteGoldName).GetCraftingString(TransmuteGoldName);
 
             if (Globals.Config.CraftingRecipes.Randomize) 
 			{ 
