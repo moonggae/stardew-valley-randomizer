@@ -196,15 +196,11 @@ namespace Randomizer
                 // Use the location data in the replacements if it's there
                 // Otherwise, use the one we're looping through, but add it to the replacements
                 // USE THIS VALUE AND NOT locData.Value NOW!
-                SVLocationData locationData = locationDataReplacements.ContainsKey(locationName)
-                    ? locationDataReplacements[locationName]
-                    : locData.Value;
+                SVLocationData locationData = LocationData.TrySetLocationData(
+                    locationName,
+                    locData.Value,
+                    locationDataReplacements);
 
-                if (!locationDataReplacements.ContainsKey(locationName))
-                {
-                    locationDataReplacements[locationName] = locationData;
-                }
-                
                 foreach (var spawnFishData in locationData.Fish)
                 {
                     if (spawnFishData.ItemId == null)

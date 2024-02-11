@@ -76,16 +76,16 @@ namespace Randomizer
 			switch (season)
 			{
 				case Seasons.Spring:
-					foragablesInSeason = LocationRandomizer.SpringForagables;
+					foragablesInSeason = ForagableRandomizer.SpringForagables;
 					break;
 				case Seasons.Summer:
-					foragablesInSeason = LocationRandomizer.SummerForagables;
+					foragablesInSeason = ForagableRandomizer.SummerForagables;
 					break;
 				case Seasons.Fall:
-					foragablesInSeason = LocationRandomizer.FallForagables;
+					foragablesInSeason = ForagableRandomizer.FallForagables;
 					break;
 				case Seasons.Winter:
-					foragablesInSeason = LocationRandomizer.WinterForagables;
+					foragablesInSeason = ForagableRandomizer.WinterForagables;
 					break;
 			}
 
@@ -98,7 +98,7 @@ namespace Randomizer
 		/// <returns />
 		public static List<Item> GetUniqueWoodsForagables()
 		{
-			return Items.Values.Where(x => LocationRandomizer.WoodsForagables.Contains(x)).ToList();
+			return Items.Values.Where(x => ForagableRandomizer.WoodsForagables.Contains(x)).ToList();
 		}
 
 		/// <summary>
@@ -107,7 +107,7 @@ namespace Randomizer
 		/// <returns />
 		public static List<Item> GetUniqueBeachForagables()
 		{
-			return Items.Values.Where(x => LocationRandomizer.BeachForagables.Contains(x)).ToList();
+			return Items.Values.Where(x => ForagableRandomizer.BeachForagables.Contains(x)).ToList();
 		}
 
 		/// <summary>
@@ -116,7 +116,7 @@ namespace Randomizer
 		/// <returns />
 		public static List<Item> GetUniqueDesertForagables()
 		{
-			return Items.Values.Where(x => LocationRandomizer.DesertForagables.Contains(x)).ToList();
+			return Items.Values.Where(x => ForagableRandomizer.DesertForagables.Contains(x)).ToList();
 		}
 
 		/// <summary>

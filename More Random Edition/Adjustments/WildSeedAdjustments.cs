@@ -53,7 +53,7 @@ namespace Randomizer
         /// <param name="__instance">The SVOBject instance (unused)</param>
         /// <param name="season">The season passed to the original function</param>
         /// <param name="__result">The value that we want the function to return</param>
-        /// <returns>A value indicating whether we should fall back to the original function's code</returns>
+        /// <returns>Whether we should fall back to the original function's code</returns>
         [HarmonyPatch(typeof(SVCrop))]
         internal static bool GetRandomWildCropForSeason_Prefix(
 			SVObject __instance,

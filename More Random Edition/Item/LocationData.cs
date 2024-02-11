@@ -8,7 +8,8 @@ using SVLocationData = StardewValley.GameData.Locations.LocationData;
 namespace Randomizer
 {
     /// <summary>
-    /// Contains information about foragable items and fish per season, as well as diggable items
+    /// Contains information about foragable items and helper functions to help
+    /// with fish and artifact spot locations
     /// </summary>
     public class LocationData
 	{
@@ -20,10 +21,36 @@ namespace Randomizer
 		public List<ForagableData> FallForagables { get; } = new List<ForagableData>();
 		public List<ForagableData> WinterForagables { get; } = new List<ForagableData>();
 
-		// TODO 1.6: Deal with this part when we do artifacts
-		public Item ExtraDiggingItem { get; set; }
-		public double ExtraDiggingItemRarity { get; set; }
-
+        public static List<Locations> ForagableLocations { 
+            get => new()
+            {
+                Locations.Desert,
+                Locations.BusStop,
+                Locations.Forest,
+                Locations.Town,
+                Locations.Mountain,
+                Locations.Backwoods,
+                Locations.Railroad,
+                Locations.Beach,
+                Locations.Woods
+            };
+        }
+        public static List<Locations> ArtifactSpotLocations
+        {
+            get => new()
+            {
+                Locations.Desert,
+                Locations.BusStop,
+                Locations.Forest,
+                Locations.Town,
+                Locations.Mountain,
+                Locations.Backwoods,
+                Locations.Railroad,
+                Locations.Beach,
+                Locations.Woods,
+                Locations.UndergroundMine
+            };
+        }
 
 		public LocationData(Locations location) 
 		{ 
@@ -96,5 +123,51 @@ namespace Randomizer
                 PerItemCondition = null
             };
 		}
+
+        /// <summary>
+        /// Try to set the key-value pair into the given dictionary of location data
+        /// - If the entry does not exist, adds it to the dictionary
+        /// - In either case, returns back the location data that's in the dictionary
+        /// </summary>
+        /// <param name="locationName">The location name - the key to the replacement dictionary</param>
+        /// <param name="locationDataToSet">The location data to set into the dictionary</param>
+        /// <param name="locationDataReplacements">The replacements dictionary</param>
+        /// <returns>The location data that's present, or that became present in the dictionary</returns>
+        public static SVLocationData TrySetLocationData(
+            string locationName,
+            SVLocationData locationDataToSet,
+            Dictionary<string, SVLocationData> locationDataReplacements)
+        {
+            // Grab the location from the dictionary if it exists, otherwise use the given value
+            bool locationAlreadyExists = locationDataReplacements.ContainsKey(locationName);
+            SVLocationData locationData = locationAlreadyExists
+                ? locationDataReplacements[locationName]
+                : locationDataToSet;
+
+            // Set the value if it's not already set
+            if (!locationAlreadyExists)
+            {
+                locationDataReplacements[locationName] = locationData;
+            }
+
+            return locationData;
+        }
+
+        /// <summary>
+        /// Try to set the key-value pair into the given dictionary of location data
+        /// - If the entry does not exist, adds it to the dictionary
+        /// - In either case, returns back the location data that's in the dictionary
+        /// </summary>
+        /// <param name="location">The location to set the data for</param>
+        /// <param name="locationDataToSet">The location data to set into the dictionary</param>
+        /// <param name="locationDataReplacements">The replacements dictionary</param>
+        /// <returns>The location data that's present, or that became present in the dictionary</returns>
+        public static SVLocationData TrySetLocationData(
+            Locations location,
+            SVLocationData locationDataToSet,
+            Dictionary<string, SVLocationData> locationDataReplacements)
+        {
+            return TrySetLocationData(location.ToString(), locationDataToSet, locationDataReplacements);
+        }
     }
 }

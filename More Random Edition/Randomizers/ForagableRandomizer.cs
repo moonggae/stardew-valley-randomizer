@@ -11,7 +11,7 @@ namespace Randomizer
     /// <summary>
     /// This randomizes the Locations.xnb data
     /// </summary>
-    public class LocationRandomizer
+    public class ForagableRandomizer
 	{
 		private static List<Item> AllForagables { get; set; }
 
@@ -25,7 +25,7 @@ namespace Randomizer
 		public static List<Item> DesertForagables { get; } = new List<Item>();
 
 		/// <summary>
-		/// Randomizes all foragables to a random season and location - does not yet handle fishing or dirt items
+		/// Randomizes all foragables to a random season and location
 		/// </summary>
 		/// <param name="objectReplacements">
 		/// The in-progress objectInformation - it's important to NOT
@@ -33,7 +33,7 @@ namespace Randomizer
 		/// This is passed into edit the tooltip of the foragables to include its season
 		/// </param>
 		/// <returns>A dictionary of locations to replace</returns>
-		public static Dictionary<string, SVLocationData> RandomizeForagables(
+		public static Dictionary<string, SVLocationData> Randomize(
 			Dictionary<string, ObjectData> objectReplacements)
 		{
 			AllForagables = ItemList.Items.Values.Where(x => x.ShouldBeForagable).ToList();
@@ -76,28 +76,18 @@ namespace Randomizer
 		/// <param name="foragableLocationDataList">The list of location data that was randomized</param>
 		public static void WriteToSpoilerLog(List<LocationData> foragableLocationDataList)
 		{
-			if (!Globals.Config.RandomizeForagables && !Globals.Config.AddRandomArtifactItem) { return; }
+			if (!Globals.Config.RandomizeForagables) { return; }
 
-			Globals.SpoilerWrite("==== Foragables and Artifact Spots ====");
+			Globals.SpoilerWrite("==== Foragables ===");
 			foreach (LocationData foragableLocationData in foragableLocationDataList)
 			{
 				Globals.SpoilerWrite("");
 				Globals.SpoilerWrite($">> {foragableLocationData.LocationName} <<");
 
-				if (Globals.Config.RandomizeForagables)
-				{
-					WriteResultsForSeason(Seasons.Spring, foragableLocationData);
-					WriteResultsForSeason(Seasons.Summer, foragableLocationData);
-					WriteResultsForSeason(Seasons.Fall, foragableLocationData);
-					WriteResultsForSeason(Seasons.Winter, foragableLocationData);
-				}
-
-				if (Globals.Config.AddRandomArtifactItem)
-				{
-					// TODO 1.6: re-enable when this is working again
-					//Globals.SpoilerWrite("");
-					//Globals.SpoilerWrite($"Extra digging item and rarity: {foragableLocationData.ExtraDiggingItem.Name} | {foragableLocationData.ExtraDiggingItemRarity}");
-				}
+				WriteResultsForSeason(Seasons.Spring, foragableLocationData);
+				WriteResultsForSeason(Seasons.Summer, foragableLocationData);
+				WriteResultsForSeason(Seasons.Fall, foragableLocationData);
+				WriteResultsForSeason(Seasons.Winter, foragableLocationData);
 			}
 			Globals.SpoilerWrite("");
 		}
@@ -234,21 +224,8 @@ namespace Randomizer
 		/// <returns></returns>
 		private static List<LocationData> GetForagableLocationDataList()
 		{
-			var foragableLocations = new List<Locations>
-			{
-				Locations.Desert,
-				Locations.BusStop,
-				Locations.Forest,
-				Locations.Town,
-				Locations.Mountain,
-				Locations.Backwoods,
-				Locations.Railroad,
-				Locations.Beach,
-				Locations.Woods
-			};
-
 			var forgableLocationDataList = new List<LocationData>();
-			foreach (Locations location in foragableLocations)
+			foreach (Locations location in LocationData.ForagableLocations)
 			{
 				// Add any item to the desert
 				if (location == Locations.Desert)
@@ -263,16 +240,9 @@ namespace Randomizer
 				PopulateLocationBySeason(foragableLocationData, Seasons.Fall);
 				PopulateLocationBySeason(foragableLocationData, Seasons.Winter);
 
-                // TODO 1.6: This IS in the right place; need to do this when fixing artifact spots!
-                //SetExtraDiggableItemInfo(foragableLocationData);
-
                 forgableLocationDataList.Add(foragableLocationData);
 			}
 
-			// TODO 1.6: This should maybe be moved elsewhere? It's only here because of the aritifact spot stuff
-			//LocationData mineLocationData = new() { Location = Locations.UndergroundMine };
-			//SetExtraDiggableItemInfo(mineLocationData);
-			//forgableLocationDataList.Add(mineLocationData);
 			return forgableLocationDataList;
 		}
 
@@ -370,88 +340,6 @@ namespace Randomizer
 			} while (listToPopulate.Contains(AllForagables[itemIndex]));
 
 			listToPopulate.Add(AllForagables[itemIndex]);
-		}
-
-		/// <summary>
-		/// Sets the diggable item info on the given data
-		/// </summary>
-		/// <param name="locationData">The location data</param>
-		private static void SetExtraDiggableItemInfo(LocationData locationData)
-		{
-			ObtainingDifficulties difficulty = GetRandomItemDifficulty();
-			double probability;
-			switch (difficulty)
-			{
-				case ObtainingDifficulties.NoRequirements:
-					probability = (double)Range.GetRandomValue(30, 60) / 100;
-					break;
-				case ObtainingDifficulties.SmallTimeRequirements:
-					probability = (double)Range.GetRandomValue(30, 40) / 100;
-					break;
-				case ObtainingDifficulties.MediumTimeRequirements:
-					probability = (double)Range.GetRandomValue(20, 30) / 100;
-					break;
-				case ObtainingDifficulties.LargeTimeRequirements:
-					probability = (double)Range.GetRandomValue(10, 20) / 100;
-					break;
-				case ObtainingDifficulties.UncommonItem:
-					probability = (double)Range.GetRandomValue(5, 15) / 100;
-					break;
-				case ObtainingDifficulties.RareItem:
-					probability = (double)Range.GetRandomValue(1, 5) / 100;
-					break;
-				default:
-					Globals.ConsoleError($"Attempting to get a diggable item with invalid difficulty: {difficulty}");
-					difficulty = ObtainingDifficulties.NoRequirements;
-					probability = (double)Range.GetRandomValue(30, 60) / 100;
-					break;
-			}
-
-			locationData.ExtraDiggingItem = ItemList.GetRandomItemAtDifficulty(difficulty);
-			locationData.ExtraDiggingItemRarity = probability;
-		}
-
-		/// <summary>
-		/// Gets a random item difficulty
-		/// - 1/2 = no req
-		/// - 1/4 = small time req
-		/// - 1/8 = medium time req
-		/// - 1/16 = large time req
-		/// - 1/32 = uncommon
-		/// - 1/64 = rare
-		/// </summary>
-		/// <returns></returns>
-		private static ObtainingDifficulties GetRandomItemDifficulty()
-		{
-			if (Globals.RNGGetNextBoolean())
-			{
-				return ObtainingDifficulties.NoRequirements;
-			}
-
-			else if (Globals.RNGGetNextBoolean())
-			{
-				return ObtainingDifficulties.SmallTimeRequirements;
-			}
-
-			else if (Globals.RNGGetNextBoolean())
-			{
-				return ObtainingDifficulties.MediumTimeRequirements;
-			}
-
-			else if (Globals.RNGGetNextBoolean())
-			{
-				return ObtainingDifficulties.LargeTimeRequirements;
-			}
-
-			else if (Globals.RNGGetNextBoolean())
-			{
-				return ObtainingDifficulties.UncommonItem;
-			}
-
-			else
-			{
-				return ObtainingDifficulties.RareItem;
-			}
 		}
 
 		/// <summary>

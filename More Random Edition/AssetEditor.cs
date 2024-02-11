@@ -14,6 +14,7 @@ using SVLocationData = StardewValley.GameData.Locations.LocationData;
 //TODO 1.6: test all of these and make fixes as needed
 //TODO 1.6: artifact spots still! see the location randomizer (but maybe move to its own file)
 //TODO 1.6: revamp the music randomizer
+//TODO 1.6: use Data/MuseumRewards instead of the menu hack
 namespace Randomizer
 {
     public class AssetEditor
@@ -261,7 +262,11 @@ namespace Randomizer
 
 			EditedObjects editedObjectInfo = new();
 			_objectReplacements = editedObjectInfo.ObjectsReplacements;
-			_locationsReplacements = LocationRandomizer.RandomizeForagables(_objectReplacements); // Must be done before recipes because of wild seeds
+
+            // Must be done before recipes because of wild seeds
+            // Also, the ForagableRandomizer needs to be the one to define _locationsReplacements
+            _locationsReplacements = ForagableRandomizer.Randomize(_objectReplacements);
+            ArtifactSpotRandomizer.Randomize(_locationsReplacements);
 			
             FishRandomizer.Randomize(editedObjectInfo, _locationsReplacements);
 			_fishReplacements = editedObjectInfo.FishReplacements;
