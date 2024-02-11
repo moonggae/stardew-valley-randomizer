@@ -67,10 +67,10 @@ namespace Randomizer
                 TryReplaceAsset(e, "Data/Locations", _locationsReplacements) ||
                 TryReplaceAsset(e, "Strings/Locations", _locationStringReplacements) ||
                 TryReplaceAsset(e, "Data/Objects", _objectReplacements) ||
-                TryReplaceAsset(e, "Data/fruitTrees", _fruitTreeReplacements) ||
+                TryReplaceAsset(e, "Data/FruitTrees", _fruitTreeReplacements) ||
                 TryReplaceAsset(e, "Data/Crops", _cropReplacements) ||
                 TryReplaceAsset(e, "Data/TV/CookingChannel", _cookingChannelReplacements) ||
-                TryReplaceAsset(e, "Data/weapons", _weaponReplacements) ||
+                TryReplaceAsset(e, "Data/Weapons", _weaponReplacements) ||
                 TryReplaceAsset(e, "Data/Boots", _bootReplacements) ||
                 TryReplaceAsset(e, "Data/Monsters", _monsterReplacements) ||
                 TryReplaceAsset(e, "Data/Characters", _birthdayReplacements) ||
@@ -112,10 +112,10 @@ namespace Randomizer
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Quests") || e.Name.IsEquivalentTo("Data/mail")) { return Globals.Config.RandomizeQuests; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Locations")) { return Globals.Config.Fish.Randomize || Globals.Config.RandomizeForagables || Globals.Config.AddRandomArtifactItem; }
             if (e.NameWithoutLocale.IsEquivalentTo("Strings/Locations")) { return Globals.Config.Crops.Randomize; } // For now, as the only thing is the sweet gem berry text
-            if (e.NameWithoutLocale.IsEquivalentTo("Data/fruitTrees")) { return Globals.Config.RandomizeFruitTrees; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/FruitTrees")) { return Globals.Config.RandomizeFruitTrees; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Crops")) { return Globals.Config.Crops.Randomize; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/TV/CookingChannel")) { return Globals.Config.Crops.Randomize || Globals.Config.Fish.Randomize; }
-            if (e.NameWithoutLocale.IsEquivalentTo("Data/weapons")) { return Globals.Config.Weapons.Randomize; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Weapons")) { return Globals.Config.Weapons.Randomize; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Boots")) { return Globals.Config.Boots.Randomize; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Monsters")) { return Globals.Config.Monsters.Randomize; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Characters")) { return Globals.Config.NPCs.RandomizeBirthdays; }
@@ -174,10 +174,10 @@ namespace Randomizer
 			InvalidateCacheForDefaultAndCurrentLocales("Data/mail");
 			InvalidateCacheForDefaultAndCurrentLocales("Data/Locations");
 			InvalidateCacheForDefaultAndCurrentLocales("Strings/Locations");
-			InvalidateCacheForDefaultAndCurrentLocales("Data/fruitTrees");
+			InvalidateCacheForDefaultAndCurrentLocales("Data/FruitTrees");
 			InvalidateCacheForDefaultAndCurrentLocales("Data/Crops");
 			InvalidateCacheForDefaultAndCurrentLocales("Data/TV/CookingChannel");
-			InvalidateCacheForDefaultAndCurrentLocales("Data/weapons");
+			InvalidateCacheForDefaultAndCurrentLocales("Data/Weapons");
 			InvalidateCacheForDefaultAndCurrentLocales("Data/Boots");
 			InvalidateCacheForDefaultAndCurrentLocales("Data/Monsters");
             InvalidateCacheForDefaultAndCurrentLocales("Data/Characters");

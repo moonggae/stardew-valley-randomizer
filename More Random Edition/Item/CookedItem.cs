@@ -18,8 +18,7 @@ namespace Randomizer
 		private readonly static Dictionary<int, string> CookedItemsToRecipeNames = new();
 		static CookedItem() {
             const int CookedItemIdIndex = 2;
-            var cookingRecipeData = Globals.ModRef.Helper.GameContent
-                .Load<Dictionary<string, string>>("Data/CookingRecipes");
+			var cookingRecipeData = DataLoader.CookingRecipes(Game1.content);
 
             foreach (KeyValuePair<string, string> data in cookingRecipeData)
             {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StardewValley;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -154,8 +155,7 @@ namespace Randomizer
         /// <returns>Dictionary&lt;string, string&gt; which holds the replacement prefstrings for the enabled preferences (NPC/Universal).</returns>
         public static Dictionary<string, string> Randomize()
         {   // Initialize gift taste data here so that it's reloaded in case of a locale change
-            GiftTasteData = Globals.ModRef.Helper.GameContent
-                .Load<Dictionary<string, string>>("Data/NPCGiftTastes");
+			GiftTasteData = DataLoader.NpcGiftTastes(Game1.content);
 			NewGiftTasteData = new();
 
 			List<int> universalUnusedCategories = new(GiftableItemCategories.Keys);

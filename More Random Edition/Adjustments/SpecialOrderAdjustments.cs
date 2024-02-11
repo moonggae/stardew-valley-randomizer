@@ -1,4 +1,5 @@
-﻿using StardewValley.GameData.SpecialOrders;
+﻿using StardewValley;
+using StardewValley.GameData.SpecialOrders;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,8 +23,8 @@ namespace Randomizer
                 return adjustments;
             }
 
-            Dictionary<string, SpecialOrderData> specialOrderData = Globals.ModRef.Helper.GameContent
-                .Load<Dictionary<string, SpecialOrderData>>("Data/SpecialOrders");
+            Dictionary<string, SpecialOrderData> specialOrderData = 
+                DataLoader.SpecialOrders(Game1.content);
 
             FixSeasonalFishOrder(specialOrderData, adjustments);
 
