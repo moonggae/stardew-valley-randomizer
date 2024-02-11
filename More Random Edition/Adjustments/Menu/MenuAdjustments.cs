@@ -48,25 +48,8 @@ namespace Randomizer
         /// <param name="e">Contains the menu info - NewMenu means a menu was opened, OldMenu means one was closed</param>
         public static void AdjustMenus(object sender, MenuChangedEventArgs e)
         {
-            if (e.NewMenu is OverriddenJunimoNoteMenu)
-            {
-                return; // We've already done our work!
-            }
-
-            // Bundle menu - fix ring deposit
-            if (e.NewMenu is JunimoNoteMenu junimoNoteMenu)
-            {
-                JunimoNoteMenu overriddenJunimoNoteMenu = 
-                    BundleMenuAdjustments.OverrideJunimoNoteMenu(junimoNoteMenu);
-                if (overriddenJunimoNoteMenu != null)
-                {
-                    BundleMenuAdjustments.FixRingSelection(overriddenJunimoNoteMenu);
-                }
-            }
-
-            //TODO: 1.6: is this necessary still?
             // Quests - fix the name in multiplayer
-            else if (e.NewMenu is QuestLog questLog)
+            if (e.NewMenu is QuestLog questLog)
             {
                 QuestLogAdjustments.FixQuestName(questLog);
             }

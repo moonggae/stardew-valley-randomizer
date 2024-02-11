@@ -46,13 +46,13 @@ namespace Randomizer
 				helper.Events.GameLoop.DayStarted += (sender, args) => _modAssetLoader.ReplaceRain();
 			}
 
-            //TODO 1.6: the repoint hack has a myserious crash now... we should probably try to override it instead or something
-            //if (Globals.Config.RandomizeForagables)
-            //{
-            //	helper.Events.GameLoop.GameLaunched += (sender, args) => WildSeedAdjustments.ReplaceGetRandomWildCropForSeason();
-            //}
+			//TODO 1.6: the repoint hack has a mysterious crash now... we should probably try to override it instead or something
+			//if (Globals.Config.RandomizeForagables)
+			//{
+			//	helper.Events.GameLoop.GameLaunched += (sender, args) => WildSeedAdjustments.ReplaceGetRandomWildCropForSeason();
+			//}
 
-            if (Globals.Config.Bundles.Randomize && Globals.Config.Bundles.ShowDescriptionsInBundleTooltips)
+			if (Globals.Config.Bundles.Randomize && Globals.Config.Bundles.ShowDescriptionsInBundleTooltips)
 			{
 				helper.Events.Display.RenderedActiveMenu += (sender, args) => BundleMenuAdjustments.AddDescriptionsToBundleTooltips();
 			}
