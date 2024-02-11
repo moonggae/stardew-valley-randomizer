@@ -1,8 +1,10 @@
-﻿using StardewValley;
+﻿using HarmonyLib;
+using StardewValley;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using SVCrop = StardewValley.Crop;
+using SVObject = StardewValley.Object;
 using SVSeason = StardewValley.Season;
 
 namespace Randomizer
@@ -15,7 +17,7 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="season">The relevant season</param>
 		/// <returns>The ID of the random wild crop</returns>
-		public virtual string GetRandomWildCropForSeason(SVSeason season)
+		internal static string GetRandomWildCropForSeason(SVSeason season)
 		{
             List<string> wildCropIDs;
 			switch (season)
@@ -44,17 +46,46 @@ namespace Randomizer
 			return Globals.RNGGetRandomValueFromList(wildCropIDs, Game1.random);
 		}
 
-		/// <summary>
-		/// Replaces the Crop.getRandomWildCropForSeason method in Stardew Valley's Crop.cs 
-		/// with this file's GetRandomWildCropForSeason method
-		/// NOTE: THIS IS UNSAFE CODE, CHANGE WITH EXTREME CAUTION
-		/// </summary>
-		public static void ReplaceGetRandomWildCropForSeason()
+        /// <summary>
+        /// The prefix path for the wild crop replacement - this will replace the original function
+        /// More info on this here: https://harmony.pardeike.net/articles/patching-prefix.html
+        /// </summary>
+        /// <param name="__instance">The SVOBject instance (unused)</param>
+        /// <param name="season">The season passed to the original function</param>
+        /// <param name="__result">The value that we want the function to return</param>
+        /// <returns>A value indicating whether we should fall back to the original function's code</returns>
+        [HarmonyPatch(typeof(SVCrop))]
+        internal static bool GetRandomWildCropForSeason_Prefix(
+			SVObject __instance,
+			SVSeason season,
+			ref string __result)
+        {
+            try
+            {
+				__result = GetRandomWildCropForSeason(season);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Globals.ConsoleError($"Failed to grow a new wild crop in {nameof(GetRandomWildCropForSeason_Prefix)}, growing the default instead.\n{ex}");
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Replaces the Crop.getRandomWildCropForSeason method in Stardew Valley's Crop.cs 
+        /// with this file's GetRandomWildCropForSeason method
+        /// 
+		/// Note that harmony should only be used as a last resort, so we should consider
+		/// moving away from it if it's ever possible
+        /// </summary>
+        public static void ReplaceGetRandomWildCropForSeason()
 		{
-            /// TODO 1.6: This seems to crash games on load - something is wrong!
-            MethodInfo methodToReplace = typeof(SVCrop).GetMethod("getRandomWildCropForSeason");
-			MethodInfo methodToInject = typeof(WildSeedAdjustments).GetMethod("GetRandomWildCropForSeason");
-			Globals.RepointMethod(methodToReplace, methodToInject);
-		}
+            var harmony = new Harmony(Globals.ModRef.ModManifest.UniqueID);
+            harmony.Patch(
+               original: AccessTools.Method(typeof(SVCrop), nameof(SVCrop.getRandomWildCropForSeason)),
+               prefix: new HarmonyMethod(typeof(WildSeedAdjustments), nameof(GetRandomWildCropForSeason_Prefix))
+            );
+        }
 	}
 }
