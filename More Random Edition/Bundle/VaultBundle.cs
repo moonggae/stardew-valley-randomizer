@@ -14,10 +14,10 @@ namespace Randomizer
 		/// </summary>
 		protected override void Populate()
 		{
-			int moneyAmount = 0;
-			BundleType = Globals.RNGGetAndRemoveRandomValueFromList(RoomBundleTypes);
-			int bundleNameFlavorID = 1;
+			int moneyAmount;
+			int bundleNameFlavorID;
 
+			BundleType = Globals.RNGGetAndRemoveRandomValueFromList(RoomBundleTypes);
 			switch (BundleType)
 			{
 				case BundleTypes.Vault2500:
@@ -40,7 +40,7 @@ namespace Randomizer
 					return;
 			}
 
-			RequiredItems = new List<RequiredItem> { new RequiredItem() { MoneyAmount = moneyAmount } };
+			RequiredItems = new List<RequiredItem> { new() { MoneyAmount = moneyAmount } };
             SetVaultBundleName(moneyAmount, bundleNameFlavorID);
 			ImageNameSuffix = $"-{bundleNameFlavorID}";
 

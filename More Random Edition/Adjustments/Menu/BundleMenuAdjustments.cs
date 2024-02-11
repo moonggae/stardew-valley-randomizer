@@ -110,29 +110,9 @@ namespace Randomizer
 #pragma warning restore CS0618 // Type or member is obsolete
         }
 
-		/// <summary>
-        /// TODO 1.6: Data/Bundle now supports display names for English, so we probably can just deal with it there instead!
-		/// Replaces the bundle names with our custom ones
-		/// Only really necessary for non-English locales
-		/// </summary>
-		/// <param name="menu">The menu to adjust</param>
-		public static void InsertCustomBundleNames(JunimoNoteMenu menu)
-		{
-            if (!Globals.Config.Bundles.Randomize)
-            {
-                return;
-            }
-
-            foreach (StardewValley.Menus.Bundle bundle in menu.bundles)
-            {
-                bundle.label = BundleRandomizer.BundleToName[bundle.bundleIndex];
-            }
-        }
-
         /// <summary>
         /// Adds tooltips for the bundle items so that you can see where to get fish/foragables, etc
         /// </summary>
-        /// 
         public static void AddDescriptionsToBundleTooltips()
 		{
 			if (Game1.activeClickableMenu is not JunimoNoteMenu menu || 

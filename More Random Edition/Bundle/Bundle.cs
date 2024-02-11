@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StardewValley;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -30,22 +31,14 @@ namespace Randomizer
 		/// </summary>
 		public string DisplayName { get; private set; }
 
-        /// <summary>
-        /// The english name - this is the one we will use as the English display name,
-        /// as well as to save the data (so other locales don't crash)
-        /// It is important for this to NEVER be set outside of SetBundleName
-        /// </summary>
-        private string EnglishName { get; set; }
-
 		/// <summary>
-		/// Sets the bundle display and english names by looking up the translation
+		/// Sets the bundle display name by looking up the translation
 		/// </summary>
 		/// <param name="translationKey">The key that's in the i18n files</param>
-		/// <param name="obj">The  anonymouse oobject used in the translation</param>
+		/// <param name="obj">The anonymous object used in the translation</param>
 		public void SetBundleName(string translationKey, dynamic obj = null)
 		{
             DisplayName = Globals.GetTranslation(translationKey, obj);
-            EnglishName = Globals.GetEnglishTranslation(translationKey, obj);
         }
 
 		/// <summary>
@@ -60,11 +53,6 @@ namespace Randomizer
             string bundleNameFlavorLocalized = Globals.GetTranslation($"{BundleType}-{bundleFlavorId}");
             string moneyStringLocalized = Globals.GetTranslation(moneyFormatKey, new { moneyString = moneyAmountStringLocalized });
             DisplayName = $"{moneyStringLocalized}: {bundleNameFlavorLocalized}";
-
-            string moneyAmountStringEnglish = moneyAmount.ToString("N0", new CultureInfo("en-US"));
-            string bundleNameFlavorEnglish = Globals.GetEnglishTranslation($"{BundleType}-{bundleFlavorId}");
-            string moneyStringEnglish = Globals.GetTranslation(moneyFormatKey, new { moneyString = moneyAmountStringEnglish });
-            EnglishName = $"{moneyStringEnglish}: {bundleNameFlavorEnglish}";
         }
 
 		public RequiredItem Reward { get; set; }
@@ -193,16 +181,27 @@ namespace Randomizer
 			string minRequiredItemsString = "";
 			if (Room != CommunityCenterRooms.Vault && MinimumRequiredItems != null && MinimumRequiredItems > 0)
 			{
-				minRequiredItemsString = $"/{MinimumRequiredItems}";
+				minRequiredItemsString = MinimumRequiredItems.ToString();
 			}
 
-            return $"{EnglishName}/{rewardString}/{GetRewardStringForRequiredItems()}/{Color:D}{minRequiredItemsString}";
+			string[] originalBundleData = DataLoader.Bundles(Game1.content)[Key].Split("/");
+			originalBundleData[(int)BundleIndexes.Reward] = rewardString;
+			originalBundleData[(int)BundleIndexes.RequiredItems] = GetRequiredItemString();
+			originalBundleData[(int)BundleIndexes.ColorIndex] = $"{Color:D}";
+			originalBundleData[(int)BundleIndexes.MinimumRequiredItems] = minRequiredItemsString;
+			originalBundleData[(int)BundleIndexes.OldDisplayName] = "";
+            originalBundleData[(int)BundleIndexes.DisplayName] = DisplayName;
+
+			return string.Join("/", originalBundleData);
 		}
 
 		/// <summary>
 		/// Gets the prefix used before the reward string
 		/// </summary>
-		/// <returns>R if a ring; BO if a BigCraftableObject; O otherwise</returns>
+		/// <returns>
+		/// R if a ring; BO if a BigCraftableObject; O otherwise
+		/// Yes, even after the 1.6 rework, these are the correct prefixes
+		/// </returns>
 		private string GetRewardStringPrefix()
 		{
 			if (Reward?.Item == null)
@@ -225,10 +224,10 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Gets the reward string for all the required items
+		/// Gets the string for all the required items
 		/// </summary>
 		/// <returns>The reward string</returns>
-		private string GetRewardStringForRequiredItems()
+		private string GetRequiredItemString()
 		{
 			if (RequiredItems.Count == 0)
 			{
@@ -236,17 +235,9 @@ namespace Randomizer
 				return "";
 			}
 
-			if (Room == CommunityCenterRooms.Vault)
-			{
-				return RequiredItems.First().GetStringForBundles(true);
-			}
-
-			string output = "";
-			foreach (RequiredItem item in RequiredItems)
-			{
-				output += $"{item.GetStringForBundles(false)} ";
-			}
-			return output.Trim();
+			return Room == CommunityCenterRooms.Vault
+				? RequiredItems.First().GetStringForBundles(true)
+				: string.Join(" ", RequiredItems.Select(item => item.GetStringForBundles(false)));
 		}
 
 		/// <summary>
@@ -255,7 +246,9 @@ namespace Randomizer
 		/// <returns>True if successful, false otherwise</returns>
 		protected bool TryGenerateRandomBundle()
 		{
-			if (Room != CommunityCenterRooms.Vault && Room != CommunityCenterRooms.Joja && Globals.RNGGetNextBoolean(10))
+			if (Room != CommunityCenterRooms.Vault &&
+				Room != CommunityCenterRooms.Joja && 
+				Globals.RNGGetNextBoolean(10))
 			{
 				PopulateRandomBundle();
 				return true;
