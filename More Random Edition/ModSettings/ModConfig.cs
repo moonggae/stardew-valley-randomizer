@@ -85,7 +85,7 @@
 	public class MusicConfig
 	{
 		public bool Randomize { get; set; } = true;
-		public bool RandomSongEachTransition { get; set; } = false;
+		public bool RandomSongEachChange { get; set; } = false;
 	}
 
 	public class ShopsConfig

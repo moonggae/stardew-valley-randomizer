@@ -72,7 +72,7 @@ namespace Randomizer
 
             AddSectionTitle("Music Options");
 			AddCheckbox("Music", "Shuffle most songs and ambience.", () => Globals.Config.Music.Randomize, (bool val) => Globals.Config.Music.Randomize = val);
-			AddCheckbox("Random Song on Area Change", "Plays a new song each time the loaded area changes.", () => Globals.Config.Music.RandomSongEachTransition, (bool val) => Globals.Config.Music.RandomSongEachTransition = val);
+			AddCheckbox("Random Song on Each Change", "Plays a random song each time the song would change.", () => Globals.Config.Music.RandomSongEachChange, (bool val) => Globals.Config.Music.RandomSongEachChange = val);
 
 			AddSectionTitle("Shop Options");
             AddCheckbox("Seed Shop Item of the Week", "Adds an item to Pierre's shop that changes every Monday.", () => Globals.Config.Shops.AddSeedShopItemOfTheWeek, (bool val) => Globals.Config.Shops.AddSeedShopItemOfTheWeek = val);

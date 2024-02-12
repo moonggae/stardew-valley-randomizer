@@ -12,9 +12,8 @@ using System.Collections.Generic;
 using SVLocationData = StardewValley.GameData.Locations.LocationData;
 
 //TODO 1.6: test all of these and make fixes as needed
-//TODO 1.6: artifact spots still! see the location randomizer (but maybe move to its own file)
-//TODO 1.6: revamp the music randomizer
 //TODO 1.6: use Data/MuseumRewards instead of the menu hack
+//TODO 1.6: use Data/Shops instead of the menu hack
 namespace Randomizer
 {
     public class AssetEditor
@@ -288,9 +287,9 @@ namespace Randomizer
             _preferenceReplacements = PreferenceRandomizer.Randomize();
 			_secretNotesReplacements = SecretNotesRandomizer.FixSecretNotes(_preferenceReplacements);
 
-   //         // Bundles need to be ran after preferences so modified NPC values are correct
+            // Bundles need to be ran after preferences so modified NPC values are correct
 			_bundleReplacements = BundleRandomizer.Randomize();
-   //         MusicRandomizer.Randomize();
+            MusicRandomizer.Randomize();
 
 			QuestInformation questInfo = QuestRandomizer.Randomize();
 			_questReplacements = questInfo.QuestReplacements;

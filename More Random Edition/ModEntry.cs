@@ -29,6 +29,7 @@ namespace Randomizer
 			PreLoadReplacments();
 			helper.Events.GameLoop.GameLaunched += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
 			helper.Events.GameLoop.GameLaunched += (sender, args) => TryLoadModConfigMenu();
+			helper.Events.GameLoop.GameLaunched += (sender, args) => MusicRandomizer.PatchChangeMusicTrack();
 			helper.Events.Content.LocaleChanged += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
 			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetEditor.ResetValuesAndInvalidateCache();
 			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
@@ -36,12 +37,7 @@ namespace Randomizer
 			helper.Events.Display.MenuChanged += MenuAdjustments.AdjustMenus;
 			helper.Events.GameLoop.DayEnding += (sender, args) => MenuAdjustments.ResetShopStates();
 
-			if (Globals.Config.Music.Randomize) 
-			{ 
-				helper.Events.GameLoop.UpdateTicked += (sender, args) => MusicRandomizer.TryReplaceSong(); 
-			}
-
-			if (Globals.Config.RandomizeRain)
+            if (Globals.Config.RandomizeRain)
 			{
 				helper.Events.GameLoop.DayStarted += (sender, args) => _modAssetLoader.ReplaceRain();
 			}
