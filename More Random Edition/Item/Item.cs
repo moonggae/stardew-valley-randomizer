@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewValley;
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using SVObject = StardewValley.Object;
 using SVRing = StardewValley.Objects.Ring;
@@ -11,8 +12,10 @@ namespace Randomizer
 	/// Represents an item in the game
 	/// </summary>
 	public class Item
-	{
-		public int Id { get; }
+    {
+        public const string ObjectIdPrefix = "(O)";
+
+        public int Id { get; }
 
         /// <summary>
 		/// This is the QualifiedItemId in Stardew's code a prefix before the integer id
@@ -121,6 +124,15 @@ namespace Randomizer
 		public bool IsCooked { get; set; }
 		public bool IsRing { get; set; }
 		public bool IsFruit { get; set; }
+		public bool IsTotem { get =>
+            new List<int>() {
+                (int)ObjectIndexes.WarpTotemFarm,
+                (int)ObjectIndexes.WarpTotemBeach,
+                (int)ObjectIndexes.WarpTotemMountains,
+                (int)ObjectIndexes.WarpTotemDesert,
+                (int)ObjectIndexes.RainTotem
+            }.Contains(Id);
+		}
 		public bool RequiresOilMaker { get; set; }
 		public bool RequiresBeehouse { get; set; }
 		public bool RequiresKeg { get; set; }
@@ -181,12 +193,22 @@ namespace Randomizer
 			}
 		}
 
-		/// <summary>
-		/// Returns the string version of this item to use in crafting recipes
-		/// Will NOT return the same value each time this is called!
-		/// </summary>
-		/// <returns></returns>
-		public string GetStringForCrafting()
+        /// <summary>
+        /// Returns whether the given qualified id is for a Stardew Valley object
+        /// </summary>
+        /// <param name="id">The id</param>
+        /// <returns>True if the given id is for a Stardew Valley object, false otherwise</returns>
+        public static bool IsQualifiedIdForObject(string id)
+        {
+            return id.StartsWith(ObjectIdPrefix);
+        }
+
+        /// <summary>
+        /// Returns the string version of this item to use in crafting recipes
+        /// Will NOT return the same value each time this is called!
+        /// </summary>
+        /// <returns></returns>
+        public string GetStringForCrafting()
 		{
 			return $"{Id} {GetAmountRequiredForCrafting()}";
 		}

@@ -4,6 +4,7 @@ using StardewValley.GameData.Buildings;
 using StardewValley.GameData.Characters;
 using StardewValley.GameData.Crops;
 using StardewValley.GameData.FruitTrees;
+using StardewValley.GameData.Museum;
 using StardewValley.GameData.Objects;
 using StardewValley.GameData.SpecialOrders;
 using StardewValley.GameData.Weapons;
@@ -11,8 +12,6 @@ using System;
 using System.Collections.Generic;
 using SVLocationData = StardewValley.GameData.Locations.LocationData;
 
-//TODO 1.6: test all of these and make fixes as needed
-//TODO 1.6: use Data/MuseumRewards instead of the menu hack
 //TODO 1.6: use Data/Shops instead of the menu hack
 namespace Randomizer
 {
@@ -42,6 +41,7 @@ namespace Randomizer
         private Dictionary<string, string> _preferenceReplacements = new();
         private Dictionary<int, string> _secretNotesReplacements = new();
         private Dictionary<string, SpecialOrderData> _specialOrderAdjustments = new();
+        private Dictionary<string, MuseumRewards> _museumRewardReplacements = new();
 
 		public AssetEditor(ModEntry mod)
 		{
@@ -76,7 +76,8 @@ namespace Randomizer
                 TryReplaceAsset(e, "Data/Characters", _birthdayReplacements) ||
                 TryReplaceAsset(e, "Data/NPCGiftTastes", _preferenceReplacements) ||
                 TryReplaceAsset(e, "Data/SecretNotes", _secretNotesReplacements) ||
-                TryReplaceAsset(e, "Data/SpecialOrders", _specialOrderAdjustments))
+                TryReplaceAsset(e, "Data/SpecialOrders", _specialOrderAdjustments) ||
+                TryReplaceAsset(e, "Data/MuseumRewards", _museumRewardReplacements))
 			{
 				return;
 			}
@@ -109,7 +110,7 @@ namespace Randomizer
 			if (e.NameWithoutLocale.IsEquivalentTo("Data/Events/Farm")) { return Globals.Config.Animals.RandomizePets; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Objects")) { return true; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Fish")) { return Globals.Config.Fish.Randomize; }
-            if (e.NameWithoutLocale.IsEquivalentTo("Data/Quests") || e.Name.IsEquivalentTo("Data/mail")) { return Globals.Config.RandomizeQuests; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Quests") || e.NameWithoutLocale.IsEquivalentTo("Data/mail")) { return Globals.Config.RandomizeQuests; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Locations")) { return Globals.Config.Fish.Randomize || Globals.Config.RandomizeForagables || Globals.Config.AddRandomArtifactItem; }
             if (e.NameWithoutLocale.IsEquivalentTo("Strings/Locations")) { return Globals.Config.Crops.Randomize; } // For now, as the only thing is the sweet gem berry text
             if (e.NameWithoutLocale.IsEquivalentTo("Data/FruitTrees")) { return Globals.Config.RandomizeFruitTrees; }
@@ -121,7 +122,8 @@ namespace Randomizer
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Characters")) { return Globals.Config.NPCs.RandomizeBirthdays; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/NPCGiftTastes")) { return Globals.Config.NPCs.RandomizeIndividualPreferences || Globals.Config.NPCs.RandomizeUniversalPreferences; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/SecretNotes")) { return Globals.Config.NPCs.RandomizeIndividualPreferences; }
-            if (e.NameWithoutLocale.IsEquivalentTo("Data/SpecialOrders")) { return Globals.Config.Fish.Randomize; } 
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/SpecialOrders")) { return Globals.Config.Fish.Randomize; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/MuseumRewards")) { return Globals.Config.RandomizeMuseumRewards; }
 
             return false;
         }
@@ -185,6 +187,7 @@ namespace Randomizer
             InvalidateCacheForDefaultAndCurrentLocales("Data/SecretNotes");
             InvalidateCacheForDefaultAndCurrentLocales("Data/ObjectContextTags");
             InvalidateCacheForDefaultAndCurrentLocales("Data/SpecialOrders");
+            InvalidateCacheForDefaultAndCurrentLocales("Data/MuseumRewards");
         }
 
         /// <summary>
@@ -228,6 +231,7 @@ namespace Randomizer
             _preferenceReplacements.Clear();
             _secretNotesReplacements.Clear();
             _specialOrderAdjustments.Clear();
+            _museumRewardReplacements.Clear();
 
             InvalidateCache();
         }
@@ -301,6 +305,8 @@ namespace Randomizer
 
             ObjectContextTagsAdjustments.AdjustContextTags(_objectReplacements);
             _specialOrderAdjustments = SpecialOrderAdjustments.GetSpecialOrderAdjustments();
+
+            _museumRewardReplacements = MuseumRewardRandomizer.RandomizeMuseumRewards();
         }
 
 		/// <summary>

@@ -4,6 +4,9 @@ using SVItem = StardewValley.Item;
 using SVObject = StardewValley.Object;
 using StardewValley.GameData.BigCraftables;
 using Microsoft.Xna.Framework;
+using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Randomizer
 {
@@ -183,6 +186,18 @@ namespace Randomizer
 
     public class BigCraftableFunctions
     {
+        public const string BigCraftableIdPrefix = "(BC)";
+
+        /// <summary>
+        /// Returns whether the given qualified id is for a big craftable
+        /// </summary>
+        /// <param name="id">The id</param>
+        /// <returns>True if the given id is for a big craftable, false otherwise</returns>
+        public static bool IsQualifiedIdForBigCraftable(string id)
+        {
+            return id.StartsWith(BigCraftableIdPrefix);
+        }
+
         /// <summary>
         /// Gets the big craftable object from the given index
         /// </summary>
@@ -200,7 +215,23 @@ namespace Randomizer
         /// <param name="index">The index of the big craftable</param>
         public static string GetQualifiedId(BigCraftableIndexes index)
         {
-            return $"(BO){(int)index}";
+            return $"(BC){(int)index}";
+        }
+
+        /// <summary>
+        /// Gets a random furniture's qualified id
+        /// </summary>
+        /// <param name="idsToExclude">A list of ids to not include in the selection</param>
+        /// <returns>The qualified id</returns>
+        public static string GetRandomBigCraftableQualifiedId(List<string> idsToExclude)
+        {
+            var allBigCraftableIds = Enum.GetValues(typeof(BigCraftableIndexes))
+                .Cast<BigCraftableIndexes>()
+                .Select(index => GetQualifiedId(index))
+                .Where(id => !idsToExclude.Contains(id))
+                .ToList();
+
+            return Globals.RNGGetRandomValueFromList(allBigCraftableIds);
         }
     }
 }

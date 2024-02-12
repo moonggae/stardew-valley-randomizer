@@ -1,6 +1,4 @@
 ﻿using StardewModdingAPI.Events;
-using StardewValley;
-using StardewValley.Locations;
 using StardewValley.Menus;
 
 namespace Randomizer
@@ -70,14 +68,6 @@ namespace Randomizer
             else if (e.OldMenu is ShopMenu closedShopMenu)
             {
                 AdjustShopMenus(closedShopMenu, wasShopOpened: false);
-            }
-
-            // Museum - random similar rewards
-            else if (e.NewMenu is ItemGrabMenu itemGrabMenu && 
-                Game1.currentLocation is LibraryMuseum &&
-                e.NewMenu.GetType().Namespace == "StardewValley.Menus") // Prevents us from overwriting the item spawner mod
-            {
-                MuseumRewardMenuAdjustments.AdjustMenu(itemGrabMenu);
             }
         }
 

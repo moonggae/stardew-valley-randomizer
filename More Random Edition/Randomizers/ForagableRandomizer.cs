@@ -5,9 +5,6 @@ using SVLocationData = StardewValley.GameData.Locations.LocationData;
 
 namespace Randomizer
 {
-	// TODO 1.6: split this into two files - we'll pass in the shared LocationDataReplacements to both of them
-	// - ForagableRandomizer
-	// - LocationRandomizer
     /// <summary>
     /// This randomizes the Locations.xnb data
     /// </summary>

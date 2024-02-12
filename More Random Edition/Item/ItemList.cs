@@ -28,12 +28,29 @@ namespace Randomizer
 			return GetItem(index).Name;
 		}
 
-		/// <summary>
-		/// Gets the qualified id from the given index
-		/// </summary>
-		/// <param name="index">The item's index</param>
-		/// <returns />
-		public static string GetQualifiedId(ObjectIndexes index)
+        /// <summary>
+        /// Gets the display name of the item with the given qualifiedId
+		/// Should only be used for display purposes!
+		/// - currently only does Object, Furuniture, and BigCraftables, though
+        /// </summary>
+        /// <param name="index">The qualified id</param>
+        /// <returns />
+        public static string GetDisplayNameFromQualifiedId(string qualifiedId)
+        {
+            if (Item.IsQualifiedIdForObject(qualifiedId))
+			{
+				return GetItemFromStringId(qualifiedId).Name;
+			}
+
+			return ItemRegistry.GetData(qualifiedId).DisplayName;
+        }
+
+        /// <summary>
+        /// Gets the qualified id from the given index
+        /// </summary>
+        /// <param name="index">The item's index</param>
+        /// <returns />
+        public static string GetQualifiedId(ObjectIndexes index)
 		{
 			return GetItem(index).QualifiedId;
 		}

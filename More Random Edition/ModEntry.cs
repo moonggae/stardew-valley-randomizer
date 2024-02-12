@@ -110,7 +110,6 @@ namespace Randomizer
             _modAssetLoader.CalculateReplacements();
 			_modAssetEditor.CalculateEdits();
 			_modAssetLoader.RandomizeImages();
-            MuseumRewardMenuAdjustments.PopulateRewardMap();
 
 			// Invalidate all replaced and edited assets so they are reloaded
 			_modAssetLoader.InvalidateCache();

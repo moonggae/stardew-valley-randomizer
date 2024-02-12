@@ -1,5 +1,8 @@
 ﻿using StardewValley;
 using StardewValley.Objects;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Randomizer
 {
@@ -359,6 +362,18 @@ namespace Randomizer
 
     public class FurnitureFunctions
     {
+        public const string FurnitureIdPrefix = "(F)";
+
+        /// <summary>
+        /// Returns whether the given qualified id is for furniture
+        /// </summary>
+        /// <param name="id">The id</param>
+        /// <returns>True if the given id is for furniture, false otherwise</returns>
+        public static bool IsQualifiedIdForFurniture(string id)
+        {
+            return id.StartsWith(FurnitureIdPrefix);
+        }
+
         /// <summary>
         /// Gets the Stardew furniture item from the given index
         /// </summary>
@@ -375,7 +390,23 @@ namespace Randomizer
         /// <param name="index">The index of the furniture</param>
         public static string GetQualifiedId(FurnitureIndexes index)
         {
-            return $"(F){(int)index}";
+            return $"{FurnitureIdPrefix}{(int)index}";
+        }
+
+        /// <summary>
+        /// Gets a random furniture's qualified id
+        /// </summary>
+        /// <param name="idsToExclude">A list of ids to not include in the selection</param>
+        /// <returns>The qualified id</returns>
+        public static string GetRandomFurnitureQualifiedId(List<string> idsToExclude)
+        {
+            var allFurnitureIds = Enum.GetValues(typeof(FurnitureIndexes))
+                .Cast<FurnitureIndexes>()
+                .Select(index => GetQualifiedId(index))
+                .Where(id => !idsToExclude.Contains(id))
+                .ToList();
+
+            return Globals.RNGGetRandomValueFromList(allFurnitureIds);
         }
     }
 }
