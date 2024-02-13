@@ -8,7 +8,6 @@ namespace Randomizer
     /// </summary>
     public class MenuAdjustments
     {
-        private static SeedShopMenuAdjustments SeedShop { get; } = new();
         private static AdventureShopMenuAdjustments AdventureShop { get; } = new();
         private static CarpenterShopMenuAdjustments CarpenterShop { get; } = new();
         private static SaloonShopMenuAdjustments SaloonShop { get; } = new();
@@ -26,7 +25,6 @@ namespace Randomizer
         /// </summary>
         public static void ResetShopStates()
         {
-            SeedShop.ResetShopState();
             // Adventure shop is skipped as there's nothing to restore
             CarpenterShop.ResetShopState();
             SaloonShop.ResetShopState();
@@ -82,10 +80,7 @@ namespace Randomizer
         {
             switch (shopMenu.ShopId)
             {
-                // Seed shop and Joja Mart - adds item of the week
-                case "SeedShop":
-                    SeedShop.OnChange(shopMenu, wasShopOpened);
-                    break;
+                // Joja Mart - adds item of the week
                 case "Joja":
                     JojaMart.OnChange(shopMenu, wasShopOpened);
                     break;

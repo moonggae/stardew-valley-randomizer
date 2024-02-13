@@ -6,6 +6,7 @@ using StardewValley.GameData.Crops;
 using StardewValley.GameData.FruitTrees;
 using StardewValley.GameData.Museum;
 using StardewValley.GameData.Objects;
+using StardewValley.GameData.Shops;
 using StardewValley.GameData.SpecialOrders;
 using StardewValley.GameData.Weapons;
 using System;
@@ -42,8 +43,9 @@ namespace Randomizer
         private Dictionary<int, string> _secretNotesReplacements = new();
         private Dictionary<string, SpecialOrderData> _specialOrderAdjustments = new();
         private Dictionary<string, MuseumRewards> _museumRewardReplacements = new();
+        private Dictionary<string, ShopData> _shopReplacements = new();
 
-		public AssetEditor(ModEntry mod)
+        public AssetEditor(ModEntry mod)
 		{
 			_mod = mod;
 		}
@@ -55,7 +57,6 @@ namespace Randomizer
 		/// <param name="e"></param>
         public void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            //TODO 1.6: use the better way of replacing assets so strings aren't hard-coded
 			if (TryReplaceAsset(e, "Data/CraftingRecipes", _recipeReplacements) ||
                 TryReplaceAsset(e, "Data/Bundles", _bundleReplacements) ||
                 TryReplaceAsset(e, "Data/Buildings", _buildingReplacements) ||
@@ -77,7 +78,8 @@ namespace Randomizer
                 TryReplaceAsset(e, "Data/NPCGiftTastes", _preferenceReplacements) ||
                 TryReplaceAsset(e, "Data/SecretNotes", _secretNotesReplacements) ||
                 TryReplaceAsset(e, "Data/SpecialOrders", _specialOrderAdjustments) ||
-                TryReplaceAsset(e, "Data/MuseumRewards", _museumRewardReplacements))
+                TryReplaceAsset(e, "Data/MuseumRewards", _museumRewardReplacements) ||
+                TryReplaceAsset(e, "Data/Shops", _shopReplacements))
 			{
 				return;
 			}
@@ -124,6 +126,11 @@ namespace Randomizer
             if (e.NameWithoutLocale.IsEquivalentTo("Data/SecretNotes")) { return Globals.Config.NPCs.RandomizeIndividualPreferences; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/SpecialOrders")) { return Globals.Config.Fish.Randomize; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/MuseumRewards")) { return Globals.Config.RandomizeMuseumRewards; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Shops")) 
+            { 
+                // The logic to include changes is included in the randomizer (there are many settings)
+                return true; 
+            }
 
             return false;
         }
@@ -188,6 +195,7 @@ namespace Randomizer
             InvalidateCacheForDefaultAndCurrentLocales("Data/ObjectContextTags");
             InvalidateCacheForDefaultAndCurrentLocales("Data/SpecialOrders");
             InvalidateCacheForDefaultAndCurrentLocales("Data/MuseumRewards");
+            InvalidateCacheForDefaultAndCurrentLocales("Data/Shops");
         }
 
         /// <summary>
@@ -254,6 +262,16 @@ namespace Randomizer
 			_uiStringReplacements = StringsAdjustments.ModifyRemixedBundleUI();
 			_mod.Helper.GameContent.InvalidateCache("Strings/UI");
 		}
+
+        /// <summary>
+        /// Shops are randomized once per day - this is a handler that's meant to be called
+        /// at the start of the day
+        /// </summary>
+        public void CalculateAndInvalidateShopEdits()
+        {
+            _shopReplacements = ShopRandomizer.GetDailyShopReplacements();
+            _mod.Helper.GameContent.InvalidateCache("Data/Shops");
+        }
 
 		/// <summary>
 		/// Calculates all the things to edit and creates the replacement dictionaries

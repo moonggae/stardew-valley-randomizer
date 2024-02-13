@@ -63,14 +63,23 @@ namespace Randomizer
         /// <returns>The integer id</returns>
         public static Item GetItemFromStringId(string givenId)
         {
-            string[] tokens = givenId.Split(")");
-            int id = tokens.Length > 1
-                ? int.Parse(tokens[^1])
-                : int.Parse(givenId);
+			try
+			{
+                string[] tokens = givenId.Split(")");
+                int id = tokens.Length > 1
+                    ? int.Parse(tokens[^1])
+                    : int.Parse(givenId);
 
-			return Items.ContainsKey((ObjectIndexes)id)
-				? Items[(ObjectIndexes)id]
-				: null;
+                return Items.ContainsKey((ObjectIndexes)id)
+                    ? Items[(ObjectIndexes)id]
+                    : null;
+            } 
+			
+			catch(FormatException)
+			{
+				// If the int can't be parsed, we'll just return back null
+				return null;
+			}
         }
 
         /// <summary>

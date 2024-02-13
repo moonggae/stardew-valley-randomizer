@@ -124,6 +124,17 @@ namespace Randomizer
 		public bool IsCooked { get; set; }
 		public bool IsRing { get; set; }
 		public bool IsFruit { get; set; }
+		public bool IsRandomizedFruitTree {
+            get =>
+            new List<int>() {
+                (int)ObjectIndexes.AppleSapling,
+                (int)ObjectIndexes.ApricotSapling,
+				(int)ObjectIndexes.CherrySapling,
+                (int)ObjectIndexes.OrangeSapling,
+                (int)ObjectIndexes.PeachSapling,
+                (int)ObjectIndexes.PomegranateSapling
+            }.Contains(Id);
+        }
 		public bool IsTotem { get =>
             new List<int>() {
                 (int)ObjectIndexes.WarpTotemFarm,

@@ -35,7 +35,10 @@ namespace Randomizer
 			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetLoader.ReplaceTitleScreenAssets();
             helper.Events.GameLoop.SaveLoaded += (sender, args) => CalculateAllReplacements();
 			helper.Events.Display.MenuChanged += MenuAdjustments.AdjustMenus;
-			helper.Events.GameLoop.DayEnding += (sender, args) => MenuAdjustments.ResetShopStates();
+			helper.Events.GameLoop.DayStarted += (sender, args) => _modAssetEditor.CalculateAndInvalidateShopEdits();
+
+            // TODO 1.6: remove this one when shop stuff is all done
+            helper.Events.GameLoop.DayEnding += (sender, args) => MenuAdjustments.ResetShopStates();
 
             if (Globals.Config.RandomizeRain)
 			{
