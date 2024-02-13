@@ -12,13 +12,26 @@ namespace Randomizer
         /// <returns></returns>
         public static Dictionary<string, ShopData> GetDailyShopReplacements()
         {
-            var seedShop = new SeedShopRandomizer();
-
-            Dictionary<string, ShopData> shopReplacements = new()
+            return CreateReplacements(new List<RandomizedShop>()
             {
-                [seedShop.ShopId] = seedShop.ModifyShop()
-            };
+                new RandomizedSeedShop(),
+                new RandomizedJojaMart()
+            });
+        }
 
+        /// <summary>
+        /// Creates the shop replacement dictionary from a list of randomized shops
+        /// </summary>
+        /// <param name="shopRandomizers">The list of randomized shops</param>
+        /// <returns>The dictionary of replacement data</returns>
+        public static Dictionary<string, ShopData> CreateReplacements(
+            List<RandomizedShop> shopRandomizers)
+        {
+            Dictionary<string, ShopData> shopReplacements = new();
+            foreach(RandomizedShop shopRandomizer in shopRandomizers)
+            {
+                shopReplacements[shopRandomizer.ShopId] = shopRandomizer.ModifyShop();
+            }
             return shopReplacements;
         }
     }

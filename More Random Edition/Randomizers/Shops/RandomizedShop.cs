@@ -74,11 +74,16 @@ namespace Randomizer
         /// Uses mostly default values
         /// The stock values will use the limited mode that's player specific
         /// </summary>
-        /// <param name="id">The quantified id string</param>
+        /// <param name="qualifiedId">The quantified id string</param>
+        /// <param name="uniqueId">The id to use for the shop entry, must be unique to the shop</param>
         /// <param name="price">The price of the item - use -1 for a default price</param>
         /// <param name="availableStock">The stock of the item - use -1 for infinite</param>
         /// <returns>The data to add to the shop</returns>
-        protected static ShopItemData GetShopItem(string id, int price = -1, int availableStock = -1)
+        protected static ShopItemData GetShopItem(
+            string qualifiedId, 
+            string uniqueId,
+            int price = -1, 
+            int availableStock = -1)
         {
             return new ShopItemData()
             {
@@ -96,8 +101,8 @@ namespace Randomizer
                 AvailableStockModifiers = null,
                 AvailableStockModifierMode = QuantityModifierMode.Stack,
                 Condition = null,
-                Id = $"{Globals.ModRef.ModManifest.UniqueID}-{id}", // This has to be a unique id in this list
-                ItemId = id,
+                Id = $"{Globals.ModRef.ModManifest.UniqueID}-{uniqueId}", // This has to be a unique id in this list
+                ItemId = qualifiedId,
                 RandomItemId = null,
                 MaxItems = null,
                 MinStack = -1,

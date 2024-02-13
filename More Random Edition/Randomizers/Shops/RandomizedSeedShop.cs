@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace Randomizer
 {
-    public class SeedShopRandomizer : RandomizedShop
+    public class RandomizedSeedShop : RandomizedShop
     {
-        public SeedShopRandomizer() : base("SeedShop") { }
+        public RandomizedSeedShop() : base("SeedShop") { }
 
         /// <summary>
         /// Adjusts fruit tree prices and adds the item of the week
@@ -54,10 +54,7 @@ namespace Randomizer
                 return;
             }
 
-            //Random shopRNG = Globals.GetWeeklyRNG(nameof(SeedShopRandomizer));
-
-            //TODO: Change back to weekly
-            Random shopRNG = Globals.GetDailyRNG(nameof(SeedShopRandomizer));
+            Random shopRNG = Globals.GetWeeklyRNG(nameof(RandomizedSeedShop));
 
             // Don't choose pre-existing items
             var itemsAlreadyInStock = CurrentShopData.Items
@@ -86,7 +83,9 @@ namespace Randomizer
                 ? Range.GetRandomValue(30, 50, shopRNG)
                 : Range.GetRandomValue(3, 15, shopRNG);
 
-            InsertStockAt(GetShopItem(itemOfTheWeek.QualifiedId, salePrice, stock));
+            InsertStockAt(
+                GetShopItem(itemOfTheWeek.QualifiedId, "IoTW", salePrice, stock)
+            );
         }
     }
 }

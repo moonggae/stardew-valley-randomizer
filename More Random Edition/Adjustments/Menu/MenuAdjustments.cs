@@ -15,7 +15,6 @@ namespace Randomizer
         private static SewerShopMenuAdjustments SewerShop { get; } = new();
         private static HatShopMenuAdjustments HatShop { get; } = new();
         private static ClubShopMenuAdjustments ClubShop { get; } = new();
-        private static JojaMartMenuAdjustments JojaMart { get; } = new();
         private static FishingShopMenuAdjustments FishingShop { get; } = new();
         private static BlacksmithShopMenuAdjustments BlacksmithShop { get; } = new();
 
@@ -32,7 +31,6 @@ namespace Randomizer
             SewerShop.ResetShopState();
             // Hat shop is skipped as there's nothing to restore
             // Club shop is skipped as there's nothing to restore
-            JojaMart.ResetShopState();
             FishingShop.ResetShopState();
             BlacksmithShop.ResetShopState();
         }
@@ -80,10 +78,6 @@ namespace Randomizer
         {
             switch (shopMenu.ShopId)
             {
-                // Joja Mart - adds item of the week
-                case "Joja":
-                    JojaMart.OnChange(shopMenu, wasShopOpened);
-                    break;
                 // Blacksmith shop - chance of mining-related random items/discounts
                 case "Blacksmith":
                     BlacksmithShop.OnChange(shopMenu, wasShopOpened);
