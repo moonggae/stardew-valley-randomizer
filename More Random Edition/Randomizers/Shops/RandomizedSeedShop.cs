@@ -83,9 +83,7 @@ namespace Randomizer
                 ? Range.GetRandomValue(30, 50, shopRNG)
                 : Range.GetRandomValue(3, 15, shopRNG);
 
-            InsertStockAt(
-                GetShopItem(itemOfTheWeek.QualifiedId, "IoTW", salePrice, stock)
-            );
+            InsertStockAt(itemOfTheWeek.QualifiedId, "IoTW", salePrice, stock);
         }
     }
 }

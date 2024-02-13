@@ -136,5 +136,14 @@ namespace Randomizer
 		{
 			_modAssetEditor.CalculateAndInvalidateUIEdits();
 		}
+
+		/// <summary>
+		/// For testing purposes - not normally called
+		/// </summary>
+		public void CalculateAndInvalidateShopEdits()
+		{
+			_modAssetEditor.CalculateAndInvalidateShopEdits();
+
+        }
 	}
 }

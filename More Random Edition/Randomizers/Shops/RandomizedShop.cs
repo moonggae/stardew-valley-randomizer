@@ -2,6 +2,8 @@
 using StardewValley;
 using StardewValley.GameData.Shops;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using static StardewValley.GameData.QuantityModifier;
 
 namespace Randomizer
@@ -16,7 +18,8 @@ namespace Randomizer
         /// <summary>
         /// The default data in Data/Shops
         /// </summary>
-        protected static ShopData DefaultShopData { get; set; }
+        private static readonly Dictionary<string, ShopData> DefaultShopData = 
+            DataLoader.Shops(Game1.content);
 
         /// <summary>
         /// The current shop data to use as a replacement - deep cloned from the default
@@ -26,13 +29,11 @@ namespace Randomizer
         /// <summary>
         /// The constructor
         /// </summary>
-        /// <param name="currentShopState">The state of ShopData</param>
         /// <param name="shopId">The shop id</param>
         public RandomizedShop(string shopId) 
         {
             ShopId = shopId;
-            DefaultShopData ??= DataLoader.Shops(Game1.content)[shopId];
-            CurrentShopData = DefaultShopData.DeepClone();
+            CurrentShopData = DefaultShopData[shopId].DeepClone();
         }
 
         /// <summary>
@@ -40,6 +41,29 @@ namespace Randomizer
         /// </summary>
         /// <returns>The modified shop data</returns>
         public abstract ShopData ModifyShop();
+
+        /// <summary>
+        /// Gets the shop item by the given id, or null if not found
+        /// </summary>
+        /// <param name="id">The id to search - this is the "Id" field in the ShopItemData</param>
+        /// <returns>The retrieved data</returns>
+        protected ShopItemData GetShopItemById(string id)
+        {
+            return CurrentShopData.Items
+                .FirstOrDefault(shopItem => shopItem.Id == id);
+        }
+
+        /// <summary>
+        /// Gets all shop items matching any value in the list of given ids
+        /// </summary>
+        /// <param name="id">The id to search - this is the "ItemId" field in the ShopItemData</param>
+        /// <returns>The retrieved data</returns>
+        protected List<ShopItemData> GetShopItemsByItemIds(List<string> ids)
+        {
+            return CurrentShopData.Items
+                .Where(shopItem => ids.Contains(shopItem.ItemId))
+                .ToList();
+        }
 
         /// <summary>
         /// Gets a new price for the item
@@ -79,7 +103,7 @@ namespace Randomizer
         /// <param name="price">The price of the item - use -1 for a default price</param>
         /// <param name="availableStock">The stock of the item - use -1 for infinite</param>
         /// <returns>The data to add to the shop</returns>
-        protected static ShopItemData GetShopItem(
+        protected static ShopItemData GetNewShopItem(
             string qualifiedId, 
             string uniqueId,
             int price = -1, 
@@ -121,12 +145,49 @@ namespace Randomizer
         }
 
         /// <summary>
+        /// Adds a new item to the shop
+        /// </summary>
+        /// <param name="qualifiedId">The quantified id string</param>
+        /// <param name="uniqueId">The id to use for the shop entry, must be unique to the shop</param>
+        /// <param name="price">The price of the item - use -1 for a default price</param>
+        /// <param name="availableStock">The stock of the item - use -1 for infinite</param>
+        protected void AddStock(
+            string qualifiedId,
+            string uniqueId,
+            int price = -1,
+            int availableStock = -1)
+        {
+            AddStock(GetNewShopItem(qualifiedId, uniqueId, price, availableStock));
+        }
+
+        /// <summary>
         /// Adds an item into the shop at the end of the list
         /// </summary>
         /// <param name="itemToAdd">The item to add</param>
         protected void AddStock(ShopItemData itemToAdd)
         {
             CurrentShopData.Items.Add(itemToAdd);
+        }
+
+        /// <summary>
+        /// Inserts an item into the shop data at the given index (the beginning, by default)
+        /// </summary>
+        /// <param name="qualifiedId">The quantified id string</param>
+        /// <param name="uniqueId">The id to use for the shop entry, must be unique to the shop</param>
+        /// <param name="price">The price of the item - use -1 for a default price</param>
+        /// <param name="availableStock">The stock of the item - use -1 for infinite</param>
+        /// <param name="index">The index to add to (defaults to 0)</param>
+        protected void InsertStockAt(
+            string qualifiedId,
+            string uniqueId,
+            int price = -1,
+            int availableStock = -1,
+            int index = 0)
+        {
+            InsertStockAt(
+                GetNewShopItem(qualifiedId, uniqueId, price, availableStock),
+                index
+            );
         }
 
         /// <summary>

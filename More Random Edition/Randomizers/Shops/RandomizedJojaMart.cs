@@ -1,8 +1,6 @@
-﻿using StardewValley;
-using StardewValley.GameData.Shops;
+﻿using StardewValley.GameData.Shops;
 using System;
 using System.Linq;
-using System.Xml.Linq;
 
 namespace Randomizer
 {
@@ -61,9 +59,7 @@ namespace Randomizer
                 ? Range.GetRandomValue(30, 50, shopRNG)
                 : Range.GetRandomValue(3, 15, shopRNG);
 
-            InsertStockAt(
-                GetShopItem(itemOfTheWeek.QualifiedId, "IoTW", salePrice, stock)
-            );
+            InsertStockAt(itemOfTheWeek.QualifiedId, "IoTW", salePrice, stock);
         }
     }
 }

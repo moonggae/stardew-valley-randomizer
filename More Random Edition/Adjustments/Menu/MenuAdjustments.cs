@@ -16,7 +16,6 @@ namespace Randomizer
         private static HatShopMenuAdjustments HatShop { get; } = new();
         private static ClubShopMenuAdjustments ClubShop { get; } = new();
         private static FishingShopMenuAdjustments FishingShop { get; } = new();
-        private static BlacksmithShopMenuAdjustments BlacksmithShop { get; } = new();
 
         /// <summary>
         /// Reset all the shop states
@@ -32,7 +31,6 @@ namespace Randomizer
             // Hat shop is skipped as there's nothing to restore
             // Club shop is skipped as there's nothing to restore
             FishingShop.ResetShopState();
-            BlacksmithShop.ResetShopState();
         }
 
         /// <summary>
@@ -52,6 +50,13 @@ namespace Randomizer
             else if (e.NewMenu is GameMenu gameMenu)
             {
                 CraftingMenuAdjustments.ReduceCrabPotCost(gameMenu);
+
+                // TODO 1.6 This is to test shop menus quickly - remove this when done
+                var test = false;
+                if (test)
+                {
+                    Globals.ModRef.CalculateAndInvalidateShopEdits();
+                }
             }
 
             // Shops - adjust on open
@@ -78,10 +83,6 @@ namespace Randomizer
         {
             switch (shopMenu.ShopId)
             {
-                // Blacksmith shop - chance of mining-related random items/discounts
-                case "Blacksmith":
-                    BlacksmithShop.OnChange(shopMenu, wasShopOpened);
-                    break;
                 // Adventure shop - fix weapon prices so infinite money can't be made
                 case "AdventureShop":
                     AdventureShop.OnChange(shopMenu, wasShopOpened);

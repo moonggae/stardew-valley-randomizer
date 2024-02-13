@@ -15,7 +15,8 @@ namespace Randomizer
             return CreateReplacements(new List<RandomizedShop>()
             {
                 new RandomizedSeedShop(),
-                new RandomizedJojaMart()
+                new RandomizedJojaMart(),
+                new RandomizedBlacksmithShop()
             });
         }
 
