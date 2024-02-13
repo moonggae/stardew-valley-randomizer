@@ -8,8 +8,6 @@ namespace Randomizer
     /// </summary>
     public class MenuAdjustments
     {
-        private static AdventureShopMenuAdjustments AdventureShop { get; } = new();
-        private static CarpenterShopMenuAdjustments CarpenterShop { get; } = new();
         private static SaloonShopMenuAdjustments SaloonShop { get; } = new();
         private static OasisShopMenuAdjustments OasisShop { get; } = new();
         private static SewerShopMenuAdjustments SewerShop { get; } = new();
@@ -23,8 +21,6 @@ namespace Randomizer
         /// </summary>
         public static void ResetShopStates()
         {
-            // Adventure shop is skipped as there's nothing to restore
-            CarpenterShop.ResetShopState();
             SaloonShop.ResetShopState();
             OasisShop.ResetShopState();
             SewerShop.ResetShopState();
@@ -83,14 +79,6 @@ namespace Randomizer
         {
             switch (shopMenu.ShopId)
             {
-                // Adventure shop - fix weapon prices so infinite money can't be made
-                case "AdventureShop":
-                    AdventureShop.OnChange(shopMenu, wasShopOpened);
-                    break;
-                // Carpenter shop - add clay to prevent long grinds
-                case "Carpenter":
-                    CarpenterShop.OnChange(shopMenu, wasShopOpened);
-                    break;
                 // Saloon shop - will sell random foods/recipes each day
                 case "Saloon":
                     SaloonShop.OnChange(shopMenu, wasShopOpened);

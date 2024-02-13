@@ -16,7 +16,9 @@ namespace Randomizer
             {
                 new RandomizedSeedShop(),
                 new RandomizedJojaMart(),
-                new RandomizedBlacksmithShop()
+                new RandomizedBlacksmithShop(),
+                new RandomizedAdventureShop(),
+                new RandomizedCarpenterShop()
             });
         }
 

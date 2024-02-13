@@ -33,7 +33,7 @@ namespace Randomizer
         /// <param name="menu">The shop menu</param>
         private void AdjustStock()
         {
-            Random shopRNG = Globals.GetDailyRNG(nameof(BlacksmithShopMenuAdjustments));
+            Random shopRNG = Globals.GetDailyRNG(nameof(RandomizedBlacksmithShop));
 
             int rolledValue = Range.GetRandomValue(0, 99, shopRNG);
             if (rolledValue < 50) // 50%
@@ -63,7 +63,7 @@ namespace Randomizer
         {
             // Choose an ore and discount multiplier
             string itemToDiscount = 
-                Globals.RNGGetRandomValueFromList(CurrentShopData.Items).ItemId;
+                Globals.RNGGetRandomValueFromList(CurrentShopData.Items, shopRNG).ItemId;
             var priceMultiplier = 1 - (Range.GetRandomValue(10, 25, shopRNG) / 100f);
 
             // This shop has two sets of prices based on the year; we will discount both
