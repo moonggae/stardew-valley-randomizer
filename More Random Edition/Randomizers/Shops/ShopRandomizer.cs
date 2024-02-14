@@ -18,7 +18,9 @@ namespace Randomizer
                 new RandomizedJojaMart(),
                 new RandomizedBlacksmithShop(),
                 new RandomizedAdventureShop(),
-                new RandomizedCarpenterShop()
+                new RandomizedCarpenterShop(),
+                new RandomizedSaloonShop(),
+                new RandomizedOasisShop()
             });
         }
 

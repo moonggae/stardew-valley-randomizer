@@ -63,6 +63,11 @@ namespace Randomizer
         /// <returns>The integer id</returns>
         public static Item GetItemFromStringId(string givenId)
         {
+			if (givenId == null)
+			{
+				return null;
+			}
+
 			try
 			{
                 string[] tokens = givenId.Split(")");

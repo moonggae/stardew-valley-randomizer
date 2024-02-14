@@ -8,8 +8,6 @@ namespace Randomizer
     /// </summary>
     public class MenuAdjustments
     {
-        private static SaloonShopMenuAdjustments SaloonShop { get; } = new();
-        private static OasisShopMenuAdjustments OasisShop { get; } = new();
         private static SewerShopMenuAdjustments SewerShop { get; } = new();
         private static HatShopMenuAdjustments HatShop { get; } = new();
         private static ClubShopMenuAdjustments ClubShop { get; } = new();
@@ -21,8 +19,6 @@ namespace Randomizer
         /// </summary>
         public static void ResetShopStates()
         {
-            SaloonShop.ResetShopState();
-            OasisShop.ResetShopState();
             SewerShop.ResetShopState();
             // Hat shop is skipped as there's nothing to restore
             // Club shop is skipped as there's nothing to restore
@@ -47,12 +43,15 @@ namespace Randomizer
             {
                 CraftingMenuAdjustments.ReduceCrabPotCost(gameMenu);
 
-                // TODO 1.6 This is to test shop menus quickly - remove this when done
+#if DEBUG
+                // This is to test shop menus quickly
+                // Set a breakpoint here and move the code so CalculateAndInvalidateShopEdits is executed
                 var test = false;
                 if (test)
                 {
                     Globals.ModRef.CalculateAndInvalidateShopEdits();
                 }
+#endif
             }
 
             // Shops - adjust on open
@@ -79,14 +78,6 @@ namespace Randomizer
         {
             switch (shopMenu.ShopId)
             {
-                // Saloon shop - will sell random foods/recipes each day
-                case "Saloon":
-                    SaloonShop.OnChange(shopMenu, wasShopOpened);
-                    break;
-                // Oasis shop - randomizes its foragable/crop/furniture stock each week
-                case "Sandy":
-                    OasisShop.OnChange(shopMenu, wasShopOpened);
-                    break;
                 // Sewer shop - randomizes the furniture and big craftable items daily
                 case "ShadowShop":
                     SewerShop.OnChange(shopMenu, wasShopOpened);

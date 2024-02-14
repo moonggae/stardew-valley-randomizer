@@ -102,12 +102,16 @@ namespace Randomizer
         /// <param name="uniqueId">The id to use for the shop entry, must be unique to the shop</param>
         /// <param name="price">The price of the item - use -1 for a default price</param>
         /// <param name="availableStock">The stock of the item - use -1 for infinite</param>
+        /// <param name="isRecipe">Whether the item is a recipe</param>
+        /// <param name="condition">The condition for the item to show up in the shop</param>
         /// <returns>The data to add to the shop</returns>
         protected static ShopItemData GetNewShopItem(
             string qualifiedId, 
             string uniqueId,
             int price = -1, 
-            int availableStock = -1)
+            int availableStock = -1,
+            bool isRecipe = false,
+            string condition = null)
         {
             return new ShopItemData()
             {
@@ -124,7 +128,7 @@ namespace Randomizer
                 PriceModifierMode = QuantityModifierMode.Stack,
                 AvailableStockModifiers = null,
                 AvailableStockModifierMode = QuantityModifierMode.Stack,
-                Condition = null,
+                Condition = condition,
                 Id = $"{Globals.ModRef.ModManifest.UniqueID}-{uniqueId}", // This has to be a unique id in this list
                 ItemId = qualifiedId,
                 RandomItemId = null,
@@ -135,7 +139,7 @@ namespace Randomizer
                 ObjectInternalName = null,
                 ObjectDisplayName = null,
                 ToolUpgradeLevel = -1,
-                IsRecipe = false,
+                IsRecipe = isRecipe,
                 StackModifiers = null,
                 StackModifierMode = QuantityModifierMode.Stack,
                 QualityModifiers = null,
@@ -151,13 +155,17 @@ namespace Randomizer
         /// <param name="uniqueId">The id to use for the shop entry, must be unique to the shop</param>
         /// <param name="price">The price of the item - use -1 for a default price</param>
         /// <param name="availableStock">The stock of the item - use -1 for infinite</param>
+        /// <param name="isRecipe">Whether the item is a recipe</param>
+        /// <param name="condition">The condition for the item to show up in the shop</param>
         protected void AddStock(
             string qualifiedId,
             string uniqueId,
             int price = -1,
-            int availableStock = -1)
+            int availableStock = -1,
+            bool isRecipe = false,
+            string condition = null)
         {
-            AddStock(GetNewShopItem(qualifiedId, uniqueId, price, availableStock));
+            AddStock(GetNewShopItem(qualifiedId, uniqueId, price, availableStock, isRecipe, condition));
         }
 
         /// <summary>

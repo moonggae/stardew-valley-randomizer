@@ -211,7 +211,7 @@ namespace Randomizer
         }
 
         /// <summary>
-        /// To be called when returning to the the title screen
+        /// To be called when returning to the title screen
         /// This will help localized resources be reloaded properly
         /// </summary>
         public void ResetValuesAndInvalidateCache()
@@ -240,6 +240,7 @@ namespace Randomizer
             _secretNotesReplacements.Clear();
             _specialOrderAdjustments.Clear();
             _museumRewardReplacements.Clear();
+            _shopReplacements.Clear();
 
             InvalidateCache();
         }

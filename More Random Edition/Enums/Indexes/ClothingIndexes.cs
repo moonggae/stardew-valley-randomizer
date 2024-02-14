@@ -1,5 +1,8 @@
 ﻿using StardewValley.Objects;
 using StardewValley;
+using System.Collections.Generic;
+using System;
+using System.Linq;
 
 namespace Randomizer
 {
@@ -234,7 +237,7 @@ namespace Randomizer
         /// <returns />
         public static Clothing GetItem(ClothingIndexes index)
         {
-            return ItemRegistry.Create<Clothing>(((int)index).ToString());
+            return new Clothing(((int)index).ToString());
         }
 
         /// <summary>
@@ -243,7 +246,44 @@ namespace Randomizer
         /// <param name="index">The index of the clothing item</param>
         public static string GetQualifiedId(ClothingIndexes index)
         {
-            return $"(C){(int)index}";
+            return GetItem(index).QualifiedItemId;
+        }
+
+        /// <summary>
+        /// Gets a random clothing item's qualified id
+        /// </summary>
+        /// <param name="idsToExclude">A list of ids to not include in the selection</param>
+        /// <param name="rng">The rng to use</param>
+        /// <returns>The qualified id</returns>
+        public static string GetRandomClothingQualifiedId(
+            List<string> idsToExclude = null,
+            Random rng = null)
+        {
+            return GetRandomClothingQualifiedIds(numberToGet: 1, idsToExclude, rng)
+                .FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets a list of random clothing item qualified ids
+        /// </summary>
+        /// <param name="numberToGet">The number of ids to get</param>
+        /// <param name="idsToExclude">A list of ids to not include in the selection</param>
+        /// <param name="rng">The rng to use</param>
+        /// <returns>The qualified id</returns>
+        public static List<string> GetRandomClothingQualifiedIds(
+            int numberToGet,
+            List<string> idsToExclude = null,
+            Random rng = null)
+        {
+            var rngToUse = rng ?? Globals.RNG;
+
+            var allClothingIds = Enum.GetValues(typeof(ClothingIndexes))
+                .Cast<ClothingIndexes>()
+                .Select(index => GetQualifiedId(index))
+                .Where(id => idsToExclude == null || !idsToExclude.Contains(id))
+                .ToList();
+
+            return Globals.RNGGetRandomValuesFromList(allClothingIds, numberToGet, rngToUse);
         }
     }
 }

@@ -381,7 +381,7 @@ namespace Randomizer
         /// <returns />
         public static Furniture GetItem(FurnitureIndexes index)
         {
-            return ItemRegistry.Create<Furniture>(GetQualifiedId(index));
+            return Furniture.GetFurnitureInstance(((int)index).ToString());
         }
         
         /// <summary>
@@ -397,16 +397,37 @@ namespace Randomizer
         /// Gets a random furniture's qualified id
         /// </summary>
         /// <param name="idsToExclude">A list of ids to not include in the selection</param>
+        /// <param name="rng">The rng to use</param>
         /// <returns>The qualified id</returns>
-        public static string GetRandomFurnitureQualifiedId(List<string> idsToExclude)
+        public static string GetRandomFurnitureQualifiedId(
+            List<string> idsToExclude = null, 
+            Random rng = null)
         {
+            return GetRandomFurnitureQualifiedIds(numberToGet: 1, idsToExclude, rng)
+                .FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets a list of random furniture qualified ids
+        /// </summary>
+        /// <param name="numberToGet">The number of ids to get</param>
+        /// <param name="idsToExclude">A list of ids to not include in the selection</param>
+        /// <param name="rng">The rng to use</param>
+        /// <returns>The qualified id</returns>
+        public static List<string> GetRandomFurnitureQualifiedIds(
+            int numberToGet, 
+            List<string> idsToExclude = null,
+            Random rng = null)
+        {
+            var rngToUse = rng ?? Globals.RNG;
+
             var allFurnitureIds = Enum.GetValues(typeof(FurnitureIndexes))
                 .Cast<FurnitureIndexes>()
                 .Select(index => GetQualifiedId(index))
-                .Where(id => !idsToExclude.Contains(id))
+                .Where(id => idsToExclude == null || !idsToExclude.Contains(id))
                 .ToList();
 
-            return Globals.RNGGetRandomValueFromList(allFurnitureIds);
+            return Globals.RNGGetRandomValuesFromList(allFurnitureIds, numberToGet, rngToUse);
         }
     }
 }
