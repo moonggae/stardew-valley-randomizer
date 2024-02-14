@@ -1,12 +1,8 @@
-﻿using StardewValley.Objects;
-using StardewValley;
-using SVItem = StardewValley.Item;
-using SVObject = StardewValley.Object;
-using StardewValley.GameData.BigCraftables;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using SVObject = StardewValley.Object;
 
 namespace Randomizer
 {
@@ -222,16 +218,21 @@ namespace Randomizer
         /// Gets a random furniture's qualified id
         /// </summary>
         /// <param name="idsToExclude">A list of ids to not include in the selection</param>
+        /// <param name="rng">The rng to use</param>
         /// <returns>The qualified id</returns>
-        public static string GetRandomBigCraftableQualifiedId(List<string> idsToExclude)
+        public static string GetRandomBigCraftableQualifiedId(
+            List<string> idsToExclude = null, 
+            Random rng = null)
         {
+            var rngToUse = rng ?? Globals.RNG;
+
             var allBigCraftableIds = Enum.GetValues(typeof(BigCraftableIndexes))
                 .Cast<BigCraftableIndexes>()
                 .Select(index => GetQualifiedId(index))
-                .Where(id => !idsToExclude.Contains(id))
+                .Where(id => idsToExclude == null || !idsToExclude.Contains(id))
                 .ToList();
 
-            return Globals.RNGGetRandomValueFromList(allBigCraftableIds);
+            return Globals.RNGGetRandomValueFromList(allBigCraftableIds, rng);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Randomizer
         /// Gets the daily shop repalcements - intended to be called at the
         /// start of every day to modify shop stock on a given day
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The list of shop replacements</returns>
         public static Dictionary<string, ShopData> GetDailyShopReplacements()
         {
             return CreateReplacements(new List<RandomizedShop>()
@@ -20,7 +20,8 @@ namespace Randomizer
                 new RandomizedAdventureShop(),
                 new RandomizedCarpenterShop(),
                 new RandomizedSaloonShop(),
-                new RandomizedOasisShop()
+                new RandomizedOasisShop(),
+                new RandomizedSewerShop()
             });
         }
 

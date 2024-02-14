@@ -8,7 +8,6 @@ namespace Randomizer
     /// </summary>
     public class MenuAdjustments
     {
-        private static SewerShopMenuAdjustments SewerShop { get; } = new();
         private static HatShopMenuAdjustments HatShop { get; } = new();
         private static ClubShopMenuAdjustments ClubShop { get; } = new();
         private static FishingShopMenuAdjustments FishingShop { get; } = new();
@@ -19,7 +18,6 @@ namespace Randomizer
         /// </summary>
         public static void ResetShopStates()
         {
-            SewerShop.ResetShopState();
             // Hat shop is skipped as there's nothing to restore
             // Club shop is skipped as there's nothing to restore
             FishingShop.ResetShopState();
@@ -78,10 +76,6 @@ namespace Randomizer
         {
             switch (shopMenu.ShopId)
             {
-                // Sewer shop - randomizes the furniture and big craftable items daily
-                case "ShadowShop":
-                    SewerShop.OnChange(shopMenu, wasShopOpened);
-                    break;
                 // Fishing shop - adds a catch of the day
                 case "FishShop":
                     FishingShop.OnChange(shopMenu, wasShopOpened);

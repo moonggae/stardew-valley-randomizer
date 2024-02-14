@@ -41,8 +41,8 @@ namespace Randomizer
             CurrentShopData.Items.Clear();
 
             // Most of the stock will change every Monday, with a couple exceptions
-            Random weeklyShopRNG = Globals.GetWeeklyRNG(nameof(OasisShopMenuAdjustments));
-            Random dailyShopRNG = Globals.GetDailyRNG(nameof(OasisShopMenuAdjustments));
+            Random weeklyShopRNG = Globals.GetWeeklyRNG(nameof(RandomizedOasisShop));
+            Random dailyShopRNG = Globals.GetDailyRNG(nameof(RandomizedOasisShop));
 
             desertShopSeeds.ForEach(seed => AddStock(seed.QualifiedId, $"SeedItem-{seed.QualifiedId}"));
             AddDaySpecificItems(desertShopSeeds, weeklyShopRNG);

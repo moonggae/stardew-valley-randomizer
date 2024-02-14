@@ -1,5 +1,4 @@
-﻿using StardewValley;
-using StardewValley.Objects;
+﻿using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
