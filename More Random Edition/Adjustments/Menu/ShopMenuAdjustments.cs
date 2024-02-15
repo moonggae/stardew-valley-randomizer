@@ -102,15 +102,6 @@ namespace Randomizer
         }
 
         /// <summary>
-        /// Clear out the values - should be called on day end so reset for the next day
-        /// </summary>
-        public virtual void ResetShopState()
-        {
-            currentItemPriceAndStock = null;
-            currentForSale = null;
-        }
-
-        /// <summary>
         /// Adds the given item to the given shop menu
         /// </summary>
         /// <param name="menu">The shop menu<param>

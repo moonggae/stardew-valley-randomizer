@@ -1,36 +1,34 @@
-﻿using StardewValley.Menus;
+﻿using StardewValley.GameData.Shops;
 using System;
 using System.Linq;
 
 namespace Randomizer
 {
-    internal class FishingShopMenuAdjustments : ShopMenuAdjustments
+    public class RandomizedFishingShop : RandomizedShop
     {
+        public RandomizedFishingShop() : base("FishShop") { }
+
         /// <summary>
         /// Adds a catch of the day (1-3 of any random fish of this season)
         /// </summary>
-        /// <param name="menu">The shop menu</param>
-        protected override void Adjust(ShopMenu menu)
+        public override ShopData ModifyShop()
         {
-            if (!ShouldChangeShop)
-            {
-                RestoreShopState(menu);
-                return;
-            }
+            AddCatchOfTheDay();
 
-            if (Globals.Config.Shops.AddFishingShopCatchOfTheDay)
-            {
-                AddCatchOfTheDay(menu);
-            }
+            return CurrentShopData;
         }
 
         /// <summary>
         /// Adds a catch of the day (1-3 of any random fish of this season)
         /// </summary>
-        /// <param name="menu">The shop menu</param>
-        private static void AddCatchOfTheDay(ShopMenu menu)
+        private void AddCatchOfTheDay()
         {
-            Random shopRNG = Globals.GetDailyRNG(nameof(FishingShopMenuAdjustments));
+            if (!Globals.Config.Shops.AddFishingShopCatchOfTheDay)
+            {
+                return;
+            }
+
+            Random shopRNG = Globals.GetDailyRNG(nameof(RandomizedFishingShop));
 
             var currentSeason = SeasonFunctions.GetCurrentSeason();
             var possibleFish = FishItem.GetListAsFishItem(true)
@@ -39,7 +37,7 @@ namespace Randomizer
             var catchOfTheDay = Globals.RNGGetRandomValueFromList(possibleFish, shopRNG);
             var stock = Range.GetRandomValue(1, 3, shopRNG);
 
-            InsertStockAt(menu, catchOfTheDay.GetSaliableObject(), stock);
+            InsertStockAt(catchOfTheDay.QualifiedId, "CoTD", availableStock: stock);
         }
     }
 }

@@ -21,7 +21,8 @@ namespace Randomizer
                 new RandomizedCarpenterShop(),
                 new RandomizedSaloonShop(),
                 new RandomizedOasisShop(),
-                new RandomizedSewerShop()
+                new RandomizedSewerShop(),
+                new RandomizedFishingShop()
             });
         }
 

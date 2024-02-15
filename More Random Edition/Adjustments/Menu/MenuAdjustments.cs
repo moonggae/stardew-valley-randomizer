@@ -10,18 +10,6 @@ namespace Randomizer
     {
         private static HatShopMenuAdjustments HatShop { get; } = new();
         private static ClubShopMenuAdjustments ClubShop { get; } = new();
-        private static FishingShopMenuAdjustments FishingShop { get; } = new();
-
-        /// <summary>
-        /// Reset all the shop states
-        /// Intended to be called at the end of every day so shops can reset
-        /// </summary>
-        public static void ResetShopStates()
-        {
-            // Hat shop is skipped as there's nothing to restore
-            // Club shop is skipped as there's nothing to restore
-            FishingShop.ResetShopState();
-        }
 
         /// <summary>
         /// Makes the actual menu adjustments
@@ -76,10 +64,6 @@ namespace Randomizer
         {
             switch (shopMenu.ShopId)
             {
-                // Fishing shop - adds a catch of the day
-                case "FishShop":
-                    FishingShop.OnChange(shopMenu, wasShopOpened);
-                    break;
                 // Hat shop - will sell a random hat each week in addition to what you've already unlocked
                 case "HatMouse":
                     HatShop.OnChange(shopMenu, wasShopOpened);
