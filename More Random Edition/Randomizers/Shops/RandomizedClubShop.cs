@@ -1,29 +1,23 @@
 ﻿using StardewValley;
-using StardewValley.Menus;
+using StardewValley.GameData.Shops;
 using System;
 using System.Linq;
-using SVObject = StardewValley.Object;
 
 namespace Randomizer
 {
-    internal class ClubShopMenuAdjustments : ShopMenuAdjustments
+    public class RandomizedClubShop : RandomizedShop
     {
-        public ClubShopMenuAdjustments() : base()
-        {
-            SkipShopSave = true;
-        }
+        public RandomizedClubShop() : base("Casino") { }
 
         /// <summary>
-        /// Callthrough to AdjustStock, if the setting is on
-        /// This shop doesn't need to be restored or anything, as this shop will never have limited stock
+        /// Modifies the shop stock - see AdjustStock for details
         /// </summary>
-        /// <param name="menu">The shop menu</param>
-        protected override void Adjust(ShopMenu menu)
+        /// <returns>The modified shop data</returns>
+        public override ShopData ModifyShop()
         {
-            if (Globals.Config.Shops.RandomizeClubShop)
-            {
-                AdjustStock(menu);
-            }
+            AdjustStock();
+
+            return CurrentShopData;
         }
 
         /// <summary>
@@ -33,61 +27,63 @@ namespace Randomizer
         /// - 2-3 higher-tier misc items
         /// - 1 totem type
         /// </summary>
-        /// <param name="menu">The shop menu</param>
-        private static void AdjustStock(ShopMenu menu)
+        private void AdjustStock()
         {
-            Random shopRNG = Globals.GetWeeklyRNG(nameof(ClubShopMenuAdjustments));
-            EmptyStock(menu);
+            Random shopRNG = Globals.GetWeeklyRNG(nameof(RandomizedClubShop));
+            CurrentShopData.Items.Clear();
 
-            AddFurniture(menu, shopRNG);
-            AddHatOrClothing(menu, shopRNG);
-            AddBigCraftable(menu, shopRNG);
-            AddMiscItems(menu, shopRNG);
-            AddTotem(menu, shopRNG);
+            AddFurniture(shopRNG);
+            AddHatOrClothing(shopRNG);
+            AddBigCraftable(shopRNG);
+            AddMiscItems(shopRNG);
+            AddTotem(shopRNG);
         }
 
         /// <summary>
         /// Adds 3-5 random furniture items
         /// </summary>
-        /// <param name="menu"></param>
         /// <param name="shopRNG"></param>
-        private static void AddFurniture(ShopMenu menu, Random shopRNG)
+        private void AddFurniture(Random shopRNG)
         {
             var numberOfFurniture = Range.GetRandomValue(3, 5, shopRNG);
             var furnitureToSell = ItemList.GetRandomFurnitureToSell(shopRNG, numberOfFurniture);
-            furnitureToSell.ForEach(item => AddStock(menu, item, salePrice: GetSalePrice(item)));
+            furnitureToSell.ForEach(item => 
+                AddStock(item.QualifiedItemId, 
+                    $"Furniture-{item.QualifiedItemId}",
+                    price: GetSalePrice(item)));
         }
 
         /// <summary>
         /// Adds either a hat or a clothing item
         /// </summary>
-        /// <param name="menu"></param>
         /// <param name="shopRNG"></param>
-        private static void AddHatOrClothing(ShopMenu menu, Random shopRNG)
+        private void AddHatOrClothing(Random shopRNG)
         {
             var randomHat = ItemList.GetRandomHatsToSell(shopRNG, numberToGet: 1).First();
             var randomClothing = ItemList.GetRandomClothingToSell(shopRNG, numberToGet: 1).First();
             var hatOrClothingToSell = Globals.RNGGetNextBoolean(50, shopRNG) ? randomHat : randomClothing;
-            AddStock(menu, hatOrClothingToSell, salePrice: GetSalePrice(hatOrClothingToSell));
+            AddStock(hatOrClothingToSell.QualifiedItemId,
+                "HatOrClothing",
+                price: GetSalePrice(hatOrClothingToSell));
         }
 
         /// <summary>
-        /// Adds a BigCraftiable item
+        /// Adds a BigCraftable item
         /// </summary>
-        /// <param name="menu"></param>
         /// <param name="shopRNG"></param>
-        private static void AddBigCraftable(ShopMenu menu, Random shopRNG)
+        private void AddBigCraftable(Random shopRNG)
         {
             var bigCraftableToSell = ItemList.GetRandomBigCraftablesToSell(shopRNG, numberToGet: 1).First();
-            AddStock(menu, bigCraftableToSell, salePrice: GetSalePrice(bigCraftableToSell, multiplier: 2));
+            AddStock(bigCraftableToSell.QualifiedItemId,
+                "BigCraftable",
+                price: GetSalePrice(bigCraftableToSell, multiplier: 2));
         }
 
         /// <summary>
         /// Adds 2-3 medium + misc items
         /// </summary>
-        /// <param name="menu"></param>
         /// <param name="shopRNG"></param>
-        private static void AddMiscItems(ShopMenu menu, Random shopRNG)
+        private void AddMiscItems(Random shopRNG)
         {
             var numberOfMiscItems = Range.GetRandomValue(2, 3, shopRNG);
             var poolOfMiscItemsToSell = ItemList.GetItemsAtDifficulty(ObtainingDifficulties.MediumTimeRequirements)
@@ -96,18 +92,19 @@ namespace Randomizer
                 .ToList();
             var miscItemsToSell = Globals.RNGGetRandomValuesFromList(poolOfMiscItemsToSell, numberOfMiscItems, shopRNG);
             miscItemsToSell.ForEach(item =>
-                AddStock(menu, item, salePrice: GetSalePrice(item, minimumValue: 100)));
+                AddStock(item.QualifiedId, 
+                    $"MiscItem-{item.QualifiedId}",
+                    price: GetSalePrice(item, minimumValue: 100)));
         }
 
         /// <summary>
         /// Adds a random totem type, alwas costing 500 Qi Coins
         /// </summary>
-        /// <param name="menu"></param>
         /// <param name="shopRNG"></param>
-        private static void AddTotem(ShopMenu menu, Random shopRNG)
+        private void AddTotem(Random shopRNG)
         {
-            var totemToSell = new SVObject(ItemList.GetRandomTotem(shopRNG).Id.ToString(), 1);
-            AddStock(menu, totemToSell, salePrice: 500);
+            var totemId = ItemList.GetRandomTotem(shopRNG).QualifiedId;
+            AddStock(totemId, "Totem", price: 500);
         }
 
         /// <summary>

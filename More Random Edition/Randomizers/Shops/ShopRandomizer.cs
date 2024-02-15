@@ -22,7 +22,9 @@ namespace Randomizer
                 new RandomizedSaloonShop(),
                 new RandomizedOasisShop(),
                 new RandomizedSewerShop(),
-                new RandomizedFishingShop()
+                new RandomizedFishingShop(),
+                new RandomizedHatShop(),
+                new RandomizedClubShop()
             });
         }
 

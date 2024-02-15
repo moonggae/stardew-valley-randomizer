@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using SVLocationData = StardewValley.GameData.Locations.LocationData;
 
-//TODO 1.6: use Data/Shops instead of the menu hack
 namespace Randomizer
 {
     public class AssetEditor
