@@ -4,6 +4,7 @@ using StardewValley.GameData.Buildings;
 using StardewValley.GameData.Characters;
 using StardewValley.GameData.Crops;
 using StardewValley.GameData.FruitTrees;
+using StardewValley.GameData.GarbageCans;
 using StardewValley.GameData.Museum;
 using StardewValley.GameData.Objects;
 using StardewValley.GameData.Shops;
@@ -43,6 +44,7 @@ namespace Randomizer
         private Dictionary<string, SpecialOrderData> _specialOrderAdjustments = new();
         private Dictionary<string, MuseumRewards> _museumRewardReplacements = new();
         private Dictionary<string, ShopData> _shopReplacements = new();
+        private GarbageCanData _garbageCanReplacements = null;
 
         public AssetEditor(ModEntry mod)
 		{
@@ -78,7 +80,8 @@ namespace Randomizer
                 TryReplaceAsset(e, "Data/SecretNotes", _secretNotesReplacements) ||
                 TryReplaceAsset(e, "Data/SpecialOrders", _specialOrderAdjustments) ||
                 TryReplaceAsset(e, "Data/MuseumRewards", _museumRewardReplacements) ||
-                TryReplaceAsset(e, "Data/Shops", _shopReplacements))
+                TryReplaceAsset(e, "Data/Shops", _shopReplacements) ||
+                TryReplaceAsset(e, "Data/GarbageCans", _garbageCanReplacements))
 			{
 				return;
 			}
@@ -125,6 +128,7 @@ namespace Randomizer
             if (e.NameWithoutLocale.IsEquivalentTo("Data/SecretNotes")) { return Globals.Config.NPCs.RandomizeIndividualPreferences; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/SpecialOrders")) { return Globals.Config.Fish.Randomize; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/MuseumRewards")) { return Globals.Config.RandomizeMuseumRewards; }
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/GarbageCans")) { return Globals.Config.RandomizeGarbageCans; }
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Shops")) 
             { 
                 // The logic to include changes is included in the randomizer (there are many settings)
@@ -166,6 +170,32 @@ namespace Randomizer
         }
 
         /// <summary>
+        /// Currently, only the garbage cans have non-dictionary data, so they're here
+        /// on their own for now
+        /// </summary>
+        /// <param name="e">The asset requested info</param>
+        /// <param name="assetName">The current asset in Stardew</param>
+        /// <param name="garbageCanData">The asset we wish to replace the Stardew asset with</param>
+        /// <returns>True if we should replace the asset, false otherwise</returns>
+        private static bool TryReplaceAsset(
+            AssetRequestedEventArgs e, 
+            string assetName,
+            GarbageCanData garbageCanData)
+        {
+            if (ShouldReplaceAsset(e, assetName))
+            {
+                e.Edit(asset =>
+                {
+                    if (garbageCanData != null)
+                    {
+                        asset.ReplaceWith(garbageCanData);
+                    }
+                });
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Invalidates the cache for all the assets
         /// </summary>
         public void InvalidateCache()
@@ -195,6 +225,7 @@ namespace Randomizer
             InvalidateCacheForDefaultAndCurrentLocales("Data/SpecialOrders");
             InvalidateCacheForDefaultAndCurrentLocales("Data/MuseumRewards");
             InvalidateCacheForDefaultAndCurrentLocales("Data/Shops");
+            InvalidateCacheForDefaultAndCurrentLocales("Data/GarbageCans");
         }
 
         /// <summary>
@@ -240,6 +271,7 @@ namespace Randomizer
             _specialOrderAdjustments.Clear();
             _museumRewardReplacements.Clear();
             _shopReplacements.Clear();
+            _garbageCanReplacements = null;
 
             InvalidateCache();
         }
@@ -308,6 +340,7 @@ namespace Randomizer
             // and needs to run before bundles so that NPC Loved Item bundles are properly generated
             _preferenceReplacements = PreferenceRandomizer.Randomize();
 			_secretNotesReplacements = SecretNotesRandomizer.FixSecretNotes(_preferenceReplacements);
+            _garbageCanReplacements = GarbageCanRandomizer.Randomize();
 
             // Bundles need to be ran after preferences so modified NPC values are correct
 			_bundleReplacements = BundleRandomizer.Randomize();

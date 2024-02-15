@@ -23,6 +23,7 @@
 		public bool RandomizeFruitTrees { get; set; } = true;
 		public bool RandomizeAnimalSkins { get; set; } = true;
 		public bool RandomizeMuseumRewards { get; set; } = true;
+		public bool RandomizeGarbageCans { get; set; } = true;
 		public bool RandomizeIntroStory { get; set; } = true;
 		public bool RandomizeQuests { get; set; } = true;
 		public bool RandomizeRain { get; set; } = true;

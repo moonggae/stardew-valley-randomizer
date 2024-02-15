@@ -136,7 +136,7 @@ namespace Randomizer
         /// Gets the item list equivalent of the given npc
         /// </summary>
         /// <param name="npc">The npc to get the list for</param>
-        /// <param name="pref">The preference type to get</param>
+        /// <param name="prefType">The preference type to get</param>
         /// <returns>The list of items</returns>
         public static List<Item> GetIndividualPreferences(GiftableNPCIndexes npc, NPCGiftTasteIndexes prefType)
 		{
