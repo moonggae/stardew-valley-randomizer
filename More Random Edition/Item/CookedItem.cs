@@ -1,4 +1,5 @@
 ﻿using StardewValley;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SVObject = StardewValley.Object;
@@ -24,7 +25,16 @@ namespace Randomizer
             foreach (KeyValuePair<string, string> data in cookingRecipeData)
             {
                 string[] tokens = data.Value.Split("/");
-				int cookedItemId = int.Parse(tokens[CookedItemIdIndex]);
+				int cookedItemId;
+				try
+				{
+                    cookedItemId = int.Parse(tokens[CookedItemIdIndex]);
+                }
+                catch(Exception) 
+				{
+					Globals.ConsoleTrace($"Cannot parse cooked item id (it was likely modded, so skipping): {data.Key}");
+					continue;
+				}
                 CookedItemsToRecipeNames[cookedItemId] = data.Key;
             }
         }
