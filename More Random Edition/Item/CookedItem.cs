@@ -24,17 +24,14 @@ namespace Randomizer
             foreach (KeyValuePair<string, string> data in cookingRecipeData)
             {
                 string[] tokens = data.Value.Split("/");
-				int cookedItemId;
-				try
+				if (int.TryParse(tokens[CookedItemIdIndex], out int cookedItemId))
 				{
-                    cookedItemId = int.Parse(tokens[CookedItemIdIndex]);
+                    CookedItemsToRecipeNames[cookedItemId] = data.Key;
                 }
-                catch(Exception) 
-				{
+				else 
+				{ 
 					Globals.ConsoleTrace($"Cannot parse cooked item id (it was likely modded, so skipping): {data.Key}");
-					continue;
 				}
-                CookedItemsToRecipeNames[cookedItemId] = data.Key;
             }
         }
 

@@ -679,12 +679,14 @@ namespace Randomizer
 				{ ObjectIndexes.OilOfGarlic, new CraftableItem((int)ObjectIndexes.OilOfGarlic, CraftableCategories.Difficult, dataKey: "Oil Of Garlic") },
 				{ ObjectIndexes.LifeElixir, new CraftableItem((int)ObjectIndexes.LifeElixir, CraftableCategories.DifficultAndNeedMany) },
 				{ ObjectIndexes.CrabPot, new CraftableItem((int)ObjectIndexes.CrabPot, CraftableCategories.Moderate, overrideBaseLevelLearnedAt: 1) }, // Limit the level you can learn this to prevent it from being learned twice
+				{ ObjectIndexes.BugSteak, new CraftableItem((int)ObjectIndexes.BugSteak, CraftableCategories.ModerateAndNeedMany) },
 				{ ObjectIndexes.IridiumBand, new CraftableItem((int)ObjectIndexes.IridiumBand, CraftableCategories.Endgame) { IsRing = true } },
 				{ ObjectIndexes.WeddingRing, new CraftableItem((int)ObjectIndexes.WeddingRing, CraftableCategories.Endgame) { IsRing = true } },
 				{ ObjectIndexes.RingOfYoba, new CraftableItem((int)ObjectIndexes.RingOfYoba, CraftableCategories.Difficult) { OverrideName = "Ring of Yoba", IsRing = true } },
 				{ ObjectIndexes.SturdyRing, new CraftableItem((int)ObjectIndexes.SturdyRing, CraftableCategories.Moderate) { IsRing = true } },
 				{ ObjectIndexes.WarriorRing, new CraftableItem((int)ObjectIndexes.WarriorRing, CraftableCategories.Moderate) { IsRing = true } },
-				
+				{ ObjectIndexes.CookoutKit, new CraftableItem((int)ObjectIndexes.CookoutKit, CraftableCategories.Moderate) { DifficultyToObtain = ObtainingDifficulties.Impossible } }, // It's really weird to require this for recipes
+
 				// Resources - ObtainingDifficulties.NoRequirements
 				{ ObjectIndexes.Wood, new ResourceItem((int)ObjectIndexes.Wood) },
 				{ ObjectIndexes.Hardwood, new ResourceItem((int)ObjectIndexes.Hardwood, 1, new Range(1, 15)) { DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements } },
@@ -1256,6 +1258,7 @@ namespace Randomizer
 				{ BigCraftableIndexes.Crystalarium, new CraftableItem((int)BigCraftableIndexes.Crystalarium, CraftableCategories.Moderate, isBigCraftable: true) },
 				{ BigCraftableIndexes.MiniJukebox, new CraftableItem((int)BigCraftableIndexes.MiniJukebox, CraftableCategories.Moderate, isBigCraftable: true, dataKey: "Mini-Jukebox") },
 				{ BigCraftableIndexes.Staircase, new CraftableItem((int)BigCraftableIndexes.Staircase, CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.BoneMill, new CraftableItem((int)BigCraftableIndexes.BoneMill, CraftableCategories.Moderate, isBigCraftable: true) },
 				{ BigCraftableIndexes.TubOFlowers, new CraftableItem((int)BigCraftableIndexes.TubOFlowers, CraftableCategories.Easy, isBigCraftable: true, dataKey: "Tub o' Flowers") },
 				{ BigCraftableIndexes.WoodenBrazier, new CraftableItem((int)BigCraftableIndexes.WoodenBrazier, CraftableCategories.Easy, isBigCraftable: true) },
 				{ BigCraftableIndexes.WickedStatue, new CraftableItem((int)BigCraftableIndexes.WickedStatue, CraftableCategories.Easy, isBigCraftable: true) },
