@@ -451,6 +451,7 @@ namespace Randomizer
 					(itemBeingCrafted.Id != (int)BigCraftableIndexes.BeeHouse || !x.RequiresBeehouse) &&
 					(itemBeingCrafted.Id != (int)BigCraftableIndexes.Keg || !x.RequiresKeg) &&
 					((itemBeingCrafted.Id != (int)BigCraftableIndexes.LightningRod) || (x.Id != (int)ObjectIndexes.Battery)) &&
+					(itemBeingCrafted.Id != (int)BigCraftableIndexes.Tapper || !x.IsTapperItem) &&
 
 					(possibleDifficulties == null || possibleDifficulties.Contains(x.DifficultyToObtain)) &&
 					(idsToExclude == null || !idsToExclude.Contains(x.Id)) &&
@@ -791,8 +792,8 @@ namespace Randomizer
 				{ ObjectIndexes.VoidEssence, new MonsterItem((int)ObjectIndexes.VoidEssence, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
 				{ ObjectIndexes.SolarEssence, new MonsterItem((int)ObjectIndexes.SolarEssence, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
 				{ ObjectIndexes.SquidInk, new MonsterItem((int)ObjectIndexes.SquidInk, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
-				{ ObjectIndexes.BoneFragment, new Item((int)ObjectIndexes.BoneFragment, ObtainingDifficulties.LargeTimeRequirements) },
-				{ ObjectIndexes.GreenSlimeEgg, new Item((int)ObjectIndexes.GreenSlimeEgg, ObtainingDifficulties.LargeTimeRequirements) },
+                { ObjectIndexes.BoneFragment, new MonsterItem((int)ObjectIndexes.BoneFragment, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
+                { ObjectIndexes.GreenSlimeEgg, new Item((int)ObjectIndexes.GreenSlimeEgg, ObtainingDifficulties.LargeTimeRequirements) },
 				{ ObjectIndexes.BlueSlimeEgg, new Item((int)ObjectIndexes.BlueSlimeEgg, ObtainingDifficulties.LargeTimeRequirements) },
 				{ ObjectIndexes.RedSlimeEgg, new Item((int)ObjectIndexes.RedSlimeEgg, ObtainingDifficulties.EndgameItem) },
 				{ ObjectIndexes.PurpleSlimeEgg, new Item((int)ObjectIndexes.PurpleSlimeEgg, ObtainingDifficulties.EndgameItem) },
@@ -900,9 +901,9 @@ namespace Randomizer
 				{ ObjectIndexes.RabbitsFoot, new AnimalItem((int)ObjectIndexes.RabbitsFoot, ObtainingDifficulties.EndgameItem) },
 				{ ObjectIndexes.Truffle, new AnimalItem((int)ObjectIndexes.Truffle, ObtainingDifficulties.EndgameItem) },
 				{ ObjectIndexes.TruffleOil, new AnimalItem((int)ObjectIndexes.TruffleOil, ObtainingDifficulties.EndgameItem) { RequiresOilMaker = true } },
-				{ ObjectIndexes.Mayonnaise, new AnimalItem((int)ObjectIndexes.Mayonnaise) { IsMayonaisse = true } },
-				{ ObjectIndexes.DuckMayonnaise, new AnimalItem((int)ObjectIndexes.DuckMayonnaise, ObtainingDifficulties.LargeTimeRequirements) { IsMayonaisse = true } },
-				{ ObjectIndexes.VoidMayonnaise, new AnimalItem((int)ObjectIndexes.VoidMayonnaise, ObtainingDifficulties.EndgameItem) { IsMayonaisse = true } },
+				{ ObjectIndexes.Mayonnaise, new AnimalItem((int)ObjectIndexes.Mayonnaise) },
+				{ ObjectIndexes.DuckMayonnaise, new AnimalItem((int)ObjectIndexes.DuckMayonnaise, ObtainingDifficulties.LargeTimeRequirements) },
+				{ ObjectIndexes.VoidMayonnaise, new AnimalItem((int)ObjectIndexes.VoidMayonnaise, ObtainingDifficulties.EndgameItem) },
 				{ ObjectIndexes.Cheese, new AnimalItem((int)ObjectIndexes.Cheese, ObtainingDifficulties.LargeTimeRequirements)},
 				{ ObjectIndexes.GoatCheese, new AnimalItem((int) ObjectIndexes.GoatCheese, ObtainingDifficulties.EndgameItem)},
 
@@ -1113,10 +1114,10 @@ namespace Randomizer
 				{ ObjectIndexes.Coral, new ForagableItem((int)ObjectIndexes.Coral) },
 				{ ObjectIndexes.SeaUrchin, new ForagableItem((int)ObjectIndexes.SeaUrchin) },
 				{ ObjectIndexes.RainbowShell, new ForagableItem((int)ObjectIndexes.RainbowShell) },
-				{ ObjectIndexes.Clam, new ForagableItem((int)ObjectIndexes.Clam) { DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements, IsCrabPotItem = true } },
-				{ ObjectIndexes.Cockle, new ForagableItem((int)ObjectIndexes.Cockle) { DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements, IsCrabPotItem = true } },
-				{ ObjectIndexes.Mussel, new ForagableItem((int)ObjectIndexes.Mussel) { DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements, IsCrabPotItem = true } },
-				{ ObjectIndexes.Oyster, new ForagableItem((int)ObjectIndexes.Oyster) { DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements, IsCrabPotItem = true } },
+				{ ObjectIndexes.Clam, new ForagableItem((int)ObjectIndexes.Clam) { DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements } },
+				{ ObjectIndexes.Cockle, new ForagableItem((int)ObjectIndexes.Cockle) { DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements } },
+				{ ObjectIndexes.Mussel, new ForagableItem((int)ObjectIndexes.Mussel) { DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements } },
+				{ ObjectIndexes.Oyster, new ForagableItem((int)ObjectIndexes.Oyster) { DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements } },
 
 				// Desert Foragables
 				{ ObjectIndexes.Coconut, new ForagableItem((int)ObjectIndexes.Coconut) },

@@ -115,10 +115,31 @@ namespace Randomizer
 		public bool IsMonsterItem { get; set; }
 		public bool IsFish { get; set; }
 		public bool IsArtifact { get; set; }
-		public bool IsMayonaisse { get; set; }
+		public bool IsMayonaisse { get =>
+            new List<int>() {
+                (int)ObjectIndexes.Mayonnaise,
+				(int)ObjectIndexes.DuckMayonnaise,
+				(int)ObjectIndexes.VoidMayonnaise
+            }.Contains(Id);
+        }
 		public bool IsGeodeMineral { get; set; }
-		public bool IsCrabPotItem { get; set; }
-		public bool IsCrop { get; set; }
+		public bool IsCrabPotItem { get =>
+			this is CrabPotItem ||
+            new List<int>() {
+                (int)ObjectIndexes.Clam,
+                (int)ObjectIndexes.Cockle,
+                (int)ObjectIndexes.Mussel,
+                (int)ObjectIndexes.Oyster
+            }.Contains(Id);
+        }
+        public bool IsTapperItem { get =>
+			new List<int>() {
+				(int)ObjectIndexes.PineTar,
+				(int)ObjectIndexes.OakResin,
+				(int)ObjectIndexes.MapleSyrup
+			}.Contains(Id);
+        }
+        public bool IsCrop { get; set; }
 		public virtual bool IsFlower { get; set; }
 		public bool IsSeed { get; set; }
 		public bool IsCooked { get; set; }
