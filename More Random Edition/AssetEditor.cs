@@ -325,7 +325,7 @@ namespace Randomizer
 			_fishReplacements = editedObjectInfo.FishReplacements;
 
 			CropRandomizer.Randomize(editedObjectInfo);
-			_fruitTreeReplacements = editedObjectInfo.FruitTreeReplacements;
+            _fruitTreeReplacements = FruitTreeRandomizer.Randomize(_objectReplacements);
 			_cropReplacements = EditedObjects.CropsReplacements;
 
 			_buildingReplacements = BuildingRandomizer.Randomize();
