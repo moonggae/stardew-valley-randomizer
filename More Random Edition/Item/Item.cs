@@ -146,15 +146,7 @@ namespace Randomizer
 		public bool IsRing { get; set; }
 		public bool IsFruit { get; set; }
 		public bool IsRandomizedFruitTree {
-            get =>
-            new List<int>() {
-                (int)ObjectIndexes.AppleSapling,
-                (int)ObjectIndexes.ApricotSapling,
-				(int)ObjectIndexes.CherrySapling,
-                (int)ObjectIndexes.OrangeSapling,
-                (int)ObjectIndexes.PeachSapling,
-                (int)ObjectIndexes.PomegranateSapling
-            }.Contains(Id);
+            get => FruitTreeRandomizer.RandomizedFruitTreeIds.Contains(Id);
         }
 		public bool IsTotem { get =>
             new List<int>() {
@@ -278,53 +270,6 @@ namespace Randomizer
 				? ((BigCraftableIndexes)Id).ToString()
 				: ((ObjectIndexes)Id).ToString();
 			return Regex.Replace(enumName, @"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", " $1").Trim();
-		}
-
-		/// <summary>
-		/// Gets what a price for an item might be just based on its difficulty to obtain
-		/// </summary>
-		/// <param name="multiplier">The multiplier for the price - will add or subtract this as a percentage</param>
-		/// <returns>The computed price</returns>
-		public int GetPriceForObtainingDifficulty(double multiplier)
-		{
-			int basePrice;
-			switch (DifficultyToObtain)
-			{
-				case ObtainingDifficulties.NoRequirements:
-					basePrice = 1000;
-					break;
-				case ObtainingDifficulties.SmallTimeRequirements:
-					basePrice = 5000;
-					break;
-				case ObtainingDifficulties.MediumTimeRequirements:
-					basePrice = 7500;
-					break;
-				case ObtainingDifficulties.LargeTimeRequirements:
-					basePrice = 10000;
-					break;
-				case ObtainingDifficulties.UncommonItem:
-					basePrice = 2500;
-					break;
-				case ObtainingDifficulties.RareItem:
-					basePrice = 20000;
-					break;
-				case ObtainingDifficulties.EndgameItem:
-					basePrice = 20000;
-					break;
-				case ObtainingDifficulties.NonCraftingItem:
-					basePrice = 5000;
-					break;
-				default:
-					Globals.ConsoleError($"Tried to get a base price for an item with an unrecognized ObtainingDifficulty: {Name}");
-					return 100;
-			}
-
-			int smallerBasePrice = basePrice / 10; // Guarantees that the price will be an even number
-			Range range = new(
-				(int)(smallerBasePrice - (smallerBasePrice * multiplier)),
-				(int)(smallerBasePrice * (multiplier + 1))
-			);
-			return range.GetRandomValue() * 10;
 		}
 
 		public virtual ISalable GetSaliableObject(int initialStack = 1, bool isRecipe = false, int price = -1)

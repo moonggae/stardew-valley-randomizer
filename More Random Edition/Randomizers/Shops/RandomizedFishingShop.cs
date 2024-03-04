@@ -30,7 +30,7 @@ namespace Randomizer
 
             Random shopRNG = Globals.GetDailyRNG(nameof(RandomizedFishingShop));
 
-            var currentSeason = SeasonFunctions.GetCurrentSeason();
+            var currentSeason = SeasonsExtensions.GetCurrentSeason();
             var possibleFish = FishItem.GetListAsFishItem(true)
                 .Where(fish => fish.AvailableSeasons.Contains(currentSeason))
                 .ToList();

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewValley;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Randomizer
 {
@@ -15,7 +17,7 @@ namespace Randomizer
 		Winter
 	}
 
-	public class SeasonFunctions
+	public static class SeasonsExtensions
 	{
         /// <summary>
         /// Gets the season of the game as one of the enum values
@@ -41,7 +43,7 @@ namespace Randomizer
         /// </summary>
         /// <param name="season">The season</param>
         /// <returns>The chosen color</returns>
-        public static Color GetRandomColorForSeason(Seasons season)
+        public static Color GetRandomColorForSeason(this Seasons season)
         {
             Range SpringHueRange = new(100, 155);
             Range SummerHueRange = new(50, 65);
@@ -70,14 +72,27 @@ namespace Randomizer
             switch (seasons.Count)
             {
                 case 1:
-                    return GetRandomColorForSeason(seasons[0]);
+                    return seasons[0].GetRandomColorForSeason();
                 case 2:
-                    var color1 = GetRandomColorForSeason(seasons[0]);
-                    var color2 = GetRandomColorForSeason(seasons[1]);
+                    var color1 = seasons[0].GetRandomColorForSeason();
+                    var color2 = seasons[1].GetRandomColorForSeason();
                     return ImageManipulator.AverageColors(color1, color2);
                 default:
                     return GetRandomColorForSeason(Seasons.Winter);
             }
+        }
+
+        /// <summary>
+        /// Gets a random season from the enum
+        /// </summary>
+        /// <returns>The random season</returns>
+        public static Seasons GetRandomSeason()
+        {
+            var allSeasons = Enum.GetValues(typeof(Seasons))
+                .Cast<Seasons>()
+                .ToList();
+
+            return Globals.RNGGetRandomValueFromList(allSeasons);
         }
     }
 }

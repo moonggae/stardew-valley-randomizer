@@ -67,35 +67,6 @@ namespace Randomizer
         };
 
         /// <summary>
-        /// Item Category indexes - only includes categories which are giftable
-        /// https://stardewcommunitywiki.com/Modding:Object_data#Categories
-        /// </summary>
-        private readonly static Dictionary<int, string> GiftableItemCategories = new()
-		{
-			[-2] = "Gems",
-			[-4] = "Fish",
-			[-5] = "Eggs",
-			[-6] = "Milk",
-			[-7] = "Cooking",
-			[-8] = "Crafting",
-			[-12] = "Minerals",
-			[-15] = "Metals",
-			[-16] = "Resources",
-			[-20] = "Trash",
-			[-21] = "Bait",
-			[-22] = "Tackles",
-			[-24] = "Decor",
-			[-26] = "Artisan Goods",
-			[-27] = "Tree Products",
-			[-28] = "Monster Loot",
-			[-74] = "Seeds",
-			[-75] = "Vegetables",
-			[-79] = "Fruit",
-			[-80] = "Flowers",
-			[-81] = "Foragables"
-		};
-
-        /// <summary>
         /// The data from Data/NPCGiftTastes.xnb
         /// </summary>
         public static Dictionary<string, string> GiftTasteData { get; private set; }
@@ -158,7 +129,7 @@ namespace Randomizer
 			GiftTasteData = DataLoader.NpcGiftTastes(Game1.content);
 			NewGiftTasteData = new();
 
-			List<int> universalUnusedCategories = new(GiftableItemCategories.Keys);
+			List<int> universalUnusedCategories = new(CategoryExtentions.GetIntValues());
 			List<Item> universalUnusedItems = ItemList.GetGiftables();
 
 			// Generate the universal preferences
@@ -172,7 +143,7 @@ namespace Randomizer
 			// Generate randomized NPC Preferences strings
 			foreach (string npcName in GiftableNPCs.Values)
 			{
-				List<int> unusedCategories = new(GiftableItemCategories.Keys);
+				List<int> unusedCategories = new(CategoryExtentions.GetIntValues());
 				List<Item> unusedItems = ItemList.GetGiftables();
 
 				string[] giftTasteData = GiftTasteData[npcName].Split('/');
@@ -349,7 +320,7 @@ namespace Randomizer
 				// Add the string based on whether it's a category
 				outputString += id > 0
 					? ItemList.GetItemName((ObjectIndexes)id)
-					: $"[{GiftableItemCategories[id]}]";
+					: $"[{((ItemCategories)id).GetTranslation()}]";
 
 				// Not last item - put comma after
 				if (arrayPos != idStringArray.Length - 1)

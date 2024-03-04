@@ -15,80 +15,313 @@ namespace Randomizer
     /// </summary>
     public class FruitTreeRandomizer
     {
+        const int NumberOfRandomFruitTreeCategoryTrees = 2;
+        const int NumberOfRandomFruitTreeItemTrees = 2;
+
         /// <summary>
-        /// Randomize fruit tree information
-        /// TODO 1.6: we can make fruit trees that grow multiple different things! Look into what we want to do.
+        /// The list of ids of all randomized fruit tree ids
+        /// </summary>
+        public static readonly List<int> RandomizedFruitTreeIds = new()
+        {
+            (int)ObjectIndexes.CherrySapling,
+            (int)ObjectIndexes.ApricotSapling,
+            (int)ObjectIndexes.OrangeSapling,
+            (int)ObjectIndexes.PeachSapling,
+            (int)ObjectIndexes.PomegranateSapling,
+            (int)ObjectIndexes.AppleSapling
+        };
+
+        /// <summary>
+        /// Randomize fruit tree information - sets up trees as follows:
+        /// - 2 trees of a random category (like fish, ores, etc)
+        /// - 1 tree that grows random (O) items
+        /// - 1 tree that grows random (BC) items
+        /// - 2 trees that grow a specific random item
         /// </summary>
         /// <param name="objectReplacements">The object information - for fruit tree names and prices</param>
         public static Dictionary<string, FruitTreeData> Randomize(
             Dictionary<string, ObjectData> objectReplacements)
         {
+            List<Seasons> startingSeasons = GetStartingSeasonList();
+
+            List<ItemCategories> fruitTreeCategories = 
+                CategoryExtentions.GetRandomCategories(NumberOfRandomFruitTreeCategoryTrees);
+            List<Item> fruitTreeSingleItems = GetListOfRandomFruitTreeItems();
+
             Dictionary<string, FruitTreeData> fruitTreeReplacements = new();
 
-            // We aren't randomizing all the fruit trees yet, so hard-code this list for now
-            List<int> fruitTreeIds = new()
-            {
-                (int)ObjectIndexes.CherrySapling,
-                (int)ObjectIndexes.ApricotSapling,
-                (int)ObjectIndexes.OrangeSapling,
-                (int)ObjectIndexes.PeachSapling,
-                (int)ObjectIndexes.PomegranateSapling,
-                (int)ObjectIndexes.AppleSapling
-            };
-            List<Item> allPotentialTreesItems = ItemList.Items.Values.Where(x =>
-                fruitTreeIds.Contains(x.Id) || x.DifficultyToObtain < ObtainingDifficulties.Impossible
-            ).ToList();
+            CreateFruitTreeWithCategory(
+                RandomizedFruitTreeIds[0],
+                fruitTreeCategories[0],
+                startingSeasons[0],
+                fruitTreeReplacements,
+                objectReplacements);
 
-            List<Item> treeItems = Globals.RNGGetRandomValuesFromList(allPotentialTreesItems, 6);
+            CreateFruitTreeWithCategory(
+                RandomizedFruitTreeIds[1],
+                fruitTreeCategories[1],
+                startingSeasons[1],
+                fruitTreeReplacements,
+                objectReplacements);
 
-            // Choose the fruit tree to make a winter tree
-            int idToMakeWinter = Globals.RNGGetRandomValueFromList(fruitTreeIds);
+            CreateFruitTreeWithRandomItem(
+                RandomizedFruitTreeIds[2],
+                true,
+                startingSeasons[2],
+                fruitTreeReplacements,
+                objectReplacements);
 
-            int[] prices = treeItems.Select(x => x.GetPriceForObtainingDifficulty(0.2)).ToArray();
+            CreateFruitTreeWithRandomItem(
+                RandomizedFruitTreeIds[3],
+                false,
+                startingSeasons[3],
+                fruitTreeReplacements,
+                objectReplacements);
 
-            if (!Globals.Config.RandomizeFruitTrees) 
-            { 
-                return fruitTreeReplacements; 
-            }
+            CreateFruitTreeWithSingleRandomItem(
+                RandomizedFruitTreeIds[4],
+                fruitTreeSingleItems[0],
+                startingSeasons[4],
+                fruitTreeReplacements,
+                objectReplacements);
 
-            // The trees are incremented starting with cherry
-            // Note that "treeItems" refers to the item the fruit tree will grow
-            for (int i = 0; i < treeItems.Count; i++)
-            {
-                int price = prices[i];
-                int fruitTreeId = fruitTreeIds[i];
-                Item treeItem = treeItems[i];
-
-                string newDispName = treeItem.Id == fruitTreeIds[i]
-                    ? Globals.GetTranslation("item-recursion-sapling-name")
-                    : Globals.GetTranslation("sapling-text", new { itemName = treeItem.DisplayName });
-
-                // Modify the fruit tree item with:
-                // - the winter season (if applicable)
-                // - the id of the grown item
-                FruitTreeData fruitTreeToModify = Game1.fruitTreeData[fruitTreeId.ToString()];
-                if (fruitTreeId == idToMakeWinter)
-                {
-                    fruitTreeToModify.Seasons = new List<Season>() { Season.Winter };
-                }
-                fruitTreeToModify.Fruit[0].ItemId = treeItem.QualifiedId; // This is where we can assign multiple items to grow!
-                fruitTreeReplacements[fruitTreeId.ToString()] = fruitTreeToModify;
-
-                // If we change fruit trees to be usable multiple seasons, we'll want to change this string accordingly!
-                string season = fruitTreeToModify.Seasons[0].ToString().ToLower();
-                string seasonDisplay = Globals.GetTranslation($"seasons-{season}");
-
-                // Replace the fruit tree name/price/description
-                ObjectData fruitTreeObject = EditedObjects.DefaultObjectInformation[fruitTreeId.ToString()];
-                fruitTreeObject.Price = price / 2;
-                fruitTreeObject.DisplayName = newDispName;
-                fruitTreeObject.Description = Globals.GetTranslation(
-                    "sapling-description",
-                    new { itemName = newDispName, season = seasonDisplay });
-                objectReplacements[fruitTreeId.ToString()] = fruitTreeObject;
-            }
+            CreateFruitTreeWithSingleRandomItem(
+                RandomizedFruitTreeIds[5],
+                fruitTreeSingleItems[1],
+                startingSeasons[5],
+                fruitTreeReplacements,
+                objectReplacements);
 
             return fruitTreeReplacements;
+        }
+
+        /// <summary>
+        /// Gets the starting list of seasons - consists of a list of seasons for every
+        /// randomized fruit tree, guaranteed to contain at least one of each season
+        /// </summary>
+        /// <returns>The list of seasons</returns>
+        private static List<Seasons> GetStartingSeasonList()
+        {
+            List<Seasons> seasonList = new()
+            {
+                Seasons.Spring,
+                Seasons.Summer,
+                Seasons.Fall,
+                Seasons.Winter
+            };
+
+            // Add any additional seasons
+            while(seasonList.Count < RandomizedFruitTreeIds.Count)
+            {
+                seasonList.Add(SeasonsExtensions.GetRandomSeason());
+            }
+
+            return seasonList;
+        }
+            
+        /// <summary>
+        /// Gets the list of items for random fruit trees
+        /// </summary>
+        /// <returns>The list of random fruit tree items</returns>
+        private static List<Item> GetListOfRandomFruitTreeItems()
+        {
+            List<Item> allPotentialTreesItems = ItemList.Items.Values.Where(x =>
+                RandomizedFruitTreeIds.Contains(x.Id) || x.DifficultyToObtain < ObtainingDifficulties.Impossible
+            ).ToList();
+
+            return Globals.RNGGetRandomValuesFromList(
+                allPotentialTreesItems, 
+                NumberOfRandomFruitTreeItemTrees);
+        }
+
+        /// <summary>
+        /// Creates a random fruit tree with the given category
+        /// </summary>
+        /// <param name="fruitTreeId">The id of the tree to replace</param>
+        /// <param name="category">The category for the tree to grow</param>
+        /// <param name="guaranteedSeason">A guaranteed season that fruit should be produced</param>
+        /// <param name="fruitTreeReplacements">The dictionary of fruit tree replacements</param>
+        /// <param name="objectReplacements">The dictionary of object replacements</param>
+        private static void CreateFruitTreeWithCategory(
+            int fruitTreeId, 
+            ItemCategories category, 
+            Seasons guaranteedSeason,
+            Dictionary<string, FruitTreeData> fruitTreeReplacements,
+            Dictionary<string, ObjectData> objectReplacements)
+        {
+            FruitTreeData fruitTreeToModify = Game1.fruitTreeData[fruitTreeId.ToString()];
+            fruitTreeToModify.Seasons = GetRandomSeasonsList(guaranteedSeason);
+
+            // We currently just modify the existing one fruit
+            FruitTreeFruitData fruitToModify = fruitTreeToModify.Fruit[0];
+            fruitToModify.ItemId = "RANDOM_ITEMS (O)";
+            fruitToModify.PerItemCondition = $"ITEM_CATEGORY Target {(int)category}";
+
+            string categoryDisplayName = category.GetTranslation();
+            string categoryTreeName = Globals.GetTranslation(
+                "sapling-text", 
+                new { itemName = categoryDisplayName });
+
+            AddToReplacementDictionaries(
+                fruitTreeId, 
+                fruitTreeToModify,
+                categoryDisplayName,
+                categoryTreeName,
+                fruitTreeReplacements,
+                objectReplacements);
+        }
+
+        /// <summary>
+        /// Creates a random fruit tree that grows random items
+        /// - currently grows either Object, or Big Craftables
+        /// </summary>
+        /// <param name="fruitTreeId">The id of the tree to replace</param>
+        /// <param name="isNormalObject">True if it grows (O) items, false if (BC) items</param>
+        /// <param name="guaranteedSeason">A guaranteed season that fruit should be produced</param>
+        /// <param name="fruitTreeReplacements">The dictionary of fruit tree replacements</param>
+        /// <param name="objectReplacements">The dictionary of object replacements</param>
+        private static void CreateFruitTreeWithRandomItem(
+            int fruitTreeId,
+            bool isNormalObject,
+            Seasons guaranteedSeason,
+            Dictionary<string, FruitTreeData> fruitTreeReplacements,
+            Dictionary<string, ObjectData> objectReplacements)
+        {
+            FruitTreeData fruitTreeToModify = Game1.fruitTreeData[fruitTreeId.ToString()];
+            fruitTreeToModify.Seasons = GetRandomSeasonsList(guaranteedSeason);
+
+            string itemType = isNormalObject ? "(O)" : "(BC)";
+            string itemTypeDisplayName = isNormalObject ? "\"O\"" : "\"BC\"";
+
+            // We currently just modify the existing one fruit
+            FruitTreeFruitData fruitToModify = fruitTreeToModify.Fruit[0];
+            fruitToModify.ItemId = $"RANDOM_ITEMS {itemType}";
+
+            string randomItemTreeName = Globals.GetTranslation(
+                "sapling-text",
+                new { itemName = itemTypeDisplayName });
+
+            AddToReplacementDictionaries(
+                fruitTreeId,
+                fruitTreeToModify,
+                itemTypeDisplayName,
+                randomItemTreeName,
+                fruitTreeReplacements,
+                objectReplacements,
+                basePrice: isNormalObject ? 5000 : 8000);
+        }
+
+        /// <summary>
+        /// Creates a random fruit tree that grows a single random item
+        /// </summary>
+        /// <param name="fruitTreeId">The id of the tree to replace</param>
+        /// <param name="randomItem">The itme the tree should grow</param>
+        /// <param name="guaranteedSeason">A guaranteed season that fruit should be produced</param>
+        /// <param name="fruitTreeReplacements">The dictionary of fruit tree replacements</param>
+        /// <param name="objectReplacements">The dictionary of object replacements</param>
+        private static void CreateFruitTreeWithSingleRandomItem(
+            int fruitTreeId,
+            Item randomItem,
+            Seasons guaranteedSeason,
+            Dictionary<string, FruitTreeData> fruitTreeReplacements,
+            Dictionary<string, ObjectData> objectReplacements)
+        {
+            FruitTreeData fruitTreeToModify = Game1.fruitTreeData[fruitTreeId.ToString()];
+            fruitTreeToModify.Seasons = GetRandomSeasonsList(guaranteedSeason);
+
+            // We currently just modify the existing one fruit
+            FruitTreeFruitData fruitToModify = fruitTreeToModify.Fruit[0];
+            fruitToModify.ItemId = randomItem.QualifiedId;
+
+            string singleRandomItemTreeName = fruitTreeId == randomItem.Id
+                ? Globals.GetTranslation("item-recursion-sapling-name")
+                : Globals.GetTranslation("sapling-text", new { itemName = randomItem.DisplayName });
+
+            // The fruit tree will be worth a base cost of 10 times the sale price
+            // We divide it by two because "salePrice" is the SHOP sale price, not our sale price
+            // Use 5000 if there is no sale price
+            int defaultPrice = (randomItem.GetSaliableObject().salePrice() / 2) * 10;
+            int basePrice = defaultPrice > 0 ? defaultPrice : 5000;
+
+            AddToReplacementDictionaries(
+                fruitTreeId,
+                fruitTreeToModify,
+                randomItem.DisplayName,
+                singleRandomItemTreeName,
+                fruitTreeReplacements,
+                objectReplacements,
+                basePrice);
+        }
+
+        /// <summary>
+        /// Adds additional seasons to the list
+        /// Currently will add 2 additional seasons to the given one, and removes generated dups
+        /// </summary>
+        /// <param name="startingSeason">The seasons the tree is guaranteed to have already</param>
+        /// <returns>The list of seasons</returns>
+        private static List<Season> GetRandomSeasonsList(Seasons startingSeason)
+        {
+            List<Seasons> seasonList = new()
+            {
+                startingSeason,
+                SeasonsExtensions.GetRandomSeason(),
+                SeasonsExtensions.GetRandomSeason()
+            };
+
+            return seasonList
+                .Distinct()
+                .OrderBy(season => (int)season)
+                .Cast<Season>()
+                .ToList();
+        }
+
+        /// <summary>
+        /// Gets the price for a fruit tree
+        /// - Trees start at a base price of 5000, or whatever the item should be worth
+        /// - Increased by 5% per season after the first one
+        /// - 10% variance
+        /// </summary>
+        /// <returns>The price of the fruit tree</returns>
+        private static int GetPriceForFruitTree(FruitTreeData fruitTree, double basePrice)
+        {
+            double percentageIncrease = (fruitTree.Seasons.Count - 1) * 5;
+            double basePriceToUse = basePrice * (1 + (percentageIncrease / 100));
+            return Globals.RNGGetIntWithinPercentage((int)basePriceToUse, 10);
+        }
+
+        /// <summary>
+        /// Adds the fruit tree into to the replacement dictionaries so that
+        /// they are actually modified in-game
+        /// </summary>
+        /// <param name="fruitTreeId">The fruit tree id that is modified</param>
+        /// <param name="modifiedFruitTree">The modified fruit tree data</param>
+        /// <param name="saplingItemDisplayName">The display name of the item the fruit tree grows</param>
+        /// <param name="saplingDisplayName">The display name of the fruit tree</param>
+        /// <param name="fruitTreeReplacements">The dictionary of fruit tree replacements</param>
+        /// <param name="objectReplacements">The dictionary of object replacements</param>
+        /// <param name="basePrice">The base price for the tree - defaults to 5000</param>
+        private static void AddToReplacementDictionaries(
+            int fruitTreeId,
+            FruitTreeData modifiedFruitTree,
+            string saplingItemDisplayName,
+            string saplingDisplayName,
+            Dictionary<string, FruitTreeData> fruitTreeReplacements,
+            Dictionary<string, ObjectData> objectReplacements,
+            int basePrice = 5000)
+        {
+            fruitTreeReplacements[fruitTreeId.ToString()] = modifiedFruitTree;
+
+            // Replace the fruit tree name/price/description
+            ObjectData fruitTreeObject = EditedObjects.DefaultObjectInformation[fruitTreeId.ToString()];
+            fruitTreeObject.Price = GetPriceForFruitTree(modifiedFruitTree, basePrice) / 2;
+            fruitTreeObject.DisplayName = saplingDisplayName;
+            fruitTreeObject.Description = Globals.GetTranslation(
+                "sapling-description",
+                new {
+                    itemName = saplingItemDisplayName, 
+                    season = string.Join(", ", modifiedFruitTree.Seasons.Select(s => s.ToString()))
+                });
+            objectReplacements[fruitTreeId.ToString()] = fruitTreeObject;
         }
     }
 }

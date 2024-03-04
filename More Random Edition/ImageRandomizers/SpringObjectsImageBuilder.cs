@@ -281,7 +281,7 @@ namespace Randomizer
 				.ToList();
 
 			string seedPacketFileName = Globals.RNGGetRandomValueFromList(seedPacketFileNames);
-			Color seedItemColor = SeasonFunctions.GetRandomColorForSeasons(linkingData.SeedItem.GrowingSeasons);
+			Color seedItemColor = SeasonsExtensions.GetRandomColorForSeasons(linkingData.SeedItem.GrowingSeasons);
 
             using Texture2D seedPacketOriginalImage = Texture2D.FromFile(Game1.graphics.GraphicsDevice, seedPacketFileName);
 			using Texture2D seedPacketImage = ImageManipulator.MultiplyImageByColor(seedPacketOriginalImage, seedItemColor);
