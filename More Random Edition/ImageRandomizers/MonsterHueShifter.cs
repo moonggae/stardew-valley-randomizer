@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Randomizer
 {
@@ -160,7 +158,7 @@ namespace Randomizer
         /// Clean up the randomized image directory
         /// This is so they're gone if you turn off the setting
         /// </summary>
-        public static void CleanUpRandomizedImageDirectory()
+        private static void CleanUpRandomizedImageDirectory()
         {
             Directory.CreateDirectory(RandomizedImagesDirectory);
             DirectoryInfo directoryInfo = new(RandomizedImagesDirectory);

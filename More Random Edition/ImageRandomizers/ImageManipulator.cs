@@ -383,5 +383,40 @@ namespace Randomizer
 
             return output;
         }
+
+        /// <summary>
+        /// Crops a texture out of a given texture
+        /// </summary>
+        /// <param name="originalTexture">The original texture</param>
+        /// <param name="cropRectangle">The rectangle to crop</param>
+        /// <param name="graphicsDevice">The graphics device</param>
+        /// <returns>The new image</returns>
+        public static Texture2D Crop(
+            Texture2D originalTexture, 
+            Rectangle cropRectangle, 
+            GraphicsDevice graphicsDevice)
+        {
+            // Create a new texture to hold the cropped image
+            Texture2D croppedTexture = new(graphicsDevice, cropRectangle.Width, cropRectangle.Height);
+
+            // Get the pixel data from the original texture
+            Color[] data = new Color[originalTexture.Width * originalTexture.Height];
+            originalTexture.GetData(data);
+
+            // Copy the cropped region to a new array
+            Color[] croppedData = new Color[cropRectangle.Width * cropRectangle.Height];
+            for (int y = 0; y < cropRectangle.Height; y++)
+            {
+                for (int x = 0; x < cropRectangle.Width; x++)
+                {
+                    int index = x + y * cropRectangle.Width;
+                    croppedData[index] = data[(cropRectangle.X + x) + (cropRectangle.Y + y) * originalTexture.Width];
+                }
+            }
+
+            // Set the pixel data for the cropped texture
+            croppedTexture.SetData(croppedData);
+            return croppedTexture;
+        }
     }
 }

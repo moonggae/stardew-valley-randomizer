@@ -21,7 +21,6 @@
 		public bool AddRandomArtifactItem { get; set; } = true;
 		public bool RandomizeBuildingCosts { get; set; } = true;
 		public bool RandomizeFruitTrees { get; set; } = true;
-		public bool RandomizeAnimalSkins { get; set; } = true;
 		public bool RandomizeMuseumRewards { get; set; } = true;
 		public bool RandomizeGarbageCans { get; set; } = true;
 		public bool RandomizeIntroStory { get; set; } = true;
@@ -108,6 +107,7 @@
 	{
 		public bool RandomizeHorses { get; set; } = true;
 		public bool RandomizePets { get; set; } = true;
+		public int CritterHueShiftMax { get; set; } = 359;
 	}
 }
 

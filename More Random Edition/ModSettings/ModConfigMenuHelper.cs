@@ -69,6 +69,7 @@ namespace Randomizer
 					Globals.Config.Animals.RandomizePets = val;
                     Globals.ModRef.Helper.GameContent.InvalidateCache(AnimalIconPatcher.StardewAssetPath);
                 });
+            AddHueShiftOption("Critter Hue Shift Max", "The maxmium value that critter images will be hue shifted by. Set to 0 for no effect.", () => Globals.Config.Animals.CritterHueShiftMax, (int val) => Globals.Config.Animals.CritterHueShiftMax = val);
 
             AddSectionTitle("Music Options");
 			AddCheckbox("Music", "Shuffle most songs and ambience.", () => Globals.Config.Music.Randomize, (bool val) => Globals.Config.Music.Randomize = val);
@@ -89,7 +90,6 @@ namespace Randomizer
 
             AddSectionTitle("Misc Options");
 			AddCheckbox("Building Costs", "Farm buildings that Robin can build for the player choose from a random pool of resources.", () => Globals.Config.RandomizeBuildingCosts, (bool val) => Globals.Config.RandomizeBuildingCosts = val);
-			AddCheckbox("Animal Skins", "You might get a surprise from Marnie.", () => Globals.Config.RandomizeAnimalSkins, (bool val) => Globals.Config.RandomizeAnimalSkins = val);
 			AddCheckbox("Forageables", "Forageables for every season and location are now randomly selected. Every forageable appears at least once per year.", () => Globals.Config.RandomizeForagables, (bool val) => Globals.Config.RandomizeForagables = val);
 			AddCheckbox("Randomize Museum Rewards", "Changes museum rewards to similiar items. Does not affect the Dwarven Translation Manual, Ancient Fruit, or the Stardrop rewards.", () => Globals.Config.RandomizeMuseumRewards, (bool val) => Globals.Config.RandomizeMuseumRewards = val);
             AddCheckbox("Randomize Garbage Cans", "Random chance of NPC's dislikes/hates to be obtained from garbage cans.", () => Globals.Config.RandomizeGarbageCans, (bool val) => Globals.Config.RandomizeGarbageCans = val);

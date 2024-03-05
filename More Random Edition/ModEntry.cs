@@ -42,7 +42,12 @@ namespace Randomizer
 				helper.Events.GameLoop.DayStarted += (sender, args) => _modAssetLoader.ReplaceRain();
 			}
 
-			if (Globals.Config.RandomizeForagables)
+            if (Globals.Config.Animals.CritterHueShiftMax > 0)
+            {
+                helper.Events.GameLoop.DayStarted += (sender, args) => _modAssetLoader.ReplaceCritters();
+            }
+
+            if (Globals.Config.RandomizeForagables)
 			{
 				helper.Events.GameLoop.GameLaunched += (sender, args) => WildSeedAdjustments.ReplaceGetRandomWildCropForSeason();
 			}
@@ -107,7 +112,6 @@ namespace Randomizer
 			Globals.SpoilerLog = new SpoilerLogger(Game1.player.farmName.Value);
 
             // Make replacements and edits
-            _modAssetLoader.CalculateReplacements();
 			_modAssetEditor.CalculateEdits();
 			_modAssetLoader.RandomizeImages();
 

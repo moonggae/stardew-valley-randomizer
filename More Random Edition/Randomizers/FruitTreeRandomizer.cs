@@ -309,11 +309,19 @@ namespace Randomizer
             Dictionary<string, ObjectData> objectReplacements,
             int basePrice = 5000)
         {
+            int fruitTreePrice = GetPriceForFruitTree(modifiedFruitTree, basePrice) / 2;
+
+            // Done after the price, since there's an RNG call to calculate it
+            if (!Globals.Config.RandomizeFruitTrees)
+            {
+                return;
+            }
+
             fruitTreeReplacements[fruitTreeId.ToString()] = modifiedFruitTree;
 
             // Replace the fruit tree name/price/description
             ObjectData fruitTreeObject = EditedObjects.DefaultObjectInformation[fruitTreeId.ToString()];
-            fruitTreeObject.Price = GetPriceForFruitTree(modifiedFruitTree, basePrice) / 2;
+            fruitTreeObject.Price = fruitTreePrice;
             fruitTreeObject.DisplayName = saplingDisplayName;
             fruitTreeObject.Description = Globals.GetTranslation(
                 "sapling-description",
