@@ -48,7 +48,8 @@ namespace Randomizer
         /// <param name="customFolderName">The folder name of the image type being built</param>
         public SpringObjectsImageBuilder(Dictionary<int, CropImageLinkingData> itemIdsToImageNames) : base()
 		{
-			CropIdsToLinkingData = itemIdsToImageNames;
+            Rng = RNG.GetFarmRNG(nameof(SpringObjectsImageBuilder));
+            CropIdsToLinkingData = itemIdsToImageNames;
 			ImageNameToCropIds = new();
 
 			StardewAssetPath = "Maps/springobjects";
@@ -122,7 +123,7 @@ namespace Randomizer
 			string subDirectory = "";
 			if (BootRandomizer.BootData.Keys.Any(x => x == itemId.ToString()))
 			{
-				fileName = Globals.RNGGetAndRemoveRandomValueFromList(BootImages);
+				fileName = Rng.GetAndRemoveRandomValueFromList(BootImages);
 
 				if (string.IsNullOrEmpty(fileName))
 				{
@@ -143,7 +144,7 @@ namespace Randomizer
 
 			if (item.IsFish)
 			{
-				fileName = Globals.RNGGetAndRemoveRandomValueFromList(FishImages);
+				fileName = Rng.GetAndRemoveRandomValueFromList(FishImages);
 
 				if (string.IsNullOrEmpty(fileName))
 				{
@@ -224,8 +225,8 @@ namespace Randomizer
 					hueShiftMax = Globals.Config.Crops.HueShiftMax; 
 				}
 
-                Random rng = Globals.GetFarmRNG($"{nameof(SpringObjectsImageBuilder)}{fileName}");
-                int hueShiftAmount = Range.GetRandomValue(0, hueShiftMax, rng);
+                RNG rng = RNG.GetFarmRNG($"{nameof(SpringObjectsImageBuilder)}.{fileName}");
+                int hueShiftAmount = rng.NextIntWithinRange(0, hueShiftMax);
                 return ImageManipulator.ShiftImageHue(image, hueShiftAmount);
             }
 
@@ -280,8 +281,8 @@ namespace Randomizer
 				.OrderBy(x => x)
 				.ToList();
 
-			string seedPacketFileName = Globals.RNGGetRandomValueFromList(seedPacketFileNames);
-			Color seedItemColor = SeasonsExtensions.GetRandomColorForSeasons(linkingData.SeedItem.GrowingSeasons);
+			string seedPacketFileName = Rng.GetRandomValueFromList(seedPacketFileNames);
+			Color seedItemColor = SeasonsExtensions.GetRandomColorForSeasons(linkingData.SeedItem.GrowingSeasons, Rng);
 
             using Texture2D seedPacketOriginalImage = Texture2D.FromFile(Game1.graphics.GraphicsDevice, seedPacketFileName);
 			using Texture2D seedPacketImage = ImageManipulator.MultiplyImageByColor(seedPacketOriginalImage, seedItemColor);

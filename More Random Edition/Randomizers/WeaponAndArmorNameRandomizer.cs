@@ -4,7 +4,9 @@ namespace Randomizer
 {
 	public class WeaponAndArmorNameRandomizer
 	{
-		private readonly List<string> Adjectives = new()
+        private static RNG Rng { get; set; }
+
+        private readonly List<string> Adjectives = new()
 		{
             "Abyssal",
             "Amazing",
@@ -510,6 +512,16 @@ namespace Randomizer
 			"Superb"
 		};
 
+        /// <summary>
+        /// The constuctor - uses it's own name and a seed addendum so that the seeds are
+        /// not always the same when its RNG is used
+        /// </summary>
+        /// <param name="seedAddendum">The seed addendum - probably the calling class name</param>
+        public WeaponAndArmorNameRandomizer(string seedAddendum)
+        {
+            Rng = RNG.GetFarmRNG($"{nameof(WeaponAndArmorNameRandomizer)}.{seedAddendum}");
+        }
+
 		/// <summary>
 		/// Generates a random name for the given weapon type
 		/// </summary>
@@ -525,13 +537,13 @@ namespace Randomizer
 			{
 				case WeaponType.SlashingSword:
 				case WeaponType.StabbingSword:
-					typeString = Globals.RNGGetAndRemoveRandomValueFromList(Swords);
+					typeString = Rng.GetAndRemoveRandomValueFromList(Swords);
 					break;
 				case WeaponType.Dagger:
-					typeString = Globals.RNGGetAndRemoveRandomValueFromList(Daggers);
+					typeString = Rng.GetAndRemoveRandomValueFromList(Daggers);
 					break;
 				case WeaponType.ClubOrHammer:
-					typeString = Globals.RNGGetAndRemoveRandomValueFromList(HammersAndClubs);
+					typeString = Rng.GetAndRemoveRandomValueFromList(HammersAndClubs);
 					break;
 				case WeaponType.Slingshot:
 					return GenerateRandomSlingshotName(slingshotId);
@@ -554,13 +566,13 @@ namespace Randomizer
 			switch (slingshotId)
 			{
 				case WeaponIndexes.Slingshot:
-					typeString = Globals.RNGGetAndRemoveRandomValueFromList(Tier1Slingshots);
+					typeString = Rng.GetAndRemoveRandomValueFromList(Tier1Slingshots);
 					break;
 				case WeaponIndexes.MasterSlingshot:
-					typeString = Globals.RNGGetAndRemoveRandomValueFromList(Tier2Slingshots);
+					typeString = Rng.GetAndRemoveRandomValueFromList(Tier2Slingshots);
 					break;
 				case WeaponIndexes.GalaxySlingshot:
-					typeString = Globals.RNGGetAndRemoveRandomValueFromList(Tier3Slingshots);
+					typeString = Rng.GetAndRemoveRandomValueFromList(Tier3Slingshots);
 					break;
 				default:
 					Globals.ConsoleError($"Trying to generate slingshot name for invalid id: {slingshotId}");
@@ -576,7 +588,7 @@ namespace Randomizer
 		/// <returns>The name in the format: [adjective] (noun) (boot string) [of suffix]</returns>
 		public string GenerateRandomBootName()
 		{
-			string bootName = Globals.RNGGetAndRemoveRandomValueFromList(Boots);
+			string bootName = Rng.GetAndRemoveRandomValueFromList(Boots);
 			return GenerateRandomNonSlingshotName(bootName);
 		}
 
@@ -591,21 +603,21 @@ namespace Randomizer
             string adjective = "";
             string suffix = "";
 
-            bool useAdjectiveOrSuffix = Globals.RNGGetNextBoolean();
+            bool useAdjectiveOrSuffix = Rng.NextBoolean();
             if (useAdjectiveOrSuffix)
             {
-                bool useAdjective = Globals.RNGGetNextBoolean();
+                bool useAdjective = Rng.NextBoolean();
                 if (useAdjective)
                 {
-                    adjective = Globals.RNGGetAndRemoveRandomValueFromList(Adjectives);
+                    adjective = Rng.GetAndRemoveRandomValueFromList(Adjectives);
                 }
                 else
                 {
-                    suffix = $"of {Globals.RNGGetAndRemoveRandomValueFromList(Suffixes)}";
+                    suffix = $"of {Rng.GetAndRemoveRandomValueFromList(Suffixes)}";
                 }
             }
 
-			string noun = Globals.RNGGetAndRemoveRandomValueFromList(Nouns);
+			string noun = Rng.GetAndRemoveRandomValueFromList(Nouns);
 			return $"{adjective} {noun} {typeString} {suffix}".Trim();
 		}
 	}

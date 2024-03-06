@@ -13,6 +13,8 @@ namespace Randomizer
     /// </summary>
     public class MuseumRewardRandomizer
     {
+        private static RNG Rng { get; set; }
+
         /// <summary>
         /// A list of used reward Ids - these must be unique because it will result in Duplicate rewards
         /// being glitchy if you only claim one of them
@@ -29,6 +31,7 @@ namespace Randomizer
         /// <returns>The dictionary of replacements to replace the asset with</returns>
         public static Dictionary<string, MuseumRewards> RandomizeMuseumRewards()
         {
+            Rng = RNG.GetFarmRNG(nameof(MuseumRewardRandomizer));
             UsedRewardIds.Clear();
 
             Dictionary<string, MuseumRewards> museumRewards = 
@@ -111,12 +114,12 @@ namespace Randomizer
             if (FurnitureFunctions.IsQualifiedIdForFurniture(oldRewardId) ||
                 isDropOrFluteBlock)
             {
-                rewardData.RewardItemId = FurnitureFunctions.GetRandomFurnitureQualifiedId(UsedRewardIds);
+                rewardData.RewardItemId = FurnitureFunctions.GetRandomFurnitureQualifiedId(Rng, UsedRewardIds);
             }
 
             else if (BigCraftableFunctions.IsQualifiedIdForBigCraftable(oldRewardId))
             {
-                rewardData.RewardItemId = BigCraftableFunctions.GetRandomBigCraftableQualifiedId(UsedRewardIds);
+                rewardData.RewardItemId = BigCraftableFunctions.GetRandomBigCraftableQualifiedId(Rng, UsedRewardIds);
             }
 
             else if (Item.IsQualifiedIdForObject(oldRewardId))
@@ -158,27 +161,27 @@ namespace Randomizer
                     .Cast<SeedItem>()
                     .ToList();
 
-                rewardData.RewardItemId = Globals.RNGGetRandomValueFromList(seedPool).QualifiedId;
+                rewardData.RewardItemId = Rng.GetRandomValueFromList(seedPool).QualifiedId;
                 rewardData.RewardItemCount = isStarFruitSeedReward
-                    ? Range.GetRandomValue(3, 8)
-                    : Range.GetRandomValue(5, 15);
+                    ? Rng.NextIntWithinRange(3, 8)
+                    : Rng.NextIntWithinRange(5, 15);
             }
 
             else if (item.IsTotem)
             {
                 // Only one totem is possible, so no need to check UsedRewardIds
-                rewardData.RewardItemId = ItemList.GetRandomTotem().QualifiedId;
+                rewardData.RewardItemId = ItemList.GetRandomTotem(Rng).QualifiedId;
             }
 
             else
             {
                 // Otherwise, it's a random cooked item
-                rewardData.RewardItemId = Globals.RNGGetRandomValueFromList(
+                rewardData.RewardItemId = Rng.GetRandomValueFromList(
                     ItemList.GetCookedItems()
                         .Where(item => !UsedRewardIds.Contains(item.QualifiedId))
                         .ToList()
                     ).QualifiedId;
-                rewardData.RewardItemCount = Range.GetRandomValue(3, 10);
+                rewardData.RewardItemCount = Rng.NextIntWithinRange(3, 10);
             }        
         }
 

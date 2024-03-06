@@ -30,7 +30,8 @@ namespace Randomizer
 
 		public WeaponImageBuilder() : base()
 		{
-			StardewAssetPath = "TileSheets/weapons";
+            Rng = RNG.GetFarmRNG(nameof(WeaponImageBuilder));
+            StardewAssetPath = "TileSheets/weapons";
             SubDirectory = "Weapons";
 			SetUpWeaponPositionToIDMap();
 			PositionsToOverlay = WeaponPositionToIDMap.Keys.ToList();
@@ -91,13 +92,13 @@ namespace Randomizer
 			{
 				case WeaponType.SlashingSword:
 				case WeaponType.StabbingSword:
-					fileName = Globals.RNGGetAndRemoveRandomValueFromList(SwordImages);
+					fileName = Rng.GetAndRemoveRandomValueFromList(SwordImages);
 					break;
 				case WeaponType.Dagger:
-					fileName = Globals.RNGGetAndRemoveRandomValueFromList(DaggerImages);
+					fileName = Rng.GetAndRemoveRandomValueFromList(DaggerImages);
 					break;
 				case WeaponType.ClubOrHammer:
-					fileName = Globals.RNGGetAndRemoveRandomValueFromList(HammerAndClubImages);
+					fileName = Rng.GetAndRemoveRandomValueFromList(HammerAndClubImages);
 					break;
 				case WeaponType.Slingshot:
 					// TODO:Use slingshot images when we actually randomize them

@@ -42,11 +42,10 @@ namespace Randomizer
                         .Select(x => x.Key)
                         .ToList();
 
-                    var dailyRNG = Globals.GetDailyRNG(nameof(WorldAdjustments));
+                    var dailyRNG = RNG.GetDailyRNG(nameof(WorldAdjustments));
                     foreach (Vector2 oldForagableKey in tiles)
                     {
-                        RandomizerItem newForagable = 
-                            Globals.RNGGetRandomValueFromList(newForagables, dailyRNG);
+                        RandomizerItem newForagable = dailyRNG.GetRandomValueFromList(newForagables);
                         location.Objects[oldForagableKey] = (Object)newForagable.GetSaliableObject();
                         location.Objects[oldForagableKey].IsSpawnedObject = true;
                     }

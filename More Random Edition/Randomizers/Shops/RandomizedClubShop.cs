@@ -29,7 +29,7 @@ namespace Randomizer
         /// </summary>
         private void AdjustStock()
         {
-            Random shopRNG = Globals.GetWeeklyRNG(nameof(RandomizedClubShop));
+            RNG shopRNG = RNG.GetWeeklyRNG(nameof(RandomizedClubShop));
             CurrentShopData.Items.Clear();
 
             AddFurniture(shopRNG);
@@ -43,9 +43,9 @@ namespace Randomizer
         /// Adds 3-5 random furniture items
         /// </summary>
         /// <param name="shopRNG"></param>
-        private void AddFurniture(Random shopRNG)
+        private void AddFurniture(RNG shopRNG)
         {
-            var numberOfFurniture = Range.GetRandomValue(3, 5, shopRNG);
+            var numberOfFurniture = shopRNG.NextIntWithinRange(3, 5);
             var furnitureToSell = ItemList.GetRandomFurnitureToSell(shopRNG, numberOfFurniture);
             furnitureToSell.ForEach(item => 
                 AddStock(item.QualifiedItemId, 
@@ -57,11 +57,11 @@ namespace Randomizer
         /// Adds either a hat or a clothing item
         /// </summary>
         /// <param name="shopRNG"></param>
-        private void AddHatOrClothing(Random shopRNG)
+        private void AddHatOrClothing(RNG shopRNG)
         {
             var randomHat = ItemList.GetRandomHatsToSell(shopRNG, numberToGet: 1).First();
             var randomClothing = ItemList.GetRandomClothingToSell(shopRNG, numberToGet: 1).First();
-            var hatOrClothingToSell = Globals.RNGGetNextBoolean(50, shopRNG) ? randomHat : randomClothing;
+            var hatOrClothingToSell = shopRNG.NextBoolean() ? randomHat : randomClothing;
             AddStock(hatOrClothingToSell.QualifiedItemId,
                 "HatOrClothing",
                 price: GetSalePrice(hatOrClothingToSell));
@@ -71,7 +71,7 @@ namespace Randomizer
         /// Adds a BigCraftable item
         /// </summary>
         /// <param name="shopRNG"></param>
-        private void AddBigCraftable(Random shopRNG)
+        private void AddBigCraftable(RNG shopRNG)
         {
             var bigCraftableToSell = ItemList.GetRandomBigCraftablesToSell(shopRNG, numberToGet: 1).First();
             AddStock(bigCraftableToSell.QualifiedItemId,
@@ -82,15 +82,15 @@ namespace Randomizer
         /// <summary>
         /// Adds 2-3 medium + misc items
         /// </summary>
-        /// <param name="shopRNG"></param>
-        private void AddMiscItems(Random shopRNG)
+        /// <param name="shopRNG">The RNG to use</param>
+        private void AddMiscItems(RNG shopRNG)
         {
-            var numberOfMiscItems = Range.GetRandomValue(2, 3, shopRNG);
+            var numberOfMiscItems = shopRNG.NextIntWithinRange(2, 3);
             var poolOfMiscItemsToSell = ItemList.GetItemsAtDifficulty(ObtainingDifficulties.MediumTimeRequirements)
                 .Concat(ItemList.GetItemsAtDifficulty(ObtainingDifficulties.LargeTimeRequirements))
                 .Concat(ItemList.GetItemsAtDifficulty(ObtainingDifficulties.UncommonItem))
                 .ToList();
-            var miscItemsToSell = Globals.RNGGetRandomValuesFromList(poolOfMiscItemsToSell, numberOfMiscItems, shopRNG);
+            var miscItemsToSell = shopRNG.GetRandomValuesFromList(poolOfMiscItemsToSell, numberOfMiscItems);
             miscItemsToSell.ForEach(item =>
                 AddStock(item.QualifiedId, 
                     $"MiscItem-{item.QualifiedId}",
@@ -100,8 +100,8 @@ namespace Randomizer
         /// <summary>
         /// Adds a random totem type, alwas costing 500 Qi Coins
         /// </summary>
-        /// <param name="shopRNG"></param>
-        private void AddTotem(Random shopRNG)
+        /// <param name="shopRNG">The RNG to use</param>
+        private void AddTotem(RNG shopRNG)
         {
             var totemId = ItemList.GetRandomTotem(shopRNG).QualifiedId;
             AddStock(totemId, "Totem", price: 500);

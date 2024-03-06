@@ -55,8 +55,8 @@ namespace Randomizer
             DisplayName = $"{moneyStringLocalized}: {bundleNameFlavorLocalized}";
         }
 
-		public RequiredItem Reward { get; set; }
-		public List<RequiredItem> RequiredItems { get; set; }
+		public RequiredBundleItem Reward { get; set; }
+		public List<RequiredBundleItem> RequiredItems { get; set; }
 		public BundleColors Color { get; set; }
 		public int? MinimumRequiredItems { get; set; }
 		public BundleTypes BundleType { get; set; } = BundleTypes.None;
@@ -248,7 +248,7 @@ namespace Randomizer
 		{
 			if (Room != CommunityCenterRooms.Vault &&
 				Room != CommunityCenterRooms.Joja && 
-				Globals.RNGGetNextBoolean(10))
+				BundleRandomizer.Rng.NextBoolean(10))
 			{
 				PopulateRandomBundle();
 				return true;
@@ -263,7 +263,7 @@ namespace Randomizer
 		/// /// <returns>True if successful, false otherwise</returns>
 		protected bool TryGenerateRandomReward()
 		{
-			if (Room != CommunityCenterRooms.Joja && Globals.RNGGetNextBoolean(10))
+			if (Room != CommunityCenterRooms.Joja && BundleRandomizer.Rng.NextBoolean(10))
 			{
 				GenerateRandomReward();
 				return true;
@@ -287,17 +287,19 @@ namespace Randomizer
 		/// </summary>
 		protected void PopulateRandomBundle()
 		{
-			BundleType = Globals.RNGGetRandomValueFromList(_randomBundleTypes);
-			List<RequiredItem> potentialItems = new List<RequiredItem>();
+			RNG rng = BundleRandomizer.Rng;
+
+            BundleType = rng.GetRandomValueFromList(_randomBundleTypes);
+			List<RequiredBundleItem> potentialItems = new List<RequiredBundleItem>();
 			switch (BundleType)
 			{
 				case BundleTypes.AllRandom:
 					SetBundleName("bundle-random-all");
-					potentialItems = RequiredItem.CreateList(ItemList.Items.Values.Where(x =>
+					potentialItems = RequiredBundleItem.CreateList(ItemList.Items.Values.Where(x =>
 						x.DifficultyToObtain < ObtainingDifficulties.Impossible &&
 						x.Id > -4)
 					.ToList());
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 8);
 					MinimumRequiredItems = 4;
 					break;
 				case BundleTypes.AllLetter:
@@ -305,9 +307,9 @@ namespace Randomizer
 					string randomLetter;
 					do
 					{
-						randomLetter = letters[Range.GetRandomValue(0, letters.Length - 1)].ToString();
+						randomLetter = letters[rng.NextIntWithinRange(0, letters.Length - 1)].ToString();
                         letters = letters.Replace(randomLetter, "");
-						potentialItems = RequiredItem.CreateList(
+						potentialItems = RequiredBundleItem.CreateList(
 							ItemList.Items.Values.Where(x =>
 								ShouldIncludeInLetterBundle(x) &&
                                 // Prioritiy is: OverrideName > EnglishName
@@ -319,12 +321,12 @@ namespace Randomizer
 
                     SetBundleName("bundle-random-letter", new { letter = randomLetter });
 					ImageNameSuffix = randomLetter;
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 8);
 					MinimumRequiredItems = 3;
 					break;
 			}
 
-			Color = Globals.RNGGetRandomValueFromList(
+			Color = rng.GetRandomValueFromList(
 				Enum.GetValues(typeof(BundleColors)).Cast<BundleColors>().ToList());
 		}
 
@@ -366,18 +368,20 @@ namespace Randomizer
         /// </summary>
         protected void GenerateRandomReward()
 		{
-			Item reward = Globals.RNGGetRandomValueFromList(
+			RNG rng = BundleRandomizer.Rng;
+
+            Item reward = rng.GetRandomValueFromList(
 				ItemList.Items.Values
 					.Where(x => x.Id != (int)ObjectIndexes.AnyFish)
 					.Concat(ItemList.BigCraftableItems.Values)
 					.ToList()
 			);
-			int numberToGive = Range.GetRandomValue(1, 25);
+			int numberToGive = rng.NextIntWithinRange(1, 25);
 			if (!reward.CanStack) { numberToGive = 1; }
 
 			Reward = reward.IsBigCraftable
-				? new RequiredItem((BigCraftableIndexes)reward.Id, numberToGive)
-				: new RequiredItem((ObjectIndexes)reward.Id, numberToGive);
+				? new RequiredBundleItem((BigCraftableIndexes)reward.Id, numberToGive)
+				: new RequiredBundleItem((ObjectIndexes)reward.Id, numberToGive);
         }
 	}
 }

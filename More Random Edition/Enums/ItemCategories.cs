@@ -63,15 +63,16 @@ namespace Randomizer
         /// <summary>
         /// Gets a list of random categories
         /// </summary>
+        /// <param name="rng">The rng to use</param>
         /// <param name="numberToGet">The number of categories to get</param>
         /// <returns>The categories chosen</returns>
-        public static List<ItemCategories> GetRandomCategories(int numberToGet)
+        public static List<ItemCategories> GetRandomCategories(RNG rng, int numberToGet)
         {
             var categoryIds = Enum.GetValues(typeof(ItemCategories))
                 .Cast<ItemCategories>()
                 .ToList();
 
-            return Globals.RNGGetRandomValuesFromList(categoryIds, numberToGet);
+            return rng.GetRandomValuesFromList(categoryIds, numberToGet);
         }
     }
 }

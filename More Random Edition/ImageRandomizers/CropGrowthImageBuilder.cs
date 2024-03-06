@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,7 +8,7 @@ namespace Randomizer
 {
     public class CropGrowthImageBuilder : ImageBuilder
 	{
-		private const string NormalDirectory = "NormalCrops";
+        private const string NormalDirectory = "NormalCrops";
 		private const string RegrowingDirectory = "RegrowingCrops";
 		private const string TrellisDirectory = "TrellisCrops";
 		private const string FlowersDirectory = "Flowers";
@@ -36,7 +35,9 @@ namespace Randomizer
 
         public CropGrowthImageBuilder()
 		{
-			CropIdsToLinkingData = new Dictionary<int, CropImageLinkingData>();
+            Rng = RNG.GetFarmRNG(nameof(CropGrowthImageBuilder));
+
+            CropIdsToLinkingData = new Dictionary<int, CropImageLinkingData>();
             ImageNameToCropIds = new();
 
             StardewAssetPath = $"TileSheets/crops";
@@ -117,7 +118,7 @@ namespace Randomizer
 
 			if (item.IsFlower)
 			{
-				fileName = Globals.RNGGetAndRemoveRandomValueFromList(FlowerImages);
+				fileName = Rng.GetAndRemoveRandomValueFromList(FlowerImages);
 
 				if (!seedItem.HasTint)
 				{
@@ -127,17 +128,17 @@ namespace Randomizer
 
 			else if (seedItem.IsTrellisCrop)
 			{
-				fileName = Globals.RNGGetAndRemoveRandomValueFromList(TrellisImages);
+				fileName = Rng.GetAndRemoveRandomValueFromList(TrellisImages);
 			}
 
 			else if (seedItem.RegrowsAfterHarvest)
 			{
-				fileName = Globals.RNGGetAndRemoveRandomValueFromList(RegrowingImages);
+				fileName = Rng.GetAndRemoveRandomValueFromList(RegrowingImages);
 			}
 
 			else
 			{
-				fileName = Globals.RNGGetAndRemoveRandomValueFromList(NormalImages);
+				fileName = Rng.GetAndRemoveRandomValueFromList(NormalImages);
 
 				if (seedItem.CropGrowthInfo.DaysInPhase.Count <= 4)
 				{
@@ -185,8 +186,8 @@ namespace Randomizer
             if (ImageNameToCropIds.TryGetValue(fileName, out int cropId) &&
 				CropIdsToLinkingData.TryGetValue(cropId, out CropImageLinkingData linkingData))
             {
-                Random rng = Globals.GetFarmRNG($"{nameof(CropGrowthImageBuilder)}{fileName}");
-                linkingData.HueShiftValue = Range.GetRandomValue(0, Globals.Config.Crops.HueShiftMax, rng);
+                RNG rng = RNG.GetFarmRNG($"{nameof(CropGrowthImageBuilder)}.{fileName}");
+                linkingData.HueShiftValue = rng.NextIntWithinRange(0, Globals.Config.Crops.HueShiftMax);
                 return ImageManipulator.ShiftImageHue(image, linkingData.HueShiftValue);
             }
 
@@ -326,8 +327,8 @@ namespace Randomizer
 			}
 
 			// Check that there's at least one seed packet template for trellis and non-trellis seeds
-			string seedPacketDirectory = $"{CustomImagesPath}/SpringObjects/{SpringObjectsImageBuilder.SeedPacketDirectory}";
-			string tellisPacketDirectory = $"{seedPacketDirectory}/{SpringObjectsImageBuilder.TrellisPacketSubDirectory}";
+			string seedPacketDirectory = Path.Combine(CustomImagesPath, "SpringObjects", SpringObjectsImageBuilder.SeedPacketDirectory);
+			string tellisPacketDirectory = Path.Combine(seedPacketDirectory, SpringObjectsImageBuilder.TrellisPacketSubDirectory);
 
 			if (!Directory.GetFiles(seedPacketDirectory).Where(x => x.EndsWith(".png")).Any()) 
 			{

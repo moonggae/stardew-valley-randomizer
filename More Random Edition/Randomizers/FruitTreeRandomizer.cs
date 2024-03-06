@@ -15,6 +15,8 @@ namespace Randomizer
     /// </summary>
     public class FruitTreeRandomizer
     {
+        private static RNG Rng { get; set; }
+
         const int NumberOfRandomFruitTreeCategoryTrees = 2;
         const int NumberOfRandomFruitTreeItemTrees = 2;
 
@@ -42,10 +44,12 @@ namespace Randomizer
         public static Dictionary<string, FruitTreeData> Randomize(
             Dictionary<string, ObjectData> objectReplacements)
         {
+            Rng = RNG.GetFarmRNG(nameof(FruitTreeRandomizer));
+
             List<Seasons> startingSeasons = GetStartingSeasonList();
 
             List<ItemCategories> fruitTreeCategories = 
-                CategoryExtentions.GetRandomCategories(NumberOfRandomFruitTreeCategoryTrees);
+                CategoryExtentions.GetRandomCategories(Rng, NumberOfRandomFruitTreeCategoryTrees);
             List<Item> fruitTreeSingleItems = GetListOfRandomFruitTreeItems();
 
             Dictionary<string, FruitTreeData> fruitTreeReplacements = new();
@@ -113,7 +117,7 @@ namespace Randomizer
             // Add any additional seasons
             while(seasonList.Count < RandomizedFruitTreeIds.Count)
             {
-                seasonList.Add(SeasonsExtensions.GetRandomSeason());
+                seasonList.Add(SeasonsExtensions.GetRandomSeason(Rng));
             }
 
             return seasonList;
@@ -129,7 +133,7 @@ namespace Randomizer
                 RandomizedFruitTreeIds.Contains(x.Id) || x.DifficultyToObtain < ObtainingDifficulties.Impossible
             ).ToList();
 
-            return Globals.RNGGetRandomValuesFromList(
+            return Rng.GetRandomValuesFromList(
                 allPotentialTreesItems, 
                 NumberOfRandomFruitTreeItemTrees);
         }
@@ -264,8 +268,8 @@ namespace Randomizer
             List<Seasons> seasonList = new()
             {
                 startingSeason,
-                SeasonsExtensions.GetRandomSeason(),
-                SeasonsExtensions.GetRandomSeason()
+                SeasonsExtensions.GetRandomSeason(Rng),
+                SeasonsExtensions.GetRandomSeason(Rng)
             };
 
             return seasonList
@@ -286,7 +290,7 @@ namespace Randomizer
         {
             double percentageIncrease = (fruitTree.Seasons.Count - 1) * 5;
             double basePriceToUse = basePrice * (1 + (percentageIncrease / 100));
-            return Globals.RNGGetIntWithinPercentage((int)basePriceToUse, 10);
+            return Rng.NextIntWithinPercentage((int)basePriceToUse, 10);
         }
 
         /// <summary>

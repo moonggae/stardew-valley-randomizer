@@ -108,7 +108,6 @@ namespace Randomizer
 
 			Monitor.Log($"Seed Set: {seed}");
 
-			Globals.RNG = new SaveLoadRNG(seed);
 			Globals.SpoilerLog = new SpoilerLogger(Game1.player.farmName.Value);
 
             // Make replacements and edits
@@ -124,8 +123,6 @@ namespace Randomizer
 
             WorldAdjustments.ChangeDayOneForagables();
 
-			// We should now be done with Globals.RNG
-            Globals.RNG.IsPostFileLoad = true;
             Globals.SpoilerLog.WriteFile();
         }
 

@@ -12,8 +12,11 @@ namespace Randomizer
     /// </summary>
     public class CropRandomizer
 	{
-		public static void Randomize(EditedObjects editedObjectInfo)
+        private static RNG Rng { get; set; }
+
+        public static void Randomize(EditedObjects editedObjectInfo)
 		{
+			Rng = RNG.GetFarmRNG(nameof(CropRandomizer));
 			RandomizeCrops(editedObjectInfo);
 
 			WriteToSpoilerLog();
@@ -42,12 +45,12 @@ namespace Randomizer
 
 			foreach (int originalRegrowableSeedId in regrowableSeedIdsToRandomize)
 			{
-				seedMappings.Add(originalRegrowableSeedId, Globals.RNGGetAndRemoveRandomValueFromList(regrowableSeedIdsToRandomizeCopy));
+				seedMappings.Add(originalRegrowableSeedId, Rng.GetAndRemoveRandomValueFromList(regrowableSeedIdsToRandomizeCopy));
 			}
 
 			foreach (int originalNonRegrowableSeedId in nonRegrowableSeedIdsToRandomize)
 			{
-				seedMappings.Add(originalNonRegrowableSeedId, Globals.RNGGetAndRemoveRandomValueFromList(nonRegrowableSeedIdsToRandomizeCopy));
+				seedMappings.Add(originalNonRegrowableSeedId, Rng.GetAndRemoveRandomValueFromList(nonRegrowableSeedIdsToRandomizeCopy));
 			}
 
 			// Loop through the dictionary and reassign the values, keeping the seasons the same as before
@@ -59,12 +62,12 @@ namespace Randomizer
                 CropData newCropGrowthInfo = DataLoader.Crops(Game1.content)[newValue.ToString()].DeepClone();
                 newCropGrowthInfo.Seasons = DataLoader.Crops(Game1.content)[originalValue.ToString()].DeepClone().Seasons;
 				newCropGrowthInfo.DaysInPhase = GetRandomGrowthStages(newCropGrowthInfo.DaysInPhase.Count);
-				newCropGrowthInfo.HarvestMethod = Globals.RNGGetNextBoolean(10)
+				newCropGrowthInfo.HarvestMethod = Rng.NextBoolean(10)
 					? HarvestMethod.Scythe
 					: HarvestMethod.Grab;
 				newCropGrowthInfo.RegrowDays = newCropGrowthInfo.RegrowDays == -1
 					? -1
-					: Range.GetRandomValue(1, 7);
+					: Rng.NextIntWithinRange(1, 7);
 
                 if (!Globals.Config.Crops.Randomize) { continue; } // Preserve the original seasons/etc
 
@@ -117,7 +120,7 @@ namespace Randomizer
 
 			for (int i = 0; i < numberOfStages; i++)
 			{
-				growthStages.Add(Range.GetRandomValue(1, maxValuePerStage));
+				growthStages.Add(Rng.NextIntWithinRange(1, maxValuePerStage));
 			}
 
 			return growthStages;
@@ -144,7 +147,7 @@ namespace Randomizer
                 string seasonsString = Globals.GetTranslation(
 					"crop-tooltip-seasons", 
 					new { seasons = seed.GetSeasonsStringForDisplay() });
-				string description = Globals.RNGGetAndRemoveRandomValueFromList(randomDescriptions);
+				string description = Rng.GetAndRemoveRandomValueFromList(randomDescriptions);
 				crop.OverrideName = name;
 				crop.Description = $"{description} {seasonsString}";
 
@@ -271,27 +274,27 @@ namespace Randomizer
 		/// </returns>
 		private static int GetRandomSeedPrice()
 		{
-			int generatedValue = Range.GetRandomValue(1, 100);
+			int generatedValue = Rng.NextIntWithinRange(1, 100);
 			int baseValue;
 			if (generatedValue < 41)
 			{
-				baseValue = Range.GetRandomValue(10, 30);
+				baseValue = Rng.NextIntWithinRange(10, 30);
 			}
 			else if (generatedValue < 71)
 			{
-				baseValue = Range.GetRandomValue(31, 60);
+				baseValue = Rng.NextIntWithinRange(31, 60);
 			}
 			else if (generatedValue < 86)
 			{
-				baseValue = Range.GetRandomValue(61, 90);
+				baseValue = Rng.NextIntWithinRange(61, 90);
 			}
 			else if (generatedValue < 96)
 			{
-				baseValue = Range.GetRandomValue(91, 120);
+				baseValue = Rng.NextIntWithinRange(91, 120);
 			}
 			else
 			{
-				baseValue = Range.GetRandomValue(121, 150);
+				baseValue = Rng.NextIntWithinRange(121, 150);
 			}
 
 			return baseValue / 2; // We need to store the sell price, not the buy price
@@ -311,11 +314,11 @@ namespace Randomizer
 			CropData growthInfo = seed.CropGrowthInfo;
 
 			double multiplier;
-			if (seedPrice < 31) { multiplier = Range.GetRandomValue(15, 40) / (double)10; }
-			else if (seedPrice < 61) { multiplier = Range.GetRandomValue(15, 35) / (double)10; }
-			else if (seedPrice < 91) { multiplier = Range.GetRandomValue(15, 30) / (double)10; }
-			else if (seedPrice < 121) { multiplier = Range.GetRandomValue(15, 25) / (double)10; }
-			else { multiplier = Range.GetRandomValue(15, 20) / (double)10; }
+			if (seedPrice < 31) { multiplier = Rng.NextIntWithinRange(15, 40) / (double)10; }
+			else if (seedPrice < 61) { multiplier = Rng.NextIntWithinRange(15, 35) / (double)10; }
+			else if (seedPrice < 91) { multiplier = Rng.NextIntWithinRange(15, 30) / (double)10; }
+			else if (seedPrice < 121) { multiplier = Rng.NextIntWithinRange(15, 25) / (double)10; }
+			else { multiplier = Rng.NextIntWithinRange(15, 20) / (double)10; }
 
 			double regrowthDaysMultiplier;
 			switch (growthInfo.RegrowDays)
@@ -358,7 +361,7 @@ namespace Randomizer
 			if (Globals.Config.Crops.Randomize)
 			{
 				Globals.SpoilerWrite("==== CROPS AND SEEDS ====");
-				foreach (SeedItem seedItem in ItemList.GetSeeds())
+                foreach (SeedItem seedItem in ItemList.GetSeeds().Cast<SeedItem>())
 				{
 					if (seedItem.Id == (int)ObjectIndexes.CoffeeBean || seedItem.Id == (int)ObjectIndexes.AncientSeeds) { continue; }
 					CropItem cropItem = (CropItem)ItemList.Items[(ObjectIndexes)seedItem.CropId];
@@ -366,18 +369,6 @@ namespace Randomizer
 					Globals.SpoilerWrite($"{seedItem.Id}: {seedItem.Description}");
 					Globals.SpoilerWrite("---");
 				}
-				Globals.SpoilerWrite("");
-			}
-
-			if (Globals.Config.RandomizeFruitTrees)
-			{
-				Globals.SpoilerWrite("==== FRUIT TREES ====");
-				Globals.SpoilerWrite($"{ItemList.GetItemName(ObjectIndexes.CherrySapling)}");
-				Globals.SpoilerWrite($"{ItemList.GetItemName(ObjectIndexes.AppleSapling)}");
-				Globals.SpoilerWrite($"{ItemList.GetItemName(ObjectIndexes.OrangeSapling)}");
-				Globals.SpoilerWrite($"{ItemList.GetItemName(ObjectIndexes.PeachSapling)}");
-				Globals.SpoilerWrite($"{ItemList.GetItemName(ObjectIndexes.PomegranateSapling)}");
-				Globals.SpoilerWrite($"{ItemList.GetItemName(ObjectIndexes.ApricotSapling)}");
 				Globals.SpoilerWrite("");
 			}
 		}

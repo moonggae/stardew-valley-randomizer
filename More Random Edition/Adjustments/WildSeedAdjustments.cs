@@ -43,7 +43,7 @@ namespace Randomizer
 					return ItemList.GetQualifiedId(ObjectIndexes.WildHorseradish);
 			}
 
-			return Globals.RNGGetRandomValueFromList(wildCropIDs, Game1.random);
+			return RNG.GetRandomValueFromListUsingRNG(wildCropIDs, Game1.random);
 		}
 
         /// <summary>

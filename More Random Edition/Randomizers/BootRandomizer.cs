@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Randomizer
 {
-	public class BootRandomizer
+    public class BootRandomizer
 	{
 		public readonly static Dictionary<int, BootItem> Boots = new();
 
@@ -18,11 +18,13 @@ namespace Randomizer
         /// <returns />
         public static Dictionary<string, string> Randomize()
 		{
-			// Initialize boot data here so that it's reloaded in case of a locale change
-			BootData = DataLoader.Boots(Game1.content);
+			RNG rng = RNG.GetFarmRNG(nameof(BootRandomizer));
+
+            // Initialize boot data here so that it's reloaded in case of a locale change
+            BootData = DataLoader.Boots(Game1.content);
 			Boots.Clear();
 
-			WeaponAndArmorNameRandomizer nameRandomizer = new();
+			WeaponAndArmorNameRandomizer nameRandomizer = new(nameof(BootRandomizer));
 			List<string> descriptions = 
 				NameAndDescriptionRandomizer.GenerateBootDescriptions(BootData.Count);
 
@@ -36,17 +38,16 @@ namespace Randomizer
 				int originalDefense = int.Parse(bootStringData[(int)BootIndexes.Defense]);
                 int originalImmunity = int.Parse(bootStringData[(int)BootIndexes.Immunity]);
 
-                int statPool = Globals.RNGGetIntWithinPercentage(originalDefense + originalImmunity, 30);
-				int defense = Range.GetRandomValue(0, statPool);
+                int statPool = rng.NextIntWithinPercentage(originalDefense + originalImmunity, 30);
+				int defense = rng.NextIntWithinRange(0, statPool);
 				int immunity = statPool - defense;
 
 				if ((defense + immunity) == 0)
 				{
-					if (Globals.RNGGetNextBoolean())
+					if (rng.NextBoolean())
 					{
 						defense = 1;
 					}
-
 					else
 					{
 						immunity = 1;

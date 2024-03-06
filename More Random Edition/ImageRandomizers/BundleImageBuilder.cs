@@ -20,6 +20,7 @@ namespace Randomizer
 
 		public BundleImageBuilder() : base()
 		{
+            Rng = RNG.GetFarmRNG(nameof(BundleImageBuilder));
             StardewAssetPath = "LooseSprites/JunimoNote";
             SubDirectory = "Bundles";
 			SetUpPointsToBundlesMap();

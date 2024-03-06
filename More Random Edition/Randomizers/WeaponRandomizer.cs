@@ -12,6 +12,7 @@ namespace Randomizer
     public class WeaponRandomizer
 	{
 		public readonly static Dictionary<string, WeaponData> Weapons = new();
+		private static RNG Rng { get; set; }
 
 		/// <summary>
 		/// Returns the object use to modify the weapons
@@ -20,7 +21,8 @@ namespace Randomizer
 		public static Dictionary<string, WeaponData> Randomize()
 		{
 			Weapons.Clear();
-			WeaponAndArmorNameRandomizer nameRandomizer = new();
+			Rng = RNG.GetFarmRNG(nameof(WeaponRandomizer));
+			WeaponAndArmorNameRandomizer nameRandomizer = new(nameof(WeaponRandomizer));
 
 			// Exclude slingshots and scythes for now
 			Dictionary<string, WeaponData> weaponReplacements = Game1.weaponData
@@ -84,7 +86,7 @@ namespace Randomizer
 		/// <param name="weapon">The weapon to randomize</param>
 		private static void RandomizeWeaponType(WeaponData weapon)
 		{
-			weapon.Type = Range.GetRandomValue(0, 3);
+			weapon.Type = Rng.NextIntWithinRange(0, 3);
 			if ((WeaponType)weapon.Type == WeaponType.StabbingSword)
 			{
 				weapon.Type = (int)WeaponType.SlashingSword;
@@ -112,8 +114,8 @@ namespace Randomizer
 			else if (originalMaxDamage < 50) { variancePercentage = percentageUnder50; }
 			else { variancePercentage = percentageOver50; }
 
-			int minValueToUse = Globals.RNGGetIntWithinPercentage(originalMinDamage, variancePercentage);
-			int maxValueToUse = Globals.RNGGetIntWithinPercentage(originalMaxDamage, variancePercentage);
+			int minValueToUse = Rng.NextIntWithinPercentage(originalMinDamage, variancePercentage);
+			int maxValueToUse = Rng.NextIntWithinPercentage(originalMaxDamage, variancePercentage);
 
             weapon.MinDamage = minValueToUse;
 			weapon.MaxDamage = maxValueToUse;
@@ -128,22 +130,22 @@ namespace Randomizer
 		/// <param name="weapon">The weapon to randomize</param>
 		private static void RandomizeWeaponCrits(WeaponData weapon)
 		{
-			if (Globals.RNGGetNextBoolean(1))
+			if (Rng.NextBoolean(1))
 			{
 				weapon.CritChance = 0.001f;
 				weapon.CritMultiplier = 100;
 			}
 
-			else if (Globals.RNGGetNextBoolean(4))
+			else if (Rng.NextBoolean(4))
 			{
-				weapon.CritChance = Range.GetRandomValue(8, 12) / 100f;
-				weapon.CritMultiplier = Range.GetRandomValue(30, 31) / 10f;
+				weapon.CritChance = Rng.NextIntWithinRange(8, 12) / 100f;
+				weapon.CritMultiplier = Rng.NextIntWithinRange(30, 31) / 10f;
 			}
 
 			else
 			{
-				weapon.CritChance = Range.GetRandomValue(20, 30) / 1000f;
-				weapon.CritMultiplier = Range.GetRandomValue(30, 40) / 10f;
+				weapon.CritChance = Rng.NextIntWithinRange(20, 30) / 1000f;
+				weapon.CritMultiplier = Rng.NextIntWithinRange(30, 40) / 10f;
 			}
 		}
 
@@ -155,9 +157,9 @@ namespace Randomizer
 		/// <param name="weapon">The weapon to set the knockback for</param>
 		private static void RandomizeWeaponKnockback(WeaponData weapon)
 		{
-			weapon.Knockback = Globals.RNGGetNextBoolean(5)
-				? Range.GetRandomValue(16, 20) / 10f
-				: Range.GetRandomValue(5, 16) / 10f;
+			weapon.Knockback = Rng.NextBoolean(5)
+				? Rng.NextIntWithinRange(16, 20) / 10f
+				: Rng.NextIntWithinRange(5, 16) / 10f;
 		}
 
 		/// <summary>
@@ -170,24 +172,24 @@ namespace Randomizer
 		/// <param name="weapon">The weapon to set the speed for</param>
 		private static void RandomizeWeaponSpeed(WeaponData weapon)
 		{
-			if (Globals.RNGGetNextBoolean(5))
+			if (Rng.NextBoolean(5))
 			{
 				weapon.Speed = 308;
 			}
 
-			else if (Globals.RNGGetNextBoolean(10))
+			else if (Rng.NextBoolean(10))
 			{
-				weapon.Speed = Range.GetRandomValue(-16, -1);
+				weapon.Speed = Rng.NextIntWithinRange(-16, -1);
 			}
 
-			else if (Globals.RNGGetNextBoolean())
+			else if (Rng.NextBoolean())
 			{
 				weapon.Speed = 0;
 			}
 
 			else
 			{
-				weapon.Speed = Range.GetRandomValue(-8, 8);
+				weapon.Speed = Rng.NextIntWithinRange(-8, 8);
 			}
 		}
 
@@ -199,9 +201,9 @@ namespace Randomizer
 		/// <param name="weapon">The weapon to assign the AOE to</param>
 		private static void RandomizeWeaponAOE(WeaponData weapon)
 		{
-			weapon.AreaOfEffect = Globals.RNGGetNextBoolean(80)
+			weapon.AreaOfEffect = Rng.NextBoolean(80)
 				? 0
-				: Range.GetRandomValue(1, 4);
+				: Rng.NextIntWithinRange(1, 4);
 		}
 
 		/// <summary>
@@ -212,9 +214,9 @@ namespace Randomizer
 		/// <param name="weapon">The weapon to assign the precision value</param>
 		private static void RandomizeWeaponPrecision(WeaponData weapon)
 		{
-			weapon.Precision = Globals.RNGGetNextBoolean(80)
+			weapon.Precision = Rng.NextBoolean(80)
 				? 0
-				: Range.GetRandomValue(1, 10);
+				: Rng.NextIntWithinRange(1, 10);
 		}
 
 		/// <summary>
@@ -228,11 +230,11 @@ namespace Randomizer
 		{
 			if (weapon.Defense > 0)
 			{
-                weapon.Defense = Globals.RNGGetIntWithinPercentage(weapon.Defense, 50);
+                weapon.Defense = Rng.NextIntWithinPercentage(weapon.Defense, 50);
             }
-			else if (Globals.RNGGetNextBoolean(5))
+			else if (Rng.NextBoolean(5))
 			{
-				weapon.Defense = Range.GetRandomValue(1, 5);
+				weapon.Defense = Rng.NextIntWithinRange(1, 5);
             }
 		}
 
@@ -258,19 +260,19 @@ namespace Randomizer
 			if (baseMineLevel == -1)
 			{
 				int maxDamage = weapon.MaxDamage;
-				if (maxDamage < 10) { baseMineLevel = Range.GetRandomValue(1, 20); }
-				else if (maxDamage < 30) { baseMineLevel = Range.GetRandomValue(21, 60); }
-				else if (maxDamage < 50) { baseMineLevel = Range.GetRandomValue(61, 100); }
-				else { baseMineLevel = Range.GetRandomValue(101, 110); }
+				if (maxDamage < 10) { baseMineLevel = Rng.NextIntWithinRange(1, 20); }
+				else if (maxDamage < 30) { baseMineLevel = Rng.NextIntWithinRange(21, 60); }
+				else if (maxDamage < 50) { baseMineLevel = Rng.NextIntWithinRange(61, 100); }
+				else { baseMineLevel = Rng.NextIntWithinRange(101, 110); }
 			}
 
 			else
 			{
-				baseMineLevel = FixMineLevelValue(baseMineLevel + Range.GetRandomValue(-10, 10));
+				baseMineLevel = FixMineLevelValue(baseMineLevel + Rng.NextIntWithinRange(-10, 10));
 			}
 
 			weapon.MineBaseLevel = baseMineLevel;
-			weapon.MineMinLevel = FixMineLevelValue(baseMineLevel - Range.GetRandomValue(10, 30), true);
+			weapon.MineMinLevel = FixMineLevelValue(baseMineLevel - Rng.NextIntWithinRange(10, 30), true);
 		}
 
         /// <summary>

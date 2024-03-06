@@ -6,7 +6,8 @@ namespace Randomizer
 {
 	public class SecretNotesRandomizer
 	{
-		private static Dictionary<string, string> prefs;
+        private static RNG Rng { get; set; }
+        private static Dictionary<string, string> prefs;
 
 		/// <summary>
 		/// For each secret note, generate a random number of NPCs for whom to reveal loved items.
@@ -14,7 +15,9 @@ namespace Randomizer
 		/// <returns><c>Dictionary&lt;int, string&gt;</c> containing the secret note IDs and strings to replace.</returns>
 		public static Dictionary<int, string> FixSecretNotes(Dictionary<string, string> preferenceReplacements)
 		{
-			prefs = preferenceReplacements;
+            Rng = RNG.GetFarmRNG(nameof(SecretNotesRandomizer));
+
+            prefs = preferenceReplacements;
 			Dictionary<int, string> _replacements = new();
 			Dictionary<int, string> secretNoteData = DataLoader.SecretNotes(Game1.content);
 
@@ -22,10 +25,10 @@ namespace Randomizer
             for (int noteIndex = 1; noteIndex < 9; noteIndex++)
 			{
 				// Pick from 1-3 random characters to reveal loved items for, choosing more items for fewer characters
-				int numberOfCharactersToRevealFor = Range.GetRandomValue(1, 3);
-				int numberOfItemsToReveal = Range.GetRandomValue(5, 6) - numberOfCharactersToRevealFor;
+				int numberOfCharactersToRevealFor = Rng.NextIntWithinRange(1, 3);
+				int numberOfItemsToReveal = Rng.NextIntWithinRange(5, 6) - numberOfCharactersToRevealFor;
 
-				List<string> charactersToRevealFor = Globals.RNGGetRandomValuesFromList(
+				List<string> charactersToRevealFor = Rng.GetRandomValuesFromList(
 					PreferenceRandomizer.GiftableNPCs.Values.ToList(), numberOfCharactersToRevealFor);
 				string npcLovesString = FormatRevealString(charactersToRevealFor, numberOfItemsToReveal);
 
@@ -74,7 +77,7 @@ namespace Randomizer
 		private static string GetItemRevealString(string npc, List<string> items)
 		{
 			return items.Any()
-				? $"%revealtaste:{npc}:{Globals.RNGGetAndRemoveRandomValueFromList(items)}"
+				? $"%revealtaste:{npc}:{Rng.GetAndRemoveRandomValueFromList(items)}"
 				: "";
 		}
 

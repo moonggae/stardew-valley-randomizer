@@ -1,5 +1,4 @@
 ﻿using StardewValley.GameData.Shops;
-using System;
 using System.Collections.Generic;
 
 namespace Randomizer
@@ -33,9 +32,9 @@ namespace Randomizer
         /// <param name="menu">The shop menu</param>
         private void AdjustStock()
         {
-            Random shopRNG = Globals.GetDailyRNG(nameof(RandomizedBlacksmithShop));
+            RNG shopRNG = RNG.GetDailyRNG(nameof(RandomizedBlacksmithShop));
 
-            int rolledValue = Range.GetRandomValue(0, 99, shopRNG);
+            int rolledValue = shopRNG.NextIntWithinRange(0, 99);
             if (rolledValue < 50) // 50%
             {
                 DiscountAnItem(shopRNG);
@@ -57,14 +56,13 @@ namespace Randomizer
         /// <summary>
         /// Discounts an existing item in the shop from between 10-25%
         /// </summary>
-        /// <param name="menu"></param>
         /// <param name="shopRNG"></param>
-        private void DiscountAnItem(Random shopRNG)
+        private void DiscountAnItem(RNG shopRNG)
         {
             // Choose an ore and discount multiplier
             string itemToDiscount = 
-                Globals.RNGGetRandomValueFromList(CurrentShopData.Items, shopRNG).ItemId;
-            var priceMultiplier = 1 - (Range.GetRandomValue(10, 25, shopRNG) / 100f);
+                shopRNG.GetRandomValueFromList(CurrentShopData.Items).ItemId;
+            var priceMultiplier = 1 - (shopRNG.NextIntWithinRange(10, 25) / 100f);
 
             // This shop has two sets of prices based on the year; we will discount both
             GetShopItemsByItemIds(new List<string> { itemToDiscount })
@@ -77,9 +75,9 @@ namespace Randomizer
         /// Adds any random artifact with a stock of 1
         /// </summary>
         /// <param name="shopRNG"></param>
-        private void AddAnArtifact(Random shopRNG)
+        private void AddAnArtifact(RNG shopRNG)
         {
-            var artifact = Globals.RNGGetRandomValueFromList(ItemList.GetArtifacts(), shopRNG);
+            var artifact = shopRNG.GetRandomValueFromList(ItemList.GetArtifacts());
             var salePrice = GetAdjustedItemPrice(artifact, fallbackPrice: 50, multiplier: 3);
             AddStock(artifact.QualifiedId, UniqueItemId, salePrice, availableStock: 1);
         }
@@ -88,10 +86,10 @@ namespace Randomizer
         /// Adds 5-15 iridium ores
         /// </summary>
         /// <param name="shopRNG"></param>
-        private void AddIridiumOre(Random shopRNG)
+        private void AddIridiumOre(RNG shopRNG)
         {
             var iridiumOre = ItemList.Items[ObjectIndexes.IridiumOre];
-            var stock = Range.GetRandomValue(5, 15, shopRNG);
+            var stock = shopRNG.NextIntWithinRange(5, 15);
             var salePrice = GetAdjustedItemPrice(iridiumOre, fallbackPrice: 50, multiplier: 5);
             AddStock(iridiumOre.QualifiedId, UniqueItemId, salePrice, stock);
         }
@@ -103,13 +101,13 @@ namespace Randomizer
         /// Maple bars are here on purpose because lol
         /// </summary>
         /// <param name="shopRNG"></param>
-        private void AddMetalBars(Random shopRNG)
+        private void AddMetalBars(RNG shopRNG)
         {
-            var getIridiumBar = Globals.RNGGetNextBoolean(5, shopRNG);
+            var getIridiumBar = shopRNG.NextBoolean(5);
             if (getIridiumBar)
             {
                 var iridiumBar = ItemList.Items[ObjectIndexes.IridiumBar];
-                var stock = Range.GetRandomValue(2, 4, shopRNG);
+                var stock = shopRNG.NextIntWithinRange(2, 4);
                 var salePrice = GetAdjustedItemPrice(iridiumBar, fallbackPrice: 50, multiplier: 3);
                 AddStock(iridiumBar.QualifiedId, UniqueItemId, salePrice, stock);
             }
@@ -124,8 +122,8 @@ namespace Randomizer
                     ItemList.Items[ObjectIndexes.MapleBar]
                 };
 
-                var stock = Range.GetRandomValue(3, 8, shopRNG);
-                var bar = Globals.RNGGetRandomValueFromList(commonMetalBars, shopRNG);
+                var stock = shopRNG.NextIntWithinRange(3, 8);
+                var bar = shopRNG.GetRandomValueFromList(commonMetalBars);
                 var salePrice = bar.Id == (int)ObjectIndexes.MapleBar
                     ? GetAdjustedItemPrice(bar, fallbackPrice: 50, multiplier: 1)
                     : GetAdjustedItemPrice(bar, fallbackPrice: 50, multiplier: 3);

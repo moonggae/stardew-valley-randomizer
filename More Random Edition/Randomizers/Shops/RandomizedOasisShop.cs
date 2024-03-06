@@ -1,5 +1,4 @@
 ﻿using StardewValley.GameData.Shops;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -41,8 +40,8 @@ namespace Randomizer
             CurrentShopData.Items.Clear();
 
             // Most of the stock will change every Monday, with a couple exceptions
-            Random weeklyShopRNG = Globals.GetWeeklyRNG(nameof(RandomizedOasisShop));
-            Random dailyShopRNG = Globals.GetDailyRNG(nameof(RandomizedOasisShop));
+            RNG weeklyShopRNG = RNG.GetWeeklyRNG(nameof(RandomizedOasisShop));
+            RNG dailyShopRNG = RNG.GetDailyRNG(nameof(RandomizedOasisShop));
 
             desertShopSeeds.ForEach(seed => AddStock(seed.QualifiedId, $"SeedItem-{seed.QualifiedId}"));
             AddDaySpecificItems(desertShopSeeds, weeklyShopRNG);
@@ -59,12 +58,12 @@ namespace Randomizer
         /// </summary>
         /// <param name="desertShopSeeds">The list of seeds normally sold in this shop - used to get the corresponding crop</param>
         /// <param name="weeklyShopRNG">The weekly RNG</param>
-        private void AddDaySpecificItems(List<SeedItem> desertShopSeeds, Random weeklyShopRNG)
+        private void AddDaySpecificItems(List<SeedItem> desertShopSeeds, RNG weeklyShopRNG)
         {
             // Every weekday, add a desert foragable
-            var desertForagable = Globals.RNGGetRandomValueFromList(ItemList.GetUniqueDesertForagables(), weeklyShopRNG);
+            var desertForagable = weeklyShopRNG.GetRandomValueFromList(ItemList.GetUniqueDesertForagables());
             int foragablePrice = GetAdjustedItemPrice(desertForagable, fallbackPrice: 50, multiplier: 2);
-            int foragableStock = Range.GetRandomValue(1, 5, weeklyShopRNG);
+            int foragableStock = weeklyShopRNG.NextIntWithinRange(1, 5);
             AddStock(desertForagable.QualifiedId, 
                 "WeekdayForagable", 
                 foragablePrice,
@@ -75,17 +74,17 @@ namespace Randomizer
             var desertShopCrops = desertShopSeeds
                 .Select(item => ItemList.Items[(ObjectIndexes)item.CropId])
                 .ToList();
-            var desertCrop = Globals.RNGGetRandomValueFromList(desertShopCrops, weeklyShopRNG);
+            var desertCrop = weeklyShopRNG.GetRandomValueFromList(desertShopCrops);
             int desertCropPrice = GetAdjustedItemPrice(desertCrop, fallbackPrice: 50, multiplier: 2);
-            int desertCropStock = Range.GetRandomValue(3, 8, weeklyShopRNG);
+            int desertCropStock = weeklyShopRNG.NextIntWithinRange(3, 8);
             AddStock(desertCrop.QualifiedId, 
                 "TuesdayCrop", 
                 desertCropPrice, 
                 desertCropStock,
                 condition: DayFunctions.GetCondition(Days.Tuesday));
 
-            // Every weekend,, add a random cooked item
-            var cookedItem = Globals.RNGGetRandomValueFromList(ItemList.GetCookedItems(), weeklyShopRNG);
+            // Every weekend, add a random cooked item
+            var cookedItem = weeklyShopRNG.GetRandomValueFromList(ItemList.GetCookedItems());
             AddStock(cookedItem.QualifiedId, 
                 "WeekendFood", 
                 condition: DayFunctions.GetConditionForWeekend());
@@ -97,15 +96,14 @@ namespace Randomizer
         /// - a random recource item
         /// </summary>
         /// <param name="weeklyShopRNG">The weekly RNG</param>
-        private void AddRandomItems(Random weeklyShopRNG)
+        private void AddRandomItems(RNG weeklyShopRNG)
         {
-            var craftableItem = Globals.RNGGetRandomValueFromList(
-                ItemList.GetCraftableItems(CraftableCategories.Moderate), 
-                weeklyShopRNG);
+            var craftableItem = weeklyShopRNG.GetRandomValueFromList(
+                ItemList.GetCraftableItems(CraftableCategories.Moderate));
             int craftableSalePrice = GetAdjustedItemPrice(craftableItem, fallbackPrice: 50, multiplier: 2);
             AddStock(craftableItem.QualifiedId, "CraftableItem", price: craftableSalePrice);
 
-            var resourceItem = ItemList.GetRandomResourceItem(rng: weeklyShopRNG);
+            var resourceItem = ItemList.GetRandomResourceItem(weeklyShopRNG);
             int resourceSalePrice = GetAdjustedItemPrice(resourceItem, fallbackPrice: 30, multiplier: 4);
             AddStock(resourceItem.QualifiedId, "ResourceItem", price: resourceSalePrice);
         }
@@ -118,14 +116,14 @@ namespace Randomizer
         /// </summary>
         /// <param name="weeklyShopRNG">The weekly RNG</param>
         /// <param name="dailyShopRNG">The daily RNG</param>
-        private void AddClothingAndFurnatureItems(Random weeklyShopRNG, Random dailyShopRNG)
+        private void AddClothingAndFurnatureItems(RNG weeklyShopRNG, RNG dailyShopRNG)
         {
-            var dailyClothingItemId = ClothingFunctions.GetRandomClothingQualifiedId(rng: dailyShopRNG);
-            var dailyFurnitureItemId = FurnitureFunctions.GetRandomFurnitureQualifiedId(rng: dailyShopRNG);
+            var dailyClothingItemId = ClothingFunctions.GetRandomClothingQualifiedId(dailyShopRNG);
+            var dailyFurnitureItemId = FurnitureFunctions.GetRandomFurnitureQualifiedId(dailyShopRNG);
             var weeklyFurnitureItemIds = FurnitureFunctions.GetRandomFurnitureQualifiedIds(
+                weeklyShopRNG,
                 numberToGet: 4,
-                new List<string>() { dailyClothingItemId, dailyFurnitureItemId },
-                weeklyShopRNG);
+                new List<string>() { dailyClothingItemId, dailyFurnitureItemId });
 
             AddStock(dailyClothingItemId, "DailyClothing");
             AddStock(dailyFurnitureItemId, "DailyFurniture");

@@ -10,6 +10,8 @@ namespace Randomizer
     /// </summary>
     public class ForagableRandomizer
 	{
+		private static RNG Rng { get; set; }
+
 		private static List<Item> AllForagables { get; set; }
 
 		public static List<Item> SpringForagables { get; } = new List<Item>();
@@ -33,6 +35,8 @@ namespace Randomizer
 		public static Dictionary<string, SVLocationData> Randomize(
 			Dictionary<string, ObjectData> objectReplacements)
 		{
+			Rng = RNG.GetFarmRNG(nameof(ForagableRandomizer));
+
 			AllForagables = ItemList.Items.Values.Where(x => x.ShouldBeForagable).ToList();
 
 			SpringForagables.Clear();
@@ -179,7 +183,7 @@ namespace Randomizer
 
 			while (keepLooping)
 			{
-				int season = Globals.RNG.Next(0, 4);
+				int season = Rng.NextIntWithinRange(0, 3);
 				switch (season)
 				{
 					case 0:
@@ -211,7 +215,7 @@ namespace Randomizer
 		private static bool AddToList(List<Item> foragableList, List<Item> listToPopulate)
 		{
 			if (foragableList.Count == 0) { return false; }
-			listToPopulate.Add(Globals.RNGGetAndRemoveRandomValueFromList(foragableList));
+			listToPopulate.Add(Rng.GetAndRemoveRandomValueFromList(foragableList));
 			return foragableList.Count > 0;
 		}
 
@@ -286,8 +290,8 @@ namespace Randomizer
 			// Give the beach a random item from the season, then only assign the beach items after that
 			if (foragableLocationData.Location == Locations.Beach)
 			{
-				Item randomSeasonItem = foragableItemList[Globals.RNG.Next(0, foragableItemList.Count)];
-				foragableDataList.Add(new ForagableData(randomSeasonItem));
+				Item randomSeasonItem = Rng.GetRandomValueFromList(foragableItemList);
+				foragableDataList.Add(new ForagableData(randomSeasonItem, Rng));
 				foragableItemList = BeachForagables;
 			}
 
@@ -300,7 +304,7 @@ namespace Randomizer
 
 			foreach (Item item in foragableItemList)
 			{
-				foragableDataList.Add(new ForagableData(item));
+				foragableDataList.Add(new ForagableData(item, Rng));
 			}
 
 			// Remove the item that was added to the woods
@@ -310,12 +314,12 @@ namespace Randomizer
 			}
 
 			// Add a random item that's really rare to see
-			Item randomItem = Globals.RNGGetRandomValueFromList(
+			Item randomItem = Rng.GetRandomValueFromList(
 				ItemList.Items.Values.Where(x =>
 					x.DifficultyToObtain >= ObtainingDifficulties.MediumTimeRequirements &&
 					x.DifficultyToObtain < ObtainingDifficulties.Impossible).ToList()
 			);
-			foragableDataList.Add(new ForagableData(randomItem) { ItemRarity = 0.001 });
+			foragableDataList.Add(new ForagableData(randomItem, Rng) { ItemRarity = 0.001 });
 		}
 
 		/// <summary>
@@ -333,7 +337,7 @@ namespace Randomizer
 			int itemIndex;
 			do
 			{
-				itemIndex = Globals.RNG.Next(0, AllForagables.Count);
+				itemIndex = Rng.Next(0, AllForagables.Count);
 			} while (listToPopulate.Contains(AllForagables[itemIndex]));
 
 			listToPopulate.Add(AllForagables[itemIndex]);

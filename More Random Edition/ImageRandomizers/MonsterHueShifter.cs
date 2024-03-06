@@ -145,8 +145,8 @@ namespace Randomizer
             Texture2D monsterImage = Globals.ModRef.Helper.GameContent
                 .Load<Texture2D>(GetStardewAssetPath(monsterName));
 
-            Random rng = Globals.GetFarmRNG($"{nameof(MonsterHueShifter)}{monsterName}");
-            int hueShiftAmount = Range.GetRandomValue(0, Globals.Config.Monsters.HueShiftMax, rng);
+            RNG rng = RNG.GetFarmRNG($"{nameof(MonsterHueShifter)}.{monsterName}");
+            int hueShiftAmount = rng.NextIntWithinRange(0, Globals.Config.Monsters.HueShiftMax);
 
             return new MonsterHueShiftData(
                 monsterName,

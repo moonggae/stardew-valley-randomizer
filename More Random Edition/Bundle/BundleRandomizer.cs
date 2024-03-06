@@ -32,10 +32,12 @@ namespace Randomizer
 	/// </summary>
 	public class BundleRandomizer
 	{
-		/// <summary>
-		/// Information about all the rooms
-		/// </summary>
-		public readonly static List<RoomInformation> Rooms = new()
+        public static RNG Rng { get; set; }
+
+        /// <summary>
+        /// Information about all the rooms
+        /// </summary>
+        public readonly static List<RoomInformation> Rooms = new()
 		{
 			new RoomInformation(CommunityCenterRooms.CraftsRoom, 13, 19), // skip 18
 			new RoomInformation(CommunityCenterRooms.Pantry, 0, 5),
@@ -59,7 +61,8 @@ namespace Randomizer
         /// <returns>A dictionary of bundles to their output string</returns>
         public static Dictionary<string, string> Randomize()
 		{
-			BundleToName.Clear();
+            Rng = RNG.GetFarmRNG(nameof(BundleRandomizer));
+            BundleToName.Clear();
             _randomizedBundles.Clear();
 			Bundle.InitializeAllBundleTypes(); // Must be done so that reloading the game is consistent
 

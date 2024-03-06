@@ -15,12 +15,12 @@ namespace Randomizer
 		/// Constructor
 		/// </summary>
 		/// <param name="item">The item that the data is for</param>
-		public ForagableData(Item item)
+		/// <param name="rng">The RNG to use</param>
+		public ForagableData(Item item, RNG rng)
 		{
 			QualifiedItemId = item.QualifiedId;
 			ItemId = item.Id;
 
-			Random rng = Globals.RNG;
 			bool useNormalDistribution = rng.Next(0, 2) == 0;
 			ItemRarity = useNormalDistribution ? (double)rng.Next(4, 8) / 10 : (double)rng.Next(1, 9) / 10;
 		}

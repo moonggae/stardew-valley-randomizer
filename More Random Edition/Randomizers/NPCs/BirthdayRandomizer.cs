@@ -10,6 +10,8 @@ namespace Randomizer
     /// </summary>
     public class BirthdayRandomizer
 	{
+		private static RNG Rng { get; set; }
+
 		/// <summary>
 		/// TODO 1.6: When the date of the new festival is known, we need to add to this list!
 		/// Holidays - don't assign birthdays to these days!
@@ -39,7 +41,9 @@ namespace Randomizer
 		/// <returns>The dictionary to use for replacements</returns>
 		public static Dictionary<string, CharacterData> Randomize()
 		{
-			Dictionary<SDate, string> birthdaysInUse = InitBirthdaysInUse();
+            Rng = RNG.GetFarmRNG(nameof(BirthdayRandomizer));
+
+            Dictionary<SDate, string> birthdaysInUse = InitBirthdaysInUse();
 			Dictionary<string, CharacterData> replacements = new();
 			Dictionary<string, CharacterData> characterData = DataLoader.Characters(Game1.content);
 
@@ -95,13 +99,13 @@ namespace Randomizer
 			}
 
 			List<string> seasonStrings = new() { "spring", "summer", "fall", "winter" };
-			string season = Globals.RNGGetRandomValueFromList(seasonStrings);
+			string season = Rng.GetRandomValueFromList(seasonStrings);
 			bool dateRetrieved = false;
 			SDate date;
 
 			do
 			{
-				date = new SDate(Range.GetRandomValue(1, 28), season, 1);
+				date = new SDate(Rng.NextIntWithinRange(1, 28), season, 1);
 				if (!birthdaysInUse.ContainsKey(date))
 				{
 					birthdaysInUse.Add(date, npcName);
@@ -121,7 +125,7 @@ namespace Randomizer
 		/// <returns />
 		private static void SetWizardBirthday(CharacterData wizard, Dictionary<SDate, string> birthdaysInUse)
 		{
-			int day = Range.GetRandomValue(15, 17);
+			int day = Rng.NextIntWithinRange(15, 17);
 			SDate wizardBirthday = new(day, "winter", 1);
 
 			birthdaysInUse.Remove(wizardBirthday);

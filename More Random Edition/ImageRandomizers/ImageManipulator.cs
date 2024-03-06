@@ -173,26 +173,28 @@ namespace Randomizer
         /// Gets a random color
         /// Fixes the saturation and value so that it's not too unrecognizable
         /// </summary>
+        /// <param name="rng">The rng to use</param>
         /// <param name="hueRange">The hue range to restrict the color to</param>
         /// <param name="saturationRange">The saturation range to restrict the color to</param>
         /// <param name="valueRange">The value range to restrict the color to</param>
         /// <returns>The random color</returns>
         public static Color GetRandomColor(
+            RNG rng,
             Range hueRange = null,
             Range saturationRange = null,
             Range valueRange = null)
         {
             // Value -
             Range hueRangeToUse = hueRange ?? new Range(0, 359);
-            int randomH = hueRangeToUse.GetRandomValue();
+            int randomH = hueRangeToUse.GetRandomValue(rng);
 
             // Saturation - the default won't look look too white or bright
             Range saturationRangeToUse = saturationRange ?? new Range(60, 85);
-            int randomS = saturationRangeToUse.GetRandomValue();
+            int randomS = saturationRangeToUse.GetRandomValue(rng);
 
             // Value - we don't want to it to look too black
             Range valueRangeToUse = valueRange ?? new Range(60, 85);
-            int randomV = valueRangeToUse.GetRandomValue();
+            int randomV = valueRangeToUse.GetRandomValue(rng);
 
             Color randomColor = HsvToColor(randomH, randomS, randomV);
             return randomColor;

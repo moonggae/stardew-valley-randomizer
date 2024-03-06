@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using StardewValley.Objects;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Randomizer
 {
     public class QuestRandomizer
 	{
+		private static RNG Rng { get; set; }
+
 		private static List<string> People { get; set; }
 		private static List<Item> Crops { get; set; }
 		private static List<Item> Dishes { get; set; }
@@ -127,7 +130,8 @@ namespace Randomizer
 		/// <returns>The quest information to modify</returns>
 		public static QuestInformation Randomize()
 		{
-			QuestReplacements.Clear();
+			Rng = RNG.GetFarmRNG(nameof(QuestRandomizer));
+            QuestReplacements.Clear();
 
             People = QuestableNPCsList;
 			Crops = ItemList.GetCrops(true).ToList();
@@ -244,7 +248,7 @@ namespace Randomizer
 		/// </returns>
 		private static object GetTokenObject(string questId)
 		{
-			ReplacementObject replacements = new();
+			ReplacementObject replacements = new(Rng);
 			string itemName = "";
 			string cropStart = "";
 			string qualifiedId = "";
@@ -323,16 +327,16 @@ namespace Randomizer
 			public int Number { get; }
 			public int Reward { get; }
 
-			public ReplacementObject()
+			public ReplacementObject(RNG rng)
 			{
-				Person = Globals.RNGGetRandomValueFromList(People);
-				OtherPerson = Globals.RNGGetRandomValueFromList(People.Where(x => x != Person).ToList());
-				Crop = Globals.RNGGetRandomValueFromList(Crops);
-				Dish = Globals.RNGGetRandomValueFromList(Dishes);
-				Fish = Globals.RNGGetRandomValueFromList(FishList);
-				Item = Globals.RNGGetRandomValueFromList(Items);
-				Number = Globals.RNG.Next(2, 10);
-				Reward = Globals.RNG.Next(300, 3000);
+				Person = rng.GetRandomValueFromList(People);
+				OtherPerson = rng.GetRandomValueFromList(People.Where(x => x != Person).ToList());
+				Crop = rng.GetRandomValueFromList(Crops);
+				Dish = rng.GetRandomValueFromList(Dishes);
+				Fish = rng.GetRandomValueFromList(FishList);
+				Item = rng.GetRandomValueFromList(Items);
+				Number = rng.NextIntWithinRange(2, 10);
+				Reward = rng.NextIntWithinRange(300, 3000);
 			}
 		}
 

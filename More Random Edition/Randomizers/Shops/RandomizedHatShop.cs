@@ -29,14 +29,15 @@ namespace Randomizer
             }
 
             // Stock will change every Monday
-            Random shopRNG = Globals.GetWeeklyRNG(nameof(RandomizedHatShop));
+            RNG shopRNG = RNG.GetWeeklyRNG(nameof(RandomizedHatShop));
 
             var existingHatIds = CurrentShopData.Items
                 .Select(item => item.ItemId)
                 .ToList();
 
             string hatOfTheWeek = HatFunctions.GetRandomHatQualifiedId(
-                idsToExclude: existingHatIds, shopRNG);
+                shopRNG,
+                idsToExclude: existingHatIds);
             InsertStockAt(hatOfTheWeek, "HoTW", price: 1000);
         }
     }

@@ -30,7 +30,7 @@ namespace Randomizer
                 return;
             }
 
-            Random shopRNG = Globals.GetWeeklyRNG(nameof(RandomizedJojaMart));
+            RNG shopRNG = RNG.GetWeeklyRNG(nameof(RandomizedJojaMart));
 
             // Don't choose pre-existing items
             var itemsAlreadyInStock = CurrentShopData.Items
@@ -38,7 +38,7 @@ namespace Randomizer
                 .ToList();
 
             // 1/10 chance of there being a better item in stock
-            var validItems = Globals.RNGGetNextBoolean(10, shopRNG)
+            var validItems = shopRNG.NextBoolean(10)
                 ? ItemList.GetItemsAtDifficulty(ObtainingDifficulties.MediumTimeRequirements)
                     .Concat(ItemList.GetItemsAtDifficulty(ObtainingDifficulties.LargeTimeRequirements))
                     .Where(x => !itemsAlreadyInStock.Contains(x.QualifiedId))
@@ -56,8 +56,8 @@ namespace Randomizer
             int salePrice = GetAdjustedItemPrice(itemOfTheWeek, fallbackPrice: 20, multiplier: 2);
             int stock = itemOfTheWeek.IsCraftable &&
                     ((itemOfTheWeek as CraftableItem).Category == CraftableCategories.EasyAndNeedMany)
-                ? Range.GetRandomValue(30, 50, shopRNG)
-                : Range.GetRandomValue(3, 15, shopRNG);
+                ? shopRNG.NextIntWithinRange(30, 50)
+                : shopRNG.NextIntWithinRange(3, 15);
 
             InsertStockAt(itemOfTheWeek.QualifiedId, "IoTW", salePrice, stock);
         }

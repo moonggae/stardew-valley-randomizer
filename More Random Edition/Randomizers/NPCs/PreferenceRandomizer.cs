@@ -10,11 +10,13 @@ namespace Randomizer
     /// </summary>
     public class PreferenceRandomizer
 	{
-		/// <summary>
-		/// Default data for universal preferences - these can be overridden by an NPC's individual preference
-		/// DO NOT reorder this without updating NPCIndexes as well!
-		/// </summary>
-		private readonly static Dictionary<UniversalPreferencesIndexes, string> 
+        private static RNG Rng { get; set; }
+
+        /// <summary>
+        /// Default data for universal preferences - these can be overridden by an NPC's individual preference
+        /// DO NOT reorder this without updating NPCIndexes as well!
+        /// </summary>
+        private readonly static Dictionary<UniversalPreferencesIndexes, string> 
 			UniversalPreferenceIndexes = new()
 		{
 			[UniversalPreferencesIndexes.Loved] = "Universal_Love",
@@ -125,8 +127,11 @@ namespace Randomizer
         /// </summary>
         /// <returns>Dictionary&lt;string, string&gt; which holds the replacement prefstrings for the enabled preferences (NPC/Universal).</returns>
         public static Dictionary<string, string> Randomize()
-        {   // Initialize gift taste data here so that it's reloaded in case of a locale change
-			GiftTasteData = DataLoader.NpcGiftTastes(Game1.content);
+        {
+			Rng = RNG.GetFarmRNG(nameof(PreferenceRandomizer));
+
+            // Initialize gift taste data here so that it's reloaded in case of a locale change
+            GiftTasteData = DataLoader.NpcGiftTastes(Game1.content);
 			NewGiftTasteData = new();
 
 			List<int> universalUnusedCategories = new(CategoryExtentions.GetIntValues());
@@ -168,21 +173,21 @@ namespace Randomizer
 		private static string GetUniversalPreferenceString(List<int> unusedCategories, List<Item> unusedItems)
 		{
 			// No need to vary quantities per index.May end up with lots of loved items, lots of hated items, both, neither, etc.
-			int catNum = Range.GetRandomValue(0, 10);
-			int itemNum = Range.GetRandomValue(5, 30);
+			int catNum = Rng.NextIntWithinRange(0, 10);
+			int itemNum = Rng.NextIntWithinRange(5, 30);
 
 			string catString = "";
 			string itemString = "";
 
 			while (unusedCategories.Any() && catNum > 0)
 			{
-				catString += Globals.RNGGetAndRemoveRandomValueFromList(unusedCategories) + " ";
+				catString += Rng.GetAndRemoveRandomValueFromList(unusedCategories) + " ";
 				catNum--;
 			}
 
 			while (unusedItems.Any() && itemNum > 0)
 			{
-				itemString += Globals.RNGGetAndRemoveRandomValueFromList(unusedItems).Id + " ";
+				itemString += Rng.GetAndRemoveRandomValueFromList(unusedItems).Id + " ";
 				itemNum--;
 			}
 
@@ -221,8 +226,8 @@ namespace Randomizer
 					break;
 			}
 
-			int numberOfItems = numberOfPrefs.GetRandomValue();
-			int numberOfCategories = Range.GetRandomValue(0, 2);
+			int numberOfItems = Rng.NextIntWithinRange(numberOfPrefs);
+			int numberOfCategories = Rng.NextIntWithinRange(0, 2);
 
 			string itemString = GetRandomItemString(unusedItems, numberOfItems);
 			string catString = GetRandomCategoryString(unusedCategories, numberOfCategories);
@@ -240,7 +245,7 @@ namespace Randomizer
 
 			for (int itemQuantity = quantity; itemQuantity > 0; itemQuantity--)
 			{
-				itemString += Globals.RNGGetAndRemoveRandomValueFromList(giftableItems).Id + " ";
+				itemString += Rng.GetAndRemoveRandomValueFromList(giftableItems).Id + " ";
 			}
 
 			return itemString.Trim();
@@ -256,7 +261,7 @@ namespace Randomizer
 
 			for (int catQuantity = quantity; catQuantity > 0; catQuantity--)
 			{
-				catString += Globals.RNGGetAndRemoveRandomValueFromList(unusedCategoryIDs) + " ";
+				catString += Rng.GetAndRemoveRandomValueFromList(unusedCategoryIDs) + " ";
 			}
 
 			return catString.Trim();

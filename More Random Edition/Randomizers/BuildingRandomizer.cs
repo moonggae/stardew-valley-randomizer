@@ -2,6 +2,7 @@
 using StardewValley.GameData.Buildings;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Randomizer
@@ -12,11 +13,54 @@ namespace Randomizer
     public class BuildingRandomizer
 	{
         /// <summary>
+        /// An item and how much to multiply the amount required by
+        /// </summary>
+        private class ItemAndMultiplier
+        {
+            public Item Item { get; set; }
+            public int Multiplier { get; set; }
+
+            public ItemAndMultiplier(Item item, int multiplier = 1)
+            {
+                Item = item;
+                Multiplier = multiplier;
+            }
+
+            /// <summary>
+            /// The number of items - note that this will NOT return the same value each time it's called!
+            /// </summary>
+            /// <param name="rng">The RNG to use</param>
+            public int GenerateAmount(RNG rng)
+            {
+                return Item.GetAmountRequiredForCrafting(rng) * Multiplier;
+            }
+        }
+
+		/// <summary>
+		/// Tracks an item and the number of them needed for a recipe
+		/// </summary>
+		private class RequiredBuildingItem
+		{
+			public Item Item { get; set; }
+			public int NumberOfItems { get; set; }
+
+			public RequiredBuildingItem(Item item, int numberOfItems)
+            {
+                Item = item;
+                NumberOfItems = numberOfItems;
+            }
+        }
+
+        private static RNG Rng { get; set; }
+
+        /// <summary>
         /// Randomize the buildings
         /// </summary>
         /// <returns>The dictionary to use to replace the assets</returns>
         public static Dictionary<string, BuildingData> Randomize()
 		{
+			Rng = RNG.GetFarmRNG(nameof(BuildingRandomizer));
+
             Dictionary<string, BuildingData> buildingData = DataLoader.Buildings(Game1.content);
 			Dictionary<string, BuildingData> buildingChanges = new();
 
@@ -36,17 +80,17 @@ namespace Randomizer
             List<Buildings> buildings = Enum.GetValues(typeof(Buildings)).Cast<Buildings>().ToList();
             foreach (Buildings buildingType in buildings)
 			{
-				resource1 = ItemList.GetRandomResourceItem();
-				resource2 = ItemList.GetRandomResourceItem(new int[] { resource1.Id });
+				resource1 = ItemList.GetRandomResourceItem(Rng);
+				resource2 = ItemList.GetRandomResourceItem(Rng, new int[] { resource1.Id });
 
 				switch (buildingType)
 				{
 					case Buildings.Silo:
 						buildingMaterials = new List<ItemAndMultiplier>
                         {
-                            new(resource1, Range.GetRandomValue(2, 3)),
+                            new(resource1, Rng.NextIntWithinRange(2, 3)),
                             new(resource2),
-                            new(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.MediumTimeRequirements))
+                            new(ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.MediumTimeRequirements))
                         };
 						RandomizeAndAddBuilding("Silo", buildingMaterials, buildingData, buildingChanges);
                         break;
@@ -55,37 +99,37 @@ namespace Randomizer
 						{
 							new(resource1, 3),
 							new(resource2, 2),
-							new(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.MediumTimeRequirements))
+							new(ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.MediumTimeRequirements))
 						};
                         RandomizeAndAddBuilding("Mill", buildingMaterials, buildingData, buildingChanges);
                         break;
 					case Buildings.ShippingBin:
-						itemChoice = Globals.RNGGetRandomValueFromList(new List<ItemAndMultiplier>
+						itemChoice = Rng.GetRandomValueFromList(new List<ItemAndMultiplier>
 						{
 							new(resource1, 3),
-							new(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.MediumTimeRequirements))
+							new(ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.MediumTimeRequirements))
 						});
                         buildingMaterials = new List<ItemAndMultiplier> { itemChoice };
                         RandomizeAndAddBuilding("Shipping Bin", buildingMaterials, buildingData, buildingChanges);
                         break;
 					case Buildings.Coop:
-						itemChoice = Globals.RNGGetRandomValueFromList(new List<ItemAndMultiplier>
+						itemChoice = Rng.GetRandomValueFromList(new List<ItemAndMultiplier>
 						{
 							new(resource1, 5),
-							new(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.MediumTimeRequirements, idsToDisallowForAnimalBuildings.ToArray()))
+							new(ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.MediumTimeRequirements, idsToDisallowForAnimalBuildings.ToArray()))
 						});
 						buildingMaterials = new List<ItemAndMultiplier>
 						{
 							itemChoice,
-							new(resource2, Range.GetRandomValue(2, 3))
+							new(resource2, Rng.NextIntWithinRange(2, 3))
 						};
                         RandomizeAndAddBuilding("Coop", buildingMaterials, buildingData, buildingChanges);
                         break;
 					case Buildings.BigCoop:
-						itemChoice = Globals.RNGGetRandomValueFromList(new List<ItemAndMultiplier>
+						itemChoice = Rng.GetRandomValueFromList(new List<ItemAndMultiplier>
 						{
 							new(resource1, 3),
-							new(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.MediumTimeRequirements, idsToDisallowForAnimalBuildings.ToArray()))
+							new(ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.MediumTimeRequirements, idsToDisallowForAnimalBuildings.ToArray()))
 						});
 						buildingMaterials = new List<ItemAndMultiplier>
 						{
@@ -95,10 +139,10 @@ namespace Randomizer
                         RandomizeAndAddBuilding("Big Coop", buildingMaterials, buildingData, buildingChanges);
                         break;
 					case Buildings.DeluxeCoop:
-						itemChoice = Globals.RNGGetRandomValueFromList(new List<ItemAndMultiplier>
+						itemChoice = Rng.GetRandomValueFromList(new List<ItemAndMultiplier>
 						{
 							new(resource1, 9),
-							new(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.LargeTimeRequirements, idsToDisallowForAnimalBuildings.ToArray()))
+							new(ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.LargeTimeRequirements, idsToDisallowForAnimalBuildings.ToArray()))
 						});
 						buildingMaterials = new List<ItemAndMultiplier>
 						{
@@ -108,23 +152,23 @@ namespace Randomizer
                         RandomizeAndAddBuilding("Deluxe Coop", buildingMaterials, buildingData, buildingChanges);
                         break;
 					case Buildings.Barn:
-						itemChoice = Globals.RNGGetRandomValueFromList(new List<ItemAndMultiplier>
+						itemChoice = Rng.GetRandomValueFromList(new List<ItemAndMultiplier>
 						{
 							new(resource1, 5),
-							new(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.MediumTimeRequirements, idsToDisallowForAnimalBuildings.ToArray()))
+							new(ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.MediumTimeRequirements, idsToDisallowForAnimalBuildings.ToArray()))
 						});
 						buildingMaterials = new List<ItemAndMultiplier>
 						{
 							itemChoice,
-							new(resource2, Range.GetRandomValue(2, 3))
+							new(resource2, Rng.NextIntWithinRange(2, 3))
 						};
                         RandomizeAndAddBuilding("Barn", buildingMaterials, buildingData, buildingChanges);
                         break;
 					case Buildings.BigBarn:
-						itemChoice = Globals.RNGGetRandomValueFromList(new List<ItemAndMultiplier>
+						itemChoice = Rng.GetRandomValueFromList(new List<ItemAndMultiplier>
 						{
 							new(resource1, 3),
-							new(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.MediumTimeRequirements, idsToDisallowForAnimalBuildings.ToArray()))
+							new(ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.MediumTimeRequirements, idsToDisallowForAnimalBuildings.ToArray()))
 						});
                         buildingMaterials = new List<ItemAndMultiplier>
 						{
@@ -134,10 +178,10 @@ namespace Randomizer
                         RandomizeAndAddBuilding("Big Barn", buildingMaterials, buildingData, buildingChanges);
                         break;
 					case Buildings.DeluxeBarn:
-						itemChoice = Globals.RNGGetRandomValueFromList(new List<ItemAndMultiplier>
+						itemChoice = Rng.GetRandomValueFromList(new List<ItemAndMultiplier>
 						{
 							new(resource1, 9),
-							new(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.LargeTimeRequirements, idsToDisallowForAnimalBuildings.ToArray()))
+							new(ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.LargeTimeRequirements, idsToDisallowForAnimalBuildings.ToArray()))
 						});
                         buildingMaterials = new List<ItemAndMultiplier>
 						{
@@ -150,17 +194,17 @@ namespace Randomizer
 						buildingMaterials = new List<ItemAndMultiplier>
 						{
 							new(resource1, 9),
-							new(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.MediumTimeRequirements), 2),
-							new(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.LargeTimeRequirements))
+							new(ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.MediumTimeRequirements), 2),
+							new(ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.LargeTimeRequirements))
 						};
                         RandomizeAndAddBuilding("Slime Hutch", buildingMaterials, buildingData, buildingChanges);
                         break;
 					case Buildings.Shed:
-                        buildingMaterials = Globals.RNGGetRandomValueFromList(new List<List<ItemAndMultiplier>> {
+                        buildingMaterials = Rng.GetRandomValueFromList(new List<List<ItemAndMultiplier>> {
 							new() { new ItemAndMultiplier(resource1, 5) },
 							new() {
 								new ItemAndMultiplier(resource1, 3),
-								new ItemAndMultiplier(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.MediumTimeRequirements))
+								new ItemAndMultiplier(ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.MediumTimeRequirements))
 							}
 						});
                         RandomizeAndAddBuilding("Shed", buildingMaterials, buildingData, buildingChanges);
@@ -169,10 +213,10 @@ namespace Randomizer
                         RandomizeAndAddBuilding("Cabin", GetRequiredItemsForCabin(), buildingData, buildingChanges);
                         break;
 					case Buildings.Well:
-						itemChoice = Globals.RNGGetRandomValueFromList(new List<ItemAndMultiplier>
+						itemChoice = Rng.GetRandomValueFromList(new List<ItemAndMultiplier>
 						{
 							new(resource1, 3),
-							new(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.MediumTimeRequirements))
+							new(ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.MediumTimeRequirements))
 						});
                         buildingMaterials = new List<ItemAndMultiplier> { itemChoice };
                         RandomizeAndAddBuilding("Well", buildingMaterials, buildingData, buildingChanges);
@@ -181,15 +225,15 @@ namespace Randomizer
                         buildingMaterials = new List<ItemAndMultiplier>
 						{
 							new(resource1, 2),
-							new(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.SmallTimeRequirements), 2),
-							new(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.SmallTimeRequirements), 2)
+							new(ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.SmallTimeRequirements), 2),
+							new(ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.SmallTimeRequirements), 2)
 						};
                         RandomizeAndAddBuilding("Fish Pond", buildingMaterials, buildingData, buildingChanges);
                         break;
 					case Buildings.Stable:
                         buildingMaterials = new List<ItemAndMultiplier>
 						{
-							new(ItemList.GetRandomItemAtDifficulty(ObtainingDifficulties.MediumTimeRequirements), 2),
+							new(ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.MediumTimeRequirements), 2),
 							new(resource1, 8),
 						};
                         RandomizeAndAddBuilding("Stable", buildingMaterials, buildingData, buildingChanges);
@@ -237,12 +281,12 @@ namespace Randomizer
 		/// <returns />
 		private static List<ItemAndMultiplier> GetRequiredItemsForCabin()
 		{
-			Item resource = ItemList.GetRandomResourceItem(new int[(int)ObjectIndexes.Hardwood]);
-			Item easyItem = Globals.RNGGetRandomValueFromList(
+			Item resource = ItemList.GetRandomResourceItem(Rng, new int[(int)ObjectIndexes.Hardwood]);
+			Item easyItem = Rng.GetRandomValueFromList(
 				ItemList.GetItemsBelowDifficulty(ObtainingDifficulties.MediumTimeRequirements, new List<int> { resource.Id })
 			);
 
-			return Globals.RNGGetRandomValueFromList(new List<List<ItemAndMultiplier>> {
+			return Rng.GetRandomValueFromList(new List<List<ItemAndMultiplier>> {
 				new() { new ItemAndMultiplier(resource, 2) },
 				new() {
 					new ItemAndMultiplier(resource),
@@ -261,7 +305,7 @@ namespace Randomizer
         {
             const double MoneyVariablePercentage = 0.25;
             int variableAmount = (int)(baseMoneyRequired * MoneyVariablePercentage);
-            return Range.GetRandomValue(baseMoneyRequired - variableAmount, baseMoneyRequired + variableAmount);
+            return Rng.NextIntWithinRange(baseMoneyRequired - variableAmount, baseMoneyRequired + variableAmount);
         }
 
         /// <summary>
@@ -272,10 +316,10 @@ namespace Randomizer
 		/// <returns>The list of BuildingMaterials to be used by the building</returns>
         private static List<BuildingMaterial> ComputeBuildMaterials(List<ItemAndMultiplier> itemsRequired)
         {
-            Dictionary<int, RequiredItem> requiredItemsDict = new();
+            Dictionary<int, RequiredBuildingItem> requiredItemsDict = new();
             foreach (ItemAndMultiplier itemAndMultiplier in itemsRequired)
             {
-                RequiredItem requiredItem = new(itemAndMultiplier.Item, itemAndMultiplier.Amount);
+                RequiredBuildingItem requiredItem = new(itemAndMultiplier.Item, itemAndMultiplier.GenerateAmount(Rng));
                 int reqiredItemId = requiredItem.Item.Id;
                 if (requiredItemsDict.ContainsKey(reqiredItemId))
                 {
@@ -288,7 +332,7 @@ namespace Randomizer
             }
 
 			List<BuildingMaterial> buildingMaterials = new();
-			foreach(RequiredItem buildingItem in requiredItemsDict.Values)
+			foreach(RequiredBuildingItem buildingItem in requiredItemsDict.Values)
 			{
 				buildingMaterials.Add(
 					new BuildingMaterial
@@ -333,32 +377,6 @@ namespace Randomizer
 			return string.Join(" - ", 
 				buildingMaterials.Select(material =>
 					$"{ItemList.GetItemFromStringId(material.Id).Name}: {material.Amount}"));
-        }
-    }
-
-    /// <summary>
-    /// An item and how much to multiply the amount required by
-    /// </summary>
-    public class ItemAndMultiplier
-    {
-        public Item Item { get; set; }
-        public int Multiplier { get; set; }
-
-        public ItemAndMultiplier(Item item, int multiplier = 1)
-        {
-            Item = item;
-            Multiplier = multiplier;
-        }
-
-        /// <summary>
-        /// The number of items - note that this will NOT return the same value each time it's called!
-        /// </summary>
-        public int Amount
-        {
-            get
-            {
-                return Item.GetAmountRequiredForCrafting() * Multiplier;
-            }
         }
     }
 }

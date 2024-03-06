@@ -11,6 +11,8 @@ namespace Randomizer
 {
     public class FishRandomizer
 	{
+        private static RNG Rng { get; set; }
+
         /// <summary>
         /// Randomizes the fish by shuffling which fish ids appear in which location
         /// It also completely randomizes behaviors, dart chance, and names
@@ -21,7 +23,9 @@ namespace Randomizer
             EditedObjects editedObjectInfo, 
             Dictionary<string, SVLocationData> locationReplacements)
 		{
-			List<FishItem> legendaryFish = FishItem.GetLegendaries().Cast<FishItem>().ToList();
+            Rng = RNG.GetFarmRNG(nameof(FishRandomizer));
+
+            List<FishItem> legendaryFish = FishItem.GetLegendaries().Cast<FishItem>().ToList();
 			List<FishItem> normalFish = FishItem.Get().Cast<FishItem>().ToList();
 			List<FishItem> normalFishCopy = new();
 
@@ -40,11 +44,11 @@ namespace Randomizer
 			List<string> fishNames = NameAndDescriptionRandomizer.GenerateFishNames(normalFish.Count + legendaryFish.Count);
 			foreach (FishItem fish in normalFish)
 			{
-				FishItem fishToReplace = Globals.RNGGetAndRemoveRandomValueFromList(normalFishCopy);
+				FishItem fishToReplace = Rng.GetAndRemoveRandomValueFromList(normalFishCopy);
 				int newDartChance = GenerateRandomFishDifficulty();
-				FishBehaviorType newBehaviorType = Globals.RNGGetRandomValueFromList(
+				FishBehaviorType newBehaviorType = Rng.GetRandomValueFromList(
 					Enum.GetValues(typeof(FishBehaviorType)).Cast<FishBehaviorType>().ToList());
-				string newName = Globals.RNGGetAndRemoveRandomValueFromList(fishNames);
+				string newName = Rng.GetAndRemoveRandomValueFromList(fishNames);
 
 				if (!Globals.Config.Fish.Randomize) { continue; }
 
@@ -71,10 +75,10 @@ namespace Randomizer
 
 			foreach (FishItem fish in legendaryFish)
 			{
-				FishBehaviorType newBehaviorType = Globals.RNGGetRandomValueFromList(
+				FishBehaviorType newBehaviorType = Rng.GetRandomValueFromList(
 					Enum.GetValues(typeof(FishBehaviorType)).Cast<FishBehaviorType>().ToList());
 
-				string newName = Globals.RNGGetAndRemoveRandomValueFromList(fishNames);
+				string newName = Rng.GetAndRemoveRandomValueFromList(fishNames);
 
 				if (!Globals.Config.Fish.Randomize) { continue; }
 
@@ -135,22 +139,22 @@ namespace Randomizer
 		/// </returns>
 		private static int GenerateRandomFishDifficulty()
 		{
-			int difficultyRange = Range.GetRandomValue(1, 100);
+			int difficultyRange = Rng.NextIntWithinRange(1, 100);
 			if (difficultyRange < 26)
 			{
-				return Range.GetRandomValue(15, 30);
+				return Rng.NextIntWithinRange(15, 30);
 			}
 			else if (difficultyRange < 71)
 			{
-				return Range.GetRandomValue(31, 50);
+				return Rng.NextIntWithinRange(31, 50);
 			}
 			else if (difficultyRange < 96)
 			{
-				return Range.GetRandomValue(51, 75);
+				return Rng.NextIntWithinRange(51, 75);
 			}
 			else
 			{
-				return Range.GetRandomValue(76, 95);
+				return Rng.NextIntWithinRange(76, 95);
 			}
 		}
 

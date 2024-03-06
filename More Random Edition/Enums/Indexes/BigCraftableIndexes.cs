@@ -217,22 +217,18 @@ namespace Randomizer
         /// <summary>
         /// Gets a random furniture's qualified id
         /// </summary>
-        /// <param name="idsToExclude">A list of ids to not include in the selection</param>
         /// <param name="rng">The rng to use</param>
+        /// <param name="idsToExclude">A list of ids to not include in the selection</param>
         /// <returns>The qualified id</returns>
-        public static string GetRandomBigCraftableQualifiedId(
-            List<string> idsToExclude = null, 
-            Random rng = null)
+        public static string GetRandomBigCraftableQualifiedId(RNG rng, List<string> idsToExclude = null)
         {
-            var rngToUse = rng ?? Globals.RNG;
-
             var allBigCraftableIds = Enum.GetValues(typeof(BigCraftableIndexes))
                 .Cast<BigCraftableIndexes>()
                 .Select(index => GetQualifiedId(index))
                 .Where(id => idsToExclude == null || !idsToExclude.Contains(id))
                 .ToList();
 
-            return Globals.RNGGetRandomValueFromList(allBigCraftableIds, rng);
+            return rng.GetRandomValueFromList(allBigCraftableIds);
         }
     }
 }

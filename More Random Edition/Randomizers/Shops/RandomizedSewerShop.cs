@@ -32,18 +32,18 @@ namespace Randomizer
                 return;
             }
 
-            Random shopRNG = Globals.GetDailyRNG(nameof(RandomizedSewerShop));
+            RNG shopRNG = RNG.GetDailyRNG(nameof(RandomizedSewerShop));
 
             string fireplaceId = FurnitureFunctions.GetQualifiedId(FurnitureIndexes.MonsterFireplace);
             ShopItemData firePlaceItem = GetShopItemById(fireplaceId);
-            firePlaceItem.ItemId = FurnitureFunctions.GetRandomFurnitureQualifiedId(rng: shopRNG);
+            firePlaceItem.ItemId = FurnitureFunctions.GetRandomFurnitureQualifiedId(shopRNG);
 
             string vesselId = BigCraftableFunctions.GetQualifiedId(BigCraftableIndexes.SignOfTheVessel);
             ShopItemData vesselItem = GetShopItemById(vesselId);
             ISalable bigCraftableToSell = ItemList.GetRandomBigCraftablesToSell(shopRNG, numberToGet: 1).First();
             var bigCraftableSalePrice = GetAdjustedItemPrice(bigCraftableToSell, fallbackPrice: 500, multiplier: 3);
             vesselItem.Price = bigCraftableSalePrice;
-            vesselItem.ItemId = BigCraftableFunctions.GetRandomBigCraftableQualifiedId(rng: shopRNG);
+            vesselItem.ItemId = BigCraftableFunctions.GetRandomBigCraftableQualifiedId(shopRNG);
         }
     }
 }

@@ -10,6 +10,11 @@ namespace Randomizer
     public abstract class ImageBuilder
     {
         /// <summary>
+        /// The RNG to use when grabbing random images - must be initialized in each constructor
+        /// </summary>
+        protected RNG Rng { get; set; }
+
+        /// <summary>
         /// The image width in px - used when determining whether to crop and when drawing the image itself
         /// </summary>
         protected int ImageWidthInPx = 16;
@@ -188,7 +193,7 @@ namespace Randomizer
         /// <returns></returns>
         protected virtual string GetRandomFileName(Point position)
         {
-            string fileName = Globals.RNGGetAndRemoveRandomValueFromList(FilesToPullFrom);
+            string fileName = Rng.GetAndRemoveRandomValueFromList(FilesToPullFrom);
 
             if (string.IsNullOrEmpty(fileName))
             {

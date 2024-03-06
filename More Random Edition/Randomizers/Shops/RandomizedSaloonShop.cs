@@ -1,5 +1,4 @@
 ﻿using StardewValley.GameData.Shops;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -34,7 +33,7 @@ namespace Randomizer
             }
 
             // Stock will change every Monday
-            Random shopRNG = Globals.GetWeeklyRNG(nameof(RandomizedSaloonShop));
+            RNG shopRNG = RNG.GetWeeklyRNG(nameof(RandomizedSaloonShop));
             CurrentShopData.Items.Clear();
 
             // Beer and coffee will always be available
@@ -42,19 +41,19 @@ namespace Randomizer
             AddStock(ItemList.GetQualifiedId(ObjectIndexes.Coffee), "CoffeeItem");
 
             // Random Cooked Items - pick 3-5 random dishes each week
-            var numberOfCookedItems = Range.GetRandomValue(3, 5, shopRNG);
+            var numberOfCookedItems = shopRNG.NextIntWithinRange(3, 5);
             List<string> allCookedItemIds = ItemList.GetCookedItems()
                 .Select(item => item.QualifiedId)
                 .ToList();
-            List<string> gusFoodList = 
-                Globals.RNGGetRandomValuesFromList(allCookedItemIds, numberOfCookedItems, shopRNG);
+            List<string> gusFoodList =
+                shopRNG.GetRandomValuesFromList(allCookedItemIds, numberOfCookedItems);
             gusFoodList.ForEach(itemId => AddStock(itemId, $"FoodItem-{itemId}"));
 
             // Random Cooking Recipes - pick 3-5 random recipes each week
             // Note that the game will not include these if they are already learned
-            var numberOfRecipes = Range.GetRandomValue(3, 5, shopRNG);
+            var numberOfRecipes = shopRNG.NextIntWithinRange(3, 5);
             List<string> gusRecipeList = 
-                Globals.RNGGetRandomValuesFromList(allCookedItemIds, numberOfRecipes, shopRNG);
+                shopRNG.GetRandomValuesFromList(allCookedItemIds, numberOfRecipes);
             gusRecipeList.ForEach(itemId =>
                 AddStock(itemId, $"RecipeItem-{itemId}", isRecipe: true));
         }

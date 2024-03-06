@@ -129,13 +129,14 @@ namespace Randomizer
 		/// </summary>
 		/// <returns>A dictionary of song names to their alternatives</returns>
 		public static void Randomize()
-		{
+        { 
+            RNG rng = RNG.GetFarmRNG(nameof(MusicRandomizer));
 			List<string> musicReplacementPool = new(MusicList);
 			MusicReplacements = new Dictionary<string, string>();
 
 			foreach (string song in MusicList)
 			{
-				string replacementSong = Globals.RNGGetAndRemoveRandomValueFromList(musicReplacementPool);
+				string replacementSong = rng.GetAndRemoveRandomValueFromList(musicReplacementPool);
 				MusicReplacements.Add(song, replacementSong);
 			}
 
@@ -197,7 +198,7 @@ namespace Randomizer
 		/// <returns />
 		private static string GetRandomSong()
 		{
-			return Globals.RNGGetRandomValueFromList(MusicList, Game1.random);
+            return RNG.GetRandomValueFromListUsingRNG(MusicList, Game1.random);
 		}
 
         /// <summary>

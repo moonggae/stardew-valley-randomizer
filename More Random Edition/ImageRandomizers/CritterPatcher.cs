@@ -154,12 +154,12 @@ namespace Randomizer
         public override void OnAssetRequested(IAssetData asset)
         {
             CritterSpriteSheet = Globals.ModRef.Helper.GameContent.Load<Texture2D>(StardewAssetPath);
-            Random rng = Globals.GetDailyRNG(nameof(CritterPatcher));
+            RNG rng = RNG.GetDailyRNG(nameof(CritterPatcher));
 
             var editor = asset.AsImage();
             HueShiftAllCritters(editor, rng);
 
-            // With the way we're doing this, we need to re-loadthe asset to write the current one
+            // With the way we're doing this, we need to re-load the asset to write the current one
             // so we'll only execute this if apprpriate
             if (Globals.Config.SaveRandomizedImages)
             {
@@ -167,11 +167,11 @@ namespace Randomizer
             }
         }
 
-        private static void HueShiftAllCritters(IAssetDataForImage editor, Random rng)
+        private static void HueShiftAllCritters(IAssetDataForImage editor, RNG rng)
         {
             foreach(List<CritterSpriteLocations> spriteLocsList in CritterLocationData)
             {
-                int hueShiftValue = Range.GetRandomValue(0, Globals.Config.Animals.CritterHueShiftMax, rng);
+                int hueShiftValue = rng.NextIntWithinRange(0, Globals.Config.Animals.CritterHueShiftMax);
                 foreach (CritterSpriteLocations spriteLocs in spriteLocsList)
                 {
                     HueShiftFromSpriteLocs(spriteLocs, editor, hueShiftValue);

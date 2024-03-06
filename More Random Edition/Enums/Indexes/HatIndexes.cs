@@ -128,38 +128,34 @@ namespace Randomizer
         /// <summary>
         /// Gets a random hat's qualified id
         /// </summary>
-        /// <param name="idsToExclude">A list of ids to not include in the selection</param>
         /// <param name="rng">The rng to use</param>
+        /// <param name="idsToExclude">A list of ids to not include in the selection</param>
         /// <returns>The qualified id</returns>
-        public static string GetRandomHatQualifiedId(
-            List<string> idsToExclude = null,
-            Random rng = null)
+        public static string GetRandomHatQualifiedId(RNG rng, List<string> idsToExclude = null)
         {
-            return GetRandomHatQualifiedIds(numberToGet: 1, idsToExclude, rng)
+            return GetRandomHatQualifiedIds(rng, numberToGet: 1, idsToExclude)
                 .FirstOrDefault();
         }
 
         /// <summary>
         /// Gets a list of random hat qualified ids
         /// </summary>
+        /// <param name="rng">The rng to use</param>
         /// <param name="numberToGet">The number of ids to get</param>
         /// <param name="idsToExclude">A list of ids to not include in the selection</param>
-        /// <param name="rng">The rng to use</param>
         /// <returns>The qualified id</returns>
         public static List<string> GetRandomHatQualifiedIds(
+            RNG rng,
             int numberToGet,
-            List<string> idsToExclude = null,
-            Random rng = null)
+            List<string> idsToExclude = null)
         {
-            var rngToUse = rng ?? Globals.RNG;
-
             var allHatIds = Enum.GetValues(typeof(HatIndexes))
                 .Cast<HatIndexes>()
                 .Select(index => GetQualifiedId(index))
                 .Where(id => idsToExclude == null || !idsToExclude.Contains(id))
                 .ToList();
 
-            return Globals.RNGGetRandomValuesFromList(allHatIds, numberToGet, rngToUse);
+            return rng.GetRandomValuesFromList(allHatIds, numberToGet);
         }
     }
 }

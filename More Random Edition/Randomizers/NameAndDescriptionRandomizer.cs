@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Randomizer
 {
@@ -138,7 +139,7 @@ namespace Randomizer
 				"zap"
             };
 
-			return (CreateNameFromPieces(numberOfNames, adjectives, prefixes, suffixes));
+			return CreateNameFromPieces(numberOfNames, adjectives, prefixes, suffixes);
 		}
 
 		public static List<string> GenerateFlowerNames(int numberOfNames)
@@ -219,7 +220,7 @@ namespace Randomizer
 				"wort"
             };
 
-			return (CreateNameFromPieces(numberOfNames, adjectives, prefixes, suffixes));
+			return CreateNameFromPieces(numberOfNames, adjectives, prefixes, suffixes);
 		}
 
 		public static List<string> GenerateFishNames(int numberOfNames)
@@ -405,7 +406,7 @@ namespace Randomizer
 				"umber"
             };
 
-			return (CreateNameFromPieces(numberOfNames, adjectives, prefixes, suffixes));
+			return CreateNameFromPieces(numberOfNames, adjectives, prefixes, suffixes);
 		}
 
 		public static List<string> GenerateCropDescriptions(int numberOfDescriptions)
@@ -1214,20 +1215,28 @@ namespace Randomizer
 			return CreateDescriptionFromPieces(numberOfDescriptions, descriptionBases, nouns, adjectives, names);
 		}
 
-		private static List<string> CreateDescriptionFromPieces(int numberOfDescriptions, List<string> descriptionBases, List<string> nouns, List<string> adjectives, List<string> names)
+		private static List<string> CreateDescriptionFromPieces(
+			int numberOfDescriptions, 
+			List<string> descriptionBases, 
+			List<string> nouns, 
+			List<string> adjectives, 
+			List<string> names,
+            [CallerMemberName] string caller = default)
 		{
-			List<string> createdDescriptions = new List<string>();
-			string newDescription = "default description";
+            // Create an rng unique to to this class and the method that's creating the name
+            RNG rng = RNG.GetFarmRNG($"{nameof(NameAndDescriptionRandomizer)}.{caller}");
+
+            List<string> createdDescriptions = new();
 			for (int i = 0; i < numberOfDescriptions; i++)
 			{
 				if (descriptionBases.Count > 0 && adjectives.Count > 1 && nouns.Count > 1 && names.Count > 0)
 				{
-					newDescription = Globals.RNGGetAndRemoveRandomValueFromList(descriptionBases);
-					newDescription = newDescription.Replace("[noun]", Globals.RNGGetAndRemoveRandomValueFromList(nouns));
-					newDescription = newDescription.Replace("[noun2]", Globals.RNGGetAndRemoveRandomValueFromList(nouns));
-					newDescription = newDescription.Replace("[adjective]", Globals.RNGGetAndRemoveRandomValueFromList(adjectives));
-					newDescription = newDescription.Replace("[adjective2]", Globals.RNGGetAndRemoveRandomValueFromList(adjectives));
-					newDescription = newDescription.Replace("[name]", Globals.RNGGetAndRemoveRandomValueFromList(names));
+					string newDescription = rng.GetAndRemoveRandomValueFromList(descriptionBases);
+					newDescription = newDescription.Replace("[noun]", rng.GetAndRemoveRandomValueFromList(nouns));
+					newDescription = newDescription.Replace("[noun2]", rng.GetAndRemoveRandomValueFromList(nouns));
+					newDescription = newDescription.Replace("[adjective]", rng.GetAndRemoveRandomValueFromList(adjectives));
+					newDescription = newDescription.Replace("[adjective2]", rng.GetAndRemoveRandomValueFromList(adjectives));
+					newDescription = newDescription.Replace("[name]", rng.GetAndRemoveRandomValueFromList(names));
 					createdDescriptions.Add(newDescription);
 				}
 				else
@@ -1239,19 +1248,35 @@ namespace Randomizer
 			return createdDescriptions;
 		}
 
-		private static List<string> CreateNameFromPieces(int numberOfNames, List<string> adjectives, List<string> prefixes, List<string> suffixes)
+		private static List<string> CreateNameFromPieces(
+			int numberOfNames, 
+			List<string> adjectives, 
+			List<string> prefixes, 
+			List<string> suffixes,
+            [CallerMemberName] string caller = default)
 		{
-			List<string> createdNames = new List<string>();
-			string newName = "default name";
+			// Create an rng unique to to this class and the method that's creating the name
+			RNG rng = RNG.GetFarmRNG($"{nameof(NameAndDescriptionRandomizer)}.{caller}");
+
+            List<string> createdNames = new();
 
 			for (int i = 0; i < numberOfNames; i++)
 			{
 				if (prefixes.Count > 0 && suffixes.Count > 0)
 				{
-					newName = $"{Globals.RNGGetAndRemoveRandomValueFromList(prefixes)}{Globals.RNGGetAndRemoveRandomValueFromList(suffixes)}";
-					if (newName.StartsWith("Mc")) newName = $"Mc{newName.Substring(2, 1).ToUpper()}{newName.Substring(3)}";
+					string newName = $"{rng.GetAndRemoveRandomValueFromList(prefixes)}{rng.GetAndRemoveRandomValueFromList(suffixes)}";
 
-					if (Globals.RNGGetNextBoolean(10) && adjectives.Count > 0) newName = $"{Globals.RNGGetAndRemoveRandomValueFromList(adjectives)} {newName}";
+					// Adjust so McName works correctly
+					if (newName.StartsWith("Mc"))
+					{
+						newName = $"Mc{newName.Substring(2, 1).ToUpper()}{newName[3..]}";
+					}
+
+					// 10% chance of an adjective being used before the name
+					if (rng.NextBoolean(10) && adjectives.Count > 0)
+					{
+						newName = $"{rng.GetAndRemoveRandomValueFromList(adjectives)} {newName}";
+					}
 					createdNames.Add(newName);
 				}
 				else
@@ -1262,6 +1287,5 @@ namespace Randomizer
 
 			return createdNames;
 		}
-
 	}
 }

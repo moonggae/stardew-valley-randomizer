@@ -8,6 +8,8 @@ namespace Randomizer
 {
     public class ArtifactSpotRandomizer
     {
+        private static RNG Rng { get; set; }
+
         /// <summary>
         /// Adds an extra artifact spot drop item to each relevant location
         /// </summary>
@@ -15,6 +17,8 @@ namespace Randomizer
         public static void Randomize(
             Dictionary<string, SVLocationData> locationsReplacements)
         {
+            Rng = RNG.GetFarmRNG(nameof(ArtifactSpotRandomizer));
+
             WriteToSpoilerLog("==== Extra Artifact Spot Items ====");
 
             LocationData.ArtifactSpotLocations
@@ -39,7 +43,7 @@ namespace Randomizer
             SVLocationData locationData = LocationData.TrySetLocationData(
                 location, defaultLocData, locationsReplacements);
 
-            Item diggableItem = ItemList.GetRandomItemAtDifficulty(difficulty);
+            Item diggableItem = ItemList.GetRandomItemAtDifficulty(Rng, difficulty);
             locationData.ArtifactSpots.Add(
                 GetArtifactSpotDropData(diggableItem, probability));
 
@@ -58,27 +62,27 @@ namespace Randomizer
         /// <returns></returns>
         private static ObtainingDifficulties GetRandomItemDifficulty()
         {
-            if (Globals.RNGGetNextBoolean())
+            if (Rng.NextBoolean())
             {
                 return ObtainingDifficulties.NoRequirements;
             }
 
-            else if (Globals.RNGGetNextBoolean())
+            else if (Rng.NextBoolean())
             {
                 return ObtainingDifficulties.SmallTimeRequirements;
             }
 
-            else if (Globals.RNGGetNextBoolean())
+            else if (Rng.NextBoolean())
             {
                 return ObtainingDifficulties.MediumTimeRequirements;
             }
 
-            else if (Globals.RNGGetNextBoolean())
+            else if (Rng.NextBoolean())
             {
                 return ObtainingDifficulties.LargeTimeRequirements;
             }
 
-            else if (Globals.RNGGetNextBoolean())
+            else if (Rng.NextBoolean())
             {
                 return ObtainingDifficulties.UncommonItem;
             }
@@ -99,20 +103,20 @@ namespace Randomizer
             switch (difficulty)
             {
                 case ObtainingDifficulties.NoRequirements:
-                    return (double)Range.GetRandomValue(30, 60) / 100;
+                    return (double)Rng.NextIntWithinRange(30, 60) / 100;
                 case ObtainingDifficulties.SmallTimeRequirements:
-                    return (double)Range.GetRandomValue(30, 40) / 100;
+                    return (double)Rng.NextIntWithinRange(30, 40) / 100;
                 case ObtainingDifficulties.MediumTimeRequirements:
-                    return (double)Range.GetRandomValue(20, 30) / 100;
+                    return (double)Rng.NextIntWithinRange(20, 30) / 100;
                 case ObtainingDifficulties.LargeTimeRequirements:
-                    return (double)Range.GetRandomValue(10, 20) / 100;
+                    return (double)Rng.NextIntWithinRange(10, 20) / 100;
                 case ObtainingDifficulties.UncommonItem:
-                    return (double)Range.GetRandomValue(5, 15) / 100;
+                    return (double)Rng.NextIntWithinRange(5, 15) / 100;
                 case ObtainingDifficulties.RareItem:
-                    return (double)Range.GetRandomValue(1, 5) / 100;
+                    return (double)Rng.NextIntWithinRange(1, 5) / 100;
                 default:
                     Globals.ConsoleError($"Attempting to get a diggable item with invalid difficulty: {difficulty}");
-                    return (double)Range.GetRandomValue(30, 60) / 100;
+                    return (double)Rng.NextIntWithinRange(30, 60) / 100;
             }
         }
 

@@ -7,6 +7,7 @@ namespace Randomizer
 {
     public class CraftableItem : Item
 	{
+		public RNG Rng { get; set; }
 		public string SkillString { get; set; } = "";
 		/// <summary>
 		/// We use Name by default, but some recipes use a different name than that
@@ -50,6 +51,10 @@ namespace Randomizer
 			int bigCraftablePrice = 1000,
 			string dataKey = null) : base(id)
 		{
+			// Create a unique RNG for each item so that adding new craftables won't impact the RNG
+			// also so that the different items won't always generate linked values
+			Rng = RNG.GetFarmRNG($"{nameof(CraftableItem)}.{id}.{isBigCraftable}");
+
             IsBigCraftable = isBigCraftable; // Put this first so the value is set for EnglishName
 			CraftingRecipeKey = dataKey ?? EnglishName;
             CraftingData = CraftingRecipeData[CraftingRecipeKey].Split("/");
@@ -90,12 +95,12 @@ namespace Randomizer
 		public int GetLevelLearnedAt()
 		{
 			Range levelRange = new(BaseLevelLearnedAt - 3, BaseLevelLearnedAt + 3);
-			int generatedLevel = levelRange.GetRandomValue();
+			int generatedLevel = levelRange.GetRandomValue(Rng);
 			if (generatedLevel > 8) { return 9; }
 			if (generatedLevel < 1) { return 1; }
 			if (generatedLevel == 5)
 			{
-				generatedLevel = Globals.RNGGetNextBoolean() ? 4 : 6;
+				generatedLevel = Rng.NextBoolean() ? 4 : 6;
 			}
 
 			if (!Globals.Config.CraftingRecipes.Randomize || 
@@ -219,13 +224,14 @@ namespace Randomizer
 		private string GetStringForEasyAndNeedMany()
 		{
 			Item item = ItemList.GetRandomCraftableItem(
+				Rng,
 				new List<ObtainingDifficulties> { ObtainingDifficulties.NoRequirements },
 				this,
 				null,
 				true
 			);
 
-			int numberRequired = Globals.RNGGetNextBoolean() ? 1 : 2;
+			int numberRequired = Rng.NextBoolean() ? 1 : 2;
 			return $"{item.Id} {numberRequired}";
 		}
 
@@ -235,28 +241,31 @@ namespace Randomizer
 		/// <returns>The item string</returns>
 		private string GetStringForEasy()
 		{
-			bool useHarderItem = Globals.RNGGetNextBoolean();
+			bool useHarderItem = Rng.NextBoolean();
 			if (useHarderItem)
 			{
 				return ItemList.GetRandomCraftableItem(
-					new List<ObtainingDifficulties> { ObtainingDifficulties.SmallTimeRequirements },
+                    Rng,
+                    new List<ObtainingDifficulties> { ObtainingDifficulties.SmallTimeRequirements },
 					this
-				).GetStringForCrafting();
+				).GenerateCraftingRequirement(Rng);
 			}
 
 			Item resourceItem = ItemList.GetRandomCraftableItem(
-				new List<ObtainingDifficulties> { ObtainingDifficulties.NoRequirements },
+                Rng,
+                new List<ObtainingDifficulties> { ObtainingDifficulties.NoRequirements },
 				this,
 				null,
 				true
 			);
 			Item otherItem = ItemList.GetRandomCraftableItem(
-				new List<ObtainingDifficulties> { ObtainingDifficulties.NoRequirements },
+                Rng,
+                new List<ObtainingDifficulties> { ObtainingDifficulties.NoRequirements },
 				this,
 				new List<int> { Id, resourceItem.Id }
 			);
 
-			return $"{resourceItem.GetStringForCrafting()} {otherItem.GetStringForCrafting()}";
+			return $"{resourceItem.GenerateCraftingRequirement(Rng)} {otherItem.GenerateCraftingRequirement(Rng)}";
 		}
 
 		/// <summary>
@@ -288,7 +297,7 @@ namespace Randomizer
 			string output = string.Empty;
 			foreach (Item item in GetListOfItemsForModerate())
 			{
-				output += $"{item.GetStringForCrafting()} ";
+				output += $"{item.GenerateCraftingRequirement(Rng)} ";
 			}
 			return output.Trim();
 		}
@@ -300,47 +309,55 @@ namespace Randomizer
 		private List<Item> GetListOfItemsForModerate()
 		{
 			Item item1, item2, item3;
-			switch (Globals.RNG.Next(0, 3))
+			switch (Rng.NextIntWithinRange(0, 2))
 			{
 				case 0:
 					item1 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.SmallTimeRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.SmallTimeRequirements },
 						this
 					);
 					item2 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.SmallTimeRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.SmallTimeRequirements },
 						this,
 						new List<int> { item1.Id }
 					);
 					item3 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.SmallTimeRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.SmallTimeRequirements },
 						this,
 						new List<int> { item1.Id, item2.Id }
 					);
 					return new List<Item> { item1, item2, item3 };
 				case 1:
 					item1 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.MediumTimeRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.MediumTimeRequirements },
 						this
 					);
 					item2 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.SmallTimeRequirements, ObtainingDifficulties.NoRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.SmallTimeRequirements, ObtainingDifficulties.NoRequirements },
 						this,
 						new List<int> { item1.Id }
 					);
 					item3 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.NoRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.NoRequirements },
 						this,
 						new List<int> { item1.Id, item2.Id }
 					);
 					return new List<Item> { item1, item2, item3 };
 				default:
 					item1 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.MediumTimeRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.MediumTimeRequirements },
 						this
 					);
 					item2 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.SmallTimeRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.SmallTimeRequirements },
 						this,
 						new List<int> { item1.Id }
 					);
@@ -377,7 +394,7 @@ namespace Randomizer
 			string output = string.Empty;
 			foreach (Item item in GetListOfItemsForDifficult())
 			{
-				output += $"{item.GetStringForCrafting()} ";
+				output += $"{item.GenerateCraftingRequirement(Rng)} ";
 			}
 			return output.Trim();
 		}
@@ -388,49 +405,56 @@ namespace Randomizer
 		/// <returns />
 		private List<Item> GetListOfItemsForDifficult()
 		{
-			List<Item> possibleItems = ItemList.Items.Values.ToList();
 			Item item1, item2, item3;
-			switch (Globals.RNG.Next(0, 3))
+			switch (Rng.NextIntWithinRange(0, 2))
 			{
 				case 0:
 					item1 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.MediumTimeRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.MediumTimeRequirements },
 						this
 					);
 					item2 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.MediumTimeRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.MediumTimeRequirements },
 						this,
 						new List<int> { item1.Id }
 					);
 					item3 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.MediumTimeRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.MediumTimeRequirements },
 						this,
 						new List<int> { item1.Id, item2.Id }
 					);
 					return new List<Item> { item1, item2, item3 };
 				case 1:
 					item1 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
 						this
 					);
 					item2 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.MediumTimeRequirements, ObtainingDifficulties.SmallTimeRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.MediumTimeRequirements, ObtainingDifficulties.SmallTimeRequirements },
 						this,
 						new List<int> { item1.Id }
 					);
 					item3 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.MediumTimeRequirements, ObtainingDifficulties.SmallTimeRequirements, ObtainingDifficulties.NoRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.MediumTimeRequirements, ObtainingDifficulties.SmallTimeRequirements, ObtainingDifficulties.NoRequirements },
 						this,
 						new List<int> { item1.Id, item2.Id }
 					);
 					return new List<Item> { item1, item2, item3 };
 				default:
 					item1 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
 						this
 					);
 					item2 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
 						this,
 						new List<int> { item1.Id }
 					);
@@ -448,36 +472,42 @@ namespace Randomizer
 		{
 			List<Item> possibleItems = ItemList.Items.Values.ToList();
 			Item item1, item2, item3;
-			switch (Globals.RNG.Next(0, 3))
+			switch (Rng.NextIntWithinRange(0, 2))
 			{
 				case 0:
 					item1 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
 						this
 					);
 					item2 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
 						this,
 						new List<int> { item1.Id }
 					);
 					item3 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
 						this,
 						new List<int> { item1.Id, item2.Id }
 					);
 					break;
 				case 1:
 					item1 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
 						this
 					);
 					item2 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
 						this,
 						new List<int> { item1.Id }
 					);
 					item3 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.SmallTimeRequirements, ObtainingDifficulties.NoRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.SmallTimeRequirements, ObtainingDifficulties.NoRequirements },
 						this,
 						new List<int> { item1.Id, item2.Id }
 					);
@@ -487,15 +517,16 @@ namespace Randomizer
 						ObtainingDifficulties.MediumTimeRequirements, ObtainingDifficulties.SmallTimeRequirements, ObtainingDifficulties.NoRequirements
 					};
 					item1 = ItemList.GetRandomCraftableItem(
-						new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
+                        Rng,
+                        new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
 						this
 					);
-					item2 = ItemList.GetRandomCraftableItem(mediumOrLess, this, new List<int> { item1.Id });
-					item3 = ItemList.GetRandomCraftableItem(mediumOrLess, this, new List<int> { item1.Id, item2.Id });
+					item2 = ItemList.GetRandomCraftableItem(Rng, mediumOrLess, this, new List<int> { item1.Id });
+					item3 = ItemList.GetRandomCraftableItem(Rng, mediumOrLess, this, new List<int> { item1.Id, item2.Id });
 					break;
 			}
 
-			return $"{item1.GetStringForCrafting()} {item2.GetStringForCrafting()} {item3.GetStringForCrafting()}";
+			return $"{item1.GenerateCraftingRequirement(Rng)} {item2.GenerateCraftingRequirement(Rng)} {item3.GenerateCraftingRequirement(Rng)}";
 		}
 
 		/// <summary>
@@ -528,7 +559,7 @@ namespace Randomizer
 			Dictionary<int, int> foragablesToUse = new();
 			for (int i = 0; i < 4; i++)
 			{
-				int foragableId = Globals.RNGGetRandomValueFromList(ItemList.GetForagables(season)).Id;
+				int foragableId = Rng.GetRandomValueFromList(ItemList.GetForagables(season)).Id;
 				if (foragablesToUse.ContainsKey(foragableId))
 				{
 					foragablesToUse[foragableId]++;

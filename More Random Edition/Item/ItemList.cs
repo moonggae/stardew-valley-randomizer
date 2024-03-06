@@ -348,18 +348,22 @@ namespace Randomizer
 		/// <summary>
 		/// Gets one random items equal to the given difficulty
 		/// </summary>
+		/// <param name="rng">The rng to use</param>
 		/// <param name="difficulty">The difficulty</param>
-		/// /// <param name="idsToExclude">Any ids to exclude from the results</param>
+		/// <param name="idsToExclude">Any ids to exclude from the results</param>
 		/// <returns>The list of items</returns>
-		public static Item GetRandomItemAtDifficulty(ObtainingDifficulties difficulty, int[] idsToExclude = null)
+		public static Item GetRandomItemAtDifficulty(RNG rng, ObtainingDifficulties difficulty, int[] idsToExclude = null)
 		{
-			return Globals.RNGGetRandomValueFromList(
+			return rng.GetRandomValueFromList(
 				Items.Values.Where(x =>
 					x.DifficultyToObtain == difficulty &&
 					(idsToExclude == null || !idsToExclude.Contains(x.Id))).ToList()
 				);
 		}
 
+        /// <summary>
+        /// Gets all items equal to the given difficulty
+        /// </summary>
         /// <param name="difficulty">See ObtainingDifficulties</param>
         /// <param name="idsToExclude">List of IDs to exclude</param>
         /// <returns>The list of items, not including any in idsToExclude</returns>
@@ -390,20 +394,16 @@ namespace Randomizer
         /// <summary>
         /// Gets a random resource item
         /// </summary>
+		/// <param name="rng">The RNG to use</param>
         /// <param name="idsToExclude">Any ids to exclude from the results</param>
-		/// <param name="rng">The Random object to use - defaults to the global one</param>
         /// <returns>The resource item</returns>
-        public static Item GetRandomResourceItem(int[] idsToExclude = null, Random rng = null)
+        public static Item GetRandomResourceItem(RNG rng, int[] idsToExclude = null)
 		{
-            var rngToUse = rng ?? Globals.RNG;
-
-            return Globals.RNGGetRandomValueFromList(
+            return rng.GetRandomValueFromList(
 				Items.Values
 					.Where(x => x.IsResource &&
 						(idsToExclude == null || !idsToExclude.Contains(x.Id)))
-					.ToList(),
-                rngToUse
-			);
+					.ToList());
 		}
 
 		/// <summary>
@@ -427,12 +427,14 @@ namespace Randomizer
 		/// <summary>
 		/// Gets a random craftable item out of the list
 		/// </summary>
+		/// <param name="rng">The RNG to use</param>
 		/// <param name="possibleDifficulties">The difficulties that can be in the result</param>
 		/// <param name="itemBeingCrafted">The item being crafted</param>
 		/// <param name="idsToExclude">Any ids to not include in the results</param>
 		/// <param name="onlyResources">Whether to only include resource items</param>
 		/// <returns>The selected item</returns>
 		public static Item GetRandomCraftableItem(
+			RNG rng,
 			List<ObtainingDifficulties> possibleDifficulties,
 			Item itemBeingCrafted,
 			List<int> idsToExclude = null,
@@ -458,22 +460,22 @@ namespace Randomizer
 					(!onlyResources || x.IsResource)
 				).ToList();
 
-			return Globals.RNGGetRandomValueFromList(items);
+			return rng.GetRandomValueFromList(items);
 		}
 
 		/// <summary>
 		/// Gets a list of random furniture items to sell
 		/// </summary>
-		/// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
+		/// <param name="rng">The RNG to use</param>
 		/// <param name="numberToGet">The number of furniture objects to get</param>
 		/// <param name="itemsToExclude">The furniture to exclude</param>
 		/// <returns>A list of furniture to sell</returns>
 		public static List<ISalable> GetRandomFurnitureToSell(
-			Random rng, 
+			RNG rng, 
 			int numberToGet, 
 			List<FurnitureIndexes> itemsToExclude = null)
 		{
-			return GetRandomFurniture(numberToGet, itemsToExclude, rng)
+			return GetRandomFurniture(rng, numberToGet, itemsToExclude)
 				.Cast<ISalable>()
 				.ToList();
         }
@@ -481,23 +483,21 @@ namespace Randomizer
         /// <summary>
         /// Gets a list of random furniture items
         /// </summary>
+        /// <param name="rng">The RNG to use</param>
         /// <param name="numberToGet">The number of furniture objects to get</param>
 		/// <param name="itemsToExclude">Furniure indexes to not include</param>
-        /// <param name="rng">The RNG to use</param>
         /// <returns>A list of furniture to sell</returns>
         public static List<Furniture> GetRandomFurniture(
-			int numberToGet, 
-			List<FurnitureIndexes> itemsToExclude = null, 
-			Random rng = null)
+            RNG rng,
+            int numberToGet, 
+			List<FurnitureIndexes> itemsToExclude = null)
         {
-            var rngToUse = rng ?? Globals.RNG;
-
             var allFurnitureIds = Enum.GetValues(typeof(FurnitureIndexes))
                 .Cast<FurnitureIndexes>()
                 .Where(index => itemsToExclude == null || !itemsToExclude.Contains(index))
                 .ToList();
 
-            return Globals.RNGGetRandomValuesFromList(allFurnitureIds, numberToGet, rngToUse)
+            return rng.GetRandomValuesFromList(allFurnitureIds, numberToGet)
                 .Select(furnitureIndex => FurnitureFunctions.GetItem(furnitureIndex))
                 .ToList();
         }
@@ -505,12 +505,12 @@ namespace Randomizer
         /// <summary>
         /// Gets a list of random clothing items to sell
         /// </summary>
-        /// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
+        /// <param name="rng">The RNG to use</param>
         /// <param name="numberToGet">The number of clothing objects to get</param>
 		/// <param name="itemsToExclude">Clothing indexes to not include</param>
         /// <returns>A list of clothing objects to sell</returns>
         public static List<ISalable> GetRandomClothingToSell(
-			Random rng, 
+			RNG rng, 
 			int numberToGet,
 			List<ClothingIndexes> itemsToExclude = null)
         {
@@ -519,7 +519,7 @@ namespace Randomizer
 				.Where(index => itemsToExclude == null || !itemsToExclude.Contains(index))
                 .ToList();
 
-            return Globals.RNGGetRandomValuesFromList(allClothingIds, numberToGet, rng)
+            return rng.GetRandomValuesFromList(allClothingIds, numberToGet)
                 .Select(clothingIndex => ClothingFunctions.GetItem(clothingIndex))
                 .Cast<ISalable>()
                 .ToList();
@@ -528,11 +528,11 @@ namespace Randomizer
         /// <summary>
         /// Gets a list of random hats to sell
         /// </summary>
-        /// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
+        /// <param name="rng">The RNG to use</param>
         /// <param name="numberToGet">The number of hats to get</param>
 		/// <param name="itemsToExclude">Item ids to not include</param>
         /// <returns>A list of furniture to sell</returns>
-        public static List<ISalable> GetRandomHatsToSell(Random rng, int numberToGet, List<string> itemsToExclude = null)
+        public static List<ISalable> GetRandomHatsToSell(RNG rng, int numberToGet, List<string> itemsToExclude = null)
         {
             var allHatIds = Enum.GetValues(typeof(HatIndexes))
 				.Cast<HatIndexes>()
@@ -540,7 +540,7 @@ namespace Randomizer
                 .Where(id => itemsToExclude == null || !itemsToExclude.Contains(id))
                 .ToList();
 
-            return Globals.RNGGetRandomValuesFromList(allHatIds, numberToGet, rng)
+            return rng.GetRandomValuesFromList(allHatIds, numberToGet)
                 .Select(hatId => new Hat(hatId))
                 .Cast<ISalable>()
                 .ToList();
@@ -549,16 +549,16 @@ namespace Randomizer
         /// <summary>
         /// Gets a list of random big craftables to sell
         /// </summary>
-        /// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
+        /// <param name="rng">The RNG to use</param>
         /// <param name="numberToGet">The number of big craftables to get</param>
 		/// <param name="itemsToExclude">BigCraftable indexes to not include</param>
         /// <returns>A list of big craftables to sell</returns>
         public static List<ISalable> GetRandomBigCraftablesToSell(
-			Random rng, 
+			RNG rng, 
 			int numberToGet, 
 			List<BigCraftableIndexes> itemsToExclude = null)
         {
-            return GetRandomBigCraftables(numberToGet, itemsToExclude, rng)
+            return GetRandomBigCraftables(rng, numberToGet, itemsToExclude)
 				.Cast<ISalable>()
 				.ToList();
         }
@@ -566,36 +566,31 @@ namespace Randomizer
         /// <summary>
         /// Gets a list of random big craftables
         /// </summary>
+        /// <param name="rng">The RNG to use</param>
         /// <param name="numberToGet">The number of big craftables to get</param>
 		/// <param name="itemsToExclude">BigCraftable indexes to not include</param>
-        /// <param name="rng">The RNG to use</param>
         /// <returns>A list of big craftables to sell</returns>
         public static List<SVObject> GetRandomBigCraftables(
+			RNG rng,
 			int numberToGet, 
-			List<BigCraftableIndexes> itemsToExclude = null, 
-			Random rng = null)
+			List<BigCraftableIndexes> itemsToExclude = null)
         {
-            var rngToUse = rng ?? Globals.RNG;
-
             var allBigCraftableIds = BigCraftableItems.Keys
                 .Cast<BigCraftableIndexes>()
                 .Where(index => itemsToExclude == null || !itemsToExclude.Contains(index))
                 .ToList();
 
-            return Globals.RNGGetRandomValuesFromList(allBigCraftableIds, numberToGet, rng)
+            return rng.GetRandomValuesFromList(allBigCraftableIds, numberToGet)
                 .Select(bigCraftableIndex => BigCraftableFunctions.GetItem(bigCraftableIndex))
                 .ToList();
         }
 
         /// <summary>
-        /// Adds a random totem type, always costing 500 Qi Coins
+        /// Gets a random totem
         /// </summary>
-        /// <param name="menu"></param>
-        /// <param name="shopRNG"></param>
-        public static Item GetRandomTotem(Random rng = null)
+        /// <param name="rng>The RNG to use</param>
+        public static Item GetRandomTotem(RNG rng)
         {
-            var rngToUse = rng ?? Globals.RNG;
-
             var totemList = new List<ObjectIndexes>()
             {
                 ObjectIndexes.WarpTotemFarm,
@@ -604,7 +599,7 @@ namespace Randomizer
                 ObjectIndexes.WarpTotemDesert,
                 ObjectIndexes.RainTotem
             };
-            var totemId = Globals.RNGGetRandomValueFromList(totemList, rngToUse);
+            var totemId = rng.GetRandomValueFromList(totemList);
 			return Items[totemId];
         }
 

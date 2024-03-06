@@ -28,14 +28,14 @@ namespace Randomizer
                 return;
             }
 
-            Random shopRNG = Globals.GetDailyRNG(nameof(RandomizedFishingShop));
+            RNG shopRNG = RNG.GetDailyRNG(nameof(RandomizedFishingShop));
 
             var currentSeason = SeasonsExtensions.GetCurrentSeason();
             var possibleFish = FishItem.GetListAsFishItem(true)
                 .Where(fish => fish.AvailableSeasons.Contains(currentSeason))
                 .ToList();
-            var catchOfTheDay = Globals.RNGGetRandomValueFromList(possibleFish, shopRNG);
-            var stock = Range.GetRandomValue(1, 3, shopRNG);
+            var catchOfTheDay = shopRNG.GetRandomValueFromList(possibleFish);
+            var stock = shopRNG.NextIntWithinRange(1, 3);
 
             InsertStockAt(catchOfTheDay.QualifiedId, "CoTD", availableStock: stock);
         }

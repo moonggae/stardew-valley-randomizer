@@ -28,6 +28,7 @@ namespace Randomizer
 
         public AnimalRandomizer(AnimalTypes animalTypeToRandomize)
         {
+            Rng = RNG.GetFarmRNG(nameof(AnimalRandomizer));
             AnimalTypeToRandomize = animalTypeToRandomize;
             SubDirectory = Path.Combine("Animals", animalTypeToRandomize.ToString());
             StardewAssetPath = GetStardewAssetPath();
@@ -63,18 +64,20 @@ namespace Randomizer
             LastHueShiftValue.Remove(AnimalTypeToRandomize);
             if (randomAnimalFileName[..^4].EndsWith("-hue-shift"))
             {
-                Random rng = Globals.GetFarmRNG(nameof(AnimalRandomizer));
-                int hueShiftValue = Range.GetRandomValue(0, 359, rng);
+                RNG rng = RNG.GetFarmRNG(nameof(AnimalRandomizer));
+                int hueShiftValue = rng.NextIntWithinRange(0, 359);
                 animalImage = ImageManipulator.ShiftImageHue(animalImage, hueShiftValue);
 
                 LastHueShiftValue[AnimalTypeToRandomize] = hueShiftValue;
             }
 
-            if (ShouldSaveImage() && Globals.Config.SaveRandomizedImages)
+            if (ShouldSaveImage())
             {
-                using FileStream stream = File.OpenWrite(OutputFileFullPath);
-                animalImage.SaveAsPng(stream, animalImage.Width, animalImage.Height);
-
+                if (Globals.Config.SaveRandomizedImages)
+                {
+                    using FileStream stream = File.OpenWrite(OutputFileFullPath);
+                    animalImage.SaveAsPng(stream, animalImage.Width, animalImage.Height);
+                }
                 Globals.SpoilerWrite($"{AnimalTypeToRandomize} replaced with {randomAnimalFileName[..^4]}");
             }
 
@@ -94,8 +97,8 @@ namespace Randomizer
                 .OrderBy(x => x)
                 .ToList();
 
-            Random rng = Globals.GetFarmRNG(nameof(AnimalRandomizer));
-            return Globals.RNGGetRandomValueFromList(animalImages, rng);
+            RNG rng = RNG.GetFarmRNG(nameof(AnimalRandomizer));
+            return rng.GetRandomValueFromList(animalImages);
 
             // Uncomment to debug/test images, and comment out the other return
             // Change the animal type to the one you're testing
