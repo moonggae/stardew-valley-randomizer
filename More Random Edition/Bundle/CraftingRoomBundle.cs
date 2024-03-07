@@ -106,8 +106,7 @@ namespace Randomizer
 						new(rng.GetRandomValueFromList(FishItem.Get())),
 						new((ObjectIndexes)rng.GetRandomValueFromList(
 							ItemList.Items.Values
-								.Where(x => 
-									x.Id > 0 && x.DifficultyToObtain <= ObtainingDifficulties.LargeTimeRequirements)
+								.Where(x => x.DifficultyToObtain <= ObtainingDifficulties.LargeTimeRequirements)
 								.ToList()
 							).Id
 						),

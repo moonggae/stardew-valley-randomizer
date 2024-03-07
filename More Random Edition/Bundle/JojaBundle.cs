@@ -29,8 +29,7 @@ namespace Randomizer
 						new(
 							rng.GetRandomValueFromList(
 								ItemList.GetItemsBelowDifficulty(
-									ObtainingDifficulties.Impossible,
-									new List<int> { (int)ObjectIndexes.AnyFish }))
+									ObtainingDifficulties.Impossible))
 						)
 					};
 					MinimumRequiredItems = 5;

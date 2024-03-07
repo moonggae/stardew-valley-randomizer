@@ -372,7 +372,6 @@ namespace Randomizer
 
             Item reward = rng.GetRandomValueFromList(
 				ItemList.Items.Values
-					.Where(x => x.Id != (int)ObjectIndexes.AnyFish)
 					.Concat(ItemList.BigCraftableItems.Values)
 					.ToList()
 			);

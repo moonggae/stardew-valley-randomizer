@@ -8,10 +8,10 @@ using SVRing = StardewValley.Objects.Ring;
 
 namespace Randomizer
 {
-	/// <summary>
-	/// Represents an item in the game
-	/// </summary>
-	public class Item
+    /// <summary>
+    /// Represents an item in the game
+    /// </summary>
+    public class Item
     {
         public const string ObjectIdPrefix = "(O)";
 
@@ -122,7 +122,9 @@ namespace Randomizer
 				(int)ObjectIndexes.VoidMayonnaise
             }.Contains(Id);
         }
-		public bool IsGeodeMineral { get; set; }
+        public bool IsMilk { get => Category == ItemCategories.Milk; }
+        public bool IsEgg { get => Category == ItemCategories.Eggs; }
+        public bool IsGeodeMineral { get; set; }
 		public bool IsCrabPotItem { get =>
 			this is CrabPotItem ||
             new List<int>() {
@@ -168,11 +170,28 @@ namespace Randomizer
 
 		public string CoffeeIngredient { get; set; }
 
-		/// <summary>
-		/// The difficulty that this item is to obtain
-		/// Will return values appropriate to foragable items - they are never impossible
-		/// </summary>
-		public ObtainingDifficulties DifficultyToObtain
+        /// <summary>
+        /// Gets the category that belongs to the item
+        /// Null if we don't have the category defined
+        /// </summary>
+        /// <param name="index">The index</param>
+        /// <returns>The ItemCategories value found, or null if none was found</returns>
+        public ItemCategories? Category
+        {
+			get 
+			{
+                int categoryId = ItemRegistry.GetData(QualifiedId).Category;
+                return Enum.IsDefined(typeof(ItemCategories), categoryId)
+                    ? (ItemCategories)categoryId
+                    : null;
+            }
+        }
+
+        /// <summary>
+        /// The difficulty that this item is to obtain
+        /// Will return values appropriate to foragable items - they are never impossible
+        /// </summary>
+        public ObtainingDifficulties DifficultyToObtain
 		{
 			get
 			{
@@ -228,22 +247,12 @@ namespace Randomizer
         }
 
         /// <summary>
-        /// Generates a crafting recipe using this item and returns back the resulting string
+        /// Gets a randomly generated amount of this item required for a crafting recipe
+        /// Will always return a value of at least 1
         /// </summary>
-		/// <param name="rng">The RNG to use</param>
-        /// <returns>The crafting recipe's string</returns>
-        public string GenerateCraftingRequirement(RNG rng)
-		{
-			return $"{Id} {GetAmountRequiredForCrafting(rng)}";
-		}
-
-		/// <summary>
-		/// Gets a randomly generated amount of this item required for a crafting recipe
-		/// Will always return a value of at least 1
-		/// </summary>
-		/// <param name="rng">The RNG to use</param>
-		/// <returns />
-		public int GetAmountRequiredForCrafting(RNG rng)
+        /// <param name="rng">The RNG to use</param>
+        /// <returns />
+        public int GetAmountRequiredForCrafting(RNG rng)
 		{
 			int baseAmount = ItemsRequiredForRecipe.GetRandomValue(rng);
 			return Math.Max((int)(baseAmount * RequiredItemMultiplier), 1);

@@ -2,7 +2,6 @@
 {
 	public enum ObjectIndexes
 	{
-        AnyFish = -4,
         WildHorseradish = 16,
         Daffodil = 18,
         Leek = 20,

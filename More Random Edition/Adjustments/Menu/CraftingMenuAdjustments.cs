@@ -49,29 +49,30 @@ namespace Randomizer
 			CraftingRecipe inGameRecipe, 
 			Dictionary<ObjectIndexes, int> randomizedRecipe)
 		{
+			Dictionary<int, int> modifiedRecipe = 
+				CraftableItem.ConvertRecipeToUseCategories(randomizedRecipe);
             Dictionary<string, int> recipeList = inGameRecipe.recipeList;
 			recipeList.Clear();
-			if (randomizedRecipe.Values.All(x => x < 2))
+			if (modifiedRecipe.Values.All(x => x < 2))
 			{
-				ObjectIndexes firstKeyOfEasiestItem = randomizedRecipe.Keys
-					.Select(x => ItemList.Items[x])
-					.OrderBy(x => x.DifficultyToObtain)
-					.Select(x => (ObjectIndexes)x.Id)
+				int firstKeyOfEasiestItem = modifiedRecipe.Keys
+					.Where(id => id > 0) // Removes categories - these will never be the cheapest item in this case
+					.Select(id => ItemList.Items[(ObjectIndexes)id])
+					.OrderBy(item => item.DifficultyToObtain)
+					.Select(item => item.Id)
 					.First();
 
-				foreach (ObjectIndexes id in randomizedRecipe.Keys.Where(x => x != firstKeyOfEasiestItem))
+				foreach (int id in modifiedRecipe.Keys.Where(x => x != firstKeyOfEasiestItem))
 				{
-					var idAsString = ((int)id).ToString();
-					recipeList.Add(idAsString, 1);
+					recipeList.Add(id.ToString(), 1);
 				}
 			}
 			else
 			{
-				foreach (ObjectIndexes id in randomizedRecipe.Keys)
+				foreach (int id in modifiedRecipe.Keys)
 				{
-                    var idAsString = ((int)id).ToString();
-                    int numberRequired = randomizedRecipe[id];
-					recipeList.Add(idAsString, Math.Max(numberRequired / 2, 1));
+                    int numberRequired = modifiedRecipe[id];
+					recipeList.Add(id.ToString(), Math.Max(numberRequired / 2, 1));
 				}
 			}
 		}

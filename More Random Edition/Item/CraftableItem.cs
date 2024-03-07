@@ -1,7 +1,6 @@
 ﻿using StardewValley;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Randomizer
 {
@@ -19,7 +18,7 @@ namespace Randomizer
 		{
 			get { return SkillString.Length > 0; }
 		}
-		public CraftableCategories Category { get; set; }
+		public CraftableCategories CraftableCategory { get; set; }
 		public Dictionary<ObjectIndexes, int> LastRecipeGenerated { get; set; } = new(); // item id to amount needed
 
 		private readonly static Dictionary<string, string> CraftingRecipeData =
@@ -60,7 +59,7 @@ namespace Randomizer
             CraftingData = CraftingRecipeData[CraftingRecipeKey].Split("/");
             IsCraftable = true;
 			BigCraftablePrice = bigCraftablePrice;
-			Category = category;
+			CraftableCategory = category;
 			DifficultyToObtain = ObtainingDifficulties.NonCraftingItem; // By default, craftable items won't be materials for other craftable items
 
             if (isBigCraftable && !Enum.IsDefined(typeof(BigCraftableIndexes), id))
@@ -132,7 +131,12 @@ namespace Randomizer
 			string[] requiredItemsTokens = itemsRequiredString.Split(' ');
 			for (int i = 0; i < requiredItemsTokens.Length; i += 2)
 			{
-				string itemName = ItemList.GetItemName((ObjectIndexes)int.Parse(requiredItemsTokens[i]));
+				int itemId = int.Parse(requiredItemsTokens[i]);
+
+				// Checks for category and displays it appropriately
+                string itemName = itemId < 0 
+					? $"[{((ItemCategories)itemId).GetTranslation()}]"
+					: ItemList.GetItemName((ObjectIndexes)itemId);
                 string amount = requiredItemsTokens[i + 1];
 				requiredItemsSpoilerString += $" - {itemName}: {amount}";
 			}
@@ -158,70 +162,112 @@ namespace Randomizer
 		/// </returns>
 		private string GetItemsRequired()
 		{
-			string craftingString;
-			switch (Category)
+			Dictionary<ObjectIndexes, int> craftingRecipe;
+			switch (CraftableCategory)
 			{
 				case CraftableCategories.EasyAndNeedMany:
-					craftingString = GetStringForEasyAndNeedMany();
+                    craftingRecipe = GetRecipeForEasyAndNeedMany();
 					break;
 				case CraftableCategories.Easy:
-					craftingString = GetStringForEasy();
+                    craftingRecipe = GetRecipeForEasy();
 					break;
 				case CraftableCategories.ModerateAndNeedMany:
-					craftingString = GetStringForModerateAndNeedMany();
+                    craftingRecipe = GetRecipeForModerateAndNeedMany();
 					break;
 				case CraftableCategories.Moderate:
-					craftingString = GetStringForModerate();
+                    craftingRecipe = GetRecipeForModerate();
 					break;
 				case CraftableCategories.DifficultAndNeedMany:
-					craftingString = GetStringForDifficultAndNeedMany();
+                    craftingRecipe = GetRecipeForDifficultAndNeedMany();
 					break;
 				case CraftableCategories.Difficult:
-					craftingString = GetStringForDifficult();
+                    craftingRecipe = GetRecipeForDifficult();
 					break;
 				case CraftableCategories.Endgame:
-					craftingString = GetStringForEndgame();
+                    craftingRecipe = GetRecipeForEndgame();
 					break;
 				case CraftableCategories.Foragables:
-					craftingString = GetStringForForagables();
+                    craftingRecipe = GetRecipeForForagables();
 					break;
 				default:
 					Globals.ConsoleError($"Invalid category when generating recipe for {Name}!");
-					craftingString = "18 9"; // just a random value for now
+                    craftingRecipe = new Dictionary<ObjectIndexes, int>() { [ObjectIndexes.Acorn] = 1 }; 
 					break;
 			}
 
-			PopulateLastRecipeGenerated(craftingString);
-			return craftingString;
+            // Do this before we change any egg/milk to their categories, as:
+            // - Crab Pot uses this for the Trapper profession
+            // - Tappers use this to find what items to have available at Robin's
+            LastRecipeGenerated = craftingRecipe;
+			return RecipeToString(craftingRecipe);
 		}
 
 		/// <summary>
-		/// Fills the LastRecipeGenerated dictionary with the new recipe
-		/// This is a dictionary with item ids mapped to amounts
+		/// If necessary, converts the crafting recipe to use the appropriate category instead
+		/// Combines together items so that there are no dups as well (as that causes the menu to not open)
 		/// </summary>
-		/// <param name="craftingString">The crafting string to parse</param>
-		private void PopulateLastRecipeGenerated(string craftingString)
+		/// <returns>The new crafting string</returns>
+		private static string RecipeToString(Dictionary<ObjectIndexes, int> recipe)
 		{
-			LastRecipeGenerated.Clear();
-			string[] tokens = craftingString.Split(' ');
-			for (int i = 0; i + 1 < tokens.Length; i += 2)
-			{
-				ObjectIndexes id = (ObjectIndexes)int.Parse(tokens[i]);
-				int amount = int.Parse(tokens[i + 1]);
+			Dictionary<int, int> itemsToAmounts = ConvertRecipeToUseCategories(recipe);
 
-				if (!LastRecipeGenerated.ContainsKey(id))
-				{
-					LastRecipeGenerated.Add(id, amount);
-				}
+			string newCraftingString = string.Empty;
+			foreach (KeyValuePair<int, int> kv in itemsToAmounts)
+			{
+				newCraftingString += $"{kv.Key} {kv.Value} ";
 			}
+			return newCraftingString.Trim();
 		}
 
 		/// <summary>
-		/// Gets the crafting string for an item that is easy to get and that you need to craft many of
+		/// Takes a recipe and converts it to a dictionary mapping the item or category to the amount
+		/// The Trapper menu hack uses this to get its list of items to check
+		/// </summary>
+		/// <param name="recipe">The recipe to convert</param>
+		/// <returns>The converted dictionary</returns>
+		public static Dictionary<int, int> ConvertRecipeToUseCategories(
+			Dictionary<ObjectIndexes, int> recipe)
+		{
+            Dictionary<int, int> itemsToAmounts = new();
+            foreach (KeyValuePair<ObjectIndexes, int> kv in recipe)
+            {
+                int itemOrCraftingCategoryId = ConvertItemIdToCraftingItemId((int)kv.Key);
+                int amount = kv.Value;
+
+                if (itemsToAmounts.ContainsKey(itemOrCraftingCategoryId))
+                {
+                    itemsToAmounts[itemOrCraftingCategoryId] += amount;
+                }
+                else
+                {
+                    itemsToAmounts[itemOrCraftingCategoryId] = amount;
+                }
+            }
+			return itemsToAmounts;
+        }
+
+		/// <summary>
+		/// If necessary, converts the crafting item id to use the appropriate category instead
+		/// so that all items of that particular category work for the recipe
+		/// </summary>
+		/// <returns>The new id for the crafting item id</returns>
+		private static int ConvertItemIdToCraftingItemId(int id)
+		{
+            Item item = ItemList.GetItem((ObjectIndexes)id);
+            if (item.IsEgg || item.IsMilk)
+            {
+				return (int)item.Category;
+            }
+
+			return id;
+        }
+
+		/// <summary>
+		/// Gets the crafting recipe for an item that is easy to get and that you need to craft many of
 		/// Consists of 1 or 2 items that have no reqiurements to obtain
 		/// </summary>
 		/// <returns></returns>
-		private string GetStringForEasyAndNeedMany()
+		private Dictionary<ObjectIndexes, int> GetRecipeForEasyAndNeedMany()
 		{
 			Item item = ItemList.GetRandomCraftableItem(
 				Rng,
@@ -232,23 +278,28 @@ namespace Randomizer
 			);
 
 			int numberRequired = Rng.NextBoolean() ? 1 : 2;
-			return $"{item.Id} {numberRequired}";
+			return new Dictionary<ObjectIndexes, int>() { [(ObjectIndexes)item.Id] = numberRequired };
 		}
 
 		/// <summary>
 		/// Uses either two really easy to get items (one being a resource), or one slightly harder to get item		
-		/// /// </summary>
+		/// </summary>
 		/// <returns>The item string</returns>
-		private string GetStringForEasy()
+		private Dictionary<ObjectIndexes, int> GetRecipeForEasy()
 		{
-			bool useHarderItem = Rng.NextBoolean();
+			Dictionary<ObjectIndexes, int> recipe = new();
+
+            bool useHarderItem = Rng.NextBoolean();
 			if (useHarderItem)
 			{
-				return ItemList.GetRandomCraftableItem(
-                    Rng,
-                    new List<ObtainingDifficulties> { ObtainingDifficulties.SmallTimeRequirements },
+				Item harderItem = ItemList.GetRandomCraftableItem(
+					Rng,
+					new List<ObtainingDifficulties> { ObtainingDifficulties.SmallTimeRequirements },
 					this
-				).GenerateCraftingRequirement(Rng);
+				);
+
+				AddItemToRecipe(recipe, harderItem, Rng);
+				return recipe;
 			}
 
 			Item resourceItem = ItemList.GetRandomCraftableItem(
@@ -265,8 +316,10 @@ namespace Randomizer
 				new List<int> { Id, resourceItem.Id }
 			);
 
-			return $"{resourceItem.GenerateCraftingRequirement(Rng)} {otherItem.GenerateCraftingRequirement(Rng)}";
-		}
+			AddItemToRecipe(recipe, resourceItem, Rng);
+			AddItemToRecipe(recipe, otherItem, Rng);
+			return recipe;
+        }
 
 		/// <summary>
 		/// One of the following, limited to one item needed
@@ -275,14 +328,12 @@ namespace Randomizer
 		/// - One MediumTime, one SmallTime
 		/// </summary>
 		/// <returns>The item string</returns>
-		private string GetStringForModerateAndNeedMany()
+		private Dictionary<ObjectIndexes, int> GetRecipeForModerateAndNeedMany()
 		{
-			string output = string.Empty;
-			foreach (Item item in GetListOfItemsForModerate())
-			{
-				output += $"{item.Id} 1 ";
-			}
-			return output.Trim();
+			Dictionary<ObjectIndexes, int> recipe = new();
+			GetListOfItemsForModerate().ForEach(item =>
+				AddItemToRecipe(recipe, (ObjectIndexes)item.Id, amount: 1));
+			return recipe;
 		}
 
 		/// <summary>
@@ -292,14 +343,12 @@ namespace Randomizer
 		/// - One MediumTime, one SmallTime
 		/// </summary>
 		/// <returns>The item string</returns>
-		private string GetStringForModerate()
+		private Dictionary<ObjectIndexes, int> GetRecipeForModerate()
 		{
-			string output = string.Empty;
-			foreach (Item item in GetListOfItemsForModerate())
-			{
-				output += $"{item.GenerateCraftingRequirement(Rng)} ";
-			}
-			return output.Trim();
+            Dictionary<ObjectIndexes, int> recipe = new();
+			GetListOfItemsForModerate().ForEach(item =>
+                AddItemToRecipe(recipe, item, Rng));
+			return recipe;
 		}
 
 		/// <summary>
@@ -372,14 +421,12 @@ namespace Randomizer
 		/// - Two sets of LongTime
 		/// </summary>
 		/// <returns>The item string</returns>
-		private string GetStringForDifficultAndNeedMany()
+		private Dictionary<ObjectIndexes, int> GetRecipeForDifficultAndNeedMany()
 		{
-			string output = string.Empty;
-			foreach (Item item in GetListOfItemsForDifficult())
-			{
-				output += $"{item.Id} 1 ";
-			}
-			return output.Trim();
+            Dictionary<ObjectIndexes, int> recipe = new();
+            GetListOfItemsForDifficult().ForEach(item =>
+                AddItemToRecipe(recipe, (ObjectIndexes)item.Id, amount: 1));
+			return recipe;
 		}
 
 		/// <summary>
@@ -389,14 +436,12 @@ namespace Randomizer
 		/// - Two sets of LongTime
 		/// </summary>
 		/// <returns>The item string</returns>
-		private string GetStringForDifficult()
+		private Dictionary<ObjectIndexes, int> GetRecipeForDifficult()
 		{
-			string output = string.Empty;
-			foreach (Item item in GetListOfItemsForDifficult())
-			{
-				output += $"{item.GenerateCraftingRequirement(Rng)} ";
-			}
-			return output.Trim();
+            Dictionary<ObjectIndexes, int> recipe = new();
+            GetListOfItemsForDifficult().ForEach(item =>
+                AddItemToRecipe(recipe, item, Rng));
+            return recipe;
 		}
 
 		/// <summary>
@@ -468,9 +513,9 @@ namespace Randomizer
 		/// - One set of Longtime, two MediumTime or less
 		/// </summary>
 		/// <returns>The item string</returns>
-		private string GetStringForEndgame()
+		private Dictionary<ObjectIndexes, int> GetRecipeForEndgame()
 		{
-			List<Item> possibleItems = ItemList.Items.Values.ToList();
+            Dictionary<ObjectIndexes, int> recipe = new();
 			Item item1, item2, item3;
 			switch (Rng.NextIntWithinRange(0, 2))
 			{
@@ -526,17 +571,21 @@ namespace Randomizer
 					break;
 			}
 
-			return $"{item1.GenerateCraftingRequirement(Rng)} {item2.GenerateCraftingRequirement(Rng)} {item3.GenerateCraftingRequirement(Rng)}";
+			AddItemToRecipe(recipe, item1, Rng);
+            AddItemToRecipe(recipe, item2, Rng);
+            AddItemToRecipe(recipe, item3, Rng);
+            return recipe;
 		}
 
 		/// <summary>
-		/// Gets the string for the Foragable type
+		/// Gets the recipe for the Foragable type
 		/// This will be 4 of any of the foragables of the appropriate season
 		/// </summary>
 		/// <returns />
-		private string GetStringForForagables()
+		private Dictionary<ObjectIndexes, int> GetRecipeForForagables()
 		{
-			Seasons season;
+            Dictionary<ObjectIndexes, int> recipe = new();
+            Seasons season;
 			switch (Id)
 			{
 				case (int)ObjectIndexes.SpringSeeds:
@@ -553,30 +602,54 @@ namespace Randomizer
 					break;
 				default:
 					Globals.ConsoleError("Generated string for Foragable type for a non-wild seed! Using 1 wood instead...");
-					return $"{(int)ObjectIndexes.Wood} 1";
+					AddItemToRecipe(recipe, ObjectIndexes.Wood, amount: 1);
+					return recipe;
 			}
 
-			Dictionary<int, int> foragablesToUse = new();
 			for (int i = 0; i < 4; i++)
 			{
-				int foragableId = Rng.GetRandomValueFromList(ItemList.GetForagables(season)).Id;
-				if (foragablesToUse.ContainsKey(foragableId))
-				{
-					foragablesToUse[foragableId]++;
-				}
-				else
-				{
-					foragablesToUse.Add(foragableId, 1);
-				}
-			}
+				ObjectIndexes foragableIndex = (ObjectIndexes)Rng.GetRandomValueFromList(ItemList.GetForagables(season)).Id;
+                AddItemToRecipe(recipe, foragableIndex, amount: 1);
+            }
 
-			string craftingString = "";
-			foreach (int id in foragablesToUse.Keys)
-			{
-				craftingString += $"{id} {foragablesToUse[id]} ";
-			}
-
-			return craftingString.Trim();
+			return recipe;
 		}
-	}
+
+		/// <summary>
+		/// Adds an item to the recipe
+		/// If it's a dup, will increment the amount accordingly
+		/// </summary>
+		/// <param name="recipe">The recipe to modif</param>
+		/// <param name="itemIndex">The item to add</param>
+		/// <param name="amount">The amount to add</param>
+		private static void AddItemToRecipe(
+			Dictionary<ObjectIndexes, int> recipe, 
+			ObjectIndexes itemIndex,
+			int amount)
+		{
+			if (recipe.ContainsKey(itemIndex))
+			{
+				recipe[itemIndex] += amount;
+			}
+			else
+			{
+                recipe[itemIndex] = amount;
+            }
+        }
+
+        /// <summary>
+        /// Adds an item to the recipe
+        /// If it's a dup, will increment the amount accordingly
+        /// </summary>
+        /// <param name="recipe">The recipe to modif</param>
+        /// <param name="item">The item to add</param>
+        /// <param name="rng">The RNG to use to get the amount</param>
+        private static void AddItemToRecipe(
+			Dictionary<ObjectIndexes, int> recipe, 
+			Item item, 
+			RNG rng)
+        {
+			AddItemToRecipe(recipe, (ObjectIndexes)item.Id, item.GetAmountRequiredForCrafting(rng));
+        }
+    }
 }

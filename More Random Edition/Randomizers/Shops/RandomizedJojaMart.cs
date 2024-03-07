@@ -55,7 +55,7 @@ namespace Randomizer
             Item itemOfTheWeek = validItems[shopRNG.Next(validItems.Count)];
             int salePrice = GetAdjustedItemPrice(itemOfTheWeek, fallbackPrice: 20, multiplier: 2);
             int stock = itemOfTheWeek.IsCraftable &&
-                    ((itemOfTheWeek as CraftableItem).Category == CraftableCategories.EasyAndNeedMany)
+                    ((itemOfTheWeek as CraftableItem).CraftableCategory == CraftableCategories.EasyAndNeedMany)
                 ? shopRNG.NextIntWithinRange(30, 50)
                 : shopRNG.NextIntWithinRange(3, 15);
 

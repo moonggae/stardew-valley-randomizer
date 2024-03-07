@@ -385,9 +385,8 @@ namespace Randomizer
         {
 			List<int> excludedIds = idsToExclude ?? new List<int>();
             return Items.Values.Where(
-                    x => x.IsCraftable && (x as CraftableItem).Category == category &&
-						!excludedIds.Contains(x.Id) &&
-						x.Id > 0
+                    x => x.IsCraftable && (x as CraftableItem).CraftableCategory == category &&
+						!excludedIds.Contains(x.Id)
                 ).ToList();
         }
 
@@ -404,24 +403,6 @@ namespace Randomizer
 					.Where(x => x.IsResource &&
 						(idsToExclude == null || !idsToExclude.Contains(x.Id)))
 					.ToList());
-		}
-
-		/// <summary>
-		/// Returns the crafting string of the given object index
-		/// Intended to only be passed craftable items, or you'll get an error in the console
-		/// </summary>
-		/// <param name="objectIndex">The object to look up</param>
-		/// <returns />
-		public static string GetCraftingString(ObjectIndexes objectIndex)
-		{
-			Item item = GetItem(objectIndex);
-			if (item.IsCraftable)
-			{
-				return ((CraftableItem)item).GetCraftingString();
-			}
-
-			Globals.ConsoleError($"Attempted to create a crafting recipe for a non-craftable item - {item.Name}");
-			return string.Empty;
 		}
 
 		/// <summary>
@@ -727,7 +708,6 @@ namespace Randomizer
 				{ ObjectIndexes.CuriosityLure, new Item((int)ObjectIndexes.CuriosityLure, ObtainingDifficulties.RareItem) { CanStack = false } },
 
 				// Fish - defaults to ObtainingDifficulties.LargeTimeRequirements
-				{ ObjectIndexes.AnyFish, new FishItem((int)ObjectIndexes.AnyFish, ObtainingDifficulties.NonCraftingItem) },
 				{ ObjectIndexes.Pufferfish, new FishItem((int)ObjectIndexes.Pufferfish) },
 				{ ObjectIndexes.Anchovy, new FishItem((int)ObjectIndexes.Anchovy) },
 				{ ObjectIndexes.Tuna, new FishItem((int)ObjectIndexes.Tuna) },
