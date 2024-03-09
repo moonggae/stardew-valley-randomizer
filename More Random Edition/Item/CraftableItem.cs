@@ -249,6 +249,15 @@ namespace Randomizer
 		/// <returns>The new id for the crafting item id</returns>
 		private static int ConvertItemIdToCraftingItemId(int id)
 		{
+			// Skipping void eggs explicitely since they are MEANT to be
+			// harder to get than normal eggs
+			// If there are too many of these cases, we'll consider putting
+			// a property on the item itself to check if we should skip using its category
+			if (id == (int)ObjectIndexes.VoidEgg)
+			{
+				return id;
+			}
+
             Item item = ItemList.GetItem((ObjectIndexes)id);
             if (item.IsEgg || item.IsMilk)
             {
