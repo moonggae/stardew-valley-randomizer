@@ -93,19 +93,18 @@ namespace Randomizer
 		/// </returns>
 		public int GetLevelLearnedAt()
 		{
-			Range levelRange = new(BaseLevelLearnedAt - 3, BaseLevelLearnedAt + 3);
+            if (!Globals.Config.CraftingRecipes.RandomizeLevels)
+            {
+                return OriginalLevelLearnedAt;
+            }
+
+            Range levelRange = new(BaseLevelLearnedAt - 3, BaseLevelLearnedAt + 3);
 			int generatedLevel = levelRange.GetRandomValue(Rng);
 			if (generatedLevel > 8) { return 9; }
 			if (generatedLevel < 1) { return 1; }
 			if (generatedLevel == 5)
 			{
 				generatedLevel = Rng.NextBoolean() ? 4 : 6;
-			}
-
-			if (!Globals.Config.CraftingRecipes.Randomize || 
-				!Globals.Config.CraftingRecipes.RandomizeLevels) 
-			{ 
-				return OriginalLevelLearnedAt; 
 			}
 
 			return generatedLevel;
@@ -141,13 +140,10 @@ namespace Randomizer
 				requiredItemsSpoilerString += $" - {itemName}: {amount}";
 			}
 
-			if (Globals.Config.CraftingRecipes.Randomize)
-			{
-				string displayName = overrideRecipeName ?? Name;
-                Globals.SpoilerWrite($"{displayName} - {unlockConditions}");
-				Globals.SpoilerWrite(requiredItemsSpoilerString);
-				Globals.SpoilerWrite("---");
-			}
+			string displayName = overrideRecipeName ?? Name;
+            Globals.SpoilerWrite($"{displayName} - {unlockConditions}");
+			Globals.SpoilerWrite(requiredItemsSpoilerString);
+			Globals.SpoilerWrite("---");
 
 			return string.Join("/", CraftingData);
 		}

@@ -2,7 +2,6 @@
 using StardewValley.GameData.Buildings;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Randomizer
@@ -59,10 +58,14 @@ namespace Randomizer
         /// <returns>The dictionary to use to replace the assets</returns>
         public static Dictionary<string, BuildingData> Randomize()
 		{
-			Rng = RNG.GetFarmRNG(nameof(BuildingRandomizer));
+            Dictionary<string, BuildingData> buildingChanges = new();
+            if (!Globals.Config.RandomizeBuildingCosts) 
+			{ 
+				return buildingChanges; 
+			}
 
+            Rng = RNG.GetFarmRNG(nameof(BuildingRandomizer));
             Dictionary<string, BuildingData> buildingData = DataLoader.Buildings(Game1.content);
-			Dictionary<string, BuildingData> buildingChanges = new();
 
             List<int> idsToDisallowForAnimalBuildings = ItemList.GetAnimalProducts().Select(x => x.Id).ToList();
 			idsToDisallowForAnimalBuildings.AddRange(new List<int>
@@ -352,8 +355,6 @@ namespace Randomizer
         /// <param name="buildingChanges">Info about the changed buildings</param>
         private static void WriteToSpoilerLog(Dictionary<string, BuildingData> buildingChanges)
 		{
-			if (!Globals.Config.RandomizeBuildingCosts) { return; }
-
 			Globals.SpoilerWrite("==== BUILDINGS ====");
 			foreach (var buildingData in buildingChanges)
 			{

@@ -31,15 +31,19 @@ namespace Randomizer
         /// <returns>The dictionary of replacements to replace the asset with</returns>
         public static Dictionary<string, MuseumRewards> RandomizeMuseumRewards()
         {
+            Dictionary<string, MuseumRewards> museumRewardReplacements = new();
+            if (!Globals.Config.RandomizeMuseumRewards)
+            {
+                return museumRewardReplacements;
+            }
+
             Rng = RNG.GetFarmRNG(nameof(MuseumRewardRandomizer));
             UsedRewardIds.Clear();
 
             Dictionary<string, MuseumRewards> museumRewards = 
                 DataLoader.MuseumRewards(Game1.content);
 
-            Dictionary<string, MuseumRewards> museumRewardReplacements = new();
-
-            WriteToSpoilerLog("==== MUSEUM REWARDS ====");
+            Globals.SpoilerWrite("==== MUSEUM REWARDS ====");
 
             foreach (var museumRewardsData in museumRewards)
             {
@@ -59,10 +63,10 @@ namespace Randomizer
 
                 string oldRewardString = GetSpoilerLogRewardString(oldRewardData.RewardItemId);
                 string newRewardString = GetSpoilerLogRewardString(repalcementData.RewardItemId);
-                WriteToSpoilerLog($"Museum reward: {oldRewardString} was changed to {newRewardString}");
+                Globals.SpoilerWrite($"Museum reward: {oldRewardString} was changed to {newRewardString}");
             }
 
-            WriteToSpoilerLog("");
+            Globals.SpoilerWrite("");
             return museumRewardReplacements;
         }
 
@@ -193,17 +197,6 @@ namespace Randomizer
         private static string GetSpoilerLogRewardString(string rewardId)
         {
             return $"{rewardId} ({ItemList.GetDisplayNameFromQualifiedId(rewardId)})";
-        }
-
-        /// <summary>
-        /// Writes to the spoiler log if the setting allows it
-        /// </summary>
-        private static void WriteToSpoilerLog(string textToWrite)
-        {
-            if (Globals.Config.RandomizeMuseumRewards)
-            {
-                Globals.SpoilerWrite(textToWrite);
-            }
         }
     }
 }

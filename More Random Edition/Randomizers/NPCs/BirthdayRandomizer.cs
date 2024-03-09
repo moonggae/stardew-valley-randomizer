@@ -41,10 +41,14 @@ namespace Randomizer
 		/// <returns>The dictionary to use for replacements</returns>
 		public static Dictionary<string, CharacterData> Randomize()
 		{
-            Rng = RNG.GetFarmRNG(nameof(BirthdayRandomizer));
+            Dictionary<string, CharacterData> replacements = new();
+            if (!Globals.Config.NPCs.RandomizeBirthdays) 
+			{ 
+				return replacements; 
+			}
 
+            Rng = RNG.GetFarmRNG(nameof(BirthdayRandomizer));
             Dictionary<SDate, string> birthdaysInUse = InitBirthdaysInUse();
-			Dictionary<string, CharacterData> replacements = new();
 			Dictionary<string, CharacterData> characterData = DataLoader.Characters(Game1.content);
 
             foreach (KeyValuePair<string, CharacterData> dispositionData in characterData)
@@ -141,8 +145,6 @@ namespace Randomizer
 		/// <param name="replacements">The replacements made - need to filter out the "HOLIDAY" entries</param>
 		private static void WriteToSpoilerLog(Dictionary<SDate, string> replacements)
 		{
-			if (!Globals.Config.NPCs.RandomizeBirthdays) { return; }
-
 			Globals.SpoilerWrite("===== NPC BIRTHDAYS =====");
 			foreach (SDate date in replacements.Keys)
 			{

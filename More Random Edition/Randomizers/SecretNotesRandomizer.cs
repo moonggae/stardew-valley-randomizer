@@ -15,10 +15,14 @@ namespace Randomizer
 		/// <returns><c>Dictionary&lt;int, string&gt;</c> containing the secret note IDs and strings to replace.</returns>
 		public static Dictionary<int, string> FixSecretNotes(Dictionary<string, string> preferenceReplacements)
 		{
-            Rng = RNG.GetFarmRNG(nameof(SecretNotesRandomizer));
+            Dictionary<int, string> secretNoteReplacements = new();
+            if (!Globals.Config.NPCs.RandomizeIndividualPreferences)
+            {
+                return secretNoteReplacements;
+            }
 
+			Rng = RNG.GetFarmRNG(nameof(SecretNotesRandomizer));
             prefs = preferenceReplacements;
-			Dictionary<int, string> _replacements = new();
 			Dictionary<int, string> secretNoteData = DataLoader.SecretNotes(Game1.content);
 
 			// The data dictionary has more entries than we want to change - we do only want indexes 1-9
@@ -34,12 +38,12 @@ namespace Randomizer
 
 				string dataWithoutReveal = secretNoteData[noteIndex].Split("%revealtaste")[0];
                 string noteText = $"{dataWithoutReveal}{npcLovesString}";
-				_replacements.Add(noteIndex, noteText);
+				secretNoteReplacements.Add(noteIndex, noteText);
 			}
 
-			WriteToSpoilerLog(_replacements);
+			WriteToSpoilerLog(secretNoteReplacements);
 
-			return _replacements;
+			return secretNoteReplacements;
 		}
 
 		/// <summary>
@@ -87,11 +91,6 @@ namespace Randomizer
 		/// <param name="replacements">The results</param>
 		private static void WriteToSpoilerLog(Dictionary<int, string> replacements)
 		{
-			if (!Globals.Config.NPCs.RandomizeIndividualPreferences) 
-			{ 
-				return; 
-			}
-
 			Globals.SpoilerWrite("===== SECRET NOTES =====");
 			foreach (KeyValuePair<int, string> pair in replacements)
 			{

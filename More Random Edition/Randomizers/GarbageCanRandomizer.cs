@@ -1,11 +1,8 @@
 ﻿using Force.DeepCloner;
 using StardewValley;
 using StardewValley.GameData.GarbageCans;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static StardewValley.GameData.QuantityModifier;
 
 namespace Randomizer

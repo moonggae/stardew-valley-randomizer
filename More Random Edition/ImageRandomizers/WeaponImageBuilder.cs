@@ -74,7 +74,7 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="id">The id</param>
 		/// <returns />
-		protected Point GetPointFromId(int id)
+		protected static Point GetPointFromId(int id)
 		{
 			return new Point(id % ItemsPerRow, id / ItemsPerRow);
 		}
@@ -135,7 +135,7 @@ namespace Randomizer
 		/// <returns>True if so, false otherwise</returns>
 		public override bool ShouldSaveImage()
 		{
-			return Globals.Config.Weapons.Randomize && Globals.Config.Weapons.UseCustomImages;
+			return Globals.Config.Weapons.UseCustomImages;
 		}
 	}
 }

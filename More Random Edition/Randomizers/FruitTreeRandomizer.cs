@@ -44,6 +44,13 @@ namespace Randomizer
         public static Dictionary<string, FruitTreeData> Randomize(
             Dictionary<string, ObjectData> objectReplacements)
         {
+            Dictionary<string, FruitTreeData> fruitTreeReplacements = new();
+
+            if (!Globals.Config.RandomizeFruitTrees)
+            {
+                return fruitTreeReplacements;
+            }
+
             Rng = RNG.GetFarmRNG(nameof(FruitTreeRandomizer));
 
             List<Seasons> startingSeasons = GetStartingSeasonList();
@@ -51,8 +58,6 @@ namespace Randomizer
             List<ItemCategories> fruitTreeCategories = 
                 CategoryExtentions.GetRandomCategories(Rng, NumberOfRandomFruitTreeCategoryTrees);
             List<Item> fruitTreeSingleItems = GetListOfRandomFruitTreeItems();
-
-            Dictionary<string, FruitTreeData> fruitTreeReplacements = new();
 
             CreateFruitTreeWithCategory(
                 RandomizedFruitTreeIds[0],
@@ -314,12 +319,6 @@ namespace Randomizer
             int basePrice = 5000)
         {
             int fruitTreePrice = GetPriceForFruitTree(modifiedFruitTree, basePrice) / 2;
-
-            // Done after the price, since there's an RNG call to calculate it
-            if (!Globals.Config.RandomizeFruitTrees)
-            {
-                return;
-            }
 
             fruitTreeReplacements[fruitTreeId.ToString()] = modifiedFruitTree;
 

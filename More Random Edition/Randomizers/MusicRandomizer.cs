@@ -129,7 +129,13 @@ namespace Randomizer
 		/// </summary>
 		/// <returns>A dictionary of song names to their alternatives</returns>
 		public static void Randomize()
-        { 
+        {
+            if (!Globals.Config.Music.Randomize ||
+                Globals.Config.Music.RandomSongEachChange) 
+            { 
+                return; 
+            }
+
             RNG rng = RNG.GetFarmRNG(nameof(MusicRandomizer));
 			List<string> musicReplacementPool = new(MusicList);
 			MusicReplacements = new Dictionary<string, string>();
@@ -207,9 +213,7 @@ namespace Randomizer
         /// <param name="musicList">The music replacement list</param>
         private static void WriteToSpoilerLog()
 		{
-			if (!Globals.Config.Music.Randomize || Globals.Config.Music.RandomSongEachChange) { return; }
-
-			Globals.SpoilerWrite("==== MUSIC ====");
+            Globals.SpoilerWrite("==== MUSIC ====");
 			foreach (string song in MusicReplacements.Keys)
 			{
 				Globals.SpoilerWrite($"{song} is now {MusicReplacements[song]}");

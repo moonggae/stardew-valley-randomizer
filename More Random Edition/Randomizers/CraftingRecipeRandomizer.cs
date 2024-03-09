@@ -15,12 +15,14 @@ namespace Randomizer
 		/// <returns>The dictionary of changes to make to the asset</returns>
 		public static Dictionary<string, string> Randomize()
 		{
-			if (Globals.Config.CraftingRecipes.Randomize)  
-			{ 
-				Globals.SpoilerWrite($"==== CRAFTING RECIPES ===="); 
-			}
+            Dictionary<string, string> replacements = new();
+            if (!Globals.Config.CraftingRecipes.Randomize)
+            {
+				return replacements;
+            }
 
-			Dictionary<string, string> replacements = new();
+			Globals.SpoilerWrite($"==== CRAFTING RECIPES ===="); 
+
 			var allCraftableItems = ItemList.Items.Values
 				.Concat(ItemList.BigCraftableItems.Values)
 				.Where(x => x.IsCraftable)
@@ -44,10 +46,7 @@ namespace Randomizer
 				CraftableCategories.Moderate, 
 				dataKey: TransmuteGoldName).GetCraftingString(TransmuteGoldName);
 
-            if (Globals.Config.CraftingRecipes.Randomize) 
-			{ 
-				Globals.SpoilerWrite(""); 
-			}
+			Globals.SpoilerWrite("");
 
 			return replacements;
 		}

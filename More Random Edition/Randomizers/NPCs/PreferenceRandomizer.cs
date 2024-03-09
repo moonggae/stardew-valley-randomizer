@@ -71,7 +71,7 @@ namespace Randomizer
         /// <summary>
         /// The data from Data/NPCGiftTastes.xnb
         /// </summary>
-        public static Dictionary<string, string> GiftTasteData { get; private set; }
+        private static Dictionary<string, string> GiftTasteData { get; set; }
 
 		/// <summary>
 		/// The modified data from Data/NPCGiftTastes.xnb
@@ -128,13 +128,17 @@ namespace Randomizer
         /// <returns>Dictionary&lt;string, string&gt; which holds the replacement prefstrings for the enabled preferences (NPC/Universal).</returns>
         public static Dictionary<string, string> Randomize()
         {
-			Rng = RNG.GetFarmRNG(nameof(PreferenceRandomizer));
-
             // Initialize gift taste data here so that it's reloaded in case of a locale change
             GiftTasteData = DataLoader.NpcGiftTastes(Game1.content);
 			NewGiftTasteData = new();
 
-			List<int> universalUnusedCategories = new(CategoryExtentions.GetIntValues());
+			if (!Globals.Config.NPCs.RandomizeUniversalPreferences)
+			{
+				return NewGiftTasteData;
+			}
+
+            Rng = RNG.GetFarmRNG(nameof(PreferenceRandomizer));
+            List<int> universalUnusedCategories = new(CategoryExtentions.GetIntValues());
 			List<Item> universalUnusedItems = ItemList.GetGiftables();
 
 			// Generate the universal preferences

@@ -17,14 +17,19 @@ namespace Randomizer
         public static void Randomize(
             Dictionary<string, SVLocationData> locationsReplacements)
         {
+            if (!Globals.Config.AddRandomArtifactItem)
+            {
+                return;
+            }
+
             Rng = RNG.GetFarmRNG(nameof(ArtifactSpotRandomizer));
 
-            WriteToSpoilerLog("==== Extra Artifact Spot Items ====");
+            Globals.SpoilerWrite("==== Extra Artifact Spot Items ====");
 
             LocationData.ArtifactSpotLocations
                 .ForEach(location => AddArtifactSpotDropData(location, locationsReplacements));
 
-            WriteToSpoilerLog("");
+            Globals.SpoilerWrite("");
         }
 
         /// <summary>
@@ -47,7 +52,7 @@ namespace Randomizer
             locationData.ArtifactSpots.Add(
                 GetArtifactSpotDropData(diggableItem, probability));
 
-            WriteToSpoilerLog($"{location}: ({diggableItem.Id}) {diggableItem.Name} | {probability}");
+            Globals.SpoilerWrite($"{location}: ({diggableItem.Id}) {diggableItem.Name} | {probability}");
         }
 
         /// <summary>
@@ -158,18 +163,6 @@ namespace Randomizer
                 QualityModifierMode = QuantityModifierMode.Stack,
                 PerItemCondition = null
             };
-        }
-
-        /// <summary>
-        /// Writes the message to the spoiler log, if applicable
-        /// </summary>
-        /// <param name="foragableLocationDataList">The list of location data that was randomized</param>
-        public static void WriteToSpoilerLog(string message)
-        {
-            if (Globals.Config.AddRandomArtifactItem) 
-            {
-                Globals.SpoilerWrite(message);
-            }
         }
     }
 }

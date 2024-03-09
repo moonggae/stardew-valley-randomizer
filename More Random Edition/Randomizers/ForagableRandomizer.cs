@@ -35,28 +35,22 @@ namespace Randomizer
 		public static Dictionary<string, SVLocationData> Randomize(
 			Dictionary<string, ObjectData> objectReplacements)
 		{
-			Rng = RNG.GetFarmRNG(nameof(ForagableRandomizer));
+            ClearForagableLists();
 
-			AllForagables = ItemList.Items.Values.Where(x => x.ShouldBeForagable).ToList();
+            var locationsReplacements = new Dictionary<string, SVLocationData>();
+            if (!Globals.Config.RandomizeForagables)
+            {
+				// Fill with defaults, since ItemList.GetForagables needs this data
+				PopulateDefaultForagables();
+                return locationsReplacements;
+            }
 
-			SpringForagables.Clear();
-			SummerForagables.Clear();
-			FallForagables.Clear();
-			WinterForagables.Clear();
-			BeachForagables.Clear();
-			WoodsForagables.Clear();
-			DesertForagables.Clear();
+            Rng = RNG.GetFarmRNG(nameof(ForagableRandomizer));
+            AllForagables = ItemList.Items.Values.Where(x => x.ShouldBeForagable).ToList();
 
-			var locationsReplacements = new Dictionary<string, SVLocationData>();
 			GroupForagablesBySeason();
 
 			List<LocationData> foragableLocationDataList = GetForagableLocationDataList();
-
-			// Randomization is done at this point, so exit if we aren't keeping the changes
-            if (!Globals.Config.RandomizeForagables)
-            {
-                return new Dictionary<string, SVLocationData>();
-            }
 
             foreach (LocationData foragableLocationData in foragableLocationDataList)
 			{
@@ -72,26 +66,84 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Writes the results to the spoiler log
+		/// Clears the lists of foragables
 		/// </summary>
-		/// <param name="foragableLocationDataList">The list of location data that was randomized</param>
-		public static void WriteToSpoilerLog(List<LocationData> foragableLocationDataList)
+		public static void ClearForagableLists()
 		{
-			if (!Globals.Config.RandomizeForagables) { return; }
+            SpringForagables.Clear();
+            SummerForagables.Clear();
+            FallForagables.Clear();
+            WinterForagables.Clear();
+            BeachForagables.Clear();
+            WoodsForagables.Clear();
+            DesertForagables.Clear();
+        }
 
-			Globals.SpoilerWrite("==== Foragables ===");
-			foreach (LocationData foragableLocationData in foragableLocationDataList)
-			{
-				Globals.SpoilerWrite("");
-				Globals.SpoilerWrite($">> {foragableLocationData.LocationName} <<");
+        /// <summary>
+        /// Sets the foragable arrays to contain the vanilla foragables
+        /// </summary>
+        private static void PopulateDefaultForagables()
+        {
+            SpringForagables.AddRange(new List<Item>()
+            {
+                ItemList.Items[ObjectIndexes.WildHorseradish],
+                ItemList.Items[ObjectIndexes.Daffodil],
+                ItemList.Items[ObjectIndexes.Leek],
+                ItemList.Items[ObjectIndexes.Dandelion]
+            });
 
-				WriteResultsForSeason(Seasons.Spring, foragableLocationData);
-				WriteResultsForSeason(Seasons.Summer, foragableLocationData);
-				WriteResultsForSeason(Seasons.Fall, foragableLocationData);
-				WriteResultsForSeason(Seasons.Winter, foragableLocationData);
-			}
-			Globals.SpoilerWrite("");
-		}
+            SummerForagables.AddRange(new List<Item>()
+            {
+                ItemList.Items[ObjectIndexes.SpiceBerry],
+                ItemList.Items[ObjectIndexes.Grape],
+                ItemList.Items[ObjectIndexes.SweetPea]
+            });
+
+            FallForagables.AddRange(new List<Item>()
+            {
+                ItemList.Items[ObjectIndexes.WildPlum],
+                ItemList.Items[ObjectIndexes.Hazelnut],
+                ItemList.Items[ObjectIndexes.Blackberry],
+                ItemList.Items[ObjectIndexes.CommonMushroom],
+
+            });
+
+            WinterForagables.AddRange(new List<Item>()
+            {
+                ItemList.Items[ObjectIndexes.WinterRoot],
+                ItemList.Items[ObjectIndexes.CrystalFruit],
+                ItemList.Items[ObjectIndexes.SnowYam],
+                ItemList.Items[ObjectIndexes.Crocus],
+                ItemList.Items[ObjectIndexes.Holly],
+            });
+
+            BeachForagables.AddRange(new List<Item>()
+            {
+                ItemList.Items[ObjectIndexes.NautilusShell],
+                ItemList.Items[ObjectIndexes.Coral],
+                ItemList.Items[ObjectIndexes.SeaUrchin],
+                ItemList.Items[ObjectIndexes.RainbowShell],
+                ItemList.Items[ObjectIndexes.Clam],
+                ItemList.Items[ObjectIndexes.Cockle],
+                ItemList.Items[ObjectIndexes.Mussel],
+                ItemList.Items[ObjectIndexes.Oyster]
+            });
+
+            WoodsForagables.AddRange(new List<Item>()
+            {
+                ItemList.Items[ObjectIndexes.Morel],
+                ItemList.Items[ObjectIndexes.CommonMushroom],
+                ItemList.Items[ObjectIndexes.RedMushroom],
+                ItemList.Items[ObjectIndexes.FiddleheadFern],
+                ItemList.Items[ObjectIndexes.Chanterelle],
+            });
+
+            DesertForagables.AddRange(new List<Item>()
+            {
+                ItemList.Items[ObjectIndexes.CactusFruit],
+                ItemList.Items[ObjectIndexes.Coconut]
+            });
+        }
 
 		/// <summary>
 		/// Writes out the results for the given season and foragable location data
@@ -427,5 +479,25 @@ namespace Randomizer
 				foragableIdToSeasons[itemId].Add(season);
             }
 		}
+
+        /// <summary>
+        /// Writes the results to the spoiler log
+        /// </summary>
+        /// <param name="foragableLocationDataList">The list of location data that was randomized</param>
+        private static void WriteToSpoilerLog(List<LocationData> foragableLocationDataList)
+        {
+            Globals.SpoilerWrite("==== Foragables ===");
+            foreach (LocationData foragableLocationData in foragableLocationDataList)
+            {
+                Globals.SpoilerWrite("");
+                Globals.SpoilerWrite($">> {foragableLocationData.LocationName} <<");
+
+                WriteResultsForSeason(Seasons.Spring, foragableLocationData);
+                WriteResultsForSeason(Seasons.Summer, foragableLocationData);
+                WriteResultsForSeason(Seasons.Fall, foragableLocationData);
+                WriteResultsForSeason(Seasons.Winter, foragableLocationData);
+            }
+            Globals.SpoilerWrite("");
+        }
     }
 }

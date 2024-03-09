@@ -18,6 +18,11 @@ namespace Randomizer
         /// </summary>
         public static void ChangeDayOneForagables()
         {
+            if (!Globals.Config.RandomizeForagables)
+            {
+                return;
+            }
+
             SDate currentDate = SDate.Now();
             if (currentDate.DaysSinceStart < 2)
             {
@@ -34,6 +39,7 @@ namespace Randomizer
                         .Where(x => x.ShouldBeForagable) // Removes the 1/1000 items
                         .Cast<RandomizerItem>().ToList();
 
+                var rng = RNG.GetFarmRNG(nameof(WorldAdjustments));
                 foreach (GameLocation location in locations)
                 {
                     List<string> foragableIds = ItemList.GetForagables().Select(x => x.QualifiedId).ToList();
@@ -42,10 +48,9 @@ namespace Randomizer
                         .Select(x => x.Key)
                         .ToList();
 
-                    var dailyRNG = RNG.GetDailyRNG(nameof(WorldAdjustments));
                     foreach (Vector2 oldForagableKey in tiles)
                     {
-                        RandomizerItem newForagable = dailyRNG.GetRandomValueFromList(newForagables);
+                        RandomizerItem newForagable = rng.GetRandomValueFromList(newForagables);
                         location.Objects[oldForagableKey] = (Object)newForagable.GetSaliableObject();
                         location.Objects[oldForagableKey].IsSpawnedObject = true;
                     }

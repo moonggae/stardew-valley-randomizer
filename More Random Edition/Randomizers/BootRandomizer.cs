@@ -5,7 +5,7 @@ namespace Randomizer
 {
     public class BootRandomizer
 	{
-		public readonly static Dictionary<int, BootItem> Boots = new();
+		private readonly static Dictionary<int, BootItem> Boots = new();
 
         /// <summary>
         /// The data from Data/Boots.xnb
@@ -18,17 +18,22 @@ namespace Randomizer
         /// <returns />
         public static Dictionary<string, string> Randomize()
 		{
-			RNG rng = RNG.GetFarmRNG(nameof(BootRandomizer));
-
             // Initialize boot data here so that it's reloaded in case of a locale change
+			// This is also used by SpringObjectBuilder, so do this here even if we aren't randomizing boots
             BootData = DataLoader.Boots(Game1.content);
-			Boots.Clear();
+
+            Dictionary<string, string> bootReplacements = new();
+            if (!Globals.Config.Boots.Randomize) 
+			{ 
+				return bootReplacements;
+			}
+
+            RNG rng = RNG.GetFarmRNG(nameof(BootRandomizer));
+            Boots.Clear();
 
 			WeaponAndArmorNameRandomizer nameRandomizer = new(nameof(BootRandomizer));
 			List<string> descriptions = 
 				NameAndDescriptionRandomizer.GenerateBootDescriptions(BootData.Count);
-
-			Dictionary<string, string> bootReplacements = new();
 			List<BootItem> bootsToUse = new();
 
 			int index = 0;
@@ -82,8 +87,6 @@ namespace Randomizer
 		/// <param name="bootsToUse">The boot data that was used</param>
 		public static void WriteToSpoilerLog(List<BootItem> bootsToUse)
 		{
-			if (!Globals.Config.Boots.Randomize) { return; }
-
 			Globals.SpoilerWrite("==== BOOTS ====");
 			foreach (BootItem bootToAdd in bootsToUse)
 			{

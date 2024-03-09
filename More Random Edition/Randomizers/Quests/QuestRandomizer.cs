@@ -130,9 +130,14 @@ namespace Randomizer
 		/// <returns>The quest information to modify</returns>
 		public static QuestInformation Randomize()
 		{
-			Rng = RNG.GetFarmRNG(nameof(QuestRandomizer));
             QuestReplacements.Clear();
+            Dictionary<string, string> mailReplacements = new();
+            if (!Globals.Config.RandomizeQuests) 
+			{
+				return new QuestInformation(QuestReplacements, mailReplacements); 
+			}
 
+            Rng = RNG.GetFarmRNG(nameof(QuestRandomizer));
             People = QuestableNPCsList;
 			Crops = ItemList.GetCrops(true).ToList();
 			Dishes = ItemList.GetCookedItems().ToList();
@@ -141,8 +146,6 @@ namespace Randomizer
 
 			PopulateQuestDictionary();
 			PopulateMailDictionary();
-
-			Dictionary<string, string> mailReplacements = new();
 			RandomizeQuestsAndMailStrings(QuestReplacements, mailReplacements);
 
 			WriteToSpoilerLog(QuestReplacements);
@@ -346,8 +349,6 @@ namespace Randomizer
 		/// <param name="questList">The info to write out</param>
 		private static void WriteToSpoilerLog(Dictionary<string, string> questList)
 		{
-			if (!Globals.Config.RandomizeQuests) { return; }
-
 			Globals.SpoilerWrite("==== QUESTS ====");
 			foreach (KeyValuePair<string, string> pair in questList)
 			{

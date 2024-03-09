@@ -23,6 +23,11 @@ namespace Randomizer
             EditedObjects editedObjectInfo, 
             Dictionary<string, SVLocationData> locationReplacements)
 		{
+            if (!Globals.Config.Fish.Randomize) 
+            { 
+                return;
+            }
+
             Rng = RNG.GetFarmRNG(nameof(FishRandomizer));
 
             List<FishItem> legendaryFish = FishItem.GetLegendaries().Cast<FishItem>().ToList();
@@ -50,8 +55,6 @@ namespace Randomizer
 					Enum.GetValues(typeof(FishBehaviorType)).Cast<FishBehaviorType>().ToList());
 				string newName = Rng.GetAndRemoveRandomValueFromList(fishNames);
 
-				if (!Globals.Config.Fish.Randomize) { continue; }
-
 				CopyFishInfo(fishToReplace, fish);
 				fish.DartChance = newDartChance;
 				fish.BehaviorType = newBehaviorType;
@@ -65,12 +68,9 @@ namespace Randomizer
                     TryAddLocationToFishItem(fish, Locations.UndergroundMine);
                 }
 
-                if (Globals.Config.Fish.Randomize)
-				{
-					fish.DifficultyToObtain = fish.IsSubmarineOnlyFish
-						? ObtainingDifficulties.RareItem
-						: ObtainingDifficulties.LargeTimeRequirements;
-				}
+				fish.DifficultyToObtain = fish.IsSubmarineOnlyFish
+					? ObtainingDifficulties.RareItem
+					: ObtainingDifficulties.LargeTimeRequirements;
 			}
 
 			foreach (FishItem fish in legendaryFish)
@@ -79,9 +79,6 @@ namespace Randomizer
 					Enum.GetValues(typeof(FishBehaviorType)).Cast<FishBehaviorType>().ToList());
 
 				string newName = Rng.GetAndRemoveRandomValueFromList(fishNames);
-
-				if (!Globals.Config.Fish.Randomize) { continue; }
-
 				fish.BehaviorType = newBehaviorType;
 				fish.OverrideName = newName;
 			}
@@ -331,10 +328,8 @@ namespace Randomizer
         /// Writes the relevant changes to the spoiler log
         /// </summary>
         /// <param name="oldToNewFishIdMap">Which fish ids were remapped where</param>
-        public static void WriteToSpoilerLog(Dictionary<string, string> newToOldFishIdMap)
+        private static void WriteToSpoilerLog(Dictionary<string, string> newToOldFishIdMap)
 		{
-			if (!Globals.Config.Fish.Randomize) { return; }
-
 			List<FishItem> allRandomizedFish = FishItem.GetListAsFishItem(true);
 
 			Globals.SpoilerWrite("==== FISH ====");

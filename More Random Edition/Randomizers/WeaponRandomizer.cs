@@ -34,6 +34,8 @@ namespace Randomizer
 
             foreach (var weaponData in weaponReplacements)
 			{
+				// In this case, we're checking the setting in RandomizeWeapon instead of existing early
+				// since WeaponImageBuilder relies on Weapons to be populated
 				RandomizeWeapon(weaponData.Value, (WeaponIndexes)int.Parse(weaponData.Key), nameRandomizer);
 				Weapons.Add(weaponData.Key, weaponData.Value);
 			}
@@ -52,7 +54,12 @@ namespace Randomizer
             WeaponIndexes weaponIndex, 
 			WeaponAndArmorNameRandomizer nameRandomizer)
 		{
-			if (weapon.Type == (int)WeaponType.Slingshot)
+			if (!Globals.Config.Weapons.Randomize)
+			{
+				return;
+			}
+
+            if (weapon.Type == (int)WeaponType.Slingshot)
 			{
 				//TODO: assign the name here after we deal with the slingshot name hardcoding issue
 				// Doing this to advance the RNG so we don't affect seeds when we do actually
@@ -73,10 +80,7 @@ namespace Randomizer
 			SetWeaponDescription(weapon, weaponIndex);
 
 			string weaponName = nameRandomizer.GenerateRandomWeaponName((WeaponType)weapon.Type);
-			if (Globals.Config.Weapons.Randomize)
-			{
-				weapon.DisplayName = weaponName;
-			}
+			weapon.DisplayName = weaponName;
 		}
 
 		/// <summary>

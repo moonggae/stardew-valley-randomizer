@@ -12,7 +12,8 @@ namespace Randomizer
         /// </summary>
         public override ShopData ModifyShop()
         {
-            if (Globals.Config.Shops.AddTapperCraftItemsToRobinsShop)
+            if (Globals.Config.Shops.AddTapperCraftItemsToRobinsShop &&
+                Globals.Config.CraftingRecipes.Randomize)
             {
                 AddRandomTapperCraftingIngredient();
             }
