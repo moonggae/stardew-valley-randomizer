@@ -186,6 +186,10 @@ The Biome Balance special order, for the sake of simplicity, is mapped to the fo
 * Reworked the RNG so that things can be added/modified without impacting everything for existing farms
   * Turning settings off should make saves load faster, as we can skip unnecessary RNG calls
 * Allow custom weapon images to be used even if the weapons themselves aren't randomized
+* The 1.6 update changed the filesize of rain graphics - the following changes were made accordingly:
+  * The custom rain graphics were redrawn and will now work
+  * The cats and dogs rain was removed for now, since there's not a lot of space for that much detail
+  * The readme was updated with the new dimensions
 * Fixed the spoiler log's names for the Transmute Iron and Gold recipes
 * Fixed shop stock issues related to loading different farms in one play session
 * Fixed tappers requiring tapper products to craft
