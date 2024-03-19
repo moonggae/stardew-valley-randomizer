@@ -124,7 +124,7 @@ Seeds:
 
 TileSheets:
 Contains images to be used as the rain graphics. The randomizer will choose one of them at the start of every day.
-- Each image must be 256 x 64px
+- Each image must be 64 x 32px
 
 Weapons:
 The weapons are divided among four different folders, to represent the different weapon types. Each directory has the following rules, with the exception of the Slingshots directory, which is currently unused:

@@ -15,8 +15,8 @@ namespace Randomizer
         private static readonly Dictionary<string, List<GiftableNPCIndexes>> GarbageCanMap = new()
         {
             ["Blacksmith"] = new List<GiftableNPCIndexes>() { GiftableNPCIndexes.Clint },
-            ["EmilyAndHaley"] = new List<GiftableNPCIndexes>() 
-            { 
+            ["EmilyAndHaley"] = new List<GiftableNPCIndexes>()
+            {
                 GiftableNPCIndexes.Emily,
                 GiftableNPCIndexes.Haley
             },
@@ -40,8 +40,8 @@ namespace Randomizer
                 GiftableNPCIndexes.Shane,
                 GiftableNPCIndexes.Sam
             },
-            ["Mayor"] = new List<GiftableNPCIndexes>() 
-            { 
+            ["Mayor"] = new List<GiftableNPCIndexes>()
+            {
                 GiftableNPCIndexes.Lewis,
                 GiftableNPCIndexes.Marnie
             },
@@ -51,7 +51,11 @@ namespace Randomizer
                 GiftableNPCIndexes.Jas,
                 GiftableNPCIndexes.Vincent
             },
-            ["Saloon"] = new List<GiftableNPCIndexes>() { GiftableNPCIndexes.Gus }
+            ["Saloon"] = new List<GiftableNPCIndexes>() { GiftableNPCIndexes.Gus },
+
+            // Potentially include Sandy here, but it seems that this has a 100% chance
+            // of giving a CalicoEgg, so we maybe don't want to modify this
+            ["DesertFestival"] = new() 
         };
 
         /// <summary>
@@ -73,6 +77,12 @@ namespace Randomizer
             {
                 string garbageCanKey = garbageCanData.Key;
                 GarbageCanEntryData garbageCanEntryData = garbageCanData.Value;
+
+                if (!GarbageCanMap.ContainsKey(garbageCanKey))
+                {
+                    Globals.ConsoleWarn($"Garbage can not mapped: {garbageCanKey}");
+                    continue;
+                }
 
                 const double BaseChance = 0.10;
                 var dislikedItemIds = 
