@@ -16,9 +16,10 @@
 		DeluxeBarn,
 		SlimeHutch,
 		Shed,
-		Cabin,
+		//Cabin, // No longer randomizeing, as they're meant to be easy to get for multiplayer
 		Well,
 		FishPond,
-		Stable
+		Stable,
+		PetBowl
 	}
 }

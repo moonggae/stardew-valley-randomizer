@@ -3,6 +3,7 @@ using StardewValley.GameData.Buildings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static StardewValley.Menus.CharacterCustomization;
 
 namespace Randomizer
 {
@@ -107,13 +108,10 @@ namespace Randomizer
                         RandomizeAndAddBuilding("Mill", buildingMaterials, buildingData, buildingChanges);
                         break;
 					case Buildings.ShippingBin:
-						itemChoice = Rng.GetRandomValueFromList(new List<ItemAndMultiplier>
-						{
-							new(resource1, 3),
-							new(ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.MediumTimeRequirements))
-						});
-                        buildingMaterials = new List<ItemAndMultiplier> { itemChoice };
-                        RandomizeAndAddBuilding("Shipping Bin", buildingMaterials, buildingData, buildingChanges);
+                        RandomizeAndAddEasyBuilding("Shipping Bin", resource1, buildingData, buildingChanges);
+                        break;
+                    case Buildings.PetBowl:
+                        RandomizeAndAddEasyBuilding("Pet Bowl", resource1, buildingData, buildingChanges);
                         break;
 					case Buildings.Coop:
 						itemChoice = Rng.GetRandomValueFromList(new List<ItemAndMultiplier>
@@ -212,9 +210,6 @@ namespace Randomizer
 						});
                         RandomizeAndAddBuilding("Shed", buildingMaterials, buildingData, buildingChanges);
                         break;
-					case Buildings.Cabin:
-                        RandomizeAndAddBuilding("Cabin", GetRequiredItemsForCabin(), buildingData, buildingChanges);
-                        break;
 					case Buildings.Well:
 						itemChoice = Rng.GetRandomValueFromList(new List<ItemAndMultiplier>
 						{
@@ -241,7 +236,7 @@ namespace Randomizer
 						};
                         RandomizeAndAddBuilding("Stable", buildingMaterials, buildingData, buildingChanges);
                         break;
-					default:
+                    default:
 						Globals.ConsoleError($"Unhandled building: {buildingType}");
 						continue;
 				}
@@ -250,6 +245,28 @@ namespace Randomizer
 			WriteToSpoilerLog(buildingChanges);
 			return buildingChanges;
 		}
+
+        /// <summary>
+        /// Randomizes the build cost for a building that's meant to be easy to make
+        /// </summary>
+		/// <param name="buildingName">The name of the building</param>
+        /// <param name="resource">The resource item to use for the building</param>
+        /// <param name="buildingData">The original building data</param>
+        /// <param name="buildingChanges">Our dictionary of building changes</param>
+        private static void RandomizeAndAddEasyBuilding(
+			string buildingName,
+			Item resource,
+			Dictionary<string, BuildingData> buildingData,
+            Dictionary<string, BuildingData> buildingChanges)
+		{
+            var itemChoice = Rng.GetRandomValueFromList(new List<ItemAndMultiplier>
+            {
+                new(resource, 3),
+                new(ItemList.GetRandomItemAtDifficulty(Rng, ObtainingDifficulties.MediumTimeRequirements))
+            });
+            var buildingMaterials = new List<ItemAndMultiplier> { itemChoice };
+            RandomizeAndAddBuilding(buildingName, buildingMaterials, buildingData, buildingChanges);
+        }
 
 		/// <summary>
 		/// Randomizes the build cost and assigns the given build materials to the building
@@ -268,35 +285,8 @@ namespace Randomizer
             currentBuilding.BuildCost = ComputePrice(currentBuilding.BuildCost);
             currentBuilding.BuildMaterials = ComputeBuildMaterials(buildMaterials);
 
-			// Cabins specifically have skins that need to be randomized as well
-			if (buildingKey == "Cabin")
-			{
-				currentBuilding.Skins.ForEach(skin => 
-					skin.BuildMaterials = ComputeBuildMaterials(GetRequiredItemsForCabin()));
-			}
-
             buildingChanges.Add(buildingKey, currentBuilding);
         }
-
-		/// <summary>
-		/// Gets the required items for a cabin - applies to any cabin
-		/// </summary>
-		/// <returns />
-		private static List<ItemAndMultiplier> GetRequiredItemsForCabin()
-		{
-			Item resource = ItemList.GetRandomResourceItem(Rng, new int[(int)ObjectIndexes.Hardwood]);
-			Item easyItem = Rng.GetRandomValueFromList(
-				ItemList.GetItemsBelowDifficulty(ObtainingDifficulties.MediumTimeRequirements, new List<int> { resource.Id })
-			);
-
-			return Rng.GetRandomValueFromList(new List<List<ItemAndMultiplier>> {
-				new() { new ItemAndMultiplier(resource, 2) },
-				new() {
-					new ItemAndMultiplier(resource),
-					new ItemAndMultiplier(easyItem)
-				}
-			});
-		}
 
         /// <summary>
         /// Computes the price based on the base money
