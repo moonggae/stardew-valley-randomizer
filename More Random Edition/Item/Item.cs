@@ -162,7 +162,8 @@ namespace Randomizer
 			new List<string>() {
 				ObjectIndexes.PineTar.GetId(),
 				ObjectIndexes.OakResin.GetId(),
-				ObjectIndexes.MapleSyrup.GetId()
+				ObjectIndexes.MapleSyrup.GetId(),
+				ObjectIndexes.MysticSyrup.GetId()
 			}.Contains(Id);
         }
         public bool IsCrop { get; set; }
@@ -180,7 +181,8 @@ namespace Randomizer
                 ObjectIndexes.WarpTotemBeach.GetId(),
                 ObjectIndexes.WarpTotemMountains.GetId(),
                 ObjectIndexes.WarpTotemDesert.GetId(),
-                ObjectIndexes.RainTotem.GetId()
+                ObjectIndexes.RainTotem.GetId(),
+				ObjectIndexes.TreasureTotem.GetId()
             }.Contains(Id);
 		}
 		public bool RequiresOilMaker { get; set; }

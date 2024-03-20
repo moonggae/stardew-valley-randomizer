@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static Randomizer.ObjectIndexesExtentions;
 using SVObject = StardewValley.Object;
 
 namespace Randomizer
@@ -182,7 +181,19 @@ namespace Randomizer
 
         // Big Craftables that don't use integers will get arbitrary negative numbers
         // DO NOT use these anywhere in the randomizer - use GetId instead
-        BigChest = -1
+        Anvil = -10000,
+        BaitMaker,
+        BigChest,
+        BigStoneChest,
+        Dehydrator,
+        DeluxeWormBin,
+        FishSmoker,
+        HeavyFurnace,
+        MiniForge,
+        MushroomLog,
+        StatueOfBlessings,
+        StatueOfTheDwarfKing,
+        TextSign
     }
 
     public static class BigCraftableIndexesExtentions
@@ -194,7 +205,19 @@ namespace Randomizer
 
             public static readonly Dictionary<BigCraftableIndexes, string> NonIntBigCraftableMap = new()
             {
-                [BigCraftableIndexes.BigChest] = "BigChest"
+                [BigCraftableIndexes.Anvil] = "Anvil",
+                [BigCraftableIndexes.BaitMaker] = "BaitMaker",
+                [BigCraftableIndexes.BigChest] = "BigChest",
+                [BigCraftableIndexes.BigStoneChest] = "BigStoneChest",
+                [BigCraftableIndexes.Dehydrator] = "Dehydrator",
+                [BigCraftableIndexes.DeluxeWormBin] = "DeluxeWormBin",
+                [BigCraftableIndexes.FishSmoker] = "FishSmoker",
+                [BigCraftableIndexes.HeavyFurnace] = "HeavyFurnace",
+                [BigCraftableIndexes.MiniForge] = "MiniForge",
+                [BigCraftableIndexes.MushroomLog] = "MushroomLog",
+                [BigCraftableIndexes.StatueOfBlessings] = "StatueOfBlessings",
+                [BigCraftableIndexes.StatueOfTheDwarfKing] = "StatueOfTheDwarfKing",
+                [BigCraftableIndexes.TextSign] = "TextSign"
             };
 
             static BigCraftableIndexData()

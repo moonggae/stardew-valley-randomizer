@@ -529,6 +529,7 @@ namespace Randomizer
         CactusSeeds = 802,
         IridiumMilk = 803,
         SquidInk = 814,
+        ThornsRing = 839,
         RusticPlankFloor = 840,
         StoneWalkwayFloor = 841,
         CuriosityLure = 856,
@@ -553,7 +554,19 @@ namespace Randomizer
 
         // Objects that don't use integers will get arbitrary negative numbers
         // DO NOT use these anywhere in the randomizer - use GetId instead
-        //BlueGrassStarter = -1
+        BlueGrassStarter = -10000,
+        ChallengeBait,
+        DeluxeBait,
+        MysticSyrup,
+        MysticTreeSeed,
+        SonarBobber,
+        TreasureTotem,
+        TentKit,
+
+        SeaJelly,
+        CaveJelly,
+        RiverJelly,
+        Moss
     };
 
     public static class ObjectIndexesExtentions
@@ -565,7 +578,19 @@ namespace Randomizer
 
             public static readonly Dictionary<ObjectIndexes, string> NonIntObjectsMap = new()
             {
-                //[ObjectIndexes.BlueGrassStarter] = "BlueGrassStarter"
+                [ObjectIndexes.BlueGrassStarter] = "BlueGrassStarter",
+                [ObjectIndexes.ChallengeBait] = "ChallengeBait",
+                [ObjectIndexes.DeluxeBait] = "DeluxeBait",
+                [ObjectIndexes.MysticTreeSeed] = "MysticTreeSeed",
+                [ObjectIndexes.MysticSyrup] = "MysticSyrup",
+                [ObjectIndexes.SonarBobber] = "SonarBobber",
+                [ObjectIndexes.TreasureTotem] = "TreasureTotem",
+                [ObjectIndexes.TentKit] = "TentKit",
+
+                [ObjectIndexes.SeaJelly] = "SeaJelly",
+                [ObjectIndexes.CaveJelly] = "CaveJelly",
+                [ObjectIndexes.RiverJelly] = "RiverJelly",
+                [ObjectIndexes.Moss] = "Moss"
             };
 
             static ObjectIndexData()

@@ -60,7 +60,7 @@ namespace Randomizer
 			{
 				string[] tokens = prefs[npc].Split('/');
 				List<string> items = tokens[1].Trim().Split(' ') 
-					.Where(x => int.Parse(x) > 0)            
+					.Where(id => !id.StartsWith("-"))        
 					.ToList();                               
 
 				for (int num = numberToReveal; num > 0; num--)

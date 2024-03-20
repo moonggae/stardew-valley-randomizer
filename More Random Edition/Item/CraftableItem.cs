@@ -30,6 +30,25 @@ namespace Randomizer
 		/// </summary>
 		public string[] CraftingData { get; private set; }
 
+
+		public CraftableItem(
+			ObjectIndexes id,
+            CraftableCategories category,
+            int overrideBaseLevelLearnedAt = -1,
+            int bigCraftablePrice = 1000,
+            string dataKey = null) 
+			: this(id.GetId(), category, overrideBaseLevelLearnedAt, isBigCraftable: false, bigCraftablePrice, dataKey)
+		{ }
+
+        public CraftableItem(
+			BigCraftableIndexes id,
+			CraftableCategories category,
+			int overrideBaseLevelLearnedAt = -1,
+			int bigCraftablePrice = 1000,
+			string dataKey = null)
+			: this(id.GetId(), category, overrideBaseLevelLearnedAt, isBigCraftable: true, bigCraftablePrice, dataKey)
+				{ }
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -137,12 +156,22 @@ namespace Randomizer
 			string[] requiredItemsTokens = itemsRequiredString.Split(' ');
 			for (int i = 0; i < requiredItemsTokens.Length; i += 2)
 			{
-				int itemId = int.Parse(requiredItemsTokens[i]);
+				string itemId = requiredItemsTokens[i];
+				string itemName;
 
-				// Checks for category and displays it appropriately
-                string itemName = itemId < 0 
-					? $"[{((ItemCategories)itemId).GetTranslation()}]"
-					: ItemList.GetItemName((ObjectIndexes)itemId);
+				// Grab the item or category name for the spoiler log
+				// A negative number string is a category
+				if (itemId.StartsWith("-"))
+				{
+                    int categoryId = int.Parse(itemId);
+					itemName = $"[{((ItemCategories)categoryId).GetTranslation()}]";
+                }
+				else
+				{
+					itemName = ItemList.GetItemName(
+						ObjectIndexesExtentions.GetObjectIndex(itemId));
+                }
+
                 string amount = requiredItemsTokens[i + 1];
 				requiredItemsSpoilerString += $" - {itemName}: {amount}";
 			}

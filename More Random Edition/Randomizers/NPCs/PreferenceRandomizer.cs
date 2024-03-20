@@ -319,20 +319,23 @@ namespace Randomizer
 
 			for (int arrayPos = 0; arrayPos < idStringArray.Length; arrayPos++)
 			{
-				bool IDParsed = int.TryParse(idStringArray[arrayPos], out int id);
-				if (!IDParsed)
-				{
-					Globals.ConsoleWarn($"Input string was not in a correct format: '{idStringArray[arrayPos]}'");
-					continue;
-				}
+				string id = idStringArray[arrayPos];
 
-				// Add the string based on whether it's a category
-				outputString += id > 0
-					? ItemList.GetItemName((ObjectIndexes)id)
-					: $"[{((ItemCategories)id).GetTranslation()}]";
+				// Sets the item or category name for the spoiler log
+				// A negative number string is a category
+                if (id.StartsWith("-"))
+                {
+                    int categoryId = int.Parse(id);
+                    outputString += $"[{((ItemCategories)categoryId).GetTranslation()}]";
+                }
+                else
+                {
+                    outputString += ItemList.GetItemName(
+                        ObjectIndexesExtentions.GetObjectIndex(id));
+                }
 
-				// Not last item - put comma after
-				if (arrayPos != idStringArray.Length - 1)
+                // Not last item - put comma after
+                if (arrayPos != idStringArray.Length - 1)
 				{
 					outputString += ", ";
 				}
