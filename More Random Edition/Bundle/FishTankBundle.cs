@@ -256,20 +256,29 @@ namespace Randomizer
 
             var tackles = new List<RequiredBundleItem>
 			{
-				new(ObjectIndexes.Spinner, 1),
+				new(ObjectIndexes.Spinner),
 				new(ObjectIndexes.DressedSpinner),
 				new(ObjectIndexes.TrapBobber),
 				new(ObjectIndexes.CorkBobber),
 				new(ObjectIndexes.LeadBobber),
+				new(ObjectIndexes.SonarBobber),
 				new(ObjectIndexes.TreasureHunter)
 			};
+
+            var bait = new List<RequiredBundleItem>
+            {
+                new(ObjectIndexes.Bait, 500),
+                new(ObjectIndexes.WildBait, 500),
+                new(ObjectIndexes.DeluxeBait, 500),
+                new(ObjectIndexes.ChallengeBait, 500)
+            };
 
             var potentialRewards = new List<RequiredBundleItem>
 			{
 				new(BigCraftableIndexes.RecyclingMachine),
-				new(ObjectIndexes.Bait, 500),
-				new(ObjectIndexes.WildBait, 500),
-				rng.GetRandomValueFromList(tackles),
+				new(BigCraftableIndexes.FishSmoker),
+				rng.GetRandomValueFromList(bait),
+                rng.GetRandomValueFromList(tackles),
 				rng.GetRandomValueFromList(RequiredBundleItem.CreateList(FishItem.Get(), 25, 50)),
 				rng.GetRandomValueFromList(RequiredBundleItem.CreateList(ItemList.GetUniqueBeachForagables(), 25, 50)),
 			};

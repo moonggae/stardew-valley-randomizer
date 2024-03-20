@@ -85,20 +85,20 @@ namespace Randomizer
 					break;
 				case BundleTypes.CraftingTotems:
 					SetBundleName("bundle-crafting-totems");
-					RequiredItems = new List<RequiredBundleItem>
+					RequiredItems = new()
 					{
-						new RequiredBundleItem(ObjectIndexes.WarpTotemFarm),
-						new RequiredBundleItem(ObjectIndexes.WarpTotemBeach),
-						new RequiredBundleItem(ObjectIndexes.WarpTotemMountains),
-						new RequiredBundleItem(ObjectIndexes.WarpTotemDesert),
-						new RequiredBundleItem(ObjectIndexes.RainTotem),
+						new(ObjectIndexes.WarpTotemFarm),
+						new(ObjectIndexes.WarpTotemBeach),
+						new(ObjectIndexes.WarpTotemMountains),
+						new(ObjectIndexes.WarpTotemDesert),
+						new(ObjectIndexes.RainTotem),
 					};
 					MinimumRequiredItems = rng.NextIntWithinRange(3, 4);
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.CraftingBindle:
 					SetBundleName("bundle-crafting-bindle");
-					potentialItems = new List<RequiredBundleItem>
+					potentialItems = new()
 					{
 
 						new(rng.GetRandomValueFromList(ItemList.GetCookedItems())),
@@ -111,7 +111,7 @@ namespace Randomizer
 							).ObjectIndex
 						),
 					};
-					RequiredItems = new List<RequiredBundleItem>
+					RequiredItems = new()
 					{
 						new(ObjectIndexes.ChewingStick),
 						new(ObjectIndexes.Cloth),
