@@ -269,8 +269,7 @@ namespace Randomizer
         /// <returns />
         public static SVObject GetItem(BigCraftableIndexes index)
         {
-            string stringIndex = ((int)index).ToString();
-            return new SVObject(Vector2.Zero, stringIndex);
+            return new SVObject(Vector2.Zero, index.GetId());
         }
 
         /// <summary>
@@ -279,7 +278,7 @@ namespace Randomizer
         /// <param name="index">The index of the big craftable</param>
         public static string GetQualifiedId(BigCraftableIndexes index)
         {
-            return $"(BC){(int)index}";
+            return $"(BC){index.GetId()}";
         }
 
         /// <summary>

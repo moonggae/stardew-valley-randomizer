@@ -27,7 +27,7 @@ namespace Randomizer
         /// </summary>
         private void AdjustStock()
         {
-            if (Globals.Config.Shops.RandomizerSewerShop)
+            if (!Globals.Config.Shops.RandomizerSewerShop)
             {
                 return;
             }
