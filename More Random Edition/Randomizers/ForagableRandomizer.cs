@@ -86,62 +86,62 @@ namespace Randomizer
         {
             SpringForagables.AddRange(new List<Item>()
             {
-                ItemList.Items[ObjectIndexes.WildHorseradish],
-                ItemList.Items[ObjectIndexes.Daffodil],
-                ItemList.Items[ObjectIndexes.Leek],
-                ItemList.Items[ObjectIndexes.Dandelion]
+                ObjectIndexes.WildHorseradish.GetItem(),
+                ObjectIndexes.Daffodil.GetItem(),
+                ObjectIndexes.Leek.GetItem(),
+                ObjectIndexes.Dandelion.GetItem()
             });
 
             SummerForagables.AddRange(new List<Item>()
             {
-                ItemList.Items[ObjectIndexes.SpiceBerry],
-                ItemList.Items[ObjectIndexes.Grape],
-                ItemList.Items[ObjectIndexes.SweetPea]
+                ObjectIndexes.SpiceBerry.GetItem(),
+                ObjectIndexes.Grape.GetItem(),
+                ObjectIndexes.SweetPea.GetItem()
             });
 
             FallForagables.AddRange(new List<Item>()
             {
-                ItemList.Items[ObjectIndexes.WildPlum],
-                ItemList.Items[ObjectIndexes.Hazelnut],
-                ItemList.Items[ObjectIndexes.Blackberry],
-                ItemList.Items[ObjectIndexes.CommonMushroom],
+                ObjectIndexes.WildPlum.GetItem(),
+                ObjectIndexes.Hazelnut.GetItem(),
+                ObjectIndexes.Blackberry.GetItem(),
+                ObjectIndexes.CommonMushroom.GetItem(),
 
             });
 
             WinterForagables.AddRange(new List<Item>()
             {
-                ItemList.Items[ObjectIndexes.WinterRoot],
-                ItemList.Items[ObjectIndexes.CrystalFruit],
-                ItemList.Items[ObjectIndexes.SnowYam],
-                ItemList.Items[ObjectIndexes.Crocus],
-                ItemList.Items[ObjectIndexes.Holly],
+                ObjectIndexes.WinterRoot.GetItem(),
+                ObjectIndexes.CrystalFruit.GetItem(),
+                ObjectIndexes.SnowYam.GetItem(),
+                ObjectIndexes.Crocus.GetItem(),
+                ObjectIndexes.Holly.GetItem(),
             });
 
             BeachForagables.AddRange(new List<Item>()
             {
-                ItemList.Items[ObjectIndexes.NautilusShell],
-                ItemList.Items[ObjectIndexes.Coral],
-                ItemList.Items[ObjectIndexes.SeaUrchin],
-                ItemList.Items[ObjectIndexes.RainbowShell],
-                ItemList.Items[ObjectIndexes.Clam],
-                ItemList.Items[ObjectIndexes.Cockle],
-                ItemList.Items[ObjectIndexes.Mussel],
-                ItemList.Items[ObjectIndexes.Oyster]
+                ObjectIndexes.NautilusShell.GetItem(),
+                ObjectIndexes.Coral.GetItem(),
+                ObjectIndexes.SeaUrchin.GetItem(),
+                ObjectIndexes.RainbowShell.GetItem(),
+                ObjectIndexes.Clam.GetItem(),
+                ObjectIndexes.Cockle.GetItem(),
+                ObjectIndexes.Mussel.GetItem(),
+                ObjectIndexes.Oyster.GetItem()
             });
 
             WoodsForagables.AddRange(new List<Item>()
             {
-                ItemList.Items[ObjectIndexes.Morel],
-                ItemList.Items[ObjectIndexes.CommonMushroom],
-                ItemList.Items[ObjectIndexes.RedMushroom],
-                ItemList.Items[ObjectIndexes.FiddleheadFern],
-                ItemList.Items[ObjectIndexes.Chanterelle],
+                ObjectIndexes.Morel.GetItem(),
+                ObjectIndexes.CommonMushroom.GetItem(),
+                ObjectIndexes.RedMushroom.GetItem(),
+                ObjectIndexes.FiddleheadFern.GetItem(),
+                ObjectIndexes.Chanterelle.GetItem(),
             });
 
             DesertForagables.AddRange(new List<Item>()
             {
-                ItemList.Items[ObjectIndexes.CactusFruit],
-                ItemList.Items[ObjectIndexes.Coconut]
+                ObjectIndexes.CactusFruit.GetItem(),
+                ObjectIndexes.Coconut.GetItem()
             });
         }
 
@@ -179,7 +179,7 @@ namespace Randomizer
 			Globals.SpoilerWrite(season.ToString());
 			foreach (ForagableData foragableData in dataToWrite)
 			{
-				Globals.SpoilerWrite($"{foragableData.ItemId}: {ItemList.Items[(ObjectIndexes)foragableData.ItemId].Name} | {foragableData.ItemRarity}");
+				Globals.SpoilerWrite($"{foragableData.ItemId}: {ItemList.Items[foragableData.ItemId].Name} | {foragableData.ItemRarity}");
 			}
 		}
 

@@ -2,7 +2,6 @@
 using StardewValley;
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using SVObject = StardewValley.Object;
 using SVRing = StardewValley.Objects.Ring;
 
@@ -15,7 +14,41 @@ namespace Randomizer
     {
         public const string ObjectIdPrefix = "(O)";
 
-        public int Id { get; }
+        public string Id { get; }
+
+		/// <summary>
+		/// Gets the corresponding object index
+		/// Intended to only be used with objects!
+		/// </summary>
+		public ObjectIndexes ObjectIndex
+		{
+			get
+			{
+				if (IsBigCraftable)
+				{
+					Globals.ConsoleWarn($"Tried to get the object index of big craftable (using Acorn instead): {Id}");
+					return ObjectIndexes.Acorn;
+				}
+				return ObjectIndexesExtentions.GetObjectIndex(Id);
+			}
+		}
+
+        /// <summary>
+        /// Gets the corresponding object index
+        /// Intended to only be used with big craftables!
+        /// </summary>
+        public BigCraftableIndexes BigCraftableIndex
+		{
+            get
+            {
+                if (!IsBigCraftable)
+                {
+                    Globals.ConsoleWarn($"Tried to get the big craftable index of a non-bigcraftable (using Chest instead): {Id}");
+                    return BigCraftableIndexes.Chest;
+                }
+                return BigCraftableIndexesExtentions.GetBigCraftableIndex(Id);
+            }
+        }
 
         /// <summary>
 		/// This is the QualifiedItemId in Stardew's code a prefix before the integer id
@@ -34,17 +67,8 @@ namespace Randomizer
         public string QualifiedId { 
 			get
 			{
-				string itemType = "O";
-				if (IsRing)
-				{
-					itemType = "R";
-                } 
-				else if (IsBigCraftable)
-				{
-					itemType = "BC";
-				}
-
-				// We currently only define objects, rings, and big craftables here
+                // We currently only define objects and big craftables here
+                string itemType = IsBigCraftable ? "BC" : "O";
 				return $"({itemType}){Id}";
 			} 
 		}
@@ -116,10 +140,10 @@ namespace Randomizer
 		public bool IsFish { get; set; }
 		public bool IsArtifact { get; set; }
 		public bool IsMayonaisse { get =>
-            new List<int>() {
-                (int)ObjectIndexes.Mayonnaise,
-				(int)ObjectIndexes.DuckMayonnaise,
-				(int)ObjectIndexes.VoidMayonnaise
+            new List<string>() {
+                ObjectIndexes.Mayonnaise.GetId(),
+				ObjectIndexes.DuckMayonnaise.GetId(),
+				ObjectIndexes.VoidMayonnaise.GetId()
             }.Contains(Id);
         }
         public bool IsMilk { get => Category == ItemCategories.Milk; }
@@ -127,18 +151,18 @@ namespace Randomizer
         public bool IsGeodeMineral { get; set; }
 		public bool IsCrabPotItem { get =>
 			this is CrabPotItem ||
-            new List<int>() {
-                (int)ObjectIndexes.Clam,
-                (int)ObjectIndexes.Cockle,
-                (int)ObjectIndexes.Mussel,
-                (int)ObjectIndexes.Oyster
+            new List<string>() {
+                ObjectIndexes.Clam.GetId(),
+                ObjectIndexes.Cockle.GetId(),
+                ObjectIndexes.Mussel.GetId(),
+                ObjectIndexes.Oyster.GetId()
             }.Contains(Id);
         }
         public bool IsTapperItem { get =>
-			new List<int>() {
-				(int)ObjectIndexes.PineTar,
-				(int)ObjectIndexes.OakResin,
-				(int)ObjectIndexes.MapleSyrup
+			new List<string>() {
+				ObjectIndexes.PineTar.GetId(),
+				ObjectIndexes.OakResin.GetId(),
+				ObjectIndexes.MapleSyrup.GetId()
 			}.Contains(Id);
         }
         public bool IsCrop { get; set; }
@@ -151,12 +175,12 @@ namespace Randomizer
             get => FruitTreeRandomizer.RandomizedFruitTreeIds.Contains(Id);
         }
 		public bool IsTotem { get =>
-            new List<int>() {
-                (int)ObjectIndexes.WarpTotemFarm,
-                (int)ObjectIndexes.WarpTotemBeach,
-                (int)ObjectIndexes.WarpTotemMountains,
-                (int)ObjectIndexes.WarpTotemDesert,
-                (int)ObjectIndexes.RainTotem
+            new List<string>() {
+                ObjectIndexes.WarpTotemFarm.GetId(),
+                ObjectIndexes.WarpTotemBeach.GetId(),
+                ObjectIndexes.WarpTotemMountains.GetId(),
+                ObjectIndexes.WarpTotemDesert.GetId(),
+                ObjectIndexes.RainTotem.GetId()
             }.Contains(Id);
 		}
 		public bool RequiresOilMaker { get; set; }
@@ -209,23 +233,43 @@ namespace Randomizer
 		}
 		private ObtainingDifficulties _difficultyToObtain { get; set; } = ObtainingDifficulties.Impossible;
 
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="id">The item ID</param>
-		public Item(int id)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="id">The item ID</param>
+        public Item(string id)
+        {
+            Id = id;
+            CanStack = !IsBigCraftable;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="id">The item ID</param>
+        public Item(ObjectIndexes index)
 		{
-			Id = id;
-			CanStack = id >= -4 && !IsBigCraftable;
+			Id = index.GetId();
+			CanStack = false;
 		}
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="id">The item ID</param>
-        /// <param name="id">Whether the item is a big craftable</param>
+        public Item(BigCraftableIndexes index)
+        {
+            Id = index.GetId();
+            CanStack = true;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="id">The item ID - assumed to have used GetId</param>
+        /// <param name="isBigCraftable">Whether the item is a big craftable</param>
         /// <param name="difficultyToObtain">The difficulty to obtain this item</param>
-        public Item(int id, ObtainingDifficulties difficultyToObtain, bool isBigCraftable = false)
+        public Item(string id, ObtainingDifficulties difficultyToObtain, bool isBigCraftable = false)
 		{
 			Id = id;
 			IsBigCraftable = isBigCraftable;
@@ -276,10 +320,7 @@ namespace Randomizer
                 return OverrideName;
             }
 
-			string enumName = IsBigCraftable
-				? ((BigCraftableIndexes)Id).ToString()
-				: ((ObjectIndexes)Id).ToString();
-			return Regex.Replace(enumName, @"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", " $1").Trim();
+			return ItemRegistry.GetData(QualifiedId).InternalName;
 		}
 
 		public virtual ISalable GetSaliableObject(int initialStack = 1, bool isRecipe = false, int price = -1)

@@ -21,7 +21,7 @@ namespace Randomizer
 			public ShowData(int id, ObjectIndexes recipeItemId = 0, ObjectIndexes item1Id = 0, ObjectIndexes item2Id = 0)
 			{
 				ID = id;
-				Recipe = recipeItemId > 0 ? ItemList.Items[recipeItemId].OverrideDisplayName : "";
+				Recipe = recipeItemId > 0 ? recipeItemId.GetItem().OverrideDisplayName : "";
 				Item1 = item1Id > 0 ? ItemList.GetItemName(item1Id) : "";
 				Item2 = item2Id > 0 ? ItemList.GetItemName(item2Id) : "";
 			}
@@ -76,7 +76,10 @@ namespace Randomizer
 				new(21, ObjectIndexes.CarpSurprise, ObjectIndexes.Carp),
 				new(23, 0, ObjectIndexes.Melon),
 				new(24, ObjectIndexes.FruitSalad),
-				new(29, ObjectIndexes.PoppyseedMuffin, ObjectIndexes.Poppy, (ObjectIndexes)((CropItem)ItemList.GetItem(ObjectIndexes.Poppy)).MatchingSeedItem.Id),
+				new(29, 
+					ObjectIndexes.PoppyseedMuffin, 
+					ObjectIndexes.Poppy, 
+					((CropItem)ObjectIndexes.Poppy.GetItem()).MatchingSeedItem.ObjectIndex),
 				new(31, 0, ObjectIndexes.Tomato),
 			};
 		}
@@ -104,8 +107,8 @@ namespace Randomizer
 				.ToList()
 				.ForEach(dish =>
 				{
-                    ObjectIndexes id = (ObjectIndexes)dish.Id;
-                    CookedItem item = (CookedItem)ItemList.Items[id];
+                    ObjectIndexes index = dish.ObjectIndex;
+                    CookedItem item = (CookedItem)index.GetItem();
                     item.OverrideDisplayName = dish.DisplayName;
                 });
         }

@@ -1,22 +1,21 @@
 ﻿using StardewValley;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using SVObject = StardewValley.Object;
 
 namespace Randomizer
 {
-	/// <summary>
-	/// Represents an item you make in your kitchen
-	/// </summary>
-	public class CookedItem : Item
+    /// <summary>
+    /// Represents an item you make in your kitchen
+    /// </summary>
+    public class CookedItem : Item
 	{
 		/// <summary>
 		/// Set up a dictionary to link cooked items to their recipe names
 		/// this will be used to fix the recipe tooltips of items in ObjectInformation
 		/// that do not match from their display names
 		/// </summary>
-		private readonly static Dictionary<int, string> CookedItemsToRecipeNames = new();
+		private readonly static Dictionary<string, string> CookedItemsToRecipeNames = new();
 		static CookedItem() {
             const int CookedItemIdIndex = 2;
 			var cookingRecipeData = DataLoader.CookingRecipes(Game1.content);
@@ -24,14 +23,8 @@ namespace Randomizer
             foreach (KeyValuePair<string, string> data in cookingRecipeData)
             {
                 string[] tokens = data.Value.Split("/");
-				if (int.TryParse(tokens[CookedItemIdIndex], out int cookedItemId))
-				{
-                    CookedItemsToRecipeNames[cookedItemId] = data.Key;
-                }
-				else 
-				{ 
-					Globals.ConsoleTrace($"Cannot parse cooked item id (it was likely modded, so skipping): {data.Key}");
-				}
+				string cookedItemId = tokens[CookedItemIdIndex];
+                CookedItemsToRecipeNames[cookedItemId] = data.Key;
             }
         }
 
@@ -43,7 +36,7 @@ namespace Randomizer
 		/// <summary>
 		/// The id of the special ingredient used to cook this item
 		/// </summary>
-		public int? IngredientId { get; set; } = null;
+		public string IngredientId { get; set; } = null;
 
         /// <summary>
         /// The special ingredient used to cook this item
@@ -51,9 +44,9 @@ namespace Randomizer
         public string IngredientName { 
 			get 
 			{
-				return IngredientId == null
+				return string.IsNullOrWhiteSpace(IngredientId)
 					? string.Empty
-					: ItemList.Items[(ObjectIndexes)IngredientId.Value].Name;
+					: ItemList.Items[IngredientId].Name;
 			}
 		}
 
@@ -77,16 +70,16 @@ namespace Randomizer
 			}
 		}
 
-		public CookedItem(int id) : base(id)
+		public CookedItem(ObjectIndexes index) : base(index)
 		{
 			IsCooked = true;
 			DifficultyToObtain = ObtainingDifficulties.LargeTimeRequirements;
         }
 
 		public CookedItem(
-			int id, 
-			int? ingredientId,
-			bool isFishDish = false): this(id)
+			ObjectIndexes index, 
+			string ingredientId,
+			bool isFishDish = false): this(index)
 		{
 			IsCropOrFishDish = true;
 			IngredientId = ingredientId;

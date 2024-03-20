@@ -45,10 +45,10 @@ namespace Randomizer
 		{
 			get
 			{
-				return new int[] { 
-					(int)ObjectIndexes.Stonefish, 
-					(int)ObjectIndexes.IcePip, 
-					(int)ObjectIndexes.LavaEel }.Contains(Id);
+				return new string[] { 
+					ObjectIndexes.Stonefish.GetId(), 
+					ObjectIndexes.IcePip.GetId(), 
+					ObjectIndexes.LavaEel.GetId() }.Contains(Id);
 			}
 		}
 
@@ -68,14 +68,14 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public static bool IsLegendary(int id)
+		public static bool IsLegendary(string id)
 		{
-			return new int[] {
-				(int)ObjectIndexes.Crimsonfish,
-				(int)ObjectIndexes.Angler,
-				(int)ObjectIndexes.Legend,
-				(int)ObjectIndexes.Glacierfish,
-				(int)ObjectIndexes.MutantCarp
+			return new string[] {
+				ObjectIndexes.Crimsonfish.GetId(),
+				ObjectIndexes.Angler.GetId(),
+				ObjectIndexes.Legend.GetId(),
+				ObjectIndexes.Glacierfish.GetId(),
+				ObjectIndexes.MutantCarp.GetId()
 			}.Contains(id);
 		}
 
@@ -116,13 +116,15 @@ namespace Randomizer
 			}
 		}
 
-		public FishItem(int id, ObtainingDifficulties difficultyToObtain = ObtainingDifficulties.LargeTimeRequirements) : base(id)
+		public FishItem(ObjectIndexes index, 
+			ObtainingDifficulties difficultyToObtain = ObtainingDifficulties.LargeTimeRequirements) 
+			: base(index)
 		{
 			DifficultyToObtain = difficultyToObtain;
 			IsFish = true;
 		}
 
-		public FishItem(int id, bool boop) : base(id)
+		public FishItem(ObjectIndexes index, bool boop) : base(index)
 		{
 		}
 
@@ -377,8 +379,6 @@ namespace Randomizer
         /// <returns />
         public override string ToString()
         {
-            if (Id == -4) { return ""; }
-
             string timeString;
             if (ExcludedTimes.MinValue < 600 || ExcludedTimes.MaxValue < 600)
             {

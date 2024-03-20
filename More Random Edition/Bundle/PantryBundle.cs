@@ -69,7 +69,7 @@ namespace Randomizer
 				case BundleTypes.PantryEgg:
 					SetBundleName("bundle-pantry-egg");
 					potentialItems = RequiredBundleItem.CreateList(
-						ItemList.Items.Values.Where(x => x.Name.Contains("Egg") && x.Id > -4).ToList());
+						ItemList.Items.Values.Where(x => x.IsEgg).ToList());
 					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 8);
 					MinimumRequiredItems = rng.NextIntWithinRange(RequiredItems.Count - 3, RequiredItems.Count - 2);
 					Color = BundleColors.Yellow;
@@ -77,13 +77,13 @@ namespace Randomizer
 				case BundleTypes.PantryRareFoods:
 					SetBundleName("bundle-pantry-rare-foods");
 
-					SeedItem starFruitSeed = (SeedItem)ItemList.Items[ObjectIndexes.StarfruitSeeds];
-					SeedItem gemBerrySeed = (SeedItem)ItemList.Items[ObjectIndexes.RareSeed];
+					SeedItem starFruitSeed = (SeedItem)ObjectIndexes.StarfruitSeeds.GetItem();
+					SeedItem gemBerrySeed = (SeedItem)ObjectIndexes.RareSeed.GetItem();
 					RequiredItems = new List<RequiredBundleItem>
 					{
 						new(ObjectIndexes.AncientFruit),
-						new((ObjectIndexes)starFruitSeed.CropId),
-						new((ObjectIndexes)gemBerrySeed.CropId),
+						new(ObjectIndexesExtentions.GetObjectIndex(starFruitSeed.CropId)),
+						new(ObjectIndexesExtentions.GetObjectIndex(gemBerrySeed.CropId)),
 					};
 					MinimumRequiredItems = 2;
 					Color = BundleColors.Blue;

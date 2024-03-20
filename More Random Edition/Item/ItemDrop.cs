@@ -12,8 +12,8 @@ namespace Randomizer
 
 		public ItemDrop(ObjectIndexes itemId, double probability)
 		{
-			ItemToDrop = ItemList.Items[itemId];
-			Probability = probability;
+			ItemToDrop = itemId.GetItem();
+            Probability = probability;
 		}
 
         /// <summary>

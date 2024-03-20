@@ -37,12 +37,13 @@ namespace Randomizer
 			// The IDs passed in don't really matter
 			const string TransmuteIronName = "Transmute (Fe)";
             const string TransmuteGoldName = "Transmute (Au)";
+			const string FakeId = "-1000";
             replacements[TransmuteIronName] = new CraftableItem(
-				-1000, 
+				FakeId, 
 				CraftableCategories.Moderate, 
 				dataKey: TransmuteIronName).GetCraftingString(TransmuteIronName);
             replacements[TransmuteGoldName] = new CraftableItem(
-				-1000, 
+                FakeId, 
 				CraftableCategories.Moderate, 
 				dataKey: TransmuteGoldName).GetCraftingString(TransmuteGoldName);
 

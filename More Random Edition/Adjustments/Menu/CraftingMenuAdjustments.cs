@@ -30,7 +30,7 @@ namespace Randomizer
 					CraftingRecipe recipe = page[key];
 					if (recipe.name == "Crab Pot")
 					{
-						CraftableItem crabPot = (CraftableItem)ItemList.Items[ObjectIndexes.CrabPot];
+						CraftableItem crabPot = (CraftableItem)ObjectIndexes.CrabPot.GetItem();
 						Dictionary<ObjectIndexes, int> randomizedRecipe = crabPot.LastRecipeGenerated;
 						ReduceRecipeCost(page[key], randomizedRecipe);
 					}
@@ -49,30 +49,30 @@ namespace Randomizer
 			CraftingRecipe inGameRecipe, 
 			Dictionary<ObjectIndexes, int> randomizedRecipe)
 		{
-			Dictionary<int, int> modifiedRecipe = 
+			Dictionary<string, int> modifiedRecipe = 
 				CraftableItem.ConvertRecipeToUseCategories(randomizedRecipe);
             Dictionary<string, int> recipeList = inGameRecipe.recipeList;
 			recipeList.Clear();
 			if (modifiedRecipe.Values.All(x => x < 2))
 			{
-				int firstKeyOfEasiestItem = modifiedRecipe.Keys
-					.Where(id => id > 0) // Removes categories - these will never be the cheapest item in this case
-					.Select(id => ItemList.Items[(ObjectIndexes)id])
+				string firstKeyOfEasiestItem = modifiedRecipe.Keys
+					.Where(id => !id.StartsWith("-")) // Removes categories - these will never be the cheapest item in this case
+					.Select(id => ItemList.Items[id])
 					.OrderBy(item => item.DifficultyToObtain)
 					.Select(item => item.Id)
 					.First();
 
-				foreach (int id in modifiedRecipe.Keys.Where(x => x != firstKeyOfEasiestItem))
+				foreach (string index in modifiedRecipe.Keys.Where(x => x != firstKeyOfEasiestItem))
 				{
-					recipeList.Add(id.ToString(), 1);
+					recipeList.Add(index, 1);
 				}
 			}
 			else
 			{
-				foreach (int id in modifiedRecipe.Keys)
+				foreach (string index in modifiedRecipe.Keys)
 				{
-                    int numberRequired = modifiedRecipe[id];
-					recipeList.Add(id.ToString(), Math.Max(numberRequired / 2, 1));
+                    int numberRequired = modifiedRecipe[index];
+					recipeList.Add(index.ToString(), Math.Max(numberRequired / 2, 1));
 				}
 			}
 		}

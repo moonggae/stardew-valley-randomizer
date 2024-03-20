@@ -43,7 +43,7 @@ namespace Randomizer
 		/// this paramter should be passed in
 		/// </param>
         public CraftableItem(
-			int id,
+			string id,
 			CraftableCategories category, 
 			int overrideBaseLevelLearnedAt = -1,
 			bool isBigCraftable = false,
@@ -62,7 +62,14 @@ namespace Randomizer
 			CraftableCategory = category;
 			DifficultyToObtain = ObtainingDifficulties.NonCraftingItem; // By default, craftable items won't be materials for other craftable items
 
-            if (isBigCraftable && !Enum.IsDefined(typeof(BigCraftableIndexes), id))
+			try
+			{
+				if (isBigCraftable)
+				{
+                    _ = BigCraftableIndexesExtentions.GetBigCraftableIndex(id);
+                }
+            }
+            catch (Exception)
 			{
 				Globals.ConsoleWarn($"Craftable item marked as big craftable without a matching BigCraftableIndex: {id}");
 			}
@@ -205,10 +212,10 @@ namespace Randomizer
 		/// <returns>The new crafting string</returns>
 		private static string RecipeToString(Dictionary<ObjectIndexes, int> recipe)
 		{
-			Dictionary<int, int> itemsToAmounts = ConvertRecipeToUseCategories(recipe);
+			Dictionary<string, int> itemsToAmounts = ConvertRecipeToUseCategories(recipe);
 
 			string newCraftingString = string.Empty;
-			foreach (KeyValuePair<int, int> kv in itemsToAmounts)
+			foreach (KeyValuePair<string, int> kv in itemsToAmounts)
 			{
 				newCraftingString += $"{kv.Key} {kv.Value} ";
 			}
@@ -221,13 +228,13 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="recipe">The recipe to convert</param>
 		/// <returns>The converted dictionary</returns>
-		public static Dictionary<int, int> ConvertRecipeToUseCategories(
+		public static Dictionary<string, int> ConvertRecipeToUseCategories(
 			Dictionary<ObjectIndexes, int> recipe)
 		{
-            Dictionary<int, int> itemsToAmounts = new();
+            Dictionary<string, int> itemsToAmounts = new();
             foreach (KeyValuePair<ObjectIndexes, int> kv in recipe)
             {
-                int itemOrCraftingCategoryId = ConvertItemIdToCraftingItemId((int)kv.Key);
+                string itemOrCraftingCategoryId = ConvertItemIdToCraftingItemId(kv.Key.GetId());
                 int amount = kv.Value;
 
                 if (itemsToAmounts.ContainsKey(itemOrCraftingCategoryId))
@@ -247,21 +254,21 @@ namespace Randomizer
 		/// so that all items of that particular category work for the recipe
 		/// </summary>
 		/// <returns>The new id for the crafting item id</returns>
-		private static int ConvertItemIdToCraftingItemId(int id)
+		private static string ConvertItemIdToCraftingItemId(string id)
 		{
 			// Skipping void eggs explicitely since they are MEANT to be
 			// harder to get than normal eggs
 			// If there are too many of these cases, we'll consider putting
 			// a property on the item itself to check if we should skip using its category
-			if (id == (int)ObjectIndexes.VoidEgg)
+			if (id == ObjectIndexes.VoidEgg.GetId())
 			{
 				return id;
 			}
 
-            Item item = ItemList.GetItem((ObjectIndexes)id);
+            Item item = ItemList.Items[id];
             if (item.IsEgg || item.IsMilk)
             {
-				return (int)item.Category;
+				return ((int)item.Category).ToString();
             }
 
 			return id;
@@ -283,7 +290,10 @@ namespace Randomizer
 			);
 
 			int numberRequired = Rng.NextBoolean() ? 1 : 2;
-			return new Dictionary<ObjectIndexes, int>() { [(ObjectIndexes)item.Id] = numberRequired };
+			return new Dictionary<ObjectIndexes, int>() 
+			{ 
+				[item.ObjectIndex] = numberRequired 
+			};
 		}
 
 		/// <summary>
@@ -318,7 +328,7 @@ namespace Randomizer
                 Rng,
                 new List<ObtainingDifficulties> { ObtainingDifficulties.NoRequirements },
 				this,
-				new List<int> { Id, resourceItem.Id }
+				new List<string> { Id, resourceItem.Id }
 			);
 
 			AddItemToRecipe(recipe, resourceItem, Rng);
@@ -337,7 +347,9 @@ namespace Randomizer
 		{
 			Dictionary<ObjectIndexes, int> recipe = new();
 			GetListOfItemsForModerate().ForEach(item =>
-				AddItemToRecipe(recipe, (ObjectIndexes)item.Id, amount: 1));
+				AddItemToRecipe(recipe, 
+					item.ObjectIndex, 
+					amount: 1));
 			return recipe;
 		}
 
@@ -375,13 +387,13 @@ namespace Randomizer
                         Rng,
                         new List<ObtainingDifficulties> { ObtainingDifficulties.SmallTimeRequirements },
 						this,
-						new List<int> { item1.Id }
+						new List<string> { item1.Id }
 					);
 					item3 = ItemList.GetRandomCraftableItem(
                         Rng,
                         new List<ObtainingDifficulties> { ObtainingDifficulties.SmallTimeRequirements },
 						this,
-						new List<int> { item1.Id, item2.Id }
+						new List<string> { item1.Id, item2.Id }
 					);
 					return new List<Item> { item1, item2, item3 };
 				case 1:
@@ -394,13 +406,13 @@ namespace Randomizer
                         Rng,
                         new List<ObtainingDifficulties> { ObtainingDifficulties.SmallTimeRequirements, ObtainingDifficulties.NoRequirements },
 						this,
-						new List<int> { item1.Id }
+						new List<string> { item1.Id }
 					);
 					item3 = ItemList.GetRandomCraftableItem(
                         Rng,
                         new List<ObtainingDifficulties> { ObtainingDifficulties.NoRequirements },
 						this,
-						new List<int> { item1.Id, item2.Id }
+						new List<string> { item1.Id, item2.Id }
 					);
 					return new List<Item> { item1, item2, item3 };
 				default:
@@ -413,7 +425,7 @@ namespace Randomizer
                         Rng,
                         new List<ObtainingDifficulties> { ObtainingDifficulties.SmallTimeRequirements },
 						this,
-						new List<int> { item1.Id }
+						new List<string> { item1.Id }
 					);
 					return new List<Item> { item1, item2 };
 			}
@@ -430,7 +442,9 @@ namespace Randomizer
 		{
             Dictionary<ObjectIndexes, int> recipe = new();
             GetListOfItemsForDifficult().ForEach(item =>
-                AddItemToRecipe(recipe, (ObjectIndexes)item.Id, amount: 1));
+                AddItemToRecipe(recipe, 
+					item.ObjectIndex, 
+					amount: 1));
 			return recipe;
 		}
 
@@ -468,13 +482,13 @@ namespace Randomizer
                         Rng,
                         new List<ObtainingDifficulties> { ObtainingDifficulties.MediumTimeRequirements },
 						this,
-						new List<int> { item1.Id }
+						new List<string> { item1.Id }
 					);
 					item3 = ItemList.GetRandomCraftableItem(
                         Rng,
                         new List<ObtainingDifficulties> { ObtainingDifficulties.MediumTimeRequirements },
 						this,
-						new List<int> { item1.Id, item2.Id }
+						new List<string> { item1.Id, item2.Id }
 					);
 					return new List<Item> { item1, item2, item3 };
 				case 1:
@@ -487,13 +501,13 @@ namespace Randomizer
                         Rng,
                         new List<ObtainingDifficulties> { ObtainingDifficulties.MediumTimeRequirements, ObtainingDifficulties.SmallTimeRequirements },
 						this,
-						new List<int> { item1.Id }
+						new List<string> { item1.Id }
 					);
 					item3 = ItemList.GetRandomCraftableItem(
                         Rng,
                         new List<ObtainingDifficulties> { ObtainingDifficulties.MediumTimeRequirements, ObtainingDifficulties.SmallTimeRequirements, ObtainingDifficulties.NoRequirements },
 						this,
-						new List<int> { item1.Id, item2.Id }
+						new List<string> { item1.Id, item2.Id }
 					);
 					return new List<Item> { item1, item2, item3 };
 				default:
@@ -506,7 +520,7 @@ namespace Randomizer
                         Rng,
                         new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
 						this,
-						new List<int> { item1.Id }
+						new List<string> { item1.Id }
 					);
 					return new List<Item> { item1, item2 };
 			}
@@ -534,13 +548,13 @@ namespace Randomizer
                         Rng,
                         new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
 						this,
-						new List<int> { item1.Id }
+						new List<string> { item1.Id }
 					);
 					item3 = ItemList.GetRandomCraftableItem(
                         Rng,
                         new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
 						this,
-						new List<int> { item1.Id, item2.Id }
+						new List<string> { item1.Id, item2.Id }
 					);
 					break;
 				case 1:
@@ -553,13 +567,13 @@ namespace Randomizer
                         Rng,
                         new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
 						this,
-						new List<int> { item1.Id }
+						new List<string> { item1.Id }
 					);
 					item3 = ItemList.GetRandomCraftableItem(
                         Rng,
                         new List<ObtainingDifficulties> { ObtainingDifficulties.SmallTimeRequirements, ObtainingDifficulties.NoRequirements },
 						this,
-						new List<int> { item1.Id, item2.Id }
+						new List<string> { item1.Id, item2.Id }
 					);
 					break;
 				default:
@@ -571,8 +585,8 @@ namespace Randomizer
                         new List<ObtainingDifficulties> { ObtainingDifficulties.LargeTimeRequirements },
 						this
 					);
-					item2 = ItemList.GetRandomCraftableItem(Rng, mediumOrLess, this, new List<int> { item1.Id });
-					item3 = ItemList.GetRandomCraftableItem(Rng, mediumOrLess, this, new List<int> { item1.Id, item2.Id });
+					item2 = ItemList.GetRandomCraftableItem(Rng, mediumOrLess, this, new List<string> { item1.Id });
+					item3 = ItemList.GetRandomCraftableItem(Rng, mediumOrLess, this, new List<string> { item1.Id, item2.Id });
 					break;
 			}
 
@@ -591,18 +605,19 @@ namespace Randomizer
 		{
             Dictionary<ObjectIndexes, int> recipe = new();
             Seasons season;
-			switch (Id)
+
+            switch (ObjectIndex)
 			{
-				case (int)ObjectIndexes.SpringSeeds:
+				case ObjectIndexes.SpringSeeds:
 					season = Seasons.Spring;
 					break;
-				case (int)ObjectIndexes.SummerSeeds:
+				case ObjectIndexes.SummerSeeds:
 					season = Seasons.Summer;
 					break;
-				case (int)ObjectIndexes.FallSeeds:
+				case ObjectIndexes.FallSeeds:
 					season = Seasons.Fall;
 					break;
-				case (int)ObjectIndexes.WinterSeeds:
+				case ObjectIndexes.WinterSeeds:
 					season = Seasons.Winter;
 					break;
 				default:
@@ -613,7 +628,8 @@ namespace Randomizer
 
 			for (int i = 0; i < 4; i++)
 			{
-				ObjectIndexes foragableIndex = (ObjectIndexes)Rng.GetRandomValueFromList(ItemList.GetForagables(season)).Id;
+                ObjectIndexes foragableIndex = 
+					Rng.GetRandomValueFromList(ItemList.GetForagables(season)).ObjectIndex;
                 AddItemToRecipe(recipe, foragableIndex, amount: 1);
             }
 
@@ -654,7 +670,9 @@ namespace Randomizer
 			Item item, 
 			RNG rng)
         {
-			AddItemToRecipe(recipe, (ObjectIndexes)item.Id, item.GetAmountRequiredForCrafting(rng));
+			AddItemToRecipe(recipe, 
+				item.ObjectIndex, 
+				item.GetAmountRequiredForCrafting(rng));
         }
     }
 }

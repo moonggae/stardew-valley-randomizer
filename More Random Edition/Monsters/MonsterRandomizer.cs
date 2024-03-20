@@ -26,7 +26,7 @@ namespace Randomizer
 			Dictionary<string, string> replacements = new();
 
 			List<Monster> allMonsters = MonsterData.GetAllMonsters();
-			Dictionary<int, int> monsterItemSwaps = GetMonsterDropReplacements(allMonsters);
+			Dictionary<string, string> monsterItemSwaps = GetMonsterDropReplacements(allMonsters);
 			Dictionary<string, ItemDrop> extraItemDrops = new();
 
 			foreach (Monster monster in allMonsters)
@@ -56,9 +56,9 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="allMonsters">The monster info</param>
 		/// <returns />
-		private static Dictionary<int, int> GetMonsterDropReplacements(List<Monster> allMonsters)
+		private static Dictionary<string, string> GetMonsterDropReplacements(List<Monster> allMonsters)
 		{
-			Dictionary<int, Item> items = new();
+			Dictionary<string, Item> items = new();
 			foreach (Monster monster in allMonsters)
 			{
 				foreach (ItemDrop itemDrop in monster.ItemDrops)
@@ -77,14 +77,14 @@ namespace Randomizer
 				}
 			}
 
-			List<int> uniqueIds = items.Keys.ToList();
-			Dictionary<int, int> replacements = new();
-			foreach (int id in items.Keys.ToArray())
+			List<string> uniqueIds = items.Keys.ToList();
+			Dictionary<string, string> replacements = new();
+			foreach (string id in items.Keys.ToArray())
 			{
-				int newId = Rng.GetAndRemoveRandomValueFromList(uniqueIds);
+				string newId = Rng.GetAndRemoveRandomValueFromList(uniqueIds);
 				replacements.Add(id, newId);
 
-				Item newItem = ItemList.Items[(ObjectIndexes)newId];
+				Item newItem = ItemList.Items[newId];
 				Item oldItemInfo = items[id];
 				newItem.DifficultyToObtain = oldItemInfo.DifficultyToObtain;
 				newItem.ItemsRequiredForRecipe = oldItemInfo.ItemsRequiredForRecipe;
@@ -143,7 +143,7 @@ namespace Randomizer
 				probability = Rng.NextIntWithinRange(1, 5) / 1000d;
 			}
 
-			return new ItemDrop((ObjectIndexes)item.Id, probability);
+			return new ItemDrop(item.ObjectIndex, probability);
 		}
 
 		/// <summary>
@@ -151,7 +151,10 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="monster">The monster</param>
 		/// <param name="swaps">The swaps</param>
-		private static void RandomizeMonsterDrops(Monster monster, Dictionary<int, int> swaps, Dictionary<string, ItemDrop> extras)
+		private static void RandomizeMonsterDrops(
+			Monster monster, 
+			Dictionary<string, string> swaps, 
+			Dictionary<string, ItemDrop> extras)
 		{
 			SwapMonsterItemDrops(monster, swaps);
 
@@ -165,16 +168,16 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="monster">The monster</param>
 		/// <param name="swaps">The swaps</param>
-		private static void SwapMonsterItemDrops(Monster monster, Dictionary<int, int> swaps)
+		private static void SwapMonsterItemDrops(Monster monster, Dictionary<string, string> swaps)
 		{
 			if (!Globals.Config.Monsters.Randomize || !Globals.Config.Monsters.SwapUniqueDrops) { return; }
 
 			foreach (ItemDrop itemDrop in monster.ItemDrops)
 			{
-				int id = itemDrop.ItemToDrop.Id;
+				string id = itemDrop.ItemToDrop.Id;
 				if (swaps.ContainsKey(id))
 				{
-					itemDrop.ItemToDrop = ItemList.Items[(ObjectIndexes)swaps[id]];
+					itemDrop.ItemToDrop = ItemList.Items[swaps[id]];
 				}
 			}
 		}
@@ -212,7 +215,7 @@ namespace Randomizer
 		/// <param name="extraItemDrops">The map of monsters to their extra item drop</param>
 		private static void WriteToSpoilerLog(
 			List<Monster> allMonsters,
-			Dictionary<int, int> monsterItemSwaps,
+			Dictionary<string, string> monsterItemSwaps,
 			Dictionary<string, ItemDrop> extraItemDrops)
 		{
 			WriteSwapInfoToSpoilerLog(monsterItemSwaps);
@@ -223,7 +226,7 @@ namespace Randomizer
 		/// Writes the monster info to the spoiler log
 		/// </summary>
 		/// <param name="monsterItemSwaps">The item swaps performed</param>
-		private static void WriteSwapInfoToSpoilerLog(Dictionary<int, int> monsterItemSwaps)
+		private static void WriteSwapInfoToSpoilerLog(Dictionary<string, string> monsterItemSwaps)
 		{
 			if (!Globals.Config.Monsters.Randomize) { return; }
 
@@ -231,9 +234,9 @@ namespace Randomizer
 			Globals.SpoilerWrite("");
 			Globals.SpoilerWrite("> Major monster drop swaps");
 
-			foreach (int originalId in monsterItemSwaps.Keys)
+			foreach (string originalId in monsterItemSwaps.Keys)
 			{
-				Globals.SpoilerWrite($"{ItemList.Items[(ObjectIndexes)originalId].Name} -> {ItemList.Items[(ObjectIndexes)monsterItemSwaps[originalId]].Name}");
+				Globals.SpoilerWrite($"{ItemList.Items[originalId].Name} -> {ItemList.Items[monsterItemSwaps[originalId]].Name}");
 			}
 		}
 

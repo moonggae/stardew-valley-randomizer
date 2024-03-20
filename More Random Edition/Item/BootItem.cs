@@ -13,7 +13,7 @@ namespace Randomizer
 		public int Immunity { get; set; }
 
         public BootItem(
-			int id,
+			string id,
 			string name,
 			int defense,
 			int immunity) : base(id)
@@ -29,7 +29,7 @@ namespace Randomizer
         }
 
         public BootItem(
-			int id,
+			string id,
 			string name,
 			string description,
 			int defense,

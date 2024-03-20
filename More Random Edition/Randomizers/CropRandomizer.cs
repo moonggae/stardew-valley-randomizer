@@ -36,36 +36,36 @@ namespace Randomizer
 		/// <param name="editedObjectInfo">The edited object information</param>
 		private static void RandomizeCrops(EditedObjects editedObjectInfo)
 		{
-			List<int> regrowableSeedIdsToRandomize = ItemList.GetSeeds().Cast<SeedItem>()
+			List<string> regrowableSeedIdsToRandomize = ItemList.GetSeeds().Cast<SeedItem>()
 				.Where(x => x.Randomize && x.RegrowsAfterHarvest)
 				.Select(x => x.Id)
 				.ToList();
-			List<int> regrowableSeedIdsToRandomizeCopy = new(regrowableSeedIdsToRandomize);
+			List<string> regrowableSeedIdsToRandomizeCopy = new(regrowableSeedIdsToRandomize);
 
-			List<int> nonRegrowableSeedIdsToRandomize = ItemList.GetSeeds().Cast<SeedItem>()
+			List<string> nonRegrowableSeedIdsToRandomize = ItemList.GetSeeds().Cast<SeedItem>()
 				.Where(x => x.Randomize && !x.RegrowsAfterHarvest)
 				.Select(x => x.Id)
 				.ToList();
-			List<int> nonRegrowableSeedIdsToRandomizeCopy = new(nonRegrowableSeedIdsToRandomize);
+			List<string> nonRegrowableSeedIdsToRandomizeCopy = new(nonRegrowableSeedIdsToRandomize);
 
 			// Fill up a dictionary to remap the seed values
-			Dictionary<int, int> seedMappings = new(); // Original value, new value
+			Dictionary<string, string> seedMappings = new(); // Original value, new value
 
-			foreach (int originalRegrowableSeedId in regrowableSeedIdsToRandomize)
+			foreach (string originalRegrowableSeedId in regrowableSeedIdsToRandomize)
 			{
 				seedMappings.Add(originalRegrowableSeedId, Rng.GetAndRemoveRandomValueFromList(regrowableSeedIdsToRandomizeCopy));
 			}
 
-			foreach (int originalNonRegrowableSeedId in nonRegrowableSeedIdsToRandomize)
+			foreach (string originalNonRegrowableSeedId in nonRegrowableSeedIdsToRandomize)
 			{
 				seedMappings.Add(originalNonRegrowableSeedId, Rng.GetAndRemoveRandomValueFromList(nonRegrowableSeedIdsToRandomizeCopy));
 			}
 
 			// Loop through the dictionary and reassign the values, keeping the seasons the same as before
-			foreach (KeyValuePair<int, int> seedMapping in seedMappings)
+			foreach (KeyValuePair<string, string> seedMapping in seedMappings)
 			{
-				int originalValue = seedMapping.Key;
-				int newValue = seedMapping.Value;
+				string originalValue = seedMapping.Key;
+				string newValue = seedMapping.Value;
 
                 CropData newCropGrowthInfo = DataLoader.Crops(Game1.content)[newValue.ToString()].DeepClone();
                 newCropGrowthInfo.Seasons = DataLoader.Crops(Game1.content)[originalValue.ToString()].DeepClone().Seasons;
@@ -77,7 +77,7 @@ namespace Randomizer
 					? -1
 					: Rng.NextIntWithinRange(1, 7);
 
-				var originalSeedItem = ItemList.GetItem((ObjectIndexes)originalValue) as SeedItem;
+				var originalSeedItem = ItemList.Items[originalValue] as SeedItem;
 				originalSeedItem.CropGrowthInfo = newCropGrowthInfo;
 			}
 
@@ -189,7 +189,7 @@ namespace Randomizer
 		/// <param name="coffeeItemName">The name of the coffee item</param>
 		private static void SetUpCoffee(EditedObjects editedObjectInfo, string coffeeItemName)
 		{
-			Item coffee = ItemList.Items[ObjectIndexes.Coffee];
+			Item coffee = ObjectIndexes.Coffee.GetItem();
 			coffee.OverrideName = $"Hot {coffeeItemName}";
             coffee.CoffeeIngredient = coffeeItemName; // Used for the description of the coffee bean
 
@@ -197,7 +197,7 @@ namespace Randomizer
             coffeeObject.DisplayName = Globals.GetTranslation("item-coffee-name", new { itemName = coffeeItemName });
             editedObjectInfo.ObjectsReplacements[coffee.Id.ToString()] = coffeeObject;
 
-            SeedItem coffeeBean = ItemList.Items[ObjectIndexes.CoffeeBean] as SeedItem;
+            SeedItem coffeeBean = ObjectIndexes.CoffeeBean.GetItem() as SeedItem;
 			coffeeBean.OverrideName = $"{coffeeItemName} Bean";
 			coffeeBean.OverrideDisplayName = Globals.GetTranslation("coffee-bean-name", new { itemName = coffeeItemName });
 
@@ -213,7 +213,7 @@ namespace Randomizer
 		/// <param name="editedObjectInfo">The object info containing changes to apply</param>
 		private static void SetUpRice(EditedObjects editedObjectInfo)
 		{
-			CropItem unmilledRice = ItemList.Items[ObjectIndexes.UnmilledRice] as CropItem;
+			CropItem unmilledRice = ObjectIndexes.UnmilledRice.GetItem() as CropItem;
 			string riceName = unmilledRice.OverrideName;
 			unmilledRice.OverrideName = $"Unmilled {riceName}";
 			unmilledRice.OverrideDisplayName = Globals.GetTranslation("unmilled-rice-name", new { itemName = riceName });
@@ -222,7 +222,7 @@ namespace Randomizer
 			unmilledRiceObject.DisplayName = unmilledRice.Name;
             editedObjectInfo.ObjectsReplacements[unmilledRice.Id.ToString()] = unmilledRiceObject;
 
-			Item rice = ItemList.Items[ObjectIndexes.Rice];
+			Item rice = ObjectIndexes.Rice.GetItem();
             rice.OverrideName = riceName;
 
             ObjectData riceObject = Game1.objectData[rice.Id.ToString()].DeepClone();
@@ -363,8 +363,13 @@ namespace Randomizer
 			Globals.SpoilerWrite("==== CROPS AND SEEDS ====");
             foreach (SeedItem seedItem in ItemList.GetSeeds().Cast<SeedItem>())
 			{
-				if (seedItem.Id == (int)ObjectIndexes.CoffeeBean || seedItem.Id == (int)ObjectIndexes.AncientSeeds) { continue; }
-				CropItem cropItem = (CropItem)ItemList.Items[(ObjectIndexes)seedItem.CropId];
+				if (seedItem.ObjectIndex == ObjectIndexes.CoffeeBean || 
+					seedItem.ObjectIndex == ObjectIndexes.AncientSeeds) 
+				{ 
+					continue; 
+				}
+
+				CropItem cropItem = (CropItem)ItemList.Items[seedItem.CropId];
 				Globals.SpoilerWrite($"{cropItem.Id}: {cropItem.Name} - Seed Buy Price: {seedItem.Price * 2}G - Crop Sell Price: {cropItem.Price}G");
 				Globals.SpoilerWrite($"{seedItem.Id}: {seedItem.Description}");
 				Globals.SpoilerWrite("---");

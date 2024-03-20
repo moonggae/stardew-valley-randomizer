@@ -5,7 +5,7 @@ namespace Randomizer
 {
     public class BootRandomizer
 	{
-		private readonly static Dictionary<int, BootItem> Boots = new();
+		private readonly static Dictionary<string, BootItem> Boots = new();
 
         /// <summary>
         /// The data from Data/Boots.xnb
@@ -60,7 +60,7 @@ namespace Randomizer
 				}
 
 				BootItem newBootItem = new(
-					int.Parse(bootData.Key),
+					bootData.Key,
 					nameRandomizer.GenerateRandomBootName(),
 					descriptions[index],
 					defense,

@@ -21,23 +21,23 @@ namespace Randomizer
 		/// <summary>
 		/// Keeps track of crop ids mapped to image names so that all the crop images can be linked
 		/// </summary>
-		public Dictionary<int, CropImageLinkingData> CropIdsToLinkingData;
+		public Dictionary<string, CropImageLinkingData> CropIdsToLinkingData;
 
 		/// <summary>
 		/// Keeps track of crop growth images to crop ids
 		/// </summary>
-		private Dictionary<Point, int> CropGrowthImagePointsToIds;
+		private Dictionary<Point, string> CropGrowthImagePointsToIds;
 
         /// <summary>
         /// A reverse lookup since we have the image name when we need to find the crop id
         /// </summary>
-        private readonly Dictionary<string, int> ImageNameToCropIds;
+        private readonly Dictionary<string, string> ImageNameToCropIds;
 
         public CropGrowthImageBuilder()
 		{
             Rng = RNG.GetFarmRNG(nameof(CropGrowthImageBuilder));
 
-            CropIdsToLinkingData = new Dictionary<int, CropImageLinkingData>();
+            CropIdsToLinkingData = new Dictionary<string, CropImageLinkingData>();
             ImageNameToCropIds = new();
 
             StardewAssetPath = $"TileSheets/crops";
@@ -83,17 +83,18 @@ namespace Randomizer
 		{
 			const int itemsPerRow = 2;
 
-			CropGrowthImagePointsToIds = new Dictionary<Point, int>();
-			List<int> seedIdsToExclude = new()
+			CropGrowthImagePointsToIds = new();
+			List<string> seedIdsToExclude = new()
 			{
-				(int)ObjectIndexes.AncientSeeds
+				ObjectIndexes.AncientSeeds.GetId()
 			};
 
 			foreach (SeedItem seedItem in ItemList.GetSeeds().Where(x => !seedIdsToExclude.Contains(x.Id)).Cast<SeedItem>())
 			{
 				int sheetIndex = seedItem.CropGrowthInfo.SpriteIndex;
-				int cropId = seedItem.Id == (int)ObjectIndexes.CoffeeBean ?
-					seedItem.Id : seedItem.CropId;
+				string cropId = seedItem.ObjectIndex == ObjectIndexes.CoffeeBean 
+					? seedItem.Id 
+					: seedItem.CropId;
 
 				CropGrowthImagePointsToIds[new Point(sheetIndex % itemsPerRow, sheetIndex / itemsPerRow)] = cropId;
 			}
@@ -108,11 +109,12 @@ namespace Randomizer
 		protected override string GetRandomFileName(Point position)
 		{
 			string fileName;
-			int cropId = CropGrowthImagePointsToIds[position];
-			Item item = ItemList.Items[(ObjectIndexes)cropId];
+			string cropId = CropGrowthImagePointsToIds[position];
+			Item item = ItemList.Items[cropId];
 
-			SeedItem seedItem = item.Id == (int)ObjectIndexes.CoffeeBean ?
-				(SeedItem)item : ((CropItem)item).MatchingSeedItem;
+			SeedItem seedItem = item.ObjectIndex == ObjectIndexes.CoffeeBean 
+				? (SeedItem)item 
+				: ((CropItem)item).MatchingSeedItem;
 
 			FixWidthValue(seedItem.CropGrowthInfo.SpriteIndex);
 
@@ -183,7 +185,7 @@ namespace Randomizer
 				return image;
             }
 
-            if (ImageNameToCropIds.TryGetValue(fileName, out int cropId) &&
+            if (ImageNameToCropIds.TryGetValue(fileName, out string cropId) &&
 				CropIdsToLinkingData.TryGetValue(cropId, out CropImageLinkingData linkingData))
             {
                 RNG rng = RNG.GetFarmRNG($"{nameof(CropGrowthImageBuilder)}.{fileName}");

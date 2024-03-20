@@ -104,11 +104,11 @@ namespace Randomizer
 						new(rng.GetRandomValueFromList(ItemList.GetCookedItems())),
 						new(rng.GetRandomValueFromList(ItemList.GetForagables())),
 						new(rng.GetRandomValueFromList(FishItem.Get())),
-						new((ObjectIndexes)rng.GetRandomValueFromList(
+						new(rng.GetRandomValueFromList(
 							ItemList.Items.Values
 								.Where(x => x.DifficultyToObtain <= ObtainingDifficulties.LargeTimeRequirements)
 								.ToList()
-							).Id
+							).ObjectIndex
 						),
 					};
 					RequiredItems = new List<RequiredBundleItem>

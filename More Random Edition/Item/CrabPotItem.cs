@@ -8,8 +8,8 @@
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		/// <param name="id">The item id</param>
-		public CrabPotItem(int id) : base(id)
+		/// <param name="index">The item index</param>
+		public CrabPotItem(ObjectIndexes index) : base(index)
 		{
 			DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements;
 		}

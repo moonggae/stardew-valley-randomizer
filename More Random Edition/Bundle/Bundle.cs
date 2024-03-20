@@ -174,7 +174,7 @@ namespace Randomizer
 			if (Room != CommunityCenterRooms.Joja) // Joja doesn't actually have an item reward
 			{
 				string rewardStringPrefix = GetRewardStringPrefix();
-				int itemId = Reward.Item.Id;
+				string itemId = Reward.Item.Id;
 				rewardString = $"{rewardStringPrefix} {itemId} {Reward.NumberOfItems}";
 			}
 
@@ -296,8 +296,7 @@ namespace Randomizer
 				case BundleTypes.AllRandom:
 					SetBundleName("bundle-random-all");
 					potentialItems = RequiredBundleItem.CreateList(ItemList.Items.Values.Where(x =>
-						x.DifficultyToObtain < ObtainingDifficulties.Impossible &&
-						x.Id > -4)
+						x.DifficultyToObtain < ObtainingDifficulties.Impossible)
 					.ToList());
 					RequiredItems = rng.GetRandomValuesFromList(potentialItems, 8);
 					MinimumRequiredItems = 4;
@@ -349,7 +348,6 @@ namespace Randomizer
 			// - Are impossible to get
 			// - Are legendary fish
 			if (item.DifficultyToObtain >= ObtainingDifficulties.Impossible ||
-                item.Id < 0 || // The "Any Fish" category
                 !string.IsNullOrWhiteSpace(item.OverrideDisplayName) ||
 				(item is FishItem fishItem && fishItem.IsLegendaryFish))
 			{
@@ -379,8 +377,8 @@ namespace Randomizer
 			if (!reward.CanStack) { numberToGive = 1; }
 
 			Reward = reward.IsBigCraftable
-				? new RequiredBundleItem((BigCraftableIndexes)reward.Id, numberToGive)
-				: new RequiredBundleItem((ObjectIndexes)reward.Id, numberToGive);
+				? new RequiredBundleItem(reward.BigCraftableIndex, numberToGive)
+				: new RequiredBundleItem(reward.ObjectIndex, numberToGive);
         }
 	}
 }

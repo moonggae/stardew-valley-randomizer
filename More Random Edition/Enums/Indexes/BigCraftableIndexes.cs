@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Randomizer.ObjectIndexesExtentions;
 using SVObject = StardewValley.Object;
 
 namespace Randomizer
@@ -178,6 +179,50 @@ namespace Randomizer
         AutoPetter = 272,
         Hopper = 275,
         StatueOfTruePerfection = 280,
+
+        // Big Craftables that don't use integers will get arbitrary negative numbers
+        // DO NOT use these anywhere in the randomizer - use GetId instead
+        BigChest = -1
+    }
+
+    public static class BigCraftableIndexesExtentions
+    {
+        private class BigCraftableIndexData
+        {
+            public static readonly Dictionary<BigCraftableIndexes, string> BigCraftableIndexIdMap = new();
+            public static readonly Dictionary<string, BigCraftableIndexes> IdBigCraftableIndexMap = new();
+
+            public static readonly Dictionary<BigCraftableIndexes, string> NonIntBigCraftableMap = new()
+            {
+                [BigCraftableIndexes.BigChest] = "BigChest"
+            };
+
+            static BigCraftableIndexData()
+            {
+                Enum.GetValues(typeof(BigCraftableIndexes))
+                    .Cast<BigCraftableIndexes>()
+                    .ToList()
+                    .ForEach(index =>
+                    {
+                        int indexAsInt = (int)index;
+                        string indexAsString = indexAsInt >= 0
+                            ? indexAsInt.ToString()
+                            : NonIntBigCraftableMap[index];
+
+                        BigCraftableIndexIdMap[index] = indexAsString;
+                        IdBigCraftableIndexMap[indexAsString] = index;
+                    });
+            }
+        };
+
+        public static string GetId(this BigCraftableIndexes index) =>
+            BigCraftableIndexData.BigCraftableIndexIdMap[index];
+
+        public static Item GetItem(this BigCraftableIndexes index) =>
+            ItemList.BigCraftableItems[GetId(index)];
+
+        public static BigCraftableIndexes GetBigCraftableIndex(string id) =>
+            BigCraftableIndexData.IdBigCraftableIndexMap[id];
     }
 
     public class BigCraftableFunctions

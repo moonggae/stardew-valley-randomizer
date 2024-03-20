@@ -15,14 +15,14 @@ namespace Randomizer
 		{
 			get
 			{
-				if (Id == (int)ObjectIndexes.CoffeeBean)
+				if (ObjectIndex == ObjectIndexes.CoffeeBean)
 				{
-					Item coffee = ItemList.Items[ObjectIndexes.Coffee];
+					Item coffee = ObjectIndexes.Coffee.GetItem();
 					string coffeeName = Globals.GetTranslation("item-coffee-name", new { itemName = coffee.CoffeeIngredient });
 					return Globals.GetTranslation("item-coffee-bean-description", new { itemName = coffee.CoffeeIngredient, coffeeName });
 				}
 
-				CropItem growsCrop = (CropItem)ItemList.Items[(ObjectIndexes)CropId];
+				CropItem growsCrop = (CropItem)ItemList.Items[CropId];
 				string flowerString = growsCrop.IsFlower ? $"{Globals.GetTranslation("crop-tooltip-flower")} " : "";
 				string scytheString = NeedsScythe ? $"{Globals.GetTranslation("crop-tooltip-needs-scythe")} " : "";
 				string trellisString = IsTrellisCrop ? $"{Globals.GetTranslation("crop-tooltip-trellis")} " : "";
@@ -46,7 +46,7 @@ namespace Randomizer
             }
 		}
 		public bool IsTrellisCrop { get => CropGrowthInfo.IsRaised; }
-        public int CropId { get => int.Parse(CropGrowthInfo.HarvestItemId); }
+        public string CropId { get => CropGrowthInfo.HarvestItemId; }
 		public int TimeToGrow { get => CropGrowthInfo.DaysInPhase.Sum(); }
 		public bool NeedsScythe { get => CropGrowthInfo.HarvestMethod == HarvestMethod.Scythe; }
         public bool RegrowsAfterHarvest { get => CropGrowthInfo.RegrowDays != -1; }
@@ -64,8 +64,8 @@ namespace Randomizer
 		/// The constructor
 		/// The crop growth information is modified in the CropRandomizer
 		/// </summary>
-		/// <param name="id">The id of the seed item</param>
-		public SeedItem(int id) : base(id)
+		/// <param name="index">The index of the seed item</param>
+		public SeedItem(ObjectIndexes index) : base(index)
 		{
 			IsSeed = true;
 			CropGrowthInfo = DataLoader.Crops(Game1.content)[Id.ToString()];

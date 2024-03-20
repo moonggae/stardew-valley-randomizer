@@ -159,8 +159,8 @@ namespace Randomizer
 		/// </summary>
 		private static void PopulateQuestDictionary()
 		{
-			var parsnipCropId = (ItemList.Items[ObjectIndexes.ParsnipSeeds] as SeedItem).CropId;
-			ParsnipCrop = ItemList.GetItem((ObjectIndexes)parsnipCropId) as CropItem;
+			var parsnipCropId = (ObjectIndexes.ParsnipSeeds.GetItem() as SeedItem).CropId;
+			ParsnipCrop = ItemList.Items[parsnipCropId] as CropItem;
 
             DefaultQuestData = new();
             foreach (string questId in QuestIdToQuestTypeMap.Keys)

@@ -69,6 +69,8 @@
         IridiumNeedle = 61,
         InfinityBlade = 62,
         InfinityGavel = 63,
-        InfinityDagger = 64
+        InfinityDagger = 64,
+		Meowmere = 65,
+		IridiumScythe = 66
     }
 }

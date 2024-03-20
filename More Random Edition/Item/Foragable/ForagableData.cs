@@ -1,14 +1,12 @@
-﻿using System;
-
-namespace Randomizer
+﻿namespace Randomizer
 {
-	/// <summary>
-	/// Contains one set of items and their rarity
-	/// </summary>
-	public class ForagableData
+    /// <summary>
+    /// Contains one set of items and their rarity
+    /// </summary>
+    public class ForagableData
 	{
 		public string QualifiedItemId { get; }
-        public int ItemId { get; }
+        public string ItemId { get; }
         public double ItemRarity { get; set; }
 
 		/// <summary>

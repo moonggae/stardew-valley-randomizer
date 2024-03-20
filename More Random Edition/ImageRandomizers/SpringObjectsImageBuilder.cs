@@ -30,23 +30,23 @@ namespace Randomizer
 		/// <summary>
 		/// Keeps track of mapped points to item ids so that GetRandomFileName can grab the matching ID
 		/// </summary>
-		private Dictionary<Point, int> PointsToItemIds;
+		private Dictionary<Point, string> PointsToItemIds;
 
 		/// <summary>
 		/// Keeps track of crop ids mapped to image names so that all the crop images can be linked
 		/// </summary>
-		private readonly Dictionary<int, CropImageLinkingData> CropIdsToLinkingData;
+		private readonly Dictionary<string, CropImageLinkingData> CropIdsToLinkingData;
 
         /// <summary>
         /// A reverse lookup since we have the image name when we need to find the crop id
         /// </summary>
-        private readonly Dictionary<string, int> ImageNameToCropIds;
+        private readonly Dictionary<string, string> ImageNameToCropIds;
 
         /// <summary>
         /// The constructor
         /// </summary>
         /// <param name="customFolderName">The folder name of the image type being built</param>
-        public SpringObjectsImageBuilder(Dictionary<int, CropImageLinkingData> itemIdsToImageNames) : base()
+        public SpringObjectsImageBuilder(Dictionary<string, CropImageLinkingData> itemIdsToImageNames) : base()
 		{
             Rng = RNG.GetFarmRNG(nameof(SpringObjectsImageBuilder));
             CropIdsToLinkingData = itemIdsToImageNames;
@@ -76,13 +76,13 @@ namespace Randomizer
 		/// </summary>
 		private void SetAllItemMappings()
 		{
-			PointsToItemIds = new Dictionary<Point, int>();
+			PointsToItemIds = new Dictionary<Point, string>();
 
 			AddPointsToIdsMapping(FishItem.Get(true).Select(x => x.Id).ToList());
-			AddPointsToIdsMapping(BootRandomizer.BootData.Select(x => int.Parse(x.Key)).ToList());
+			AddPointsToIdsMapping(BootRandomizer.BootData.Select(x => x.Key).ToList());
 			AddPointsToIdsMapping(CropItem.Get().Select(x => x.Id).ToList());
 			AddPointsToIdsMapping(CropItem.Get().Select(x => x.MatchingSeedItem.Id).ToList());
-			AddPointsToIdsMapping(new List<int> { (int)ObjectIndexes.CherrySapling, (int)ObjectIndexes.CoffeeBean });
+			AddPointsToIdsMapping(new List<string> { ObjectIndexes.CherrySapling.GetId(), ObjectIndexes.CoffeeBean.GetId() });
 		}
 
 		/// <summary>
@@ -90,22 +90,33 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="items"></param>
 		/// <returns></returns>
-		protected void AddPointsToIdsMapping(List<int> itemIds)
+		protected void AddPointsToIdsMapping(List<string> itemIds)
 		{
-			foreach (int id in itemIds)
+			foreach (string id in itemIds)
 			{
-				PointsToItemIds[GetPointFromId(id)] = id;
+				Point? point = GetPointFromIndex(id);
+				if (point != null)
+				{
+                    PointsToItemIds[point.Value] = id;
+                }
 			}
 		}
 
 		/// <summary>
-		/// Gets the point in the springobjects file that belongs to the given item id
+		/// Gets the point in the springobjects file that belongs to the given item index
+		/// Items in spring objects currently ALL have an integer id, so just use that
 		/// </summary>
-		/// <param name="id">The id</param>
+		/// <param name="index">The item's index</param>
 		/// <returns />
-		protected static Point GetPointFromId(int id)
+		protected static Point? GetPointFromIndex(string index)
 		{
-			return new Point(id % ItemsPerRow, id / ItemsPerRow);
+			if (int.TryParse(index, out int id))
+			{
+                return new Point(id % ItemsPerRow, id / ItemsPerRow);
+            }
+
+			Globals.ConsoleWarn($"Couldn't parse the following into an integer id: {index}");
+			return null;
 		}
 
 		/// <summary>
@@ -118,7 +129,7 @@ namespace Randomizer
 		{
 			ImageWidthInPx = 16;
 
-			int itemId = PointsToItemIds[position];
+			string itemId = PointsToItemIds[position];
 			string fileName = "";
 			string subDirectory = "";
 			if (BootRandomizer.BootData.Keys.Any(x => x == itemId.ToString()))
@@ -134,9 +145,9 @@ namespace Randomizer
 				return fileName;
 			}
 
-			Item item = ItemList.Items[(ObjectIndexes)itemId];
+			Item item = ItemList.Items[itemId];
 
-			if (item.Id == (int)ObjectIndexes.CherrySapling)
+			if (item.ObjectIndex == ObjectIndexes.CherrySapling)
 			{
 				ImageWidthInPx = 96;
 				return Path.Combine(ImageDirectory, $"{FruitTreeSpritesImageName}.png");
@@ -155,8 +166,8 @@ namespace Randomizer
 				return fileName;
 			}
 
-			int cropId = item.Id;
-			if (item.IsCrop || item.Id == (int)ObjectIndexes.CoffeeBean)
+			string cropId = item.Id;
+			if (item.IsCrop || item.ObjectIndex == ObjectIndexes.CoffeeBean)
 			{
 				subDirectory = $"{Path.DirectorySeparatorChar}{CropsDirectory}";
 			}
@@ -244,7 +255,7 @@ namespace Randomizer
         /// <returns>The manipulated image</returns>
         private Texture2D ManipulateCropImage(Texture2D image, string fileName, bool isSeedImage)
 		{
-            if (ImageNameToCropIds.TryGetValue(fileName, out int cropId) &&
+            if (ImageNameToCropIds.TryGetValue(fileName, out string cropId) &&
                 CropIdsToLinkingData.TryGetValue(cropId, out CropImageLinkingData linkingData))
             {
 				// Seed images need to be created from the input value still
@@ -308,14 +319,14 @@ namespace Randomizer
 		/// <returns />
 		protected override bool ShouldSaveImage(Point point)
 		{
-			int itemId = PointsToItemIds[point];
+			string itemId = PointsToItemIds[point];
 			if (BootRandomizer.BootData.Keys.Any(x => x == itemId.ToString()))
 			{
 				return Globals.Config.Boots.Randomize && Globals.Config.Boots.UseCustomImages;
 			}
 
-			Item item = ItemList.Items[(ObjectIndexes)itemId];
-			if (item.IsCrop || item.IsSeed || item.Id == (int)ObjectIndexes.CherrySapling)
+			Item item = ItemList.Items[itemId];
+			if (item.IsCrop || item.IsSeed || item.ObjectIndex == ObjectIndexes.CherrySapling)
 			{
 				return Globals.Config.Crops.Randomize && Globals.Config.Crops.UseCustomImages;
 			}

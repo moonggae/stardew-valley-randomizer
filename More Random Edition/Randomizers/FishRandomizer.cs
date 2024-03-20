@@ -41,7 +41,7 @@ namespace Randomizer
 
             foreach (FishItem fish in normalFish)
 			{
-				FishItem fishInfo = new(fish.Id, true); // A constructor that does nothing
+				FishItem fishInfo = new(fish.ObjectIndex, true); // A constructor that does nothing
 				CopyFishInfo(fish, fishInfo);
 				normalFishCopy.Add(fishInfo);
             }

@@ -72,7 +72,7 @@ namespace Randomizer
 
             // Every Tuesday, add a crop corresponding to the seeds sold here
             var desertShopCrops = desertShopSeeds
-                .Select(item => ItemList.Items[(ObjectIndexes)item.CropId])
+                .Select(item => ItemList.Items[item.CropId])
                 .ToList();
             var desertCrop = weeklyShopRNG.GetRandomValueFromList(desertShopCrops);
             int desertCropPrice = GetAdjustedItemPrice(desertCrop, fallbackPrice: 50, multiplier: 2);

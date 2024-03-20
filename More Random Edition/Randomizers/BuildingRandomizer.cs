@@ -3,7 +3,6 @@ using StardewValley.GameData.Buildings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static StardewValley.Menus.CharacterCustomization;
 
 namespace Randomizer
 {
@@ -68,13 +67,13 @@ namespace Randomizer
             Rng = RNG.GetFarmRNG(nameof(BuildingRandomizer));
             Dictionary<string, BuildingData> buildingData = DataLoader.Buildings(Game1.content);
 
-            List<int> idsToDisallowForAnimalBuildings = ItemList.GetAnimalProducts().Select(x => x.Id).ToList();
-			idsToDisallowForAnimalBuildings.AddRange(new List<int>
+            List<string> idsToDisallowForAnimalBuildings = ItemList.GetAnimalProducts().Select(x => x.Id).ToList();
+			idsToDisallowForAnimalBuildings.AddRange(new List<string>
 			{
-				(int)ObjectIndexes.GreenSlimeEgg,
-				(int)ObjectIndexes.BlueSlimeEgg,
-				(int)ObjectIndexes.RedSlimeEgg,
-				(int)ObjectIndexes.PurpleSlimeEgg
+				ObjectIndexes.GreenSlimeEgg.GetId(),
+				ObjectIndexes.BlueSlimeEgg.GetId(),
+				ObjectIndexes.RedSlimeEgg.GetId(),
+				ObjectIndexes.PurpleSlimeEgg.GetId()
 			});
 
 			Item resource1, resource2;
@@ -85,7 +84,7 @@ namespace Randomizer
             foreach (Buildings buildingType in buildings)
 			{
 				resource1 = ItemList.GetRandomResourceItem(Rng);
-				resource2 = ItemList.GetRandomResourceItem(Rng, new int[] { resource1.Id });
+				resource2 = ItemList.GetRandomResourceItem(Rng, new string[] { resource1.Id });
 
 				switch (buildingType)
 				{
@@ -309,18 +308,18 @@ namespace Randomizer
 		/// <returns>The list of BuildingMaterials to be used by the building</returns>
         private static List<BuildingMaterial> ComputeBuildMaterials(List<ItemAndMultiplier> itemsRequired)
         {
-            Dictionary<int, RequiredBuildingItem> requiredItemsDict = new();
+            Dictionary<string, RequiredBuildingItem> requiredItemsDict = new();
             foreach (ItemAndMultiplier itemAndMultiplier in itemsRequired)
             {
                 RequiredBuildingItem requiredItem = new(itemAndMultiplier.Item, itemAndMultiplier.GenerateAmount(Rng));
-                int reqiredItemId = requiredItem.Item.Id;
-                if (requiredItemsDict.ContainsKey(reqiredItemId))
+                string requiredItemId = requiredItem.Item.Id;
+                if (requiredItemsDict.ContainsKey(requiredItemId))
                 {
-                    requiredItemsDict[reqiredItemId].NumberOfItems += requiredItem.NumberOfItems;
+                    requiredItemsDict[requiredItemId].NumberOfItems += requiredItem.NumberOfItems;
                 }
                 else
                 {
-                    requiredItemsDict.Add(reqiredItemId, requiredItem);
+                    requiredItemsDict.Add(requiredItemId, requiredItem);
                 }
             }
 

@@ -36,16 +36,16 @@ namespace Randomizer
                 .ToList();
 
             RNG shopRNG = RNG.GetDailyRNG($"{nameof(RandomizedCarpenterShop)}.{nameof(AddRandomTapperCraftingIngredient)}");
-            var tapperItemIdsAndStock = ((CraftableItem)ItemList.BigCraftableItems[BigCraftableIndexes.Tapper]).LastRecipeGenerated;
+            var tapperItemIdsAndStock = ((CraftableItem)BigCraftableIndexes.Tapper.GetItem()).LastRecipeGenerated;
             var tapperItems = tapperItemIdsAndStock.Keys
-                .Select(id => ItemList.Items[id])
+                .Select(id => id.GetItem())
                 .Where(item => !exitingStockIds.Contains(item.QualifiedId))
                 .ToList();
 
             if (tapperItems.Any())
             {
                 var tapperItemToSell = shopRNG.GetRandomValueFromList(tapperItems);
-                var stock = tapperItemIdsAndStock[(ObjectIndexes)tapperItemToSell.Id];
+                var stock = tapperItemIdsAndStock[tapperItemToSell.ObjectIndex];
                 var price = GetAdjustedItemPrice(tapperItemToSell, 50, 5);
                 InsertStockAt(tapperItemToSell.QualifiedId, "TapperItem", price, stock, index: 2);
             }

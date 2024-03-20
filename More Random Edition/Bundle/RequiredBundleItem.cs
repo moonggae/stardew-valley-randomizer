@@ -47,7 +47,7 @@ namespace Randomizer
 		/// <param name="maxValue">The minimum number of items required to craft this</param>
 		public RequiredBundleItem(ObjectIndexes itemId, int minValue, int maxValue)
 		{
-            Item = ItemList.Items[itemId];
+            Item = itemId.GetItem();
 			RangeOfItems = new Range(minValue, maxValue);
 			NumberOfItems = RangeOfItems.GetRandomValue(BundleRandomizer.Rng);
 		}
@@ -60,7 +60,7 @@ namespace Randomizer
         /// <param name="maxValue">The minimum number of items required to craft this</param>
         public RequiredBundleItem(BigCraftableIndexes itemId, int minValue, int maxValue)
         {
-            Item = ItemList.BigCraftableItems[itemId];
+            Item = itemId.GetItem();
             RangeOfItems = new Range(minValue, maxValue);
             NumberOfItems = RangeOfItems.GetRandomValue(BundleRandomizer.Rng);
         }
@@ -72,7 +72,7 @@ namespace Randomizer
         /// <param name="numberOfItems">The number of items required to craft this</param>
         public RequiredBundleItem(ObjectIndexes itemId, int numberOfItems = 1)
 		{
-            Item = ItemList.Items[itemId];
+            Item = itemId.GetItem();
 			RangeOfItems = new Range(numberOfItems, numberOfItems);
 			NumberOfItems = RangeOfItems.GetRandomValue(BundleRandomizer.Rng);
 		}
@@ -84,7 +84,7 @@ namespace Randomizer
         /// <param name="numberOfItems">The number of items required to craft this</param>
         public RequiredBundleItem(BigCraftableIndexes itemId, int numberOfItems = 1)
         {
-            Item = ItemList.BigCraftableItems[itemId];
+            Item = itemId.GetItem();
             RangeOfItems = new Range(numberOfItems, numberOfItems);
             NumberOfItems = RangeOfItems.GetRandomValue(BundleRandomizer.Rng);
         }
@@ -106,11 +106,11 @@ namespace Randomizer
 			{
 				if (item.IsBigCraftable)
 				{
-                    list.Add(new RequiredBundleItem((BigCraftableIndexes)item.Id, numberOfItems));
+                    list.Add(new RequiredBundleItem(item.BigCraftableIndex, numberOfItems));
                 }
 				else
 				{
-                    list.Add(new RequiredBundleItem((ObjectIndexes)item.Id, numberOfItems));
+                    list.Add(new RequiredBundleItem(item.ObjectIndex, numberOfItems));
                 }
 			}
 			return list;
@@ -129,11 +129,11 @@ namespace Randomizer
 			{
                 if (item.IsBigCraftable)
                 {
-                    list.Add(new RequiredBundleItem((BigCraftableIndexes)item.Id, minValue, maxValue));
+                    list.Add(new RequiredBundleItem(item.BigCraftableIndex, minValue, maxValue));
                 }
                 else
                 {
-                    list.Add(new RequiredBundleItem((ObjectIndexes)item.Id, minValue, maxValue));
+                    list.Add(new RequiredBundleItem(item.ObjectIndex, minValue, maxValue));
                 }
             }
 			return list;

@@ -28,7 +28,7 @@ namespace Randomizer
 			}
 		}
 
-		public CropItem(int id) : base(id)
+		public CropItem(ObjectIndexes index) : base(index)
 		{
 			IsCrop = true;
 			DifficultyToObtain = ObtainingDifficulties.LargeTimeRequirements;
@@ -43,7 +43,7 @@ namespace Randomizer
 		{
 			return ItemList.Items.Values.Where(x =>
 				x.IsCrop &&
-				(includeUnchangedCrops || x.Id != (int)ObjectIndexes.AncientFruit))
+				(includeUnchangedCrops || x.ObjectIndex != ObjectIndexes.AncientFruit))
 			.Cast<CropItem>()
 			.ToList();
 		}

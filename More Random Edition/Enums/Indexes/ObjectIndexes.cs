@@ -1,7 +1,15 @@
-﻿namespace Randomizer
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Randomizer
 {
+    /// <summary>
+    /// All positive IDs map to the existing id key as a string
+    /// Negative ones need to be looked up in the other dictionary
+    /// </summary>
 	public enum ObjectIndexes
-	{
+    {
         WildHorseradish = 16,
         Daffodil = 18,
         Leek = 20,
@@ -541,6 +549,50 @@
         CinderShard = 848,
         MagmaCap = 851,
         DragonTooth = 852,
-        BoneFragment = 881
+        BoneFragment = 881,
+
+        // Objects that don't use integers will get arbitrary negative numbers
+        // DO NOT use these anywhere in the randomizer - use GetId instead
+        //BlueGrassStarter = -1
     };
+
+    public static class ObjectIndexesExtentions
+    {
+        public class ObjectIndexData
+        {
+            public static readonly Dictionary<ObjectIndexes, string> ObjectIndexIdMap = new();
+            public static readonly Dictionary<string, ObjectIndexes> IdObjectIndexMap = new();
+
+            public static readonly Dictionary<ObjectIndexes, string> NonIntObjectsMap = new()
+            {
+                //[ObjectIndexes.BlueGrassStarter] = "BlueGrassStarter"
+            };
+
+            static ObjectIndexData()
+            {
+                Enum.GetValues(typeof(ObjectIndexes))
+                    .Cast<ObjectIndexes>()
+                    .ToList()
+                    .ForEach(index =>
+                    {
+                        int indexAsInt = (int)index;
+                        string indexAsString = indexAsInt >= 0
+                            ? indexAsInt.ToString()
+                            : NonIntObjectsMap[index];
+
+                        ObjectIndexIdMap[index] = indexAsString;
+                        IdObjectIndexMap[indexAsString] = index;
+                    });
+            }
+        };
+
+        public static string GetId(this ObjectIndexes index) => 
+            ObjectIndexData.ObjectIndexIdMap[index];
+
+        public static Item GetItem(this ObjectIndexes index) =>
+            ItemList.Items[GetId(index)];
+
+        public static ObjectIndexes GetObjectIndex(string id) =>
+            ObjectIndexData.IdObjectIndexMap[id];
+    }
 }

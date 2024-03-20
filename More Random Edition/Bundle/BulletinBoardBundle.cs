@@ -416,7 +416,7 @@ namespace Randomizer
 				// generated love list is really bad
 				List<Item> universalLoves = PreferenceRandomizer
 					.GetUniversalPreferences(UniversalPreferencesIndexes.Loved, forceOriginalData: true)
-					.Where(x => x.Id != (int)ObjectIndexes.PrismaticShard)
+					.Where(x => x.ObjectIndex != ObjectIndexes.PrismaticShard)
 					.ToList();
 
 				Reward = rng.GetRandomValueFromList(RequiredBundleItem.CreateList(universalLoves, 5, 10));

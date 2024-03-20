@@ -93,8 +93,8 @@ namespace Randomizer
                 Item matchingItem = ItemList.GetItemFromStringId(rewardData.RewardItemId);
                 if (matchingItem == null ||
                     rewardData.RewardItemId == DwarvshTraslationManualId ||
-                    matchingItem.Id == (int)ObjectIndexes.AncientSeeds ||
-                    matchingItem.Id == (int)ObjectIndexes.Stardrop)
+                    matchingItem.ObjectIndex == ObjectIndexes.AncientSeeds ||
+                    matchingItem.ObjectIndex == ObjectIndexes.Stardrop)
                 {
                     return true;
                 }
@@ -151,7 +151,7 @@ namespace Randomizer
             if (item is SeedItem seedItem)
             {
                 // The starfruit reward is an exception - we want to grab ANY seed, and give less of it
-                bool isStarFruitSeedReward = item.Id == (int)ObjectIndexes.StarfruitSeeds;
+                bool isStarFruitSeedReward = item.ObjectIndex == ObjectIndexes.StarfruitSeeds;
                 Seasons? season = isStarFruitSeedReward
                     ? null
                     : seedItem.GrowingSeasons[0];
@@ -160,7 +160,7 @@ namespace Randomizer
                     .Where(item => 
                         item is SeedItem seedItem &&
                         !UsedRewardIds.Contains(item.QualifiedId) &&
-                        item.Id != (int)ObjectIndexes.AncientSeeds && // This would clash with the ancient seed artifact reward!
+                        item.ObjectIndex != ObjectIndexes.AncientSeeds && // This would clash with the ancient seed artifact reward!
                         (season == null || seedItem.GrowingSeasons.Contains(season.Value)))
                     .Cast<SeedItem>()
                     .ToList();

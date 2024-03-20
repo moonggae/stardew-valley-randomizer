@@ -367,7 +367,7 @@ namespace Randomizer
 		{
 			foreach (ObjectIndexes index in Enum.GetValues(typeof(ObjectIndexes)))
 			{
-				if (!ItemList.Items.ContainsKey(index))
+				if (!ItemList.Items.ContainsKey(index.GetId()))
 				{
 					Globals.ConsoleWarn($"Missing item: {(int)index}: {index}");
 				}

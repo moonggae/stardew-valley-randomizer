@@ -17,7 +17,7 @@ namespace Randomizer
 			Dictionary<string, string> stringReplacements = new();
 
 			// Fix the "Parsnip" string at the start of the game
-			string parsnipSeedName = ItemList.Items[ObjectIndexes.ParsnipSeeds].Name;
+			string parsnipSeedName = ObjectIndexes.ParsnipSeeds.GetItem().Name;
 			stringReplacements["Farmer.cs.1918"] = Globals.GetTranslation("Farmer.cs.1918", new { seedName = parsnipSeedName });
 
 			// Fix the queen of sauce strings so it doesn't say the wrong recipe

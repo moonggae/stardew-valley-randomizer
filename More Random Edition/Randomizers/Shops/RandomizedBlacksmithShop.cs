@@ -88,7 +88,7 @@ namespace Randomizer
         /// <param name="shopRNG"></param>
         private void AddIridiumOre(RNG shopRNG)
         {
-            var iridiumOre = ItemList.Items[ObjectIndexes.IridiumOre];
+            var iridiumOre = ObjectIndexes.IridiumOre.GetItem();
             var stock = shopRNG.NextIntWithinRange(5, 15);
             var salePrice = GetAdjustedItemPrice(iridiumOre, fallbackPrice: 50, multiplier: 5);
             AddStock(iridiumOre.QualifiedId, UniqueItemId, salePrice, stock);
@@ -106,7 +106,7 @@ namespace Randomizer
             var getIridiumBar = shopRNG.NextBoolean(5);
             if (getIridiumBar)
             {
-                var iridiumBar = ItemList.Items[ObjectIndexes.IridiumBar];
+                var iridiumBar = ObjectIndexes.IridiumBar.GetItem();
                 var stock = shopRNG.NextIntWithinRange(2, 4);
                 var salePrice = GetAdjustedItemPrice(iridiumBar, fallbackPrice: 50, multiplier: 3);
                 AddStock(iridiumBar.QualifiedId, UniqueItemId, salePrice, stock);
@@ -116,15 +116,15 @@ namespace Randomizer
             {
                 var commonMetalBars = new List<Item>()
                 {
-                    ItemList.Items[ObjectIndexes.CopperBar],
-                    ItemList.Items[ObjectIndexes.IronBar],
-                    ItemList.Items[ObjectIndexes.GoldBar],
-                    ItemList.Items[ObjectIndexes.MapleBar]
+                    ObjectIndexes.CopperBar.GetItem(),
+                    ObjectIndexes.IronBar.GetItem(),
+                    ObjectIndexes.GoldBar.GetItem(),
+                    ObjectIndexes.MapleBar.GetItem()
                 };
 
                 var stock = shopRNG.NextIntWithinRange(3, 8);
                 var bar = shopRNG.GetRandomValueFromList(commonMetalBars);
-                var salePrice = bar.Id == (int)ObjectIndexes.MapleBar
+                var salePrice = bar.ObjectIndex == ObjectIndexes.MapleBar
                     ? GetAdjustedItemPrice(bar, fallbackPrice: 50, multiplier: 1)
                     : GetAdjustedItemPrice(bar, fallbackPrice: 50, multiplier: 3);
                 AddStock(bar.QualifiedId, UniqueItemId, salePrice, stock);

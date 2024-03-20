@@ -5,7 +5,7 @@
     /// </summary>
     public class RingItem : Item
 	{
-		public RingItem(int id) : base(id)
+		public RingItem(ObjectIndexes index) : base(index)
 		{
 			DifficultyToObtain = ObtainingDifficulties.NonCraftingItem;
 			IsRing = true;
