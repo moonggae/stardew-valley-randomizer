@@ -252,7 +252,7 @@ namespace Randomizer
         public Item(ObjectIndexes index)
 		{
 			Id = index.GetId();
-			CanStack = false;
+			CanStack = true;
 		}
 
         /// <summary>
@@ -262,7 +262,7 @@ namespace Randomizer
         public Item(BigCraftableIndexes index)
         {
             Id = index.GetId();
-            CanStack = true;
+            CanStack = false;
         }
 
         /// <summary>

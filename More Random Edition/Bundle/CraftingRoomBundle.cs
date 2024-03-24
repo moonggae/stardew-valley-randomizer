@@ -98,7 +98,7 @@ namespace Randomizer
 					break;
 				case BundleTypes.CraftingBindle:
 					SetBundleName("bundle-crafting-bindle");
-					potentialItems = new()
+					potentialItems = new List<RequiredBundleItem>()
 					{
 
 						new(rng.GetRandomValueFromList(ItemList.GetCookedItems())),
@@ -106,10 +106,14 @@ namespace Randomizer
 						new(rng.GetRandomValueFromList(FishItem.Get())),
 						new(rng.GetRandomValueFromList(
 							ItemList.Items.Values
-								.Where(x => x.DifficultyToObtain <= ObtainingDifficulties.LargeTimeRequirements)
+								.Where(x => 
+									x.DifficultyToObtain <= ObtainingDifficulties.LargeTimeRequirements &&
+									!x.IsCooked &&
+									!x.IsForagable &&
+									!x.IsFish)
 								.ToList()
 							).ObjectIndex
-						),
+						)
 					};
 					RequiredItems = new()
 					{
