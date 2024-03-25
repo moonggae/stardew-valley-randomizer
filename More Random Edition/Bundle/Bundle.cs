@@ -7,10 +7,10 @@ using System.Text.RegularExpressions;
 
 namespace Randomizer
 {
-    /// <summary>
-    /// Represents a bundle
-    /// </summary>
-    public abstract class Bundle
+	/// <summary>
+	/// Represents a bundle
+	/// </summary>
+	public abstract class Bundle
 	{
 		public CommunityCenterRooms Room { get; set; }
 		public int Id { get; set; }
@@ -235,9 +235,24 @@ namespace Randomizer
 				return "";
 			}
 
-			return Room == CommunityCenterRooms.Vault
-				? RequiredItems.First().GetStringForBundles(true)
-				: string.Join(" ", RequiredItems.Select(item => item.GetStringForBundles(false)));
+			if (Room == CommunityCenterRooms.Vault)
+			{
+				return RequiredItems.First().GetStringForBundles(true);
+			}
+
+			else
+			{
+				for (int i = 0; i < RequiredItems.Count; i++)
+				{
+					Item item = RequiredItems[i]?.Item ?? null;
+					if (item == null)
+					{
+						Globals.ConsoleError($"Null item found during bundle creation. Bundle: {DisplayName}; Index: {i}");
+					}
+				}
+
+				return string.Join(" ", RequiredItems.Select(item => item.GetStringForBundles(false)));
+			}
 		}
 
 		/// <summary>

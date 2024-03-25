@@ -24,8 +24,9 @@ namespace Randomizer
             Dictionary<string, SVLocationData> locationReplacements)
 		{
             if (!Globals.Config.Fish.Randomize) 
-            { 
-                return;
+            {
+                ComputeDefaultFishLocationChanges();
+				return;
             }
 
             Rng = RNG.GetFarmRNG(nameof(FishRandomizer));
@@ -173,14 +174,49 @@ namespace Randomizer
 		}
 
         /// <summary>
-        /// Go through the location data and modify which fish goes where based on the
-        /// map we created earlier
-        /// 
-        /// This also populates the location/season data of each fish
+        /// Used to populate the location changes if fish rando is off
+        /// This will ensure that fish actually exist in our item list
         /// </summary>
-        /// <param name="locationDataReplacements">The location data to pase and modify</param>
-        /// <param name="oldToNewFishIdMap">A map of the old fish ids to the new ones</param>
-        private static void ComputeFishLocationChanges(
+        private static void ComputeDefaultFishLocationChanges()
+        {
+			foreach (var locData in DataLoader.Locations(Game1.content))
+			{
+                var locationData = locData.Value;
+				string locationName = locData.Key;
+				if (!Enum.TryParse(locationName, out Locations location))
+				{
+					// This is okay, we don't have every location mapped
+					continue;
+				}
+
+				foreach (var spawnFishData in locationData.Fish)
+				{
+					if (spawnFishData.ItemId == null)
+					{
+						continue;
+					}
+
+					Item item = ItemList.GetItemFromStringId(spawnFishData.ItemId);
+					if (item is not FishItem fishItem)
+					{
+						continue;
+					}
+
+					TryAddLocationToFishItem(fishItem, location);
+					TryAddSeasonsToFishItem(fishItem, location, spawnFishData);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Go through the location data and modify which fish goes where based on the
+		/// map we created earlier
+		/// 
+		/// This also populates the location/season data of each fish
+		/// </summary>
+		/// <param name="locationDataReplacements">The location data to pase and modify</param>
+		/// <param name="oldToNewFishIdMap">A map of the old fish ids to the new ones</param>
+		private static void ComputeFishLocationChanges(
             Dictionary<string, SVLocationData> locationDataReplacements,
             Dictionary<string, string> oldToNewFishIdMap)
         {
