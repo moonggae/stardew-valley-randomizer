@@ -34,10 +34,14 @@ namespace Randomizer
 
             foreach (var weaponData in weaponReplacements)
 			{
-				// In this case, we're checking the setting in RandomizeWeapon instead of existing early
-				// since WeaponImageBuilder relies on Weapons to be populated
-				RandomizeWeapon(weaponData.Value, (WeaponIndexes)int.Parse(weaponData.Key), nameRandomizer);
-				Weapons.Add(weaponData.Key, weaponData.Value);
+				// If this fails to be an int, it is a modded weapon, so just skip it
+				if (int.TryParse(weaponData.Key, out int weaponIndex))
+				{
+					// In this case, we're checking the setting in RandomizeWeapon instead of existing early
+					// since WeaponImageBuilder relies on Weapons to be populated
+					RandomizeWeapon(weaponData.Value, (WeaponIndexes)weaponIndex, nameRandomizer);
+					Weapons.Add(weaponData.Key, weaponData.Value);
+				}
 			}
 
 			WriteToSpoilerLog(weaponReplacements);
