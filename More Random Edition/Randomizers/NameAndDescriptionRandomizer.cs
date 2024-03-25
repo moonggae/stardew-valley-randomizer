@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Randomizer
@@ -1226,23 +1227,27 @@ namespace Randomizer
             // Create an rng unique to to this class and the method that's creating the name
             RNG rng = RNG.GetFarmRNG($"{nameof(NameAndDescriptionRandomizer)}.{caller}");
 
-            List<string> createdDescriptions = new();
+			List<string> descriptionBasePool = new(descriptionBases);
+			List<string> nounPool = new(nouns);
+			List<string> adjectivePool = new(adjectives);
+			List<string> namePool = new(names);
+
+			List<string> createdDescriptions = new();
 			for (int i = 0; i < numberOfDescriptions; i++)
 			{
-				if (descriptionBases.Count > 0 && adjectives.Count > 1 && nouns.Count > 1 && names.Count > 0)
-				{
-					string newDescription = rng.GetAndRemoveRandomValueFromList(descriptionBases);
-					newDescription = newDescription.Replace("[noun]", rng.GetAndRemoveRandomValueFromList(nouns));
-					newDescription = newDescription.Replace("[noun2]", rng.GetAndRemoveRandomValueFromList(nouns));
-					newDescription = newDescription.Replace("[adjective]", rng.GetAndRemoveRandomValueFromList(adjectives));
-					newDescription = newDescription.Replace("[adjective2]", rng.GetAndRemoveRandomValueFromList(adjectives));
-					newDescription = newDescription.Replace("[name]", rng.GetAndRemoveRandomValueFromList(names));
-					createdDescriptions.Add(newDescription);
-				}
-				else
-				{
-					Globals.ConsoleError("Error generating new description: not enough descriptions or string replacements in lists.");
-				}
+				string description = TryGetValueFromPool("Descrption Base", rng, descriptionBasePool, descriptionBases);
+				string noun1 = TryGetValueFromPool("Noun", rng, nounPool, nouns);
+				string noun2 = TryGetValueFromPool("Noun", rng, nounPool, nouns);
+				string adjective1 = TryGetValueFromPool("Adjective", rng, adjectivePool, adjectives);
+				string adjective2 = TryGetValueFromPool("Adjective", rng, adjectivePool, adjectives);
+				string name = TryGetValueFromPool("Name", rng, namePool, names);
+
+				description = description.Replace("[noun]", noun1);
+				description = description.Replace("[noun2]", noun2);
+				description = description.Replace("[adjective]", adjective1);
+				description = description.Replace("[adjective2]", adjective2);
+				description = description.Replace("[name]", name);
+				createdDescriptions.Add(description);
 			}
 
 			return createdDescriptions;
@@ -1258,34 +1263,57 @@ namespace Randomizer
 			// Create an rng unique to to this class and the method that's creating the name
 			RNG rng = RNG.GetFarmRNG($"{nameof(NameAndDescriptionRandomizer)}.{caller}");
 
-            List<string> createdNames = new();
+			List<string> adjectivePool = new(adjectives);
+			List<string> prefixPool = new(prefixes);
+			List<string> suffixPool = new(suffixes);
 
+			List<string> createdNames = new();
 			for (int i = 0; i < numberOfNames; i++)
 			{
-				if (prefixes.Count > 0 && suffixes.Count > 0)
-				{
-					string newName = $"{rng.GetAndRemoveRandomValueFromList(prefixes)}{rng.GetAndRemoveRandomValueFromList(suffixes)}";
+				string prefix = TryGetValueFromPool("Prefix", rng, prefixPool, prefixes);
+				string suffix = TryGetValueFromPool("Suffix", rng, suffixPool, suffixes);
+				string newName = $"{prefix}{suffix}";
 
-					// Adjust so McName works correctly
-					if (newName.StartsWith("Mc"))
-					{
-						newName = $"Mc{newName.Substring(2, 1).ToUpper()}{newName[3..]}";
-					}
-
-					// 10% chance of an adjective being used before the name
-					if (rng.NextBoolean(10) && adjectives.Count > 0)
-					{
-						newName = $"{rng.GetAndRemoveRandomValueFromList(adjectives)} {newName}";
-					}
-					createdNames.Add(newName);
-				}
-				else
+				// Adjust so McName works correctly
+				if (newName.StartsWith("Mc"))
 				{
-					Globals.ConsoleError("Error generating new name: not enough prefixes/suffixes in lists");
+					newName = $"Mc{newName.Substring(2, 1).ToUpper()}{newName[3..]}";
 				}
+
+				// 10% chance of an adjective being used before the name
+				if (rng.NextBoolean(10) && adjectives.Count > 0)
+				{
+					string adjective = TryGetValueFromPool("Adjective", rng, adjectivePool, adjectives);
+					newName = $"{adjective} {newName}";
+				}
+				createdNames.Add(newName);
 			}
 
 			return createdNames;
+		}
+
+		/// <summary>
+		/// Try to get a value from the given pool
+		/// Refreshes the pool and shows a warning if there are no values left to grab
+		/// </summary>
+		/// <param name="poolName">The name of the pool (for logging)</param>
+		/// <param name="rng">The rng to use to grab values out of the pool</param>
+		/// <param name="pool">The pool itself to pull from</param>
+		/// <param name="defaultValues">The list of default values</param>
+		/// <returns></returns>
+		private static string TryGetValueFromPool(
+			string poolName, 
+			RNG rng,
+			List<string> pool, 
+			List<string> defaultValues)
+		{
+			if (!pool.Any())
+			{
+				pool.AddRange(defaultValues);
+				Globals.ConsoleWarn($"Had to refresh the {poolName} pool when randomizing names and descriptions. This may be okay if mods are being used that add content.");
+			}
+
+			return rng.GetAndRemoveRandomValueFromList(pool);
 		}
 	}
 }

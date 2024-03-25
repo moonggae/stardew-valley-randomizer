@@ -1,12 +1,52 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Randomizer
 {
 	public class WeaponAndArmorNameRandomizer
 	{
+        private class WeaponAndArmorNamePool
+        {
+            public string Name { get; set; }
+            public List<string> Pool { get; set; }
+            public List<string> UsedPool { get; set; }
+
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            /// <param name="name">The name of the pool - for logging only</param>
+            /// <param name="defaultValues">The default values of the pool - will copy the given list</param>
+            public WeaponAndArmorNamePool(string name, List<string> defaultValues)
+            {
+                Name = name;
+                Pool = new(defaultValues);
+                UsedPool = new();
+            }
+
+			/// <summary>
+			/// Gets a random name from the pool and adds it to the "used" pool
+			/// If the pool is empty, refreshes it and shows a message to the user
+			/// </summary>
+			/// <returns>The random name</returns>
+			public string TryGetRandomValue()
+			{
+				if (!Pool.Any())
+				{
+					Pool.AddRange(UsedPool);
+					UsedPool.Clear();
+					Globals.ConsoleWarn($"Had to refresh the {Name} pool when randomizing weapon and armor names. This may be okay if mods are being used that add content.");
+				}
+
+				string randomName = Rng.GetAndRemoveRandomValueFromList(Pool);
+                UsedPool.Add(randomName);
+
+                return randomName;
+			}
+		}
+
         private static RNG Rng { get; set; }
 
-        private readonly List<string> Adjectives = new()
+        private static readonly List<string> Adjectives = new()
 		{
             "Abyssal",
             "Amazing",
@@ -85,7 +125,7 @@ namespace Randomizer
             "Wicked",
             "Wooden"
         };
-		private readonly List<string> Nouns = new()
+		private static readonly List<string> Nouns = new()
 		{
             "Adamant",
             "Anshin",
@@ -154,7 +194,7 @@ namespace Randomizer
             "Vladof",
             "White"
         };
-		private readonly List<string> Swords = new()
+		private static readonly List<string> Swords = new()
 		{
             "Axe",
             "Blade",
@@ -222,7 +262,7 @@ namespace Randomizer
             "Wyrmkiller",
             "Zar'roc"
         };
-		private readonly List<string> Daggers = new()
+		private static readonly List<string> Daggers = new()
 		{
             "Awl",
             "Bayonet",
@@ -281,7 +321,7 @@ namespace Randomizer
             "Toothpick",
             "Twig"
         };
-		private readonly List<string> HammersAndClubs = new()
+		private static readonly List<string> HammersAndClubs = new()
 		{
             "2x4",
             "Anvil",
@@ -343,7 +383,7 @@ namespace Randomizer
             "Weapon",
             "Wrench"
         };
-		private readonly List<string> Suffixes = new()
+		private static readonly List<string> Suffixes = new()
 		{
             "Ancients",
             "Arceuus",
@@ -433,7 +473,7 @@ namespace Randomizer
             "Wisdom",
             "Wrath"
         };
-		private readonly List<string> Boots = new()
+		private static readonly List<string> Boots = new()
 		{
             "Ankle Boots",
             "Army Boots",
@@ -474,7 +514,7 @@ namespace Randomizer
             "Waders",
             "Zoris"
         };
-		private readonly List<string> Tier1Slingshots = new()
+		private static readonly List<string> Tier1Slingshots = new()
 		{
 			"Ice Cream",
 			"Terrible",
@@ -487,7 +527,7 @@ namespace Randomizer
 			"Weak",
 			"Erratic"
 		};
-		private readonly List<string> Tier2Slingshots = new()
+		private static readonly List<string> Tier2Slingshots = new()
 		{
 			"Moderate",
 			"Okay",
@@ -499,7 +539,7 @@ namespace Randomizer
 			"Secondhand",
 			"Better"
 		};
-		private readonly List<string> Tier3Slingshots = new()
+		private static readonly List<string> Tier3Slingshots = new()
 		{
 			"Fairy",
 			"Ultimate",
@@ -512,12 +552,23 @@ namespace Randomizer
 			"Superb"
 		};
 
-        /// <summary>
-        /// The constuctor - uses it's own name and a seed addendum so that the seeds are
-        /// not always the same when its RNG is used
-        /// </summary>
-        /// <param name="seedAddendum">The seed addendum - probably the calling class name</param>
-        public WeaponAndArmorNameRandomizer(string seedAddendum)
+        private readonly WeaponAndArmorNamePool AdjectivePool = new("Adjective", Adjectives);
+		private readonly WeaponAndArmorNamePool NounPool = new("Noun", Nouns);
+		private readonly WeaponAndArmorNamePool SwordPool = new("Sword", Swords);
+		private readonly WeaponAndArmorNamePool DaggerPool = new("Dagger", Daggers);
+		private readonly WeaponAndArmorNamePool HammerAndClubPool = new("Hammer and Club", HammersAndClubs);
+		private readonly WeaponAndArmorNamePool SuffixPool = new("Suffix", Suffixes);
+		private readonly WeaponAndArmorNamePool BootPool = new("Boot", Boots);
+		private readonly WeaponAndArmorNamePool Tier1SlingshotPool = new("Tier 1 Slingshots", Tier1Slingshots);
+		private readonly WeaponAndArmorNamePool Tier2SlingshotPool = new("Tier 2 Slingshots", Tier2Slingshots);
+		private readonly WeaponAndArmorNamePool Tier3SlingshotPool = new("Tier 3 Slingshots", Tier3Slingshots);
+
+		/// <summary>
+		/// The constuctor - uses it's own name and a seed addendum so that the seeds are
+		/// not always the same when its RNG is used
+		/// </summary>
+		/// <param name="seedAddendum">The seed addendum - probably the calling class name</param>
+		public WeaponAndArmorNameRandomizer(string seedAddendum)
         {
             Rng = RNG.GetFarmRNG($"{nameof(WeaponAndArmorNameRandomizer)}.{seedAddendum}");
         }
@@ -526,7 +577,7 @@ namespace Randomizer
 		/// Generates a random name for the given weapon type
 		/// </summary>
 		/// <param name="type">The weapon type</param>
-		/// <param name="slingshotTier">
+		/// <param name="slingshotId">
 		///		The slingshot tier, from 0 - 2 = worst to best
 		/// </param>
 		/// <returns></returns>
@@ -537,13 +588,13 @@ namespace Randomizer
 			{
 				case WeaponType.SlashingSword:
 				case WeaponType.StabbingSword:
-					typeString = Rng.GetAndRemoveRandomValueFromList(Swords);
+					typeString = SwordPool.TryGetRandomValue();
 					break;
 				case WeaponType.Dagger:
-					typeString = Rng.GetAndRemoveRandomValueFromList(Daggers);
+					typeString = DaggerPool.TryGetRandomValue();
 					break;
 				case WeaponType.ClubOrHammer:
-					typeString = Rng.GetAndRemoveRandomValueFromList(HammersAndClubs);
+                    typeString = HammerAndClubPool.TryGetRandomValue();
 					break;
 				case WeaponType.Slingshot:
 					return GenerateRandomSlingshotName(slingshotId);
@@ -566,13 +617,13 @@ namespace Randomizer
 			switch (slingshotId)
 			{
 				case WeaponIndexes.Slingshot:
-					typeString = Rng.GetAndRemoveRandomValueFromList(Tier1Slingshots);
+                    typeString = Tier1SlingshotPool.TryGetRandomValue();
 					break;
 				case WeaponIndexes.MasterSlingshot:
-					typeString = Rng.GetAndRemoveRandomValueFromList(Tier2Slingshots);
+					typeString = Tier2SlingshotPool.TryGetRandomValue();
 					break;
 				case WeaponIndexes.GalaxySlingshot:
-					typeString = Rng.GetAndRemoveRandomValueFromList(Tier3Slingshots);
+					typeString = Tier3SlingshotPool.TryGetRandomValue();
 					break;
 				default:
 					Globals.ConsoleError($"Trying to generate slingshot name for invalid id: {slingshotId}");
@@ -588,7 +639,7 @@ namespace Randomizer
 		/// <returns>The name in the format: [adjective] (noun) (boot string) [of suffix]</returns>
 		public string GenerateRandomBootName()
 		{
-			string bootName = Rng.GetAndRemoveRandomValueFromList(Boots);
+            string bootName = BootPool.TryGetRandomValue();
 			return GenerateRandomNonSlingshotName(bootName);
 		}
 
@@ -609,15 +660,15 @@ namespace Randomizer
                 bool useAdjective = Rng.NextBoolean();
                 if (useAdjective)
                 {
-                    adjective = Rng.GetAndRemoveRandomValueFromList(Adjectives);
+                    adjective = AdjectivePool.TryGetRandomValue();
                 }
                 else
                 {
-                    suffix = $"of {Rng.GetAndRemoveRandomValueFromList(Suffixes)}";
+                    suffix = $"of {SuffixPool.TryGetRandomValue()}";
                 }
             }
 
-			string noun = Rng.GetAndRemoveRandomValueFromList(Nouns);
+			string noun = NounPool.TryGetRandomValue();
 			return $"{adjective} {noun} {typeString} {suffix}".Trim();
 		}
 	}
