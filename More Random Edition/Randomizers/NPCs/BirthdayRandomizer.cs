@@ -13,7 +13,6 @@ namespace Randomizer
 		private static RNG Rng { get; set; }
 
 		/// <summary>
-		/// TODO 1.6: When the date of the new festival is known, we need to add to this list!
 		/// Holidays - don't assign birthdays to these days!
 		/// </summary>
 		private readonly static List<SDate> Holidays = new()
