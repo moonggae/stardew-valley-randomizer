@@ -139,7 +139,7 @@ namespace Randomizer
 
             HandleImageReplacement(new WeaponImageBuilder());
             HandleImageReplacement(cropGrowthImageBuilder);
-            HandleImageReplacement(new SpringObjectsImageBuilder(cropGrowthImageBuilder.CropIdsToLinkingData));
+            HandleImageReplacement(new ObjectImageBuilder(cropGrowthImageBuilder.CropIdsToLinkingData));
             HandleImageReplacement(new BundleImageBuilder());
 
             Globals.SpoilerWrite("==== ANIMALS ====");

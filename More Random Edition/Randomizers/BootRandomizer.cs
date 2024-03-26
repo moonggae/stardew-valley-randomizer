@@ -1,5 +1,6 @@
 ﻿using StardewValley;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Randomizer
 {
@@ -18,9 +19,12 @@ namespace Randomizer
         /// <returns />
         public static Dictionary<string, string> Randomize()
 		{
-            // Initialize boot data here so that it's reloaded in case of a locale change
-			// This is also used by SpringObjectBuilder, so do this here even if we aren't randomizing boots
-            BootData = DataLoader.Boots(Game1.content);
+			// Initialize boot data here so that it's reloaded in case of a locale change
+			// This is also used by ObjectImageBuilder, so do this here even if we aren't randomizing boots
+			// Only include boots that have int ids - any others are from mods and won't work
+			BootData = DataLoader.Boots(Game1.content)
+				.Where(kv => int.TryParse(kv.Key, out int _))
+				.ToDictionary(kv => kv.Key, kv => kv.Value);
 
             Dictionary<string, string> bootReplacements = new();
             if (!Globals.Config.Boots.Randomize) 

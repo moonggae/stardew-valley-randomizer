@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Randomizer
 {
-    public class SpringObjectsImageBuilder : ImageBuilder
+	public class ObjectImageBuilder : ImageBuilder
 	{
         private const string CropsDirectory = "Crops";
         private const string FlowersDirectory = "Flowers";
@@ -18,7 +18,7 @@ namespace Randomizer
         private const string BootsDirectory = "Boots";
 		private const string FruitTreeSpritesImageName = "fruitTreeSprites";
 
-        private List<string> FishImages { get; set; }
+		private List<string> FishImages { get; set; }
 		private List<string> BootImages { get; set; }
 
 		/// <summary>
@@ -45,14 +45,12 @@ namespace Randomizer
         /// The constructor
         /// </summary>
         /// <param name="customFolderName">The folder name of the image type being built</param>
-        public SpringObjectsImageBuilder(Dictionary<string, CropImageLinkingData> itemIdsToImageNames) : base()
+        public ObjectImageBuilder(Dictionary<string, CropImageLinkingData> itemIdsToImageNames) : base()
 		{
-            Rng = RNG.GetFarmRNG(nameof(SpringObjectsImageBuilder));
+            Rng = RNG.GetFarmRNG(nameof(ObjectImageBuilder));
             CropIdsToLinkingData = itemIdsToImageNames;
 			ImageNameToCropIds = new();
-
-			GlobalStardewAssetPath = "Maps/springobjects";
-            SubDirectory = "SpringObjects";
+            SubDirectory = "Objects";
 
 			SetAllItemMappings();
 			OverlayData = OverlayDataToItemIds.Keys.ToList();
@@ -78,7 +76,7 @@ namespace Randomizer
 			OverlayDataToItemIds = new Dictionary<SpriteOverlayData, string>();
 
 			AddPointsToIdsMapping(FishItem.Get(true).Select(x => x.Id).ToList());
-			AddPointsToIdsMapping(BootRandomizer.BootData.Select(x => x.Key).ToList());
+			AddPointsToIdsMapping(BootRandomizer.BootData.Select(x => x.Key).ToList(), isForBoots: true);
 			AddPointsToIdsMapping(CropItem.Get().Select(x => x.Id).ToList());
 			AddPointsToIdsMapping(CropItem.Get().Select(x => x.MatchingSeedItem.Id).ToList());
 			AddPointsToIdsMapping(new List<string> { ObjectIndexes.CherrySapling.GetId(), ObjectIndexes.CoffeeBean.GetId() });
@@ -87,36 +85,50 @@ namespace Randomizer
 		/// <summary>
 		/// Adds all items in the list to the dictionary of point mappings
 		/// </summary>
-		/// <param name="items"></param>
+		/// <param name="itemIds"></param>
+		/// <param name="isForBoots">Boots use int ids and the default texture by default</param>
 		/// <returns></returns>
-		protected void AddPointsToIdsMapping(List<string> itemIds)
+		protected void AddPointsToIdsMapping(List<string> itemIds, bool isForBoots = false)
 		{
 			foreach (string id in itemIds)
 			{
-				Point? point = GetPointFromIndex(id);
-				if (point != null)
+				if (isForBoots)
 				{
-					var overlayData = new SpriteOverlayData(GlobalStardewAssetPath, point.Value);
-                    OverlayDataToItemIds[overlayData] = id;
-                }
+					if (int.TryParse(id, out int spriteIndex))
+					{
+						Point point = GetPointFromIndex(spriteIndex);
+						var overlayData = new SpriteOverlayData(Item.DefaultTexture, point);
+						OverlayDataToItemIds[overlayData] = id;
+					}
+					else
+					{
+						Globals.ConsoleWarn($"Image builder tried to parse a boot with a non-integer id: {id}");
+					}
+				}
+				else if (ItemList.Items.TryGetValue(id, out Item item))
+				{
+					Point point = GetPointFromIndex(item.SpriteIndex);
+					var overlayData = new SpriteOverlayData(item.Texture, point);
+					OverlayDataToItemIds[overlayData] = id;
+				}
+				else
+				{
+					Globals.ConsoleWarn($"Image builder tried to grab a non-existant item with id: {id}");
+				}
 			}
 		}
 
 		/// <summary>
-		/// Gets the point in the springobjects file that belongs to the given item index
+		/// Gets the point in the texture file that belongs to the given item index
 		/// Items in spring objects currently ALL have an integer id, so just use that
 		/// </summary>
-		/// <param name="index">The item's index</param>
+		/// <param name="spriteIndex">The item's sprite index</param>
 		/// <returns />
-		protected static Point? GetPointFromIndex(string index)
+		protected static Point GetPointFromIndex(int spriteIndex)
 		{
-			if (int.TryParse(index, out int id))
-			{
-                return new Point(id % ItemsPerRow, id / ItemsPerRow);
-            }
-
-			Globals.ConsoleWarn($"Couldn't parse the following into an integer id: {index}");
-			return null;
+            return new Point(
+				spriteIndex % ItemsPerRow, 
+				spriteIndex / ItemsPerRow);
 		}
 
 		/// <summary>
@@ -202,7 +214,7 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Hue-shift the image to paste onto SpringObjects, if applicable
+		/// Hue-shift the image to paste onto the spritesheet, if applicable
 		/// </summary>
 		/// <param name="image">The image to potentially hue shift</param>
 		/// <param name="fileName">The full path of the image - needed so we can check the sub-directory</param>
@@ -236,7 +248,7 @@ namespace Randomizer
 					hueShiftMax = Globals.Config.Crops.HueShiftMax; 
 				}
 
-                RNG rng = RNG.GetFarmRNG($"{nameof(SpringObjectsImageBuilder)}.{fileName}");
+                RNG rng = RNG.GetFarmRNG($"{nameof(ObjectImageBuilder)}.{fileName}");
                 int hueShiftAmount = rng.NextIntWithinRange(0, hueShiftMax);
                 return ImageManipulator.ShiftImageHue(image, hueShiftAmount);
             }
@@ -265,7 +277,7 @@ namespace Randomizer
 					: ImageManipulator.ShiftImageHue(image, linkingData.HueShiftValue);
             }
 
-			Globals.ConsoleError($"SpringObjectBuilder: Could not get linking data when manipulating image: {fileName}");
+			Globals.ConsoleError($"ObjectImageBuilder: Could not get linking data when manipulating image: {fileName}");
 			return image;
         }
 

@@ -174,7 +174,7 @@ namespace Randomizer
 		}
 
         /// <summary>
-        /// Hue-shift the image to paste onto SpringObjects, if applicable
+        /// Hue-shift the image to paste onto the spritesheet, if applicable
         /// </summary>
         /// <param name="image">The image to potentially hue shift</param>
         /// <param name="fileName">The full path of the image - needed so we can check the sub-directory</param>
@@ -270,7 +270,7 @@ namespace Randomizer
 			}
 
 			// Check that every crop growth image has a matching seed packet
-			string seedImageDirectory = Path.Combine(CustomImagesPath, "SpringObjects", "Seeds");
+			string seedImageDirectory = Path.Combine(CustomImagesPath, "Objects", "Seeds");
 			List<string> seedImageNames = Directory.GetFiles(seedImageDirectory)
 				.Where(x => x.EndsWith(".png"))
 				.Select(x => Path.GetFileNameWithoutExtension(x))
@@ -285,7 +285,7 @@ namespace Randomizer
 			}
 
 			// Check that all crop growth images exist as a crop or flower
-			string cropImageDirectory = Path.Combine(CustomImagesPath, "SpringObjects", "Crops");
+			string cropImageDirectory = Path.Combine(CustomImagesPath, "Objects", "Crops");
             List<string> cropImageNames = Directory.GetFiles(cropImageDirectory)
 				.Where(x => x.EndsWith(".png"))
 				.Select(x => Path.GetFileNameWithoutExtension(x))
@@ -299,7 +299,7 @@ namespace Randomizer
 				}
 			}
 
-			string flowerImageDirectory = Path.Combine(CustomImagesPath, "SpringObjects", "Flowers");
+			string flowerImageDirectory = Path.Combine(CustomImagesPath, "Objects", "Flowers");
             List<string> flowerImageNames = Directory.GetFiles(flowerImageDirectory)
 				.Where(x => x.EndsWith(".png"))
 				.Select(x => Path.GetFileNameWithoutExtension(x))
@@ -329,8 +329,8 @@ namespace Randomizer
 			}
 
 			// Check that there's at least one seed packet template for trellis and non-trellis seeds
-			string seedPacketDirectory = Path.Combine(CustomImagesPath, "SpringObjects", SpringObjectsImageBuilder.SeedPacketDirectory);
-			string tellisPacketDirectory = Path.Combine(seedPacketDirectory, SpringObjectsImageBuilder.TrellisPacketSubDirectory);
+			string seedPacketDirectory = Path.Combine(CustomImagesPath, "Objects", ObjectImageBuilder.SeedPacketDirectory);
+			string tellisPacketDirectory = Path.Combine(seedPacketDirectory, ObjectImageBuilder.TrellisPacketSubDirectory);
 
 			if (!Directory.GetFiles(seedPacketDirectory).Where(x => x.EndsWith(".png")).Any()) 
 			{

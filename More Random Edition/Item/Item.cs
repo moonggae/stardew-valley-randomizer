@@ -13,8 +13,9 @@ namespace Randomizer
     public class Item
     {
         public const string ObjectIdPrefix = "(O)";
+		public const string DefaultTexture = "Maps/springobjects";
 
-        public string Id { get; }
+		public string Id { get; }
 
 		/// <summary>
 		/// Gets the corresponding object index
@@ -109,21 +110,16 @@ namespace Randomizer
 		/// <summary>
 		/// The Name field in the object data is the English name
 		/// </summary>
-		public string EnglishName
-		{
-			get
-			{
-				return IsBigCraftable
-					? Name
-					: Game1.objectData[Id.ToString()].Name;
-            }
-		}
+		public string EnglishName => IsBigCraftable
+			? Name
+			: Game1.objectData[Id].Name;
+		/// <summary>
+		/// The default texture is in sprint objects - it's unfortunately not defined by default
+		/// </summary>
+		public string Texture => Game1.objectData[Id].Texture ?? DefaultTexture;
+		public int SpriteIndex => Game1.objectData[Id].SpriteIndex;
 		public bool ShouldBeForagable { get; set; }
-		public bool IsForagable
-		{
-			get { return ShouldBeForagable; }
-		}
-
+		public bool IsForagable => ShouldBeForagable;
 		public bool IsTrash { get; set; }
 		public bool IsCraftable { get; set; }
 		public bool IsBigCraftable { get; set; }

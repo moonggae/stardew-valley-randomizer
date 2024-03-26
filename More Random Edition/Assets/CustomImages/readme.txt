@@ -40,7 +40,7 @@ CropGrowth
 ----------
 These images are the sprites used when crops are growing on your farm. These images consist of eight 16 x 32px sprites (meaning the entire image must be 128 x 32px). The order of the sprites depends on the folder.
 
-You MUST have the appropriate matching images in the SpringObjects directory, or you will see errors. Specificaly, the Seeds, Crops, and Flowers subdirectories. See the SpringObjects section for more details.
+You MUST have the appropriate matching images in the Objects directory, or you will see errors. Specificaly, the Seeds, Crops, and Flowers subdirectories. See the Objects section for more details.
 
 Try not to have the following in your image name unless otherwise noted to prevent unexpected behaviors:
 - -4.png
@@ -77,11 +77,11 @@ RegrowingCrops and TrellisCrops:
 - 8: The crop after harvest, before it has regrown
 
 
-SpringObjects
--------------
-This directory consists of replacements to be made in the springobjects.png spritesheet. This is the name of the spritesheet for most of the items in Stardew Valley.
+Objects
+-------
+This directory consists of replacements to be made in the object spritespeets (springobjects.png, Objects_2.png, and any others that may exist). This is the name of the spritesheet for most of the items in Stardew Valley.
 
-Fruit tree sapling sprites are replaced when the appropriate setting is on. The image to be used for that is directly in the SpringObjects directory, and is called "fruitTreeSprites.png". This consists of six 16 x 16px fruit tree sapling sprites in the following order:
+Fruit tree sapling sprites are replaced when the appropriate setting is on. The image to be used for that is directly in the Objects directory, and is called "fruitTreeSprites.png". This consists of six 16 x 16px fruit tree sapling sprites in the following order:
 - cherry, apricot, orange, peach, pomegranate, apple
 
 The following are details about each folder:
