@@ -169,6 +169,7 @@ The Biome Balance special order, for the sake of simplicity, is mapped to the fo
 * Updated for 1.6 compatibility
   * Randomize most of the new 1.6 crafting recipes
   * Added some of the new 1.6 items as crafting ingredients
+  * Randomized the four new artifact spot crops
   * Updated item IDs so that string IDs are supported in the randomizer
     * Help mitigate errors from other mods
     * Allows for the new Stardew items to be randomized, as some of them do not use integer IDs
