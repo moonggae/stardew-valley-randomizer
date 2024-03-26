@@ -24,9 +24,9 @@ namespace Randomizer
 		protected const int ItemsPerRow = 8;
 
 		/// <summary>
-		/// A map of the weapon position in the dictionary to the id it belongs to
+		/// A map of the weapon overlay data to the id it belongs to
 		/// </summary>
-		private Dictionary<Point, int> WeaponPositionToIDMap;
+		private Dictionary<SpriteOverlayData, string> OverlayDataToIdMap;
 
 		public WeaponImageBuilder() : base()
 		{
@@ -34,7 +34,7 @@ namespace Randomizer
             StardewAssetPath = "TileSheets/weapons";
             SubDirectory = "Weapons";
 			SetUpWeaponPositionToIDMap();
-			PositionsToOverlay = WeaponPositionToIDMap.Keys.ToList();
+			OverlayData = OverlayDataToIdMap.Keys.ToList();
 
 			SwordImages = Directory.GetFiles(Path.Combine(ImageDirectory, SwordSubDirectory))
 				.Where(x => x.EndsWith(".png"))
@@ -61,11 +61,16 @@ namespace Randomizer
 		/// </summary>
 		private void SetUpWeaponPositionToIDMap()
 		{
-			WeaponPositionToIDMap = new Dictionary<Point, int>();
+			OverlayDataToIdMap = new Dictionary<SpriteOverlayData, string>();
 			foreach (string stringKey in WeaponRandomizer.Weapons.Keys)
 			{
-				int id = int.Parse(stringKey);
-				WeaponPositionToIDMap[GetPointFromId(id)] = id;
+				// TODO when this is reworked: no need to parse this - the weapon info in Weapons will have the sprite index
+				// If this isn't an integer, then it's from a mod, so skip it
+				if (int.TryParse(stringKey, out int id))
+				{
+					var spriteOverlayData = new SpriteOverlayData(StardewAssetPath, GetPointFromId(id));
+					OverlayDataToIdMap[spriteOverlayData] = stringKey;
+				}
 			}
 		}
 
@@ -83,12 +88,13 @@ namespace Randomizer
 		/// Gets a random file name that matches the weapon type at the given position
 		/// Will remove the name found from the list
 		/// </summary>
-		/// <param name="position">The position</param>
+		/// <param name="overlayData">The overlay data</param>
 		/// <returns>The selected file name</returns>
-		protected override string GetRandomFileName(Point position)
+		protected override string GetRandomFileName(SpriteOverlayData overlayData)
 		{
 			string fileName = "";
-			switch (GetWeaponTypeFromPosition(position))
+			var position = overlayData.TilesheetPosition;
+			switch (GetWeaponTypeFromPosition(overlayData))
 			{
 				case WeaponType.SlashingSword:
 				case WeaponType.StabbingSword:
@@ -104,14 +110,14 @@ namespace Randomizer
 					// TODO:Use slingshot images when we actually randomize them
 					break;
 				default:
-					Globals.ConsoleError($"No weapon type defined at image position: {position.X}, {position.Y}");
+					Globals.ConsoleError($"No weapon type defined at image {overlayData.TilesheetName} at position: {position.X}, {position.Y}");
 					break;
 
 			}
 
 			if (string.IsNullOrEmpty(fileName))
 			{
-				Globals.ConsoleWarn($"Using default image for weapon at image position - you may not have enough weapon images: {position.X}, {position.Y}");
+				Globals.ConsoleWarn($"Using default image for weapon at image position - you may not have enough weapon images: {overlayData.TilesheetName} - {position.X}, {position.Y}");
 				return null;
 			}
 			return fileName;
@@ -120,11 +126,11 @@ namespace Randomizer
 		/// <summary>
 		/// Gets the weapon type from the given position in the image
 		/// </summary>
-		/// <param name="position">The position</param>
+		/// <param name="overlayData">The overlay data</param>
 		/// <returns />
-		private WeaponType GetWeaponTypeFromPosition(Point position)
+		private WeaponType GetWeaponTypeFromPosition(SpriteOverlayData overlayData)
 		{
-			int weaponId = WeaponPositionToIDMap[position];
+			string weaponId = OverlayDataToIdMap[overlayData];
 			WeaponData weapon = WeaponRandomizer.Weapons[weaponId.ToString()];
 			return (WeaponType)weapon.Type;
 		}

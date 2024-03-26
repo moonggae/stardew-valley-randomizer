@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using System.IO;
 using System.Linq;
 
@@ -11,7 +10,7 @@ namespace Randomizer
 		/// <summary>
 		/// A map of the bundle position in the dictionary to the id it belongs to
 		/// </summary>
-		private Dictionary<Point, Bundle> PointsToBundlesMap;
+		private Dictionary<SpriteOverlayData, Bundle> OverlayDataToBundlesMap;
 
 		/// <summary>
 		/// The list of bundle image names - without the file extention
@@ -24,7 +23,7 @@ namespace Randomizer
             StardewAssetPath = "LooseSprites/JunimoNote";
             SubDirectory = "Bundles";
 			SetUpPointsToBundlesMap();
-			PositionsToOverlay = PointsToBundlesMap.Keys.ToList();
+			OverlayData = OverlayDataToBundlesMap.Keys.ToList();
 
 			BundleImageNames = Directory.GetFiles($"{ImageDirectory}")
 				.Where(x => x.EndsWith(".png"))
@@ -45,12 +44,16 @@ namespace Randomizer
 		private void SetUpPointsToBundlesMap()
 		{
 			const int ItemsPerRow = 20;
-			PointsToBundlesMap = new Dictionary<Point, Bundle>();
+			OverlayDataToBundlesMap = new Dictionary<SpriteOverlayData, Bundle>();
 			foreach (RoomInformation room in BundleRandomizer.Rooms)
 			{
 				foreach (Bundle bundle in room.Bundles)
 				{
-					PointsToBundlesMap[new Point(bundle.Id % ItemsPerRow, bundle.Id / ItemsPerRow)] = bundle;
+					var overlayData = new SpriteOverlayData(
+						StardewAssetPath, 
+						x: bundle.Id % ItemsPerRow, 
+						y: bundle.Id / ItemsPerRow);
+					OverlayDataToBundlesMap[overlayData] = bundle;
 				}
 			}
 		}
@@ -59,11 +62,11 @@ namespace Randomizer
 		/// Gets a random file name that matches the bundle type at the given position
 		/// Will remove the name found from the list
 		/// </summary>
-		/// <param name="position">The position</param>
+		/// <param name="overlayData">The overlay data</param>
 		/// <returns>The selected file name</returns>
-		protected override string GetRandomFileName(Point position)
+		protected override string GetRandomFileName(SpriteOverlayData overlayData)
 		{
-			Bundle bundle = PointsToBundlesMap[position];
+			Bundle bundle = OverlayDataToBundlesMap[overlayData];
 			return Path.Combine(ImageDirectory, $"{bundle.ImageName}.png");
 		}
 
@@ -80,11 +83,11 @@ namespace Randomizer
 		/// Whether the settings premit random bundle images
 		/// </summary>
 		/// <returns>True if so, false otherwise</returns>
-		protected override bool ShouldSaveImage(Point position)
+		protected override bool ShouldSaveImage(SpriteOverlayData overlayData)
 		{
 			if (!Globals.Config.Bundles.Randomize) { return false; }
 
-			Bundle bundle = PointsToBundlesMap[position];
+			Bundle bundle = OverlayDataToBundlesMap[overlayData];
 
 			if (BundleImageNames.Contains(bundle.ImageName))
 			{

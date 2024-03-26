@@ -10,6 +10,34 @@ namespace Randomizer
     public abstract class ImageBuilder
     {
         /// <summary>
+        /// Data for the specific sprite to replace
+        /// </summary>
+        protected class SpriteOverlayData
+        {
+            /// <summary>
+            /// The name of the tilesheet
+            /// </summary>
+            public string TilesheetName { get; set; }
+
+            /// <summary>
+            /// The position to overlay the sprite on the spritesheet
+            /// </summary>
+            public Point TilesheetPosition { get; set; }
+
+            public SpriteOverlayData(string tilesheetName, int x, int y) 
+            { 
+                TilesheetName = tilesheetName;
+                TilesheetPosition = new Point(x, y);
+            }
+
+			public SpriteOverlayData(string tilesheetName, Point tilesheetPosition)
+			{
+				TilesheetName = tilesheetName;
+				TilesheetPosition = tilesheetPosition;
+			}
+		}
+
+        /// <summary>
         /// The RNG to use when grabbing random images - must be initialized in each constructor
         /// </summary>
         protected RNG Rng { get; set; }
@@ -79,7 +107,7 @@ namespace Randomizer
         /// <summary>
         /// A list of positions in the file that will be overlayed to
         /// </summary>
-        protected List<Point> PositionsToOverlay { get; set; }
+        protected List<SpriteOverlayData> OverlayData { get; set; }
 
         /// <summary>
         /// The files to pull from - gets all images in the directory that don't include the base file
@@ -120,10 +148,12 @@ namespace Randomizer
                 .Load<Texture2D>(StardewAssetPath);
 
             FilesToPullFrom = GetAllCustomImages();
-            foreach (Point position in PositionsToOverlay)
+            foreach (SpriteOverlayData overlayData in OverlayData)
             {
-                string randomFileName = GetRandomFileName(position);
-                if (string.IsNullOrWhiteSpace(randomFileName) || !ShouldSaveImage(position))
+                Point position = overlayData.TilesheetPosition;
+
+                string randomFileName = GetRandomFileName(overlayData);
+                if (string.IsNullOrWhiteSpace(randomFileName) || !ShouldSaveImage(overlayData))
                 {
                     continue;
                 }
@@ -186,12 +216,12 @@ namespace Randomizer
             .ToList();
         }
 
-        /// <summary>
-        /// Gets a random file name from the files to pull from and removes the found entry from the list
-        /// </summary>
-        /// <param name="position">The position of the instrument - unused in this version of the function</param>
-        /// <returns></returns>
-        protected virtual string GetRandomFileName(Point position)
+		/// <summary>
+		/// Gets a random file name from the files to pull from and removes the found entry from the list
+		/// </summary>
+		/// <param name="overlayData">The tilesheet info of the sprite - unused in this version of the function</param>
+		/// <returns></returns>
+		protected virtual string GetRandomFileName(SpriteOverlayData overlayData)
         {
             string fileName = Rng.GetAndRemoveRandomValueFromList(FilesToPullFrom);
 
@@ -214,9 +244,9 @@ namespace Randomizer
         /// Whether we should actually save the image file, or if the setting is off
         /// This is used to check individual images - default is to check for the entire image builder
         /// </summary>
-        /// <param name="point">The point to check at</param>
+        /// <param name="overlayData">The sprite to check</param>
         /// <returns />
-        protected virtual bool ShouldSaveImage(Point point)
+        protected virtual bool ShouldSaveImage(SpriteOverlayData overlayData)
         {
             return ShouldSaveImage();
         }

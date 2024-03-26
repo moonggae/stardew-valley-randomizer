@@ -26,7 +26,7 @@ namespace Randomizer
 		/// <summary>
 		/// Keeps track of crop growth images to crop ids
 		/// </summary>
-		private Dictionary<Point, string> CropGrowthImagePointsToIds;
+		private Dictionary<SpriteOverlayData, string> CropGrowthImagePointsToIds;
 
         /// <summary>
         /// A reverse lookup since we have the image name when we need to find the crop id
@@ -40,10 +40,10 @@ namespace Randomizer
             CropIdsToLinkingData = new Dictionary<string, CropImageLinkingData>();
             ImageNameToCropIds = new();
 
-            StardewAssetPath = $"TileSheets/crops";
+            StardewAssetPath = "TileSheets/crops";
 			SubDirectory = "CropGrowth";
 			SetUpCropGrowthImagePointsToIds();
-			PositionsToOverlay = CropGrowthImagePointsToIds.Keys.ToList();
+			OverlayData = CropGrowthImagePointsToIds.Keys.ToList();
 
 			ImageHeightInPx = 32;
 			ImageWidthInPx = 128;
@@ -96,7 +96,11 @@ namespace Randomizer
 					? seedItem.Id 
 					: seedItem.CropId;
 
-				CropGrowthImagePointsToIds[new Point(sheetIndex % itemsPerRow, sheetIndex / itemsPerRow)] = cropId;
+				var overlayData = new SpriteOverlayData(
+					StardewAssetPath, 
+					x: sheetIndex % itemsPerRow, 
+					y: sheetIndex / itemsPerRow);
+				CropGrowthImagePointsToIds[overlayData] = cropId;
 			}
 		}
 
@@ -104,12 +108,12 @@ namespace Randomizer
 		/// Gets a random file name that matches the crop growth image at the given position
 		/// Will remove the name found from the list
 		/// </summary>
-		/// <param name="position">The position</param>
+		/// <param name="overlayData">The overlay data</param>
 		/// <returns>The selected file name</returns>
-		protected override string GetRandomFileName(Point position)
+		protected override string GetRandomFileName(SpriteOverlayData overlayData)
 		{
 			string fileName;
-			string cropId = CropGrowthImagePointsToIds[position];
+			string cropId = CropGrowthImagePointsToIds[overlayData];
 			Item item = ItemList.Items[cropId];
 
 			SeedItem seedItem = item.ObjectIndex == ObjectIndexes.CoffeeBean 
@@ -155,7 +159,8 @@ namespace Randomizer
 
 			if (string.IsNullOrEmpty(fileName) || fileName == "-4.png" || fileName == "-5.png")
 			{
-				Globals.ConsoleWarn($"Using default image for crop growth - you may not have enough crop growth images: {position.X}, {position.Y}");
+				var position = overlayData.TilesheetPosition;
+				Globals.ConsoleWarn($"Using default image for crop growth - you may not have enough crop growth images: {overlayData.TilesheetName} - {position.X}, {position.Y}");
 				return null;
 			}
 
@@ -205,14 +210,9 @@ namespace Randomizer
         private void FixWidthValue(int graphicId)
 		{
 			List<int> graphicIndexesWithSmallerWidths = new() { 32, 34 };
-			if (graphicIndexesWithSmallerWidths.Contains(graphicId))
-			{
-				ImageWidthInPx = 112;
-			}
-			else
-			{
-				ImageWidthInPx = 128;
-			}
+			ImageWidthInPx = graphicIndexesWithSmallerWidths.Contains(graphicId)
+				? 112
+				: 128;
 		}
 
 		/// <summary>

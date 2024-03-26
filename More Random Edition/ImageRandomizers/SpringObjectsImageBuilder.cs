@@ -27,9 +27,9 @@ namespace Randomizer
 		protected const int ItemsPerRow = 24;
 
 		/// <summary>
-		/// Keeps track of mapped points to item ids so that GetRandomFileName can grab the matching ID
+		/// Keeps track of mapped overlay data to item ids so that GetRandomFileName can grab the matching ID
 		/// </summary>
-		private Dictionary<Point, string> PointsToItemIds;
+		private Dictionary<SpriteOverlayData, string> OverlayDataToItemIds;
 
 		/// <summary>
 		/// Keeps track of crop ids mapped to image names so that all the crop images can be linked
@@ -55,7 +55,7 @@ namespace Randomizer
             SubDirectory = "SpringObjects";
 
 			SetAllItemMappings();
-			PositionsToOverlay = PointsToItemIds.Keys.ToList();
+			OverlayData = OverlayDataToItemIds.Keys.ToList();
 
 			FishImages = Directory.GetFiles(Path.Combine(ImageDirectory, FishDirectory))
 				.Where(x => x.EndsWith(".png"))
@@ -75,7 +75,7 @@ namespace Randomizer
 		/// </summary>
 		private void SetAllItemMappings()
 		{
-			PointsToItemIds = new Dictionary<Point, string>();
+			OverlayDataToItemIds = new Dictionary<SpriteOverlayData, string>();
 
 			AddPointsToIdsMapping(FishItem.Get(true).Select(x => x.Id).ToList());
 			AddPointsToIdsMapping(BootRandomizer.BootData.Select(x => x.Key).ToList());
@@ -96,7 +96,8 @@ namespace Randomizer
 				Point? point = GetPointFromIndex(id);
 				if (point != null)
 				{
-                    PointsToItemIds[point.Value] = id;
+					var overlayData = new SpriteOverlayData(StardewAssetPath, point.Value);
+                    OverlayDataToItemIds[overlayData] = id;
                 }
 			}
 		}
@@ -122,13 +123,13 @@ namespace Randomizer
 		/// Gets a random file name that matches the crop growth image at the given position (fish excluded)
 		/// Will remove the name found from the list
 		/// </summary>
-		/// <param name="position">The position</param>
+		/// <param name="overlayData">The overlay data</param>
 		/// <returns>The selected file name</returns>
-		protected override string GetRandomFileName(Point position)
+		protected override string GetRandomFileName(SpriteOverlayData overlayData)
 		{
 			ImageWidthInPx = 16;
 
-			string itemId = PointsToItemIds[position];
+			string itemId = OverlayDataToItemIds[overlayData];
 			string fileName = "";
 			string subDirectory = "";
 			if (BootRandomizer.BootData.Keys.Any(x => x == itemId.ToString()))
@@ -314,11 +315,11 @@ namespace Randomizer
 		/// Whether we should actually save the image file, or if the setting is off
 		/// This checks whether the image is a crop or a fish and checks the specific setting
 		/// </summary>
-		/// <param name="point">The point to check at</param>
+		/// <param name="overlayData">The overlay data to check</param>
 		/// <returns />
-		protected override bool ShouldSaveImage(Point point)
+		protected override bool ShouldSaveImage(SpriteOverlayData overlayData)
 		{
-			string itemId = PointsToItemIds[point];
+			string itemId = OverlayDataToItemIds[overlayData];
 			if (BootRandomizer.BootData.Keys.Any(x => x == itemId.ToString()))
 			{
 				return Globals.Config.Boots.Randomize && Globals.Config.Boots.UseCustomImages;
