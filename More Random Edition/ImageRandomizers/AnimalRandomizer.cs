@@ -75,7 +75,7 @@ namespace Randomizer
             {
                 if (Globals.Config.SaveRandomizedImages)
                 {
-                    using FileStream stream = File.OpenWrite(OutputFileFullPath);
+                    using FileStream stream = File.OpenWrite(GetOutputFilePath());
                     animalImage.SaveAsPng(stream, animalImage.Width, animalImage.Height);
                 }
                 Globals.SpoilerWrite($"{AnimalTypeToRandomize} replaced with {randomAnimalFileName[..^4]}");

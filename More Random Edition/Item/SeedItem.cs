@@ -61,6 +61,12 @@ namespace Randomizer
         public bool Randomize { get; set; } = true;
 
 		/// <summary>
+		/// Whether to shuffle this item amongst all the other seeds
+		/// Currently setting the new artifact seeds to false for balance reasons
+		/// </summary>
+		public bool ShuffleBetweenSeeds { get; set; } = true;
+
+		/// <summary>
 		/// The constructor
 		/// The crop growth information is modified in the CropRandomizer
 		/// </summary>
@@ -68,7 +74,7 @@ namespace Randomizer
 		public SeedItem(ObjectIndexes index) : base(index)
 		{
 			IsSeed = true;
-			CropGrowthInfo = DataLoader.Crops(Game1.content)[Id.ToString()];
+			CropGrowthInfo = DataLoader.Crops(Game1.content)[Id];
             DifficultyToObtain = ObtainingDifficulties.LargeTimeRequirements;
 		}
 

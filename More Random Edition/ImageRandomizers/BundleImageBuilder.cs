@@ -20,8 +20,15 @@ namespace Randomizer
 		public BundleImageBuilder() : base()
 		{
             Rng = RNG.GetFarmRNG(nameof(BundleImageBuilder));
-            GlobalStardewAssetPath = "LooseSprites/JunimoNote";
+			GlobalStardewAssetPath = "LooseSprites/JunimoNote";
             SubDirectory = "Bundles";
+
+			ImageHeightInPx = 32;
+			ImageWidthInPx = 32;
+			OffsetWidthInPx = 32;
+			OffsetHeightInPx = 32;
+			InitialHeightOffetInPx = 180;
+
 			SetUpPointsToBundlesMap();
 			OverlayData = OverlayDataToBundlesMap.Keys.ToList();
 
@@ -30,12 +37,6 @@ namespace Randomizer
 				.Select(x => Path.GetFileNameWithoutExtension(x))
 				.OrderBy(x => x).ToList();
 			ValidateImages();
-
-			ImageHeightInPx = 32;
-			ImageWidthInPx = 32;
-			OffsetWidthInPx = 32;
-			OffsetHeightInPx = 32;
-			InitialHeightOffetInPx = 180;
 		}
 
 		/// <summary>
@@ -43,7 +44,7 @@ namespace Randomizer
 		/// </summary>
 		private void SetUpPointsToBundlesMap()
 		{
-			const int ItemsPerRow = 20;
+			int itemsPerRow = GetItemsPerRow();
 			OverlayDataToBundlesMap = new Dictionary<SpriteOverlayData, Bundle>();
 			foreach (RoomInformation room in BundleRandomizer.Rooms)
 			{
@@ -51,8 +52,8 @@ namespace Randomizer
 				{
 					var overlayData = new SpriteOverlayData(
 						GlobalStardewAssetPath, 
-						x: bundle.Id % ItemsPerRow, 
-						y: bundle.Id / ItemsPerRow);
+						x: bundle.Id % itemsPerRow, 
+						y: bundle.Id / itemsPerRow);
 					OverlayDataToBundlesMap[overlayData] = bundle;
 				}
 			}

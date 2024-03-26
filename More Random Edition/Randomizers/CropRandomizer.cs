@@ -37,16 +37,21 @@ namespace Randomizer
 		private static void RandomizeCrops(EditedObjects editedObjectInfo)
 		{
 			List<string> regrowableSeedIdsToRandomize = ItemList.GetSeeds().Cast<SeedItem>()
-				.Where(x => x.Randomize && x.RegrowsAfterHarvest)
+				.Where(x => x.Randomize && x.RegrowsAfterHarvest && x.ShuffleBetweenSeeds)
 				.Select(x => x.Id)
 				.ToList();
 			List<string> regrowableSeedIdsToRandomizeCopy = new(regrowableSeedIdsToRandomize);
 
 			List<string> nonRegrowableSeedIdsToRandomize = ItemList.GetSeeds().Cast<SeedItem>()
-				.Where(x => x.Randomize && !x.RegrowsAfterHarvest)
+				.Where(x => x.Randomize && !x.RegrowsAfterHarvest && x.ShuffleBetweenSeeds)
 				.Select(x => x.Id)
 				.ToList();
 			List<string> nonRegrowableSeedIdsToRandomizeCopy = new(nonRegrowableSeedIdsToRandomize);
+
+			List<string> staticSeedsToRandomize = ItemList.GetSeeds().Cast<SeedItem>()
+				.Where(x => x.Randomize && !x.ShuffleBetweenSeeds)
+				.Select(x => x.Id)
+				.ToList();
 
 			// Fill up a dictionary to remap the seed values
 			Dictionary<string, string> seedMappings = new(); // Original value, new value
@@ -59,6 +64,12 @@ namespace Randomizer
 			foreach (string originalNonRegrowableSeedId in nonRegrowableSeedIdsToRandomize)
 			{
 				seedMappings.Add(originalNonRegrowableSeedId, Rng.GetAndRemoveRandomValueFromList(nonRegrowableSeedIdsToRandomizeCopy));
+			}
+
+			foreach(string staticSeedId in staticSeedsToRandomize)
+			{
+				// These are static, so map it to itself!
+				seedMappings.Add(staticSeedId, staticSeedId);
 			}
 
 			// Loop through the dictionary and reassign the values, keeping the seasons the same as before
@@ -83,7 +94,9 @@ namespace Randomizer
 
 			// Set the object info
 			List<CropItem> randomizedCrops = ItemList.GetCrops(true).Cast<CropItem>()
-				.Where(x => nonRegrowableSeedIdsToRandomize.Union(regrowableSeedIdsToRandomize).Contains(x.MatchingSeedItem.Id))
+				.Where(x => nonRegrowableSeedIdsToRandomize
+					.Union(regrowableSeedIdsToRandomize)
+					.Union(staticSeedsToRandomize).Contains(x.MatchingSeedItem.Id))
 				.ToList();
 			List<CropItem> vegetables = randomizedCrops.Where(x => !x.IsFlower).ToList();
 			List<CropItem> flowers = randomizedCrops.Where(x => x.IsFlower).ToList();
@@ -167,18 +180,18 @@ namespace Randomizer
 				seed.Price = GetRandomSeedPrice();
 				crop.Price = CalculateCropPrice(seed);
 
-				ObjectData cropObject = Game1.objectData[crop.Id.ToString()].DeepClone();
+				ObjectData cropObject = Game1.objectData[crop.Id].DeepClone();
 				cropObject.DisplayName = crop.Name;
 				cropObject.Description = crop.Description;
 				cropObject.Price = crop.Price;
 
-                ObjectData seedObject = Game1.objectData[seed.Id.ToString()].DeepClone();
+                ObjectData seedObject = Game1.objectData[seed.Id].DeepClone();
                 seedObject.DisplayName = seed.Name;
                 seedObject.Description = seed.Description;
                 seedObject.Price = seed.Price;
 
-                editedObjectInfo.ObjectsReplacements[crop.Id.ToString()] = cropObject;
-				editedObjectInfo.ObjectsReplacements[seed.Id.ToString()] = seedObject;
+                editedObjectInfo.ObjectsReplacements[crop.Id] = cropObject;
+				editedObjectInfo.ObjectsReplacements[seed.Id] = seedObject;
 			}
 		}
 
@@ -193,18 +206,18 @@ namespace Randomizer
 			coffee.OverrideName = $"Hot {coffeeItemName}";
             coffee.CoffeeIngredient = coffeeItemName; // Used for the description of the coffee bean
 
-			ObjectData coffeeObject = Game1.objectData[coffee.Id.ToString()].DeepClone();
+			ObjectData coffeeObject = Game1.objectData[coffee.Id].DeepClone();
             coffeeObject.DisplayName = Globals.GetTranslation("item-coffee-name", new { itemName = coffeeItemName });
-            editedObjectInfo.ObjectsReplacements[coffee.Id.ToString()] = coffeeObject;
+            editedObjectInfo.ObjectsReplacements[coffee.Id] = coffeeObject;
 
             SeedItem coffeeBean = ObjectIndexes.CoffeeBean.GetItem() as SeedItem;
 			coffeeBean.OverrideName = $"{coffeeItemName} Bean";
 			coffeeBean.OverrideDisplayName = Globals.GetTranslation("coffee-bean-name", new { itemName = coffeeItemName });
 
-            ObjectData coffeeBeanObject = Game1.objectData[coffeeBean.Id.ToString()].DeepClone();
+            ObjectData coffeeBeanObject = Game1.objectData[coffeeBean.Id].DeepClone();
 			coffeeBeanObject.DisplayName = coffeeBean.Name;
 			coffeeBeanObject.Description = coffeeBean.Description;
-            editedObjectInfo.ObjectsReplacements[coffeeBean.Id.ToString()] = coffeeBeanObject;
+            editedObjectInfo.ObjectsReplacements[coffeeBean.Id] = coffeeBeanObject;
 		}
 
 		/// <summary>
@@ -218,16 +231,16 @@ namespace Randomizer
 			unmilledRice.OverrideName = $"Unmilled {riceName}";
 			unmilledRice.OverrideDisplayName = Globals.GetTranslation("unmilled-rice-name", new { itemName = riceName });
 
-            ObjectData unmilledRiceObject = Game1.objectData[unmilledRice.Id.ToString()].DeepClone();
+            ObjectData unmilledRiceObject = Game1.objectData[unmilledRice.Id].DeepClone();
 			unmilledRiceObject.DisplayName = unmilledRice.Name;
-            editedObjectInfo.ObjectsReplacements[unmilledRice.Id.ToString()] = unmilledRiceObject;
+            editedObjectInfo.ObjectsReplacements[unmilledRice.Id] = unmilledRiceObject;
 
 			Item rice = ObjectIndexes.Rice.GetItem();
             rice.OverrideName = riceName;
 
-            ObjectData riceObject = Game1.objectData[rice.Id.ToString()].DeepClone();
+            ObjectData riceObject = Game1.objectData[rice.Id].DeepClone();
             riceObject.DisplayName = rice.Name;
-            editedObjectInfo.ObjectsReplacements[rice.Id.ToString()] = riceObject;
+            editedObjectInfo.ObjectsReplacements[rice.Id] = riceObject;
         }
 
 		/// <summary>
@@ -242,9 +255,9 @@ namespace Randomizer
 				{
 					cropDish.CalculateOverrideName();
 
-                    ObjectData cropDishObject = Game1.objectData[cropDish.Id.ToString()].DeepClone();
+                    ObjectData cropDishObject = Game1.objectData[cropDish.Id].DeepClone();
                     cropDishObject.DisplayName = cropDish.Name;
-                    editedObjectInfo.ObjectsReplacements[cropDish.Id.ToString()] = cropDishObject;
+                    editedObjectInfo.ObjectsReplacements[cropDish.Id] = cropDishObject;
                 });
 			}
 
@@ -254,9 +267,9 @@ namespace Randomizer
                 {
 					fishDish.CalculateOverrideName();
 
-                    ObjectData fishDishObject = Game1.objectData[fishDish.Id.ToString()].DeepClone();
+                    ObjectData fishDishObject = Game1.objectData[fishDish.Id].DeepClone();
                     fishDishObject.DisplayName = fishDish.Name;
-                    editedObjectInfo.ObjectsReplacements[fishDish.Id.ToString()] = fishDishObject;
+                    editedObjectInfo.ObjectsReplacements[fishDish.Id] = fishDishObject;
                 });
 			}
 		}

@@ -36,19 +36,18 @@ namespace Randomizer
         public CropGrowthImageBuilder()
 		{
             Rng = RNG.GetFarmRNG(nameof(CropGrowthImageBuilder));
-
-            CropIdsToLinkingData = new Dictionary<string, CropImageLinkingData>();
-            ImageNameToCropIds = new();
-
-            GlobalStardewAssetPath = "TileSheets/crops";
+			GlobalStardewAssetPath = "TileSheets/crops";
 			SubDirectory = "CropGrowth";
-			SetUpCropGrowthImagePointsToIds();
-			OverlayData = CropGrowthImagePointsToIds.Keys.ToList();
-
+			
 			ImageHeightInPx = 32;
 			ImageWidthInPx = 128;
 			OffsetHeightInPx = 32;
 			OffsetWidthInPx = 128;
+
+			CropIdsToLinkingData = new Dictionary<string, CropImageLinkingData>();
+			ImageNameToCropIds = new();
+			SetUpCropGrowthImagePointsToIds();
+			OverlayData = CropGrowthImagePointsToIds.Keys.ToList();
 
 			NormalImages = Directory.GetFiles(Path.Combine(ImageDirectory, NormalDirectory))
 				.Where(x => x.EndsWith("-4.png") || x.EndsWith("-5.png"))
@@ -81,7 +80,7 @@ namespace Randomizer
 		/// <returns />
 		private void SetUpCropGrowthImagePointsToIds()
 		{
-			const int itemsPerRow = 2;
+			int itemsPerRow = GetItemsPerRow();
 
 			CropGrowthImagePointsToIds = new();
 			List<string> seedIdsToExclude = new()

@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
+using StardewValley;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using StardewValley;
 
 namespace Randomizer
 {
-    public abstract class ImageBuilder
+	public abstract class ImageBuilder
     {
         /// <summary>
         /// Data for the specific sprite to replace
@@ -68,6 +69,11 @@ namespace Randomizer
         protected int InitialHeightOffetInPx = 0;
 
         /// <summary>
+        /// A map indicating the items per row for each texture, based off of the ImageHeights
+        /// </summary>
+        private readonly Dictionary<string, int> ItemsPerRowMap = new();
+
+        /// <summary>
         /// The name of the output file
         /// </summary>
         protected const string OutputFileName = "randomizedImage.png";
@@ -91,13 +97,13 @@ namespace Randomizer
         /// <summary>
         /// The path to the custom images
         /// </summary>
-        public string OutputFileFullPath
+        /// <param name="index">If null, uses just the image name; otherwise, prepends an index to it</param>
+        public string GetOutputFilePath(int? index = null)
         {
-            get
-            {
-                return Path.Combine(ImageDirectory, OutputFileName);
-            }
-        }
+            return index == null 
+                ? Path.Combine(ImageDirectory, OutputFileName)
+                : Path.Combine(ImageDirectory, $"{index} - {OutputFileName}");
+		}
 
         /// <summary>
         /// The subdirectory where the base file and replacements are located
@@ -148,10 +154,12 @@ namespace Randomizer
 
             if (ShouldSaveImage() && Globals.Config.SaveRandomizedImages)
             {
+                int i = 1;
                 foreach (Texture2D image in modifiedImages.Values)
                 {
-					using FileStream stream = File.OpenWrite($"1 - {OutputFileFullPath}");
+					using FileStream stream = File.OpenWrite(GetOutputFilePath(i));
 					image.SaveAsPng(stream, image.Width, image.Height);
+                    i++;
 				}
             }
 
@@ -194,10 +202,9 @@ namespace Randomizer
 
 				string assetName = overlayData.TilesheetName;
 				Point position = overlayData.TilesheetPosition;
-                Texture2D stardewAssetToModify;
 
 				// Do NOT dispose of the texture here, as it is the actual Stardew asset!
-				if (!modifiedAssets.TryGetValue(assetName, out stardewAssetToModify))
+				if (!modifiedAssets.TryGetValue(assetName, out Texture2D stardewAssetToModify))
                 {
                     stardewAssetToModify = Globals.ModRef.Helper.GameContent.Load<Texture2D>(assetName);
 					modifiedAssets[assetName] = stardewAssetToModify;
@@ -272,6 +279,34 @@ namespace Randomizer
 
             return fileName;
         }
+
+        /// <summary>
+        /// Gets the items per row for the given texture
+        /// </summary>
+        /// <param name="texture">The texture  - uses the global path if not given</param>
+        /// <returns>The items per row for the given texture</returns>
+        protected int GetItemsPerRow(string texture = null)
+        {
+            texture ??= GlobalStardewAssetPath;
+
+            if (texture == null)
+            {
+                Globals.ConsoleError("Attempted to get items per row for a non-existant texture!");
+                return 1;
+            }
+
+            if (ItemsPerRowMap.TryGetValue(texture, out int itemsPerRow))
+            {
+                return itemsPerRow;
+			}
+
+			int width = Globals.ModRef.Helper.GameContent
+                .Load<Texture2D>(texture).Width;
+            itemsPerRow = width / ImageWidthInPx;
+            ItemsPerRowMap[texture] = itemsPerRow;
+
+            return itemsPerRow;
+		}
 
         /// <summary>
         /// Whether we should actually save the image file, or if the setting is off

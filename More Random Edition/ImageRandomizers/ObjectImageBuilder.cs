@@ -22,11 +22,6 @@ namespace Randomizer
 		private List<string> BootImages { get; set; }
 
 		/// <summary>
-		/// The number of items per row in the spring objects file
-		/// </summary>
-		protected const int ItemsPerRow = 24;
-
-		/// <summary>
 		/// Keeps track of mapped overlay data to item ids so that GetRandomFileName can grab the matching ID
 		/// </summary>
 		private Dictionary<SpriteOverlayData, string> OverlayDataToItemIds;
@@ -96,7 +91,7 @@ namespace Randomizer
 				{
 					if (int.TryParse(id, out int spriteIndex))
 					{
-						Point point = GetPointFromIndex(spriteIndex);
+						Point point = GetPointFromIndex(spriteIndex, Item.DefaultTexture);
 						var overlayData = new SpriteOverlayData(Item.DefaultTexture, point);
 						OverlayDataToItemIds[overlayData] = id;
 					}
@@ -107,7 +102,7 @@ namespace Randomizer
 				}
 				else if (ItemList.Items.TryGetValue(id, out Item item))
 				{
-					Point point = GetPointFromIndex(item.SpriteIndex);
+					Point point = GetPointFromIndex(item.SpriteIndex, item.Texture);
 					var overlayData = new SpriteOverlayData(item.Texture, point);
 					OverlayDataToItemIds[overlayData] = id;
 				}
@@ -123,12 +118,14 @@ namespace Randomizer
 		/// Items in spring objects currently ALL have an integer id, so just use that
 		/// </summary>
 		/// <param name="spriteIndex">The item's sprite index</param>
+		/// <param name="texture">The item's texture - used to get the items per row</param>
 		/// <returns />
-		protected static Point GetPointFromIndex(int spriteIndex)
+		protected Point GetPointFromIndex(int spriteIndex, string texture)
 		{
+			int itemsPerRow = GetItemsPerRow(texture);
             return new Point(
-				spriteIndex % ItemsPerRow, 
-				spriteIndex / ItemsPerRow);
+				spriteIndex % itemsPerRow, 
+				spriteIndex / itemsPerRow);
 		}
 
 		/// <summary>

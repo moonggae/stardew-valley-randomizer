@@ -566,8 +566,17 @@ namespace Randomizer
         SeaJelly,
         CaveJelly,
         RiverJelly,
-        Moss
-    };
+        Moss,
+
+        CarrotSeeds,
+        Carrot,
+		SummerSquashSeeds,
+        SummerSquash,
+		BroccoliSeeds,
+        Broccoli,
+		PowdermelonSeeds,
+		Powdermelon
+	};
 
     public static class ObjectIndexesExtentions
     {
@@ -590,8 +599,17 @@ namespace Randomizer
                 [ObjectIndexes.SeaJelly] = "SeaJelly",
                 [ObjectIndexes.CaveJelly] = "CaveJelly",
                 [ObjectIndexes.RiverJelly] = "RiverJelly",
-                [ObjectIndexes.Moss] = "Moss"
-            };
+                [ObjectIndexes.Moss] = "Moss",
+
+				[ObjectIndexes.CarrotSeeds] = "CarrotSeeds",
+				[ObjectIndexes.Carrot] = "Carrot",
+				[ObjectIndexes.SummerSquashSeeds] = "SummerSquashSeeds",
+				[ObjectIndexes.SummerSquash] = "SummerSquash",
+				[ObjectIndexes.BroccoliSeeds] = "BroccoliSeeds",
+				[ObjectIndexes.Broccoli] = "Broccoli",
+				[ObjectIndexes.PowdermelonSeeds] = "PowdermelonSeeds",
+				[ObjectIndexes.Powdermelon] = "Powdermelon"
+			};
 
             static ObjectIndexData()
             {

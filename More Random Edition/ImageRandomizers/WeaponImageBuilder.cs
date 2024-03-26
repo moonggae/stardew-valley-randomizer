@@ -19,11 +19,6 @@ namespace Randomizer
 		private List<string> SlingshotImages { get; set; }
 
 		/// <summary>
-		/// The number of items per row in the weapon image file
-		/// </summary>
-		protected const int ItemsPerRow = 8;
-
-		/// <summary>
 		/// A map of the weapon overlay data to the id it belongs to
 		/// </summary>
 		private Dictionary<SpriteOverlayData, string> OverlayDataToIdMap;
@@ -79,9 +74,12 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="id">The id</param>
 		/// <returns />
-		protected static Point GetPointFromId(int id)
+		protected Point GetPointFromId(int id)
 		{
-			return new Point(id % ItemsPerRow, id / ItemsPerRow);
+			int itemsPerRow = GetItemsPerRow();
+			return new Point(
+				x: id % itemsPerRow, 
+				y: id / itemsPerRow);
 		}
 
 		/// <summary>
