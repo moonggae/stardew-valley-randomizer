@@ -31,7 +31,7 @@ namespace Randomizer
 		public WeaponImageBuilder() : base()
 		{
             Rng = RNG.GetFarmRNG(nameof(WeaponImageBuilder));
-            StardewAssetPath = "TileSheets/weapons";
+			GlobalStardewAssetPath = "TileSheets/weapons";
             SubDirectory = "Weapons";
 			SetUpWeaponPositionToIDMap();
 			OverlayData = OverlayDataToIdMap.Keys.ToList();
@@ -68,7 +68,7 @@ namespace Randomizer
 				// If this isn't an integer, then it's from a mod, so skip it
 				if (int.TryParse(stringKey, out int id))
 				{
-					var spriteOverlayData = new SpriteOverlayData(StardewAssetPath, GetPointFromId(id));
+					var spriteOverlayData = new SpriteOverlayData(GlobalStardewAssetPath, GetPointFromId(id));
 					OverlayDataToIdMap[spriteOverlayData] = stringKey;
 				}
 			}

@@ -40,7 +40,7 @@ namespace Randomizer
             CropIdsToLinkingData = new Dictionary<string, CropImageLinkingData>();
             ImageNameToCropIds = new();
 
-            StardewAssetPath = "TileSheets/crops";
+            GlobalStardewAssetPath = "TileSheets/crops";
 			SubDirectory = "CropGrowth";
 			SetUpCropGrowthImagePointsToIds();
 			OverlayData = CropGrowthImagePointsToIds.Keys.ToList();
@@ -97,7 +97,7 @@ namespace Randomizer
 					: seedItem.CropId;
 
 				var overlayData = new SpriteOverlayData(
-					StardewAssetPath, 
+					GlobalStardewAssetPath, 
 					x: sheetIndex % itemsPerRow, 
 					y: sheetIndex / itemsPerRow);
 				CropGrowthImagePointsToIds[overlayData] = cropId;

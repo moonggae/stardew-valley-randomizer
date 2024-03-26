@@ -114,62 +114,101 @@ namespace Randomizer
         /// </summary>
         protected List<string> FilesToPullFrom { get; set; }
 
-        /// <summary>
-        /// The path for the asset that we will be modifying
-        /// </summary>
-        public string StardewAssetPath { get; set; }
+		/// <summary>
+		/// The stardew asset path to use for every image
+		/// If this is set, it will ignore the TilesheetName when overlaying images
+		/// while using SpriteOverlayData
+		/// </summary>
+		protected string GlobalStardewAssetPath { get; set; }
 
+        
         /// <summary>
-        /// The public API to use to get the modified asset of the image builder
+        /// The paths for the assets that we will be modifying
+        /// - If we're using the global path returns a list with it as the only entry
+        /// - Otherwise, grabs all the distinct tilesheet names
         /// </summary>
-        /// <returns></returns>
-        public Texture2D GenerateModifiedAsset()
+        public List<string> StardewAssetPaths { 
+            get 
+            {
+                return GlobalStardewAssetPath == null
+                    ? OverlayData.Select(data => data.TilesheetName).Distinct().ToList()
+                    : new() { GlobalStardewAssetPath };
+			} 
+        }
+
+		/// <summary>
+		/// The public API to use to get the modified assets of the image builder
+		/// </summary>
+		/// <returns>A dictionary of the asset name to the texture that should replace it</returns>
+		public Dictionary<string, Texture2D> GenerateModifiedAssets()
         {
-            // Deleting this first just in case randomizedImage.png does weird things
-            File.Delete(Globals.GetFilePath(OutputFileFullPath));
-            var modifiedImage = BuildImage();
+            // Deleting the random images first in case randomizedImage.png does weird things
+            CleanUpRandomizedImages();
+			Dictionary<string, Texture2D> modifiedImages = BuildImages();
 
             if (ShouldSaveImage() && Globals.Config.SaveRandomizedImages)
             {
-                using FileStream stream = File.OpenWrite(OutputFileFullPath);
-                modifiedImage.SaveAsPng(stream, modifiedImage.Width, modifiedImage.Height);
+                foreach (Texture2D image in modifiedImages.Values)
+                {
+					using FileStream stream = File.OpenWrite($"1 - {OutputFileFullPath}");
+					image.SaveAsPng(stream, image.Width, image.Height);
+				}
             }
 
-            return modifiedImage;
+            return modifiedImages;
         }
 
         /// <summary>
-        /// Builds the image and saves the result into randomizedImage.png
+        /// Cleans up all of the randomized images in the directory
         /// </summary>
-        protected virtual Texture2D BuildImage()
+        private void CleanUpRandomizedImages()
         {
-            // Do NOT dispose of this here, as it is the actual Stardew asset!
-            Texture2D stardewAssetToModify = Globals.ModRef.Helper.GameContent
-                .Load<Texture2D>(StardewAssetPath);
+            Directory.GetFiles(ImageDirectory)
+                .Where(file => file.EndsWith(OutputFileName))
+                .ToList()
+                .ForEach(file => File.Delete(Globals.GetFilePath(file)));
+		}
 
-            FilesToPullFrom = GetAllCustomImages();
+        /// <summary>
+        /// Builds the image(s) and saves the result(s) into randomizedImage.png
+        /// </summary>
+        /// <returns>A dictionary of the asset name to the texture that should replace it</returns>
+        protected virtual Dictionary<string, Texture2D> BuildImages()
+        {
+            Dictionary<string, Texture2D> modifiedAssets = new();
+
+			FilesToPullFrom = GetAllCustomImages();
             foreach (SpriteOverlayData overlayData in OverlayData)
             {
-                Point position = overlayData.TilesheetPosition;
+				string randomFileName = GetRandomFileName(overlayData);
+				if (string.IsNullOrWhiteSpace(randomFileName) || !ShouldSaveImage(overlayData))
+				{
+					continue;
+				}
 
-                string randomFileName = GetRandomFileName(overlayData);
-                if (string.IsNullOrWhiteSpace(randomFileName) || !ShouldSaveImage(overlayData))
-                {
-                    continue;
-                }
+				if (!File.Exists(randomFileName))
+				{
+					Globals.ConsoleError($"File {randomFileName} does not exist! Using default image instead.");
+					continue;
+				}
 
-                if (!File.Exists(randomFileName))
+				string assetName = overlayData.TilesheetName;
+				Point position = overlayData.TilesheetPosition;
+                Texture2D stardewAssetToModify;
+
+				// Do NOT dispose of the texture here, as it is the actual Stardew asset!
+				if (!modifiedAssets.TryGetValue(assetName, out stardewAssetToModify))
                 {
-                    Globals.ConsoleError($"File {randomFileName} does not exist! Using default image instead.");
-                    continue;
-                }
+                    stardewAssetToModify = Globals.ModRef.Helper.GameContent.Load<Texture2D>(assetName);
+					modifiedAssets[assetName] = stardewAssetToModify;
+				}
 
                 using Texture2D originalRandomImage = Texture2D.FromFile(Game1.graphics.GraphicsDevice, randomFileName);
                 using Texture2D randomImage = ManipulateImage(originalRandomImage, randomFileName);
                 CropAndOverlayImage(position, randomImage, stardewAssetToModify);
             }
 
-            return stardewAssetToModify;
+            return modifiedAssets;
         }
 
         /// <summary>
@@ -204,7 +243,7 @@ namespace Randomizer
         }
 
         /// <summary>
-        /// Gets all the custom images from the given director
+        /// Gets all the custom images from the given directory
         /// </summary>
         /// <returns></returns>
         private List<string> GetAllCustomImages()

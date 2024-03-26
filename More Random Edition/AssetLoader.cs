@@ -152,17 +152,21 @@ namespace Randomizer
         }
 
 		/// <summary>
-		/// Adds the image builder's modified asset to the dictionary
+		/// Adds the image builder's modified assets to the dictionary
         /// Replace the localized version - our cache invalidator will invalidate it and the base one
 		/// </summary>
 		/// <param name="imageBuilder">The image builder</param>
 		private void HandleImageReplacement(ImageBuilder imageBuilder)
 		{
-            AddReplacement(
-                Globals.GetLocalizedFileName(imageBuilder.StardewAssetPath), 
-                imageBuilder.GenerateModifiedAsset());
+            Dictionary<string, Texture2D> modifiedAssets = imageBuilder.GenerateModifiedAssets();
+            foreach (KeyValuePair<string, Texture2D> assetData in modifiedAssets)
+            {
+                var assetName = assetData.Key;
+                var texture = assetData.Value;
 
-            _mod.Helper.GameContent.InvalidateCache(imageBuilder.StardewAssetPath);
+                AddReplacement(assetName, texture);
+				_mod.Helper.GameContent.InvalidateCache(assetName);
+			}
         }
 	}
 }

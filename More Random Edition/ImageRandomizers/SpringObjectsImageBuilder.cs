@@ -51,7 +51,7 @@ namespace Randomizer
             CropIdsToLinkingData = itemIdsToImageNames;
 			ImageNameToCropIds = new();
 
-			StardewAssetPath = "Maps/springobjects";
+			GlobalStardewAssetPath = "Maps/springobjects";
             SubDirectory = "SpringObjects";
 
 			SetAllItemMappings();
@@ -96,7 +96,7 @@ namespace Randomizer
 				Point? point = GetPointFromIndex(id);
 				if (point != null)
 				{
-					var overlayData = new SpriteOverlayData(StardewAssetPath, point.Value);
+					var overlayData = new SpriteOverlayData(GlobalStardewAssetPath, point.Value);
                     OverlayDataToItemIds[overlayData] = id;
                 }
 			}

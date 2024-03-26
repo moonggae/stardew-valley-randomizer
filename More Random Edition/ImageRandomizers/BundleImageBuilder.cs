@@ -20,7 +20,7 @@ namespace Randomizer
 		public BundleImageBuilder() : base()
 		{
             Rng = RNG.GetFarmRNG(nameof(BundleImageBuilder));
-            StardewAssetPath = "LooseSprites/JunimoNote";
+            GlobalStardewAssetPath = "LooseSprites/JunimoNote";
             SubDirectory = "Bundles";
 			SetUpPointsToBundlesMap();
 			OverlayData = OverlayDataToBundlesMap.Keys.ToList();
@@ -50,7 +50,7 @@ namespace Randomizer
 				foreach (Bundle bundle in room.Bundles)
 				{
 					var overlayData = new SpriteOverlayData(
-						StardewAssetPath, 
+						GlobalStardewAssetPath, 
 						x: bundle.Id % ItemsPerRow, 
 						y: bundle.Id / ItemsPerRow);
 					OverlayDataToBundlesMap[overlayData] = bundle;

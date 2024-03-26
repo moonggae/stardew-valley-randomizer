@@ -31,7 +31,7 @@ namespace Randomizer
             Rng = RNG.GetFarmRNG(nameof(AnimalRandomizer));
             AnimalTypeToRandomize = animalTypeToRandomize;
             SubDirectory = Path.Combine("Animals", animalTypeToRandomize.ToString());
-            StardewAssetPath = GetStardewAssetPath();
+			GlobalStardewAssetPath = GetStardewAssetPath();
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Randomizer
         /// <summary>
         /// Build the image - hue shift it if the base file name ends with "-hue-shift"
         /// </summary>
-        protected override Texture2D BuildImage()
+        protected override Dictionary<string, Texture2D> BuildImages()
         {
             string randomAnimalFileName = GetRandomAnimalFileName();
             string imageLocation = Path.Combine(ImageDirectory, randomAnimalFileName);
@@ -81,7 +81,7 @@ namespace Randomizer
                 Globals.SpoilerWrite($"{AnimalTypeToRandomize} replaced with {randomAnimalFileName[..^4]}");
             }
 
-            return animalImage;
+            return new() { [GlobalStardewAssetPath] = animalImage };
         }
 
         /// <summary>
