@@ -119,7 +119,7 @@ namespace Randomizer
 			if (bundle.Room != CommunityCenterRooms.Vault)
 			{
 				Globals.SpoilerWrite($"Possible items: " +
-					$"{string.Join(", ", bundle.RequiredItems.Select(x => $"{x.Item.Name}: {x.NumberOfItems}").ToList())}"
+					$"{string.Join(", ", bundle.RequiredItems.Select(x => $"{x.Item.DisplayName}: {x.NumberOfItems}").ToList())}"
 				);
 				int minimumRequiredItems = bundle.MinimumRequiredItems == null ?
 					bundle.RequiredItems.Count : bundle.MinimumRequiredItems.Value;
@@ -128,7 +128,7 @@ namespace Randomizer
 
 			if (bundle.Room != CommunityCenterRooms.Joja)
 			{
-				Globals.SpoilerWrite($"Reward: {bundle.Reward.Item.Name}: {bundle.Reward.NumberOfItems}");
+				Globals.SpoilerWrite($"Reward: {bundle.Reward.Item.DisplayName}: {bundle.Reward.NumberOfItems}");
 			}
 			Globals.SpoilerWrite($"---");
 		}

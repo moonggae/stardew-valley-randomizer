@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewValley;
-using StardewValley.TokenizableStrings;
 using System;
 using System.Collections.Generic;
 using SVObject = StardewValley.Object;
@@ -8,10 +7,10 @@ using SVRing = StardewValley.Objects.Ring;
 
 namespace Randomizer
 {
-    /// <summary>
-    /// Represents an item in the game
-    /// </summary>
-    public class Item
+	/// <summary>
+	/// Represents an item in the game
+	/// </summary>
+	public class Item
     {
         public const string ObjectIdPrefix = "(O)";
 		public const string DefaultTexture = "Maps/springobjects";
@@ -101,9 +100,7 @@ namespace Randomizer
 					return OverrideDisplayName;
 				}
 
-				return IsBigCraftable
-					? Name
-					: TokenParser.ParseText(Game1.objectData[Id].DisplayName);
+				return ItemRegistry.GetData(QualifiedId).DisplayName;
             }
 		}
 		public string OverrideName { get; set; }
