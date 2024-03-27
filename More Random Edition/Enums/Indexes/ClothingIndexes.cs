@@ -1,15 +1,14 @@
 ﻿using StardewValley.Objects;
-using StardewValley;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Randomizer
 {
-    /// <summary>
-    /// An enum representing all the clothing
-    /// </summary>
-    public enum ClothingIndexes
+	/// <summary>
+	/// An enum representing all the clothing
+	/// </summary>
+	public enum ClothingIndexes
     {
         FarmerPants = 0,
         Shorts = 1,

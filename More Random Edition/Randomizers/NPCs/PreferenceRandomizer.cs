@@ -287,7 +287,7 @@ namespace Randomizer
 			{
 				if (UniversalPreferenceIndexes.ContainsValue(NPCPreferences.Key))
 				{
-					Globals.SpoilerWrite($"{NPCPreferences.Key.Replace('_', ' ')}: {TranslateIDs(NPCPreferences.Value)}");
+					Globals.SpoilerWrite($"{NPCPreferences.Key.Replace('_', ' ')}: {TranslateIds(NPCPreferences.Value)}");
 					Globals.SpoilerWrite("");
 				}
 				else
@@ -296,11 +296,11 @@ namespace Randomizer
 					string[] tokens = NPCPreferences.Value.Split('/');
 
 					Globals.SpoilerWrite(npcName);
-					Globals.SpoilerWrite($"\tLoves: {TranslateIDs(tokens[(int)NPCGiftTasteIndexes.Loves])}");
-					Globals.SpoilerWrite($"\tLikes: {TranslateIDs(tokens[(int)NPCGiftTasteIndexes.Likes])}");
-					Globals.SpoilerWrite($"\tDislikes: {TranslateIDs(tokens[(int)NPCGiftTasteIndexes.Dislikes])}");
-					Globals.SpoilerWrite($"\tHates: {TranslateIDs(tokens[(int)NPCGiftTasteIndexes.Hates])}");
-					Globals.SpoilerWrite($"\tNeutral: {TranslateIDs(tokens[(int)NPCGiftTasteIndexes.Neutral])}");
+					Globals.SpoilerWrite($"\tLoves: {TranslateIds(tokens[(int)NPCGiftTasteIndexes.Loves])}");
+					Globals.SpoilerWrite($"\tLikes: {TranslateIds(tokens[(int)NPCGiftTasteIndexes.Likes])}");
+					Globals.SpoilerWrite($"\tDislikes: {TranslateIds(tokens[(int)NPCGiftTasteIndexes.Dislikes])}");
+					Globals.SpoilerWrite($"\tHates: {TranslateIds(tokens[(int)NPCGiftTasteIndexes.Hates])}");
+					Globals.SpoilerWrite($"\tNeutral: {TranslateIds(tokens[(int)NPCGiftTasteIndexes.Neutral])}");
 					Globals.SpoilerWrite("");
 				}
 			}
@@ -310,11 +310,11 @@ namespace Randomizer
 		/// <summary>
 		/// Returns string with names of items in a comma-separated list.
 		/// </summary>
-		/// <param name="itemIDString">the list of item IDs to parse. Expected format: ID numbers separated by spaces.</param>
+		/// <param name="itemIdString">The list of item IDs to parse. Expected format: ID numbers separated by spaces.</param>
 		/// <returns>String of item names in a comma-separated list.</returns>
-		private static string TranslateIDs(string itemIDString)
+		private static string TranslateIds(string itemIdString)
 		{
-			string[] idStringArray = itemIDString.Trim().Split(' ');
+			string[] idStringArray = itemIdString.Trim().Split(' ');
 			string outputString = "";
 
 			for (int arrayPos = 0; arrayPos < idStringArray.Length; arrayPos++)

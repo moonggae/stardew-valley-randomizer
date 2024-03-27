@@ -63,7 +63,7 @@ namespace Randomizer
 
                 string oldRewardString = GetSpoilerLogRewardString(oldRewardData.RewardItemId);
                 string newRewardString = GetSpoilerLogRewardString(repalcementData.RewardItemId);
-                Globals.SpoilerWrite($"Museum reward: {oldRewardString} was changed to {newRewardString}");
+                Globals.SpoilerWrite($"{oldRewardString} was changed to {newRewardString}");
             }
 
             Globals.SpoilerWrite("");

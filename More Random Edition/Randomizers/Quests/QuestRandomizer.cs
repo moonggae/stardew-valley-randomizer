@@ -351,7 +351,21 @@ namespace Randomizer
 			Globals.SpoilerWrite("==== QUESTS ====");
 			foreach (KeyValuePair<string, string> pair in questList)
 			{
-				Globals.SpoilerWrite($"{pair.Key}: \"{pair.Value}\"");
+				var questId = pair.Key;
+				var questStrings = pair.Value.Split("/");
+
+				var title = questStrings[(int)QuestIndexes.Title];
+				var objective = questStrings[(int)QuestIndexes.Objective];
+				var npcAndItem = questStrings[(int)QuestIndexes.NPCAndItem];
+				var reward = questStrings[(int)QuestIndexes.Reward];
+
+				var npcAndRewardString = $" - {npcAndItem} - {reward}G";
+				if (npcAndItem == "null" || string.IsNullOrEmpty(npcAndItem))
+				{
+					npcAndRewardString = string.Empty;
+				}
+
+				Globals.SpoilerWrite($"{questId} ({title}): {objective}{npcAndRewardString}");
 			}
 			Globals.SpoilerWrite("");
 		}
