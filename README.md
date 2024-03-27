@@ -201,14 +201,13 @@ The Biome Balance special order, for the sake of simplicity, is mapped to the fo
 * Reworked the RNG so that things can be added/modified without impacting everything for existing farms
   * Turning settings off should make saves load faster, as we can skip unnecessary RNG calls
 * Allow custom weapon images to be used even if the weapons themselves aren't randomized
+* Cleaned up several parts of the spoiler log so it's more human-readable
 * Fixed the name randomizers to better handle more data than this mod expects to better support mods that add more content
 * Fixed the spoiler log's names for the Transmute Iron and Gold recipes
 * Fixed shop stock issues related to loading different farms in one play session
 * Fixed tappers requiring tapper products to craft
 * Fixed the title screen text edit - the leaf animation should no longer cut it off
   * Also redid it so it's an overlay, which eliminates the need to store each modified title screen image
-* Future plans:
-  * Randomize the new crops found in artifact spots
   
 ## Known Issues
 * [Fixed in 0.7.0] Music restarts when you transition screens, even if it's the same song
