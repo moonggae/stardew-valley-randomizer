@@ -103,7 +103,7 @@ namespace Randomizer
 
 				return IsBigCraftable
 					? Name
-					: TokenParser.ParseText(Game1.objectData[Id.ToString()].DisplayName);
+					: TokenParser.ParseText(Game1.objectData[Id].DisplayName);
             }
 		}
 		public string OverrideName { get; set; }

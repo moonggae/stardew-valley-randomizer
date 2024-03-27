@@ -431,7 +431,7 @@ namespace Randomizer
                 // This is expected for Grapes and Cactus fruit, where we append to the description
                 if (!objectReplacements.ContainsKey(itemId))
                 {
-					objectReplacements[itemId] = EditedObjects.DefaultObjectInformation[itemId.ToString()];
+					objectReplacements[itemId] = EditedObjects.DefaultObjectInformation[itemId];
                 }
 
 				// Now append the season string to the description in the object replacements

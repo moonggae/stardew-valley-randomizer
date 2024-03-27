@@ -16,7 +16,7 @@ namespace Randomizer
 		{
 			get
 			{
-				return Game1.objectData[Id.ToString()].Category == Object.flowersCategory;
+				return Game1.objectData[Id].Category == Object.flowersCategory;
 			}
 		}
 

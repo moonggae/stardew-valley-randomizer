@@ -1,11 +1,10 @@
 ﻿using StardewValley;
 using StardewValley.GameData.Shops;
-using System;
 using System.Linq;
 
 namespace Randomizer
 {
-    public class RandomizedSeedShop : RandomizedShop
+	public class RandomizedSeedShop : RandomizedShop
     {
         public RandomizedSeedShop() : base("SeedShop") { }
 
@@ -38,7 +37,7 @@ namespace Randomizer
                 Item matchingItem = ItemList.GetItemFromStringId(shopItemData.ItemId);
                 if (matchingItem != null && matchingItem.IsRandomizedFruitTree)
                 {
-                    shopItemData.Price = Game1.objectData[matchingItem.Id.ToString()].Price;
+                    shopItemData.Price = Game1.objectData[matchingItem.Id].Price;
                 }
             }
         }
