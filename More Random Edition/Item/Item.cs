@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewValley;
+using StardewValley.TokenizableStrings;
 using System;
 using System.Collections.Generic;
 using SVObject = StardewValley.Object;
@@ -102,7 +103,7 @@ namespace Randomizer
 
 				return IsBigCraftable
 					? Name
-					: Game1.objectData[Id.ToString()].DisplayName;
+					: TokenParser.ParseText(Game1.objectData[Id.ToString()].DisplayName);
             }
 		}
 		public string OverrideName { get; set; }

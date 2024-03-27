@@ -1,10 +1,9 @@
-﻿using StardewValley.Objects;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Randomizer
 {
-    public class QuestRandomizer
+	public class QuestRandomizer
 	{
 		private static RNG Rng { get; set; }
 
