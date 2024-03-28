@@ -78,17 +78,20 @@ namespace Randomizer
                 string garbageCanKey = garbageCanData.Key;
                 GarbageCanEntryData garbageCanEntryData = garbageCanData.Value;
 
-                if (!GarbageCanMap.ContainsKey(garbageCanKey))
+                if (!GarbageCanMap.TryGetValue(garbageCanKey, out var npcIndexes))
                 {
-                    Globals.ConsoleWarn($"Garbage can not mapped: {garbageCanKey}");
+#if DEBUG
+                    // This message is NOT useful for anyone but developers, so only show in debug mode
+					Globals.ConsoleWarn($"Garbage can not mapped: {garbageCanKey}");
+#endif
                     continue;
                 }
 
                 const double BaseChance = 0.10;
                 var dislikedItemIds = 
-                    GetNpcGarbageItems(GarbageCanMap[garbageCanKey], NPCGiftTasteIndexes.Dislikes);
+                    GetNpcGarbageItems(npcIndexes, NPCGiftTasteIndexes.Dislikes);
                 var hatedItemIds =
-                    GetNpcGarbageItems(GarbageCanMap[garbageCanKey], NPCGiftTasteIndexes.Hates);
+                    GetNpcGarbageItems(npcIndexes, NPCGiftTasteIndexes.Hates);
 
                 if (dislikedItemIds.Any())
                 {
