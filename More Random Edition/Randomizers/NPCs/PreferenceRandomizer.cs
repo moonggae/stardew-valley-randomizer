@@ -114,10 +114,10 @@ namespace Randomizer
         public static List<Item> GetIndividualPreferences(GiftableNPCIndexes npc, NPCGiftTasteIndexes prefType)
 		{
 			string npcKey = GiftableNPCs[npc];
-            string npcDatastring = Globals.Config.NPCs.RandomizeUniversalPreferences
+            string npcDataString = Globals.Config.NPCs.RandomizeUniversalPreferences
                 ? NewGiftTasteData[npcKey]
                 : GiftTasteData[npcKey];
-			string itemListString = npcDatastring.Split("/")[(int)prefType];
+			string itemListString = npcDataString.Split("/")[(int)prefType];
 
             return ItemList.GetItemListFromString(itemListString);
         }
