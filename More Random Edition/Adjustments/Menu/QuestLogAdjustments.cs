@@ -29,6 +29,11 @@ namespace Randomizer
                 {
                     if (quest is ItemDeliveryQuest itemDeliveryQuest)
                     {
+                        if (itemDeliveryQuest.id.Value == null)
+                        {
+                            continue; 
+                        }
+
                         if (QuestRandomizer.QuestReplacements.TryGetValue(
                             itemDeliveryQuest.id.Value,
                             out string questString))
