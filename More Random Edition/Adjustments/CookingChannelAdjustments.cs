@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Randomizer
 {
@@ -20,7 +21,7 @@ namespace Randomizer
 			public ShowData(int id, ObjectIndexes recipeItemId = 0, ObjectIndexes item1Id = 0, ObjectIndexes item2Id = 0)
 			{
 				ID = id;
-				Recipe = recipeItemId > 0 ? ItemList.Items[recipeItemId].OverrideDisplayName : "";
+				Recipe = recipeItemId > 0 ? recipeItemId.GetItem().OverrideDisplayName : "";
 				Item1 = item1Id > 0 ? ItemList.GetItemName(item1Id) : "";
 				Item2 = item2Id > 0 ? ItemList.GetItemName(item2Id) : "";
 			}
@@ -41,7 +42,9 @@ namespace Randomizer
 		/// </summary>
 		public static Dictionary<string, string> GetTextEdits()
 		{
-			Dictionary<string, string> replacements = new Dictionary<string, string>();
+			FixCookingRecipeDisplayNames();
+
+            Dictionary<string, string> replacements = new();
 			if (!Globals.Config.Crops.Randomize && !Globals.Config.Fish.Randomize) { return replacements; }
 
 			foreach (ShowData showData in GetCookingChannelData())
@@ -73,7 +76,10 @@ namespace Randomizer
 				new(21, ObjectIndexes.CarpSurprise, ObjectIndexes.Carp),
 				new(23, 0, ObjectIndexes.Melon),
 				new(24, ObjectIndexes.FruitSalad),
-				new(29, ObjectIndexes.PoppyseedMuffin, ObjectIndexes.Poppy, (ObjectIndexes)((CropItem)ItemList.GetItem(ObjectIndexes.Poppy)).MatchingSeedItem.Id),
+				new(29, 
+					ObjectIndexes.PoppyseedMuffin, 
+					ObjectIndexes.Poppy, 
+					((CropItem)ObjectIndexes.Poppy.GetItem()).MatchingSeedItem.ObjectIndex),
 				new(31, 0, ObjectIndexes.Tomato),
 			};
 		}
@@ -89,7 +95,24 @@ namespace Randomizer
 			string replacementText = Globals.GetTranslation($"cooking-channel-{id}", tokenObject);
 			replacements.Add(id.ToString(), replacementText);
 		}
-	}
+
+        /// <summary>
+        /// Fix the cooking recipe display names so that the queen of sauce shows
+        /// can actually display the correct thing
+        /// </summary>
+        public static void FixCookingRecipeDisplayNames()
+		{
+			ItemList.GetCookedItems()
+				.Where(item => item is CookedItem cookedItem && cookedItem.IsCropOrFishDish)
+				.ToList()
+				.ForEach(dish =>
+				{
+                    ObjectIndexes index = dish.ObjectIndex;
+                    CookedItem item = (CookedItem)index.GetItem();
+                    item.OverrideDisplayName = dish.DisplayName;
+                });
+        }
+    }
 }
 
 
