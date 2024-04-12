@@ -578,6 +578,17 @@ namespace Randomizer
 		Powdermelon
 	};
 
+    /// <summary>
+    /// For object indexes that we aren't, or haven't yet added to the list
+    /// of objects
+    /// </summary>
+    public enum UnusedObjectIndexes
+	{
+        FireworksRed = 893,
+		FireworksPurple = 894,
+		FireworksGreen = 895
+	}
+
     public static class ObjectIndexesExtentions
     {
         public class ObjectIndexData

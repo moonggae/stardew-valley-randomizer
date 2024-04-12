@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Randomizer
 {
-    public class RandomizedClubShop : RandomizedShop
+	public class RandomizedClubShop : RandomizedShop
     {
         public RandomizedClubShop() : base("Casino") { }
 
@@ -40,6 +40,8 @@ namespace Randomizer
             AddBigCraftable(shopRNG);
             AddMiscItems(shopRNG);
             AddTotem(shopRNG);
+            ReAddFireworks();
+            AddFloorsAndWallpapers(shopRNG);
         }
 
         /// <summary>
@@ -107,18 +109,70 @@ namespace Randomizer
         private void AddTotem(RNG shopRNG)
         {
             var totemId = ItemList.GetRandomTotem(shopRNG).QualifiedId;
-            AddStock(totemId, "Totem", price: 500);
+            AddStock(totemId, "Totem", price: 500, availableStock: 20);
         }
 
         /// <summary>
-        /// Adjust the sale price of the item to be a factor of 10 since it doesn't cost coins;
-        /// it costs the club currency!
+        /// Re-adds the stock of fireworks
+        /// This currently isn't randomized, as the entire stock of it is here
         /// </summary>
-        /// <param name="item">The item</param>
-        /// <param name="minimumValue">The minimum value the item should be sold at</param>
-        /// <param name="multiplier">The amount to multiply the sale price by</param>
-        /// <returns>The computed sale price</returns>
-        private static int GetSalePrice(Item item, int minimumValue = 1000, int multiplier = 1)
+        private void ReAddFireworks()
+        {
+			AddFireworkItem(UnusedObjectIndexes.FireworksRed);
+			AddFireworkItem(UnusedObjectIndexes.FireworksGreen);
+			AddFireworkItem(UnusedObjectIndexes.FireworksPurple);
+		}
+
+        /// <summary>
+        /// Adds the given firework item to the stock
+        /// </summary>
+        /// <param name="fireworks">The index of the fireworks</param>
+        private void AddFireworkItem(UnusedObjectIndexes fireworks)
+        {
+            string id = $"(O){(int)fireworks}";
+			AddStock(id, id, price: 200, availableStock: 20);
+		}
+
+		/// <summary>
+		/// Adds a random set of floors and wallpapers
+        /// </summary>
+		/// <param name="shopRNG">The RNG to use</param>
+		private void AddFloorsAndWallpapers(RNG shopRNG)
+        {
+            AddRandomItemType(shopRNG, "(WP)", "RandomWallpaper1", maxItems: 1);
+			AddRandomItemType(shopRNG, "(WP)", "RandomWallpaper2", maxItems: 1);
+			AddRandomItemType(shopRNG, "(FL)", "RandomFloor", maxItems: 1);
+		}
+
+		/// <summary>
+		/// Adds a random item type - currently only used with floors and wallpapers
+		/// Much cheaper than the normal prices, as they are random and may not be that rare
+		/// </summary>
+		/// <param name="shopRNG">The RNG used to compute the price</param>
+		/// <param name="qualifier">The qualifier, with parens - ex: (WP) for wallpaper</param>
+		/// <param name="uniqueId">A unique ID for the stock</param>
+		/// <param name="maxItems">The max items to select from</param>
+		private void AddRandomItemType(
+			RNG shopRNG,
+			string qualifier, 
+            string uniqueId, 
+            int maxItems)
+        {
+            AddStock(qualifiedId: $"RANDOM_ITEMS {qualifier}",
+                uniqueId,
+                price: shopRNG.NextIntWithinRange(3000, 8000),
+                maxItems: maxItems);
+        }
+
+		/// <summary>
+		/// Adjust the sale price of the item to be a factor of 10 since it doesn't cost coins;
+		/// it costs the club currency!
+		/// </summary>
+		/// <param name="item">The item</param>
+		/// <param name="minimumValue">The minimum value the item should be sold at</param>
+		/// <param name="multiplier">The amount to multiply the sale price by</param>
+		/// <returns>The computed sale price</returns>
+		private static int GetSalePrice(Item item, int minimumValue = 1000, int multiplier = 1)
         {
             return GetSalePrice(item.GetSaliableObject(), minimumValue, multiplier);
         }
