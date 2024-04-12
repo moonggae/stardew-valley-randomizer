@@ -1,20 +1,21 @@
-﻿using Microsoft.Xna.Framework.Graphics.PackedVector;
-using StardewValley;
+﻿using StardewValley;
 using StardewValley.GameData.Shops;
-using System;
 using System.Linq;
 
 namespace Randomizer
 {
-    public class RandomizedSewerShop : RandomizedShop
+	public class RandomizedSewerShop : RandomizedShop
     {
         public RandomizedSewerShop() : base("ShadowShop") { }
 
-        /// <summary>
-        /// Modifies the shop stock - see AdjustStock for details
-        /// </summary>
-        /// <returns>The modified shop data</returns>
-        public override ShopData ModifyShop()
+		public override bool ShouldModifyShop()
+			=> Globals.Config.Shops.RandomizerSewerShop;
+
+		/// <summary>
+		/// Modifies the shop stock - see AdjustStock for details
+		/// </summary>
+		/// <returns>The modified shop data</returns>
+		public override ShopData ModifyShop()
         {
             AdjustStock();
 
@@ -27,11 +28,6 @@ namespace Randomizer
         /// </summary>
         private void AdjustStock()
         {
-            if (!Globals.Config.Shops.RandomizerSewerShop)
-            {
-                return;
-            }
-
             RNG shopRNG = RNG.GetDailyRNG(nameof(RandomizedSewerShop));
 
             string fireplaceId = FurnitureFunctions.GetQualifiedId(FurnitureIndexes.MonsterFireplace);

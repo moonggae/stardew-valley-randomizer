@@ -8,10 +8,13 @@ namespace Randomizer
     {
         public RandomizedFishingShop() : base("FishShop") { }
 
-        /// <summary>
-        /// Adds a catch of the day (1-3 of any random fish of this season)
-        /// </summary>
-        public override ShopData ModifyShop()
+		public override bool ShouldModifyShop()
+	        => Globals.Config.Shops.AddFishingShopCatchOfTheDay;
+
+		/// <summary>
+		/// Adds a catch of the day (1-3 of any random fish of this season)
+		/// </summary>
+		public override ShopData ModifyShop()
         {
             AddCatchOfTheDay();
 
@@ -23,11 +26,6 @@ namespace Randomizer
         /// </summary>
         private void AddCatchOfTheDay()
         {
-            if (!Globals.Config.Shops.AddFishingShopCatchOfTheDay)
-            {
-                return;
-            }
-
             RNG shopRNG = RNG.GetDailyRNG(nameof(RandomizedFishingShop));
 
             var currentSeason = SeasonsExtensions.GetCurrentSeason();

@@ -8,12 +8,27 @@ namespace Randomizer
         public RandomizedCarpenterShop() : base("Carpenter") { }
 
         /// <summary>
-        /// Adds clay and tapper craft items
+        /// Modify the shop if either the tapper ingredient or clay is being added
         /// </summary>
-        public override ShopData ModifyShop()
+        /// <returns>True if the shop is being modified</returns>
+        public override bool ShouldModifyShop()
+            => ShouldAddTapperIngredent() ||
+                Globals.Config.Shops.AddClayToRobinsShop;
+
+		/// <summary>
+		/// Whether we should add the tapper ingredient to the shop
+		/// </summary>
+		/// <returns>True if the tapper ingredient should be added, false otherwise</returns>
+		private static bool ShouldAddTapperIngredent()
+            => Globals.Config.Shops.AddTapperCraftItemsToRobinsShop &&
+                Globals.Config.CraftingRecipes.Randomize;
+
+		/// <summary>
+		/// Adds clay and tapper craft items
+		/// </summary>
+		public override ShopData ModifyShop()
         {
-            if (Globals.Config.Shops.AddTapperCraftItemsToRobinsShop &&
-                Globals.Config.CraftingRecipes.Randomize)
+            if (ShouldAddTapperIngredent())
             {
                 AddRandomTapperCraftingIngredient();
             }

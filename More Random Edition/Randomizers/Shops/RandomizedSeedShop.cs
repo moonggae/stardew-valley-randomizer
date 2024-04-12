@@ -8,6 +8,10 @@ namespace Randomizer
     {
         public RandomizedSeedShop() : base("SeedShop") { }
 
+        public override bool ShouldModifyShop()
+            => Globals.Config.RandomizeFruitTrees ||
+                Globals.Config.Shops.AddSeedShopItemOfTheWeek;
+
         /// <summary>
         /// Adjusts fruit tree prices and adds the item of the week
         /// </summary>

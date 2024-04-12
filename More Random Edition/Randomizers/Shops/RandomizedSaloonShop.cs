@@ -8,11 +8,14 @@ namespace Randomizer
     {
         public RandomizedSaloonShop() : base("Saloon") { }
 
-        /// <summary>
-        /// Modifies the shop stock - see AdjustStock for details
-        /// </summary>
-        /// <returns>The modified shop data</returns>
-        public override ShopData ModifyShop()
+        public override bool ShouldModifyShop()
+            => Globals.Config.Shops.RandomizeSaloonShop;
+
+		/// <summary>
+		/// Modifies the shop stock - see AdjustStock for details
+		/// </summary>
+		/// <returns>The modified shop data</returns>
+		public override ShopData ModifyShop()
         {
             AdjustStock();
 
@@ -27,11 +30,6 @@ namespace Randomizer
         /// </summary>
         private void AdjustStock()
         {
-            if (!Globals.Config.Shops.RandomizeSaloonShop)
-            {
-                return;
-            }
-
             // Stock will change every Monday
             RNG shopRNG = RNG.GetWeeklyRNG(nameof(RandomizedSaloonShop));
             CurrentShopData.Items.Clear();

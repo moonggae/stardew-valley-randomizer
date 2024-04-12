@@ -37,6 +37,12 @@ namespace Randomizer
         }
 
         /// <summary>
+        /// Used to determine whether the shop should be modified
+        /// </summary>
+        /// <returns>Whether the shop should be modified, based on settings</returns>
+        public abstract bool ShouldModifyShop();
+
+        /// <summary>
         /// The method that will modify the shop stock in some way
         /// </summary>
         /// <returns>The modified shop data</returns>

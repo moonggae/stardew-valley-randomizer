@@ -9,11 +9,14 @@ namespace Randomizer
         
         public RandomizedBlacksmithShop() : base("Blacksmith") { }
 
-        /// <summary>
-        /// Modifies the shop stock - see AdjustStock for details
-        /// </summary>
-        /// <returns>The modified shop data</returns>
-        public override ShopData ModifyShop()
+        public override bool ShouldModifyShop()
+            => Globals.Config.Shops.RandomizeBlacksmithShop;
+
+		/// <summary>
+		/// Modifies the shop stock - see AdjustStock for details
+		/// </summary>
+		/// <returns>The modified shop data</returns>
+		public override ShopData ModifyShop()
         {
             AdjustStock();
 
@@ -32,11 +35,6 @@ namespace Randomizer
         /// <param name="menu">The shop menu</param>
         private void AdjustStock()
         {
-            if (!Globals.Config.Shops.RandomizeBlacksmithShop)
-            {
-                return;
-            }
-
             RNG shopRNG = RNG.GetDailyRNG(nameof(RandomizedBlacksmithShop));
 
             int rolledValue = shopRNG.NextIntWithinRange(0, 99);

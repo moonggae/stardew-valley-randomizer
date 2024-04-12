@@ -8,10 +8,13 @@ namespace Randomizer
     {
         public RandomizedHatShop() : base("HatMouse") { }
 
-        /// <summary>
-        /// Adds an hat of the week to the shop
-        /// </summary>
-        public override ShopData ModifyShop()
+		public override bool ShouldModifyShop()
+	        => Globals.Config.Shops.AddHatShopHatOfTheWeek;
+
+		/// <summary>
+		/// Adds an hat of the week to the shop
+		/// </summary>
+		public override ShopData ModifyShop()
         {
             AddHatOfTheWeek();
 
@@ -23,11 +26,6 @@ namespace Randomizer
         /// </summary>
         private void AddHatOfTheWeek()
         {
-            if (!Globals.Config.Shops.AddHatShopHatOfTheWeek)
-            {
-                return;
-            }
-
             // Stock will change every Monday
             RNG shopRNG = RNG.GetWeeklyRNG(nameof(RandomizedHatShop));
 

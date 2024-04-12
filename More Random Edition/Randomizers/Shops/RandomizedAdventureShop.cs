@@ -10,12 +10,22 @@ namespace Randomizer
         public RandomizedAdventureShop() : base("AdventureShop") { }
 
         /// <summary>
-        /// Modifies the shop so that prices are fixed for randomized items
+        /// Modify the shop only if weapons or boots are randomized
         /// </summary>
-        public override ShopData ModifyShop()
-        {
-            FixPrices();
+        /// <returns>True if we should modify the shop</returns>
+		public override bool ShouldModifyShop()
+		{
+			return Globals.Config.Weapons.Randomize ||
+                Globals.Config.Boots.Randomize;
+		}
 
+		/// <summary>
+		/// Modifies the shop so that prices are fixed for randomized items
+		/// </summary>
+		public override ShopData ModifyShop()
+        {
+			FixPrices();
+            
             return CurrentShopData;
         }
 

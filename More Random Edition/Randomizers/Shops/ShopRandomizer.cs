@@ -1,5 +1,6 @@
 ﻿using StardewValley.GameData.Shops;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Randomizer
 {
@@ -37,7 +38,8 @@ namespace Randomizer
             List<RandomizedShop> shopRandomizers)
         {
             Dictionary<string, ShopData> shopReplacements = new();
-            foreach(RandomizedShop shopRandomizer in shopRandomizers)
+            foreach(RandomizedShop shopRandomizer in shopRandomizers
+                .Where(shop => shop.ShouldModifyShop()))
             {
                 shopReplacements[shopRandomizer.ShopId] = shopRandomizer.ModifyShop();
             }

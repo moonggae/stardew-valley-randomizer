@@ -8,11 +8,14 @@ namespace Randomizer
     {
         public RandomizedOasisShop() : base("Sandy") { }
 
-        /// <summary>
-        /// Modifies the shop stock - see AdjustStock for details
-        /// </summary>
-        /// <returns>The modified shop data</returns>
-        public override ShopData ModifyShop()
+		public override bool ShouldModifyShop()
+	        => Globals.Config.Shops.RandomizeOasisShop;
+
+		/// <summary>
+		/// Modifies the shop stock - see AdjustStock for details
+		/// </summary>
+		/// <returns>The modified shop data</returns>
+		public override ShopData ModifyShop()
         {
             AdjustStock();
 
@@ -25,11 +28,6 @@ namespace Randomizer
         /// </summary>
         private void AdjustStock()
         {
-            if (!Globals.Config.Shops.RandomizeOasisShop)
-            {
-                return;
-            }
-
             // Track the seeds so we can add them back and add the matching crop every Tuesday
             var desertShopSeeds = CurrentShopData.Items
                 .Select(shopData => ItemList.GetItemFromStringId(shopData.ItemId))

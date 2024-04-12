@@ -9,11 +9,14 @@ namespace Randomizer
     {
         public RandomizedClubShop() : base("Casino") { }
 
-        /// <summary>
-        /// Modifies the shop stock - see AdjustStock for details
-        /// </summary>
-        /// <returns>The modified shop data</returns>
-        public override ShopData ModifyShop()
+        public override bool ShouldModifyShop()
+            => Globals.Config.Shops.RandomizeClubShop;
+
+		/// <summary>
+		/// Modifies the shop stock - see AdjustStock for details
+		/// </summary>
+		/// <returns>The modified shop data</returns>
+		public override ShopData ModifyShop()
         {
             AdjustStock();
 
@@ -29,11 +32,6 @@ namespace Randomizer
         /// </summary>
         private void AdjustStock()
         {
-			if (!Globals.Config.Shops.RandomizeClubShop)
-			{
-				return;
-			}
-
 			RNG shopRNG = RNG.GetWeeklyRNG(nameof(RandomizedClubShop));
             CurrentShopData.Items.Clear();
 

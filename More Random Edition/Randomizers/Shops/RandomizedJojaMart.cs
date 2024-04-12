@@ -8,11 +8,14 @@ namespace Randomizer
     {
         public RandomizedJojaMart() : base("Joja") { }
 
-        /// <summary>
-        /// Adjusts fruit tree prices and adds the item of the week
-        /// </summary>
-        /// <returns>The modified shop data</returns>
-        public override ShopData ModifyShop()
+        public override bool ShouldModifyShop()
+            => Globals.Config.Shops.AddJojaMartItemOfTheWeek;
+
+		/// <summary>
+		/// Adjusts fruit tree prices and adds the item of the week
+		/// </summary>
+		/// <returns>The modified shop data</returns>
+		public override ShopData ModifyShop()
         {
             AddItemOfTheWeek();
 
@@ -25,11 +28,6 @@ namespace Randomizer
         /// </summary>
         private void AddItemOfTheWeek()
         {
-            if (!Globals.Config.Shops.AddJojaMartItemOfTheWeek)
-            {
-                return;
-            }
-
             RNG shopRNG = RNG.GetWeeklyRNG(nameof(RandomizedJojaMart));
 
             // Don't choose pre-existing items
