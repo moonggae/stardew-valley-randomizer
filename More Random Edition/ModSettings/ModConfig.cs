@@ -94,7 +94,7 @@
         public bool AddJojaMartItemOfTheWeek { get; set; } = true;
         public bool AddClayToRobinsShop { get; set; } = true;
 		public bool AddTapperCraftItemsToRobinsShop { get; set; } = true;
-		public bool RandomizeBlackSmithShop {  get; set; } = true;
+		public bool RandomizeBlacksmithShop {  get; set; } = true;
         public bool RandomizeSaloonShop { get; set; } = true;
 		public bool AddFishingShopCatchOfTheDay {  get; set; } = true;
         public bool RandomizeOasisShop { get; set; } = true;

@@ -143,8 +143,14 @@ namespace Randomizer
             HandleImageReplacement(new BundleImageBuilder());
 
             Globals.SpoilerWrite("==== ANIMALS ====");
-            HandleImageReplacement(new AnimalRandomizer(AnimalTypes.Horses));
-            HandleImageReplacement(new AnimalRandomizer(AnimalTypes.Pets));
+            if (Globals.Config.Animals.RandomizeHorses)
+            {
+				HandleImageReplacement(new AnimalRandomizer(AnimalTypes.Horses));
+			}
+            if (Globals.Config.Animals.RandomizePets)
+            {
+				HandleImageReplacement(new AnimalRandomizer(AnimalTypes.Pets));
+			}
             Globals.SpoilerWrite("");
 
             MonsterHueShifter.GetHueShiftedMonsterAssets().ForEach(monsterData =>

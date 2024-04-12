@@ -29,7 +29,12 @@ namespace Randomizer
         /// </summary>
         private void AdjustStock()
         {
-            RNG shopRNG = RNG.GetWeeklyRNG(nameof(RandomizedClubShop));
+			if (!Globals.Config.Shops.RandomizeClubShop)
+			{
+				return;
+			}
+
+			RNG shopRNG = RNG.GetWeeklyRNG(nameof(RandomizedClubShop));
             CurrentShopData.Items.Clear();
 
             AddFurniture(shopRNG);
