@@ -125,8 +125,10 @@ namespace Randomizer
 			int minValueToUse = Rng.NextIntWithinPercentage(originalMinDamage, variancePercentage);
 			int maxValueToUse = Rng.NextIntWithinPercentage(originalMaxDamage, variancePercentage);
 
-            weapon.MinDamage = minValueToUse;
-			weapon.MaxDamage = maxValueToUse;
+			// Use a range to ensure that min is less than max
+			var weaponDamage = new Range(minValueToUse, maxValueToUse);
+			weapon.MinDamage = weaponDamage.MinValue;
+			weapon.MaxDamage = weaponDamage.MaxValue;
         }
 
 		/// <summary>
