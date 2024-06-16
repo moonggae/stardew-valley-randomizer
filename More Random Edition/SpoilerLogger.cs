@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using IOPath = System.IO.Path;
 
 namespace Randomizer
 {
@@ -27,7 +28,8 @@ namespace Randomizer
 		{
 			if (!Globals.Config.CreateSpoilerLog) { return; }
 
-			Path = Globals.GetFilePath($"SpoilerLog-{farmName}.txt");
+			var spoilerLogName = string.Join("", farmName.Split(IOPath.GetInvalidFileNameChars()));
+			Path = Globals.GetFilePath($"SpoilerLog-{spoilerLogName}.txt");
 			File.Create(Path).Close();
 		}
 
@@ -52,10 +54,8 @@ namespace Randomizer
 				return;
 			}
 
-			using (StreamWriter file = new StreamWriter(Path, true))
-			{
-				file.WriteLine(TextToWrite);
-			}
+			using StreamWriter file = new(Path, true);
+			file.WriteLine(TextToWrite);
 		}
 	}
 }
