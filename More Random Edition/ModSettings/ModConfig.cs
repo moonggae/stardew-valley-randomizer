@@ -67,6 +67,7 @@
 		public bool Randomize { get; set; } = true;
 		public bool UseCustomImages { get; set; } = true;
         public int HueShiftMax { get; set; } = 359;
+		public int GoldenTagChance { get; set; } = 25;
     }
 
 	public class NPCsConfig

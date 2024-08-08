@@ -52,6 +52,11 @@ namespace Randomizer
 				helper.Events.GameLoop.GameLaunched += (sender, args) => WildSeedAdjustments.ReplaceGetRandomWildCropForSeason();
 			}
 
+			if (Globals.Config.Fish.Randomize)
+			{
+				helper.Events.GameLoop.GameLaunched += (sender, args) => FishingRodAdjustments.TryGetTroutDerbyTag();
+			}
+
 			if (Globals.Config.Bundles.Randomize && Globals.Config.Bundles.ShowDescriptionsInBundleTooltips)
 			{
 				helper.Events.Display.RenderedActiveMenu += (sender, args) => BundleMenuAdjustments.AddDescriptionsToBundleTooltips();

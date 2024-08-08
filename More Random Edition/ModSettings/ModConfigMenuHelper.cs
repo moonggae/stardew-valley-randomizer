@@ -44,6 +44,7 @@ namespace Randomizer
 			AddCheckbox("Fish", "Randomize fish names, difficulty and behaviors, as well as locations, times of days and seasons.", () => Globals.Config.Fish.Randomize, (bool val) => Globals.Config.Fish.Randomize = val);
 			AddCheckbox("Use Custom Fish Images", "Use custom images for the fish.", () => Globals.Config.Fish.UseCustomImages, (bool val) => Globals.Config.Fish.UseCustomImages = val);
 			AddHueShiftOption("Hue Shift Max", "The maxmium value that fish images will be hue-shifted. Set to 0 for no effect.", () => Globals.Config.Fish.HueShiftMax, (int val) => Globals.Config.Fish.HueShiftMax = val);
+			AddPercentageOption("Golden Tag %", "During the Trout Derby, the chance that a fish caught while in the town, forest, or mountains will award a Golden Tag.", () => Globals.Config.Fish.GoldenTagChance, (int val) => Globals.Config.Fish.GoldenTagChance = val);
 
 			AddSectionTitle("Monster Options");
 			AddCheckbox("Monster Stats", "Randomize monster stats, behaviors, and non-unique item drops.", () => Globals.Config.Monsters.Randomize, (bool val) => Globals.Config.Monsters.Randomize = val);
@@ -144,11 +145,34 @@ namespace Randomizer
 		}
 
 		/// <summary>
+		/// A wrapper for AddNumberOption catered toward percentage ranges
+		/// </summary>
+		/// <param name="labelText"></param>
+		/// <param name="tooltip"></param>
+		/// <param name="getValue"></param>
+		/// <param name="setValue"></param>
+		private void AddPercentageOption(
+			string labelText,
+			string tooltip,
+			Func<int> getValue,
+			Action<int> setValue)
+		{
+			api.AddNumberOption(
+				mod: ModManifest,
+				getValue: getValue,
+				setValue: setValue,
+				name: () => labelText,
+				tooltip: () => tooltip,
+				min: 0,
+				max: 100);
+		}
+
+		/// <summary>
 		/// A wrapper for AddSectionTitle
 		/// </summary>
 		/// <param name="text"></param>
 		/// <param name="tooltip"></param>
-        private void AddSectionTitle(string text, string tooltip = "")
+		private void AddSectionTitle(string text, string tooltip = "")
 		{
             api.AddSectionTitle(ModManifest, () => text, () => tooltip);
 		}
