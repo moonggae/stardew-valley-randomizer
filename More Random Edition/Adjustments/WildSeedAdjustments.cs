@@ -4,12 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SVCrop = StardewValley.Crop;
-using SVObject = StardewValley.Object;
 using SVSeason = StardewValley.Season;
 
 namespace Randomizer
 {
-    public class WildSeedAdjustments
+	public class WildSeedAdjustments
 	{
 		/// <summary>
 		/// This is the method to repalce the existing Crop.getRandomWildCropForSeason
@@ -50,13 +49,13 @@ namespace Randomizer
         /// The prefix path for the wild crop replacement - this will replace the original function
         /// More info on this here: https://harmony.pardeike.net/articles/patching-prefix.html
         /// </summary>
-        /// <param name="__instance">The SVOBject instance (unused)</param>
+        /// <param name="__instance">The SVCrop instance (unused)</param>
         /// <param name="season">The season passed to the original function</param>
         /// <param name="__result">The value that we want the function to return</param>
         /// <returns>Whether we should fall back to the original function's code</returns>
         [HarmonyPatch(typeof(SVCrop))]
         internal static bool GetRandomWildCropForSeason_Prefix(
-			SVObject __instance,
+			SVCrop __instance,
 			SVSeason season,
 			ref string __result)
         {

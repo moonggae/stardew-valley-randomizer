@@ -96,8 +96,8 @@ namespace Randomizer
 		{
 			var harmony = new Harmony(Globals.ModRef.ModManifest.UniqueID);
 			harmony.Patch(
-			original: AccessTools.Method(typeof(FishingRod), nameof(FishingRod.tickUpdate)),
-			   prefix: new HarmonyMethod(typeof(FishingRodAdjustments), nameof(TryGetTroutDerbyTag_Prefix))
+				original: AccessTools.Method(typeof(FishingRod), nameof(FishingRod.tickUpdate)),
+				prefix: new HarmonyMethod(typeof(FishingRodAdjustments), nameof(TryGetTroutDerbyTag_Prefix))
 			);
 		}
 	}
