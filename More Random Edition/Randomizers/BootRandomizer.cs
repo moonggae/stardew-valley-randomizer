@@ -73,6 +73,11 @@ namespace Randomizer
 				bootsToUse.Add(newBootItem);
 				Boots.Add(newBootItem.Id, newBootItem);
 
+				if (bootStringData.Length == (int)BootIndexes.DisplayName)
+				{
+					BootData[bootData.Key] += $"/{bootStringData[(int)BootIndexes.Name]}";
+				}
+
 				index++;
 			}
 
