@@ -20,12 +20,18 @@ This mod supports the GenericModConfigMenuApi mod to more easily manage settings
 
 If you do not wish to use this, you can modify the config.json file in the mod folder. This file is created after the first time you launch the game with the mod installed.
 
-## A Note About Special Orders
+## Notes About Certain Events
 
 The Biome Balance special order, for the sake of simplicity, is mapped to the following in the randomizer:
 * River = Town
 * Ocean = Beach
 * Lake = Mountain
+
+The [Trout Derby]([url](https://stardewvalleywiki.com/Trout_Derby)) works differently in the randomizer:
+* _All_ fish caught in the forest, town, and mountains have a base 25% chance to award a Golden Tag
+  * This 25% chance is configurable in the **Fish -> GoldenTagChance** setting
+* The same multiplier for catching multiple fish still applies (e.g. catching 2 at once will have a 50% chance of receiving the Golden Tag)
+* If the fish happens to have the same ID that the game normally checks for, that chance is higher
 
 ## Features
 
