@@ -108,7 +108,7 @@ namespace Randomizer
         /// <returns>The retrieved random value within min and max, inclusive</returns>
         public int NextIntWithinRange(int min, int max)
         {
-            return Next(min, max + 1);
+			return NextIntWithinRange(new Range(min, max));
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace Randomizer
         /// <returns>The retrieved random value within the range, inclusive</returns>
         public int NextIntWithinRange(Range range)
         {
-            return NextIntWithinRange(range.MinValue, range.MaxValue);
+			return Next(range.MinValue, range.MaxValue + 1);
         }
 
         /// <summary>
