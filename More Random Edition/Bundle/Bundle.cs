@@ -181,7 +181,10 @@ namespace Randomizer
 			string minRequiredItemsString = "";
 			if (Room != CommunityCenterRooms.Vault && MinimumRequiredItems != null && MinimumRequiredItems > 0)
 			{
-				minRequiredItemsString = MinimumRequiredItems.ToString();
+				// NEVER require more items than are available!
+				minRequiredItemsString = 
+					Math.Min(MinimumRequiredItems.Value, RequiredItems.Count)
+						.ToString();
 			}
 
 			string[] originalBundleData = DataLoader.Bundles(Game1.content)[Key].Split("/");
